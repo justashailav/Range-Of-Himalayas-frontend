@@ -133,7 +133,7 @@ export const createCoupon = (couponData) => async (dispatch) => {
 export const getAllCoupons = () => async (dispatch) => {
   dispatch(couponSlice.actions.getAllCouponsStart());
   return axios
-    .get(`${import.meta.env.VITE_API_BASE_URL}http://localhost:3000/api/v1/get-coupons`, {
+    .get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/get-coupons`, {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     })

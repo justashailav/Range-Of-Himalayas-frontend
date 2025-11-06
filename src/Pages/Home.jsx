@@ -315,16 +315,13 @@ export default function Home() {
         >
           {productList.map((item) => (
             <SwiperSlide key={item._id}>
-              <a
-                href={`/product/${item._id}`}
-                onClick={() => handleGetProductDetails(item)}
-              >
+              
                 <ShoppingProductTile
                   product={item}
                   handleAddToCart={handleAddToCart}
                   handleAddToWishList={handleAddToWishList}
                 />
-              </a>
+              
             </SwiperSlide>
           ))}
         </Swiper>
