@@ -859,6 +859,7 @@ import {
   FaFacebook,
   FaArrowLeft,
   FaArrowRight,
+  FaWhatsapp,
 } from "react-icons/fa";
 import TopSelections from "./TopSelections";
 import { useDispatch, useSelector } from "react-redux";
