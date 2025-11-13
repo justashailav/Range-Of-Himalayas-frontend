@@ -513,7 +513,7 @@ export default function Navbar() {
           <div className="absolute top-16 left-0 w-full bg-[#F08C7D] flex flex-col items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50">
             <a href="/">HOME</a>
             <a href="/about-us">OUR STORY</a>
-            <a href="/custom-box">CREATE BOX</a>
+            <a href="/custombox">CREATE BOX</a>
             <a href="/contact-us">CONTACT US</a>
           </div>
         )}
@@ -528,7 +528,7 @@ export default function Navbar() {
           <div className="flex mb-2 gap-6 lg:gap-10 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
             <a href="/">HOME</a>
             <a href="/about-us">OUR STORY</a>
-            <a href="/custom-box">CREATE BOX</a>
+            <a href="/custombox">CREATE BOX</a>
             <a href="/contact-us">CONTACT US</a>
           </div>
 
