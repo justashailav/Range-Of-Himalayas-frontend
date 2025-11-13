@@ -870,34 +870,9 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 }); // ⏰ countdown
   const dispatch = useDispatch();
   const { images: galleryItems, loading } = useSelector((state) => state.gallery);
 
-  useEffect(() => {
-    dispatch(getGalleryItems());
-  }, [dispatch]);
-  useEffect(() => {
-    const launchDate = new Date("2025-03-01T00:00:00+05:30").getTime();
-
-    const timer = setInterval(() => {
-      const now = new Date();
-      const difference = launchDate - now;
-
-      if (difference <= 0) {
-        clearInterval(timer);
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      } else {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / (1000 * 60)) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
-        setTimeLeft({ days, hours, minutes, seconds });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
   const filteredItems =
     activeCategory === "All"
       ? galleryItems
@@ -955,27 +930,7 @@ export default function Home() {
           Join the Waitlist
         </a>
       </section>
-      <section className="text-center py-8 bg-[#FFF8E1]">
-        <h2 className="text-2xl font-bold text-[#D84C3C] mb-4">Launching In</h2>
-        <div className="flex justify-center gap-4 text-[#D84C3C] font-bold text-xl">
-          <div className="bg-white shadow-md rounded-xl px-5 py-3">
-            <span className="text-3xl">{timeLeft.days}</span>
-            <p className="text-sm text-gray-600">Days</p>
-          </div>
-          <div className="bg-white shadow-md rounded-xl px-5 py-3">
-            <span className="text-3xl">{timeLeft.hours}</span>
-            <p className="text-sm text-gray-600">Hours</p>
-          </div>
-          <div className="bg-white shadow-md rounded-xl px-5 py-3">
-            <span className="text-3xl">{timeLeft.minutes}</span>
-            <p className="text-sm text-gray-600">Minutes</p>
-          </div>
-          <div className="bg-white shadow-md rounded-xl px-5 py-3">
-            <span className="text-3xl">{timeLeft.seconds}</span>
-            <p className="text-sm text-gray-600">Seconds</p>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Hero */}
       <img
