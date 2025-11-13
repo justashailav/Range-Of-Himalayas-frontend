@@ -8,199 +8,188 @@ import { Helmet } from "react-helmet";
 
 export default function OurStory() {
   return (
-    <div className="bg-[#FFF8E1]">
-    <Helmet>
+    <div className="bg-[#FFFDF7]">
+      <Helmet>
         <title>About us - Range Of Himalayas</title>
         <meta
           name="description"
-          content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
+          content="Range Of Himalayas – Fresh apples & kiwis sourced directly from Himalayan orchards."
         />
       </Helmet>
-      <section className="text-center px-6 py-16 bg-gradient-to-b from-green-50 to-white">
-        <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+
+      {/* HERO */}
+      <section className="text-center px-6 py-24 bg-gradient-to-b from-green-100/50 to-white">
+        <span className="px-4 py-1 bg-green-200 text-green-900 rounded-full text-sm font-semibold tracking-wide">
           🌿 Our Story
         </span>
-        <h1 className="text-4xl md:text-5xl font-extrabold mt-4 text-gray-900 leading-tight">
-          From Himalayan Orchards <br />{" "}
+
+        <h1 className="text-5xl md:text-6xl font-extrabold mt-6 text-gray-900 leading-tight">
+          From Himalayan Orchards <br />
           <span className="text-red-600">to Your Table</span>
         </h1>
-        <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
-          We are proud orchard farmers from Himachal Pradesh, cultivating apples
-          with love and care. Every fruit is grown in the lap of the Himalayas
-          and delivered fresh — carrying purity, tradition, and the essence of
-          mindful farming.
+
+        <p className="mt-8 max-w-3xl mx-auto text-xl text-gray-600 leading-relaxed">
+          We are proud orchard farmers from Himachal Pradesh, nurturing apples 
+          and kiwis with pure Himalayan water, clean air, and traditional 
+          farming values.
         </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/viewproducts">
-            <button className="bg-red-600 text-white px-6 py-3 rounded-full font-medium hover:bg-red-700 transition">
-              🍎 Shop Our Apples
+
+        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <Link to="/viewproducts">
+            <button className="bg-red-600 text-white px-8 py-3 rounded-full font-medium text-lg hover:bg-red-700 transition">
+              🍎 Shop Fresh Apples
             </button>
-          </a>
-          <button className="border border-gray-300 px-6 py-3 rounded-full font-medium hover:bg-gray-100 transition">
+          </Link>
+
+          <button className="border border-gray-300 px-8 py-3 rounded-full font-medium text-lg hover:bg-gray-100 transition">
             🌄 Explore Our Journey
           </button>
         </div>
-        <div className="mt-8 flex justify-center gap-10">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900">10+</h3>
+
+        {/* Stats */}
+        <div className="mt-12 flex justify-center gap-16">
+          <div className="text-center">
+            <h3 className="text-4xl font-bold text-gray-900">10+</h3>
             <p className="text-gray-600">Years of Farming</p>
           </div>
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900">1000+</h3>
+          <div className="text-center">
+            <h3 className="text-4xl font-bold text-gray-900">1000+</h3>
             <p className="text-gray-600">Happy Customers</p>
           </div>
         </div>
       </section>
-      <section className="bg-gray-50 py-20 px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
+
+      {/* JOURNEY */}
+      <section className="bg-gray-50 py-24 px-6">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
           🌱 Our Journey
         </h2>
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           <div className="space-y-10">
-            <div>
-              <h3 className="text-3xl font-semibold text-gray-900 flex items-center gap-3">
-                <span className="text-red-600 font-bold text-2xl">01.</span>
-                Orchard Roots
-              </h3>
-              <p className="text-gray-600 text-xl mt-2 ml-10">
-                Our story begins in the pristine apple orchards of Himachal,
-                where traditional farming practices meet the richness of nature.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-semibold text-gray-900 flex items-center gap-3">
-                <span className="text-red-600 font-bold text-2xl">02.</span>
-                Inspired by Nature
-              </h3>
-              <p className="text-gray-600 text-xl mt-2 ml-10">
-                Inspired by the Himalayas, we committed to growing apples the
-                natural way — with no shortcuts, just care, patience, and
-                sustainability.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-semibold text-gray-900 flex items-center gap-3">
-                <span className="text-red-600 font-bold text-2xl">03.</span>
-                From Farm to Table
-              </h3>
-              <p className="text-gray-600 text-xl mt-2 ml-10">
-                Today, our apples travel directly from our orchards to your
-                homes, ensuring freshness, purity, and a taste of the Himalayas
-                in every bite.
-              </p>
-            </div>
+            {[
+              {
+                num: "01",
+                title: "Orchard Roots",
+                desc: "Our story begins in the traditional apple orchards of Himachal, where nature guides every harvest."
+              },
+              {
+                num: "02",
+                title: "Inspired by Nature",
+                desc: "We grow fruits the natural way — driven by purity, patience, and sustainability."
+              },
+              {
+                num: "03",
+                title: "Farm to Home",
+                desc: "We deliver apples directly from our orchards to your doorstep—fresh and untouched."
+              }
+            ].map((item) => (
+              <div key={item.num}>
+                <h3 className="text-3xl font-semibold flex items-center gap-3 text-gray-900">
+                  <span className="text-red-600 font-bold text-2xl">
+                    {item.num}.
+                  </span>{" "}
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 text-lg mt-2 ml-10">{item.desc}</p>
+              </div>
+            ))}
           </div>
+
           <div className="flex justify-center">
             <img
               src={ourImage}
               alt="Our Orchard Journey"
-              className="rounded-lg shadow-lg object-cover"
+              className="rounded-xl shadow-xl object-cover"
             />
           </div>
         </div>
       </section>
-      <section className="bg-gradient-to-b from-green-50 to-white py-20 px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6">
-          What Sets Us Apart
+
+      {/* FEATURES */}
+      <section className="bg-gradient-to-b from-green-50 to-white py-24 px-6">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-6">
+          What Makes Us Special
         </h2>
-        <p className="text-center max-w-2xl mx-auto text-lg text-gray-600 mb-16">
-          Our orchards thrive on trust, tradition, and a deep bond with nature.
+        <p className="text-center max-w-2xl mx-auto text-lg text-gray-600 mb-20">
+          Our orchards thrive on purity, tradition, and our deep connection with the Himalayas.
         </p>
-        <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto text-center">
-          <div>
-            <div className="flex justify-center mb-4"></div>
-            <h3 className="text-xl font-semibold text-gray-900">
-              Farm with Transparency
-            </h3>
-            <p className="text-gray-600 mt-2">
-              From blossom to harvest, every step of our orchard life is shared
-              with you.
-            </p>
-          </div>
-          <div>
-            <div className="flex justify-center mb-4"></div>
-            <h3 className="text-xl font-semibold text-gray-900">
-              Crafted with Care
-            </h3>
-            <p className="text-gray-600 mt-2">
-              Every apple is grown with patience, precision, and respect for
-              nature — ensuring purity you can taste in every bite.
-            </p>
-          </div>
-          <div>
-            <div className="flex justify-center mb-4"></div>
-            <h3 className="text-xl font-semibold text-gray-900">
-              Harvesting Relationships
-            </h3>
-            <p className="text-gray-600 mt-2">
-              More than apples, we cultivate trust, collaboration, and shared
-              joy.
-            </p>
-          </div>
+
+        <div className="grid md:grid-cols-3 gap-16 max-w-6xl mx-auto">
+          {[
+            {
+              title: "Transparent Farming",
+              desc: "Every step, from blossom to harvest, is nurtured with honesty.",
+            },
+            {
+              title: "Crafted with Care",
+              desc: "Each apple is hand-grown, naturally enriched, and quality checked.",
+            },
+            {
+              title: "Harvesting Trust",
+              desc: "We grow relationships as sincerely as we grow apples.",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="p-8 bg-white rounded-2xl shadow hover:shadow-lg transition text-center"
+            >
+              <h3 className="text-xl font-bold text-gray-900">{item.title}</h3>
+              <p className="text-gray-600 mt-3">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
-      <section className="bg-gray-50 py-20 px-6">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+
+      {/* WHY US */}
+      <section className="bg-gray-50 py-24 px-6">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+            <span className="px-4 py-1 bg-green-200 text-green-800 rounded-full text-sm font-semibold">
               Why Choose Us
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-4">
+
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-5">
               A Different Way of Farming
             </h2>
-            <p className="mt-6 text-lg text-gray-600">
-              Our orchards thrive in the lap of the Himalayas, where the
-              climate, water, and community values come together to create
-              apples that are as pure as the mountains themselves.
+
+            <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+              Nestled at 2,300m elevation, our orchards grow in the cleanest 
+              climate with natural Himalayan snowmelt—producing unmatched quality.
             </p>
+
             <div className="mt-10 grid sm:grid-cols-2 gap-6">
-              <div className="p-5 bg-white rounded-xl shadow hover:shadow-md transition">
-                <div className="text-green-600 text-2xl mb-3">🌤️</div>
-                <h3 className="font-semibold text-gray-900">Perfect Climate</h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Cool Himalayan temperatures nurture apples with rich flavor.
-                </p>
-              </div>
-
-              <div className="p-5 bg-white rounded-xl shadow hover:shadow-md transition">
-                <div className="text-blue-600 text-2xl mb-3">💧</div>
-                <h3 className="font-semibold text-gray-900">Pure Water</h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Irrigated with fresh snowmelt straight from the Himalayas.
-                </p>
-              </div>
-
-              <div className="p-5 bg-white rounded-xl shadow hover:shadow-md transition">
-                <div className="text-red-600 text-2xl mb-3">🍎</div>
-                <h3 className="font-semibold text-gray-900">Quality First</h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Each apple is hand-picked and carefully inspected.
-                </p>
-              </div>
-
-              <div className="p-5 bg-white rounded-xl shadow hover:shadow-md transition">
-                <div className="text-yellow-600 text-2xl mb-3">🤝</div>
-                <h3 className="font-semibold text-gray-900">
-                  Community Values
-                </h3>
-                <p className="text-gray-600 text-sm mt-1">
-                  Grown with respect for tradition, people, and nature.
-                </p>
-              </div>
+              {[
+                { icon: "🌤️", title: "Perfect Climate", desc: "Cool Himalayan temperatures shape rich, flavorful apples." },
+                { icon: "💧", title: "Pure Water", desc: "Irrigated with untouched Himalayan snowmelt." },
+                { icon: "🍎", title: "Quality First", desc: "Hand-picked and precision-sorted with care." },
+                { icon: "🤝", title: "Community Values", desc: "Rooted in tradition, integrity & mountain ethics." },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="p-6 bg-white rounded-2xl shadow hover:shadow-lg transition"
+                >
+                  <div className="text-3xl mb-2">{item.icon}</div>
+                  <h3 className="font-bold text-gray-900">{item.title}</h3>
+                  <p className="text-gray-600 text-sm mt-1">{item.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
+
           <div className="relative">
             <img
               src={farmImage}
               alt="Orchard"
-              className="h-full rounded-xl shadow-lg object-cover"
+              className="rounded-2xl shadow-xl object-cover"
             />
-            <div className="absolute bottom-4 right-4 bg-white px-4 py-2 rounded-full shadow text-sm font-medium flex items-center gap-2">
+            <div className="absolute bottom-4 right-4 bg-white px-5 py-2 rounded-full shadow text-sm font-medium flex items-center gap-2">
               🌿 2,300m Himalayan Elevation
             </div>
           </div>
         </div>
       </section>
+
       <Footer />
     </div>
   );
