@@ -2,8 +2,6 @@ import React from "react";
 import { FaInstagram, FaFacebook, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { IoLocationSharp, IoMailSharp, IoTimeSharp } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
-import logo from "../assets/logo-himalayas-black.jpg"
-import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className="bg-[#f8faf8] text-gray-800 border-t border-gray-200 pt-10 pb-6">
@@ -80,9 +78,11 @@ export default function Footer() {
           <ul className="space-y-2 text-sm text-gray-700">
             <li className="flex items-start gap-2">
               <IoLocationSharp className="text-green-700 text-lg mt-0.5" />
-              <span>Village Bareon, Tehsil Kotkhai, District Shimla, Himachal Pradesh, India - 17204</span>
-
-            </li> 
+              <span>
+                Village Bareon, Tehsil Kotkhai, District Shimla, Himachal
+                Pradesh, India - 17204
+              </span>
+            </li>
             <li className="flex items-center gap-2">
               <FaPhoneAlt className="text-green-700" />
               <a href="tel:+916230867344" className="hover:text-green-700">
@@ -121,6 +121,14 @@ export default function Footer() {
                 className="hover:text-green-700"
               >
                 <FaFacebook />
+              </a>
+              <a
+                href="https://whatsapp.com/channel/0029Vb7Bkv84SpkMGym1LW2V"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-green-700"
+              >
+                <FaWhatsapp/>
               </a>
             </div>
           </div>

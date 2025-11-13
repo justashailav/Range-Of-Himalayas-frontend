@@ -1063,7 +1063,7 @@ export default function Home() {
             className="p-6 border border-green-300 rounded-xl hover:shadow-md transition"
           >
             <FaWhatsapp className="text-3xl text-green-600 mx-auto mb-2" />
-            <h3 className="font-semibold">WhatsApp Us</h3>
+            <h3 className="font-semibold">WhatsApp Channel</h3>
           </a>
         </div>
       </section>
