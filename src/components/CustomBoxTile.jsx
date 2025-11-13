@@ -403,7 +403,8 @@ export default function CustomBoxTile() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
 
   useEffect(() => {
-    const launchDate = new Date("2025-03-01T00:00:00").getTime();
+    // ✅ Use local time (March 1, 2025, 00:00)
+    const launchDate = new Date(2025, 2, 1, 0, 0, 0).getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -434,22 +435,15 @@ export default function CustomBoxTile() {
       </p>
 
       <div className="flex justify-center gap-4 text-center">
-        <div className="bg-white rounded-xl p-4 shadow">
-          <p className="text-3xl font-bold text-[#d97706]">{timeLeft.days}</p>
-          <p className="text-sm text-gray-600">Days</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 shadow">
-          <p className="text-3xl font-bold text-[#d97706]">{timeLeft.hours}</p>
-          <p className="text-sm text-gray-600">Hours</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 shadow">
-          <p className="text-3xl font-bold text-[#d97706]">{timeLeft.mins}</p>
-          <p className="text-sm text-gray-600">Mins</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 shadow">
-          <p className="text-3xl font-bold text-[#d97706]">{timeLeft.secs}</p>
-          <p className="text-sm text-gray-600">Secs</p>
-        </div>
+        {["Days", "Hours", "Mins", "Secs"].map((label, index) => {
+          const value = [timeLeft.days, timeLeft.hours, timeLeft.mins, timeLeft.secs][index];
+          return (
+            <div key={label} className="bg-white rounded-xl p-4 shadow w-20">
+              <p className="text-3xl font-bold text-[#d97706]">{value}</p>
+              <p className="text-sm text-gray-600">{label}</p>
+            </div>
+          );
+        })}
       </div>
 
       <p className="mt-6 text-gray-800 font-semibold text-lg">
