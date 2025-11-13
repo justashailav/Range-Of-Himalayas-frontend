@@ -919,12 +919,11 @@ export default function Home() {
         />
       </Helmet>
 
-      {/* 🎉 Prelaunch Announcement */}
       <section className="bg-gradient-to-r from-green-700 to-green-600 text-white text-center py-5 px-6 shadow-md">
         <h1 className="text-2xl font-bold">🍎 Range Of Himalayas — Prelaunch Is Live!</h1>
         <p className="mt-2 text-lg">Be among the first to taste this season’s Himalayan apples 🍏</p>
         <a
-          href="https://forms.gle/YOUR_GOOGLE_FORM_LINK"
+          href="https://forms.gle/5M73wYV9Je6SJtow9"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block mt-4 bg-white text-green-700 font-semibold px-8 py-3 rounded-full shadow hover:bg-gray-100 transition-all"
@@ -932,9 +931,6 @@ export default function Home() {
           Join the Waitlist
         </a>
       </section>
-      
-
-      {/* Hero */}
       <img
         src={bgImage}
         alt="Banner"
