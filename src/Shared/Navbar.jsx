@@ -405,24 +405,129 @@
 import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+// import { FaShoppingCart } from "react-icons/fa"; // 🛒 Cart temporarily disabled
+// import { CiSearch } from "react-icons/ci"; // 🔍 Search temporarily disabled
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-himalayas.png";
+// import UserCartWrapper from "@/components/Cart-wrapper"; // 🛒 Not needed now
+// import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, User } from "lucide-react"; // ❤️ and tracking removed for now
+import { useSelector, useDispatch } from "react-redux";
+// import { searchProducts } from "@/store/slices/searchSlice";
+import { Button } from "@/components/ui/button";
+import { resetAuthSlice } from "@/store/slices/authSlice";
+import { persistor } from "@/store/store";
 
 export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
+  // const [openCart, setOpenCart] = useState(false);
+  // const [searchTerm, setSearchTerm] = useState("");
+  const { user } = useSelector((state) => state.auth);
+  // const { cartItems, boxes } = useSelector((state) => state.cart);
+  // const { wishListItems } = useSelector((state) => state.wishList);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const toggleMenu = () => setIsMenu((prev) => !prev);
+
+  // const handleSearch = () => {
+  //   if (searchTerm.trim().length > 2) {
+  //     dispatch(searchProducts(searchTerm.trim()));
+  //     navigate(`/search?keyword=${searchTerm.trim()}`);
+  //   }
+  // };
+
+  const handleLogout = () => {
+    dispatch(resetAuthSlice());
+    persistor.purge();
+    navigate("/login");
+  };
+
+  // const handleKeyDown = (e) => {
+  //   if (e.key === "Enter") handleSearch();
+  // };
+
+  // const cartCount =
+  //   cartItems?.reduce((sum, item) => sum + (item.quantity || 1), 0) || 0;
+  // const boxCount = boxes?.length || 0;
+  // const totalCount = cartCount + boxCount;
+  // const wishListCount = wishListItems?.length || 0;
 
   return (
     <nav className="bg-[#F08C7D] min-h-16 md:h-20 px-4 sm:px-6 lg:px-10 shadow-md">
       <div className="flex items-center justify-between w-full">
-        {/* ✅ Logo and Menu (Mobile) */}
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
-          <Link to="/">
+          <a href="/">
             <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
-          </Link>
+          </a>
 
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* ❌ Login / Cart / Avatar removed for now */}
+            {!user && (
+              <a href="/login">
+                <button className="border-[#F08C7D] bg-[#F08C7D] text-white py-1 px-3 sm:py-2 sm:px-4 rounded-md text-sm sm:text-base hover:bg-[#FFECE8] hover:text-[#F08C7D] transition">
+                  LOGIN
+                </button>
+              </a>
+            )}
+
+            {/* 🛒 Cart temporarily hidden */}
+            {/* <Sheet open={openCart} onOpenChange={setOpenCart}>
+              ...
+            </Sheet> */}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
+                  <AvatarImage
+                    src={
+                      user?.profile?.profilePhoto ||
+                      "https://github.com/shadcn.png"
+                    }
+                  />
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
+                <DropdownMenuGroup>
+                  {user ? (
+                    <>
+                      <a href="/profile">
+                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
+                          <User className="w-4 h-4 text-muted-foreground" />
+                          Profile
+                        </DropdownMenuItem>
+                      </a>
+
+                      {/* Temporarily removing account and order-tracking */}
+                      {/* <a href="/account">...</a> */}
+
+                      <DropdownMenuItem
+                        className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
+                        onClick={handleLogout}
+                      >
+                        <LogOut className="w-4 h-4 text-muted-foreground" />
+                        Logout
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <a href="/login">
+                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
+                        <User className="w-4 h-4 text-muted-foreground" />
+                        Login
+                      </DropdownMenuItem>
+                    </a>
+                  )}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {isMenu ? (
               <FaTimes
                 className="text-2xl sm:text-3xl text-white cursor-pointer hover:text-gray-200 transition"
@@ -437,52 +542,71 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* ✅ Desktop Navbar */}
+        {/* Desktop Navbar */}
         <div className="hidden lg:flex items-center justify-between w-full">
-          <Link to="/" className="flex-shrink-0">
+          <a href="/" className="flex-shrink-0 ">
             <img src={logo} className="w-28 sm:w-32 lg:w-36" alt="Logo" />
-          </Link>
+          </a>
 
+          {/* Only show HOME and ABOUT */}
           <div className="flex mb-2 gap-4 lg:gap-6 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
-            <Link to="/">HOME</Link>
-            <Link to="/about-us">OUR STORY</Link>
-            <Link to="/custombox">CREATE BOX</Link>
-            <Link to="/blog">BLOG</Link>
-            <Link to="/contact-us">CONTACT US</Link>
+            <a href="/">HOME</a>
+            <a href="/about-us">OUR STORY</a>
           </div>
 
-          {/* ❌ Temporarily hide search, login, wishlist, cart, profile */}
-          {/*
           <div className="flex mb-2 items-center gap-3 lg:gap-6">
-            ... (search, login, cart, avatar dropdown)
+            {!user && (
+              <a href="/login">
+                <button className="border-[#F08C7D] font-semibold bg-[#F08C7D] text-white py-1 md:py-2 px-3 md:px-4 rounded-lg hover:bg-[#FFECE8] hover:text-[#F08C7D] transition duration-500 text-sm md:text-base">
+                  LOGIN
+                </button>
+              </a>
+            )}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
+                  <AvatarImage
+                    src={
+                      user?.profile?.profilePhoto ||
+                      "https://github.com/shadcn.png"
+                    }
+                  />
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
+                <DropdownMenuGroup>
+                  {user ? (
+                    <>
+                      <a href="/profile">
+                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
+                          <User className="w-4 h-4 text-muted-foreground" />
+                          Profile
+                        </DropdownMenuItem>
+                      </a>
+
+                      <DropdownMenuItem
+                        className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
+                        onClick={handleLogout}
+                      >
+                        <LogOut className="w-4 h-4 text-muted-foreground" />
+                        Logout
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <a href="/login">
+                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
+                        <User className="w-4 h-4 text-muted-foreground" />
+                        Login
+                      </DropdownMenuItem>
+                    </a>
+                  )}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-          */}
         </div>
       </div>
-
-      {/* ✅ Mobile Menu Drawer */}
-      {isMenu && (
-        <div className="fixed top-0 right-0 h-full w-64 sm:w-72 md:w-80 lg:hidden bg-[#F08C7D] shadow-lg p-6 flex flex-col gap-5 text-white z-50 transition-transform transform translate-x-0">
-          <div className="flex justify-end mb-4">
-            <FaTimes
-              className="text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
-              onClick={toggleMenu}
-            />
-          </div>
-
-          <Link to="/" onClick={toggleMenu}>HOME</Link>
-          <Link to="/about-us" onClick={toggleMenu}>OUR STORY</Link>
-          <Link to="/custombox" onClick={toggleMenu}>CREATE BOX</Link>
-          <Link to="/blog" onClick={toggleMenu}>BLOG</Link>
-          <Link to="/contact-us" onClick={toggleMenu}>CONTACT US</Link>
-
-          {/* ❌ Hide login & search for now */}
-          {/*
-          <input placeholder="Search..." ... />
-          <button>LOGIN</button>
-          */}
-        </div>
-      )}
     </nav>
   );
 }
