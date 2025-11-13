@@ -480,7 +480,8 @@ import React from "react";
 
 export default function CustomBoxTile() {
   return (
-    <div className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-10 rounded-3xl shadow-lg max-w-xl mx-auto mt-10">
+    <div>
+      <div className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-10 rounded-3xl shadow-lg max-w-xl mx-auto mt-10">
       <h1 className="text-4xl font-extrabold text-[#d97706] mb-3">
         🍎 Build Your Own Box
       </h1>
@@ -498,8 +499,8 @@ export default function CustomBoxTile() {
           Stay tuned for our launch — freshness from the Himalayas, soon at your doorstep!
         </p>
       </div>
-
-      <Footer/>
+    </div>
+    <Footer/>
     </div>
   );
 }
