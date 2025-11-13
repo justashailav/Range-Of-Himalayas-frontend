@@ -475,77 +475,28 @@
 //   );
 // }
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export default function CustomBoxTile() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    mins: 0,
-    secs: 0,
-  });
-
-  useEffect(() => {
-    // ✅ Use a *future* date in local time (March 1, 2025, 00:00)
-    const launchDate = new Date(2025, 2, 1, 0, 0, 0); // March = 2
-
-    const updateTimer = () => {
-      const now = new Date();
-      const diff = launchDate - now;
-
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, mins: 0, secs: 0 });
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
-
-      setTimeLeft({ days, hours, mins, secs });
-    };
-
-    // Run immediately once
-    updateTimer();
-
-    const timer = setInterval(updateTimer, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <div className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-10 rounded-3xl shadow-lg max-w-xl mx-auto mt-10">
       <h1 className="text-4xl font-extrabold text-[#d97706] mb-3">
         🍎 Build Your Own Box
       </h1>
+
       <p className="text-gray-700 text-lg mb-6">
         Exciting things are coming! Customize your own Himalayan fruit box —
         launching soon. 🌄
       </p>
 
-      <div className="flex justify-center gap-4 text-center">
-        {["Days", "Hours", "Mins", "Secs"].map((label, index) => {
-          const value = [
-            timeLeft.days,
-            timeLeft.hours,
-            timeLeft.mins,
-            timeLeft.secs,
-          ][index];
-          return (
-            <div key={label} className="bg-white rounded-xl p-4 shadow w-20">
-              <p className="text-3xl font-bold text-[#d97706]">
-                {value.toString().padStart(2, "0")}
-              </p>
-              <p className="text-sm text-gray-600">{label}</p>
-            </div>
-          );
-        })}
+      <div className="mt-6">
+        <p className="text-3xl font-bold text-[#d97706] mb-2">
+          🚀 Coming Soon
+        </p>
+        <p className="text-sm text-gray-600">
+          Stay tuned for our launch — freshness from the Himalayas, soon at your doorstep!
+        </p>
       </div>
-
-      <p className="mt-6 text-gray-800 font-semibold text-lg">
-        Launching this March 🚀
-      </p>
-      <p className="text-sm text-gray-500 mt-1">Stay tuned for updates!</p>
     </div>
   );
 }
