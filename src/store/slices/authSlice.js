@@ -123,13 +123,13 @@ const authSlice = createSlice({
       state.error = action.payload || "Logout failed";
     },
     resetAuthSlice(state) {
-  state.loading = false;
-  state.error = null;
-  state.message = null;
-  state.user = null;             // clear user data
-  state.isAuthencated = false;   // mark logged out
-},
-
+      state.loading = false;
+      state.error = null;
+      state.message = null;
+      state.user = null;
+      state.isAuthencated = false;
+      
+    },
   },
 });
 export const resetAuthSlice = () => (dispatch) => {
@@ -224,12 +224,18 @@ export const forgotPassword = (email) => async (dispatch) => {
 export const resetPassword = (data, token) => async (dispatch) => {
   dispatch(authSlice.actions.resetPassword());
   await axios
-    .put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/password/reset/${token}`, data, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    .put(
+      `${
+        import.meta.env.VITE_API_BASE_URL
+      }/api/v1/user/password/reset/${token}`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
     .then((res) => {
       dispatch(authSlice.actions.resetPasswordSuccess(res.data));
     })
@@ -240,12 +246,16 @@ export const resetPassword = (data, token) => async (dispatch) => {
 export const updatePassword = (data) => async (dispatch) => {
   dispatch(authSlice.actions.updatePassword());
   await axios
-    .put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/password/update`, data, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    .put(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/password/update`,
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
     .then((res) => {
       dispatch(authSlice.actions.updatePasswordSuccess(res.data));
     })
@@ -259,9 +269,13 @@ export const updatePassword = (data) => async (dispatch) => {
 export const updateProfile = (data) => async (dispatch) => {
   dispatch(authSlice.actions.updateProfileStart());
   await axios
-    .put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/update-profile`, data, {
-      withCredentials: true,
-    })
+    .put(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/update-profile`,
+      data,
+      {
+        withCredentials: true,
+      }
+    )
     .then((res) => {
       dispatch(authSlice.actions.updateProfileSuccess(res.data));
     })
@@ -275,11 +289,14 @@ export const updateProfile = (data) => async (dispatch) => {
 export const getUserById = (userId) => async (dispatch) => {
   dispatch(authSlice.actions.getUserByIdStart());
   try {
-    const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/${userId}`, {
-      withCredentials: true,
-    });
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/${userId}`,
+      {
+        withCredentials: true,
+      }
+    );
     dispatch(authSlice.actions.getUserByIdSuccess(res.data));
-    return res.data; 
+    return res.data;
   } catch (error) {
     const msg = error.response?.data?.message || "Failed to fetch user";
     dispatch(authSlice.actions.getUserByIdFailed(msg));
@@ -289,13 +306,18 @@ export const getUserById = (userId) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   dispatch(authSlice.actions.logoutStart());
   try {
-    const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/logout`, {
-      withCredentials: true,
-    });
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/logout`,
+      {
+        withCredentials: true,
+      }
+    );
     dispatch(authSlice.actions.logoutSuccess(res.data));
   } catch (error) {
     dispatch(
-      authSlice.actions.logoutFailed(error.response?.data?.message || "Logout failed")
+      authSlice.actions.logoutFailed(
+        error.response?.data?.message || "Logout failed"
+      )
     );
   }
 };

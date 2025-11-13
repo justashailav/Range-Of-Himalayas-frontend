@@ -40,8 +40,8 @@ export default function Navbar() {
     }
   };
   const handleLogout = () => {
-  dispatch(resetAuthSlice());       // reset slice state
-  persistor.purge();                // 🔥 clear persisted localStorage
+  dispatch(resetAuthSlice());       
+  persistor.purge();                
   navigate("/login");
 };
   const handleKeyDown = (e) => {
