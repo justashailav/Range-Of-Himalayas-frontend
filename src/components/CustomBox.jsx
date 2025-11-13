@@ -476,16 +476,16 @@
 // }
 
 
-import React from "react";
+// import React from "react";
 
-export default function CustomBox() {
-  return (
-    <div className="min-h-screen bg-[#FFF8E1] flex flex-col items-center justify-center text-center p-8">
-      <h1 className="text-3xl font-bold text-[#D84C3C] mb-4">🎁 Custom Box Coming Soon!</h1>
-      <p className="text-gray-700 text-lg max-w-md">
-        Soon you'll be able to create your own apple box — choose your favorites, gift them, or enjoy yourself 🍎
-      </p>
-    </div>
-  );
-}
+// export default function CustomBox() {
+//   return (
+//     <div className="min-h-screen bg-[#FFF8E1] flex flex-col items-center justify-center text-center p-8">
+//       <h1 className="text-3xl font-bold text-[#D84C3C] mb-4">🎁 Custom Box Coming Soon!</h1>
+//       <p className="text-gray-700 text-lg max-w-md">
+//         Soon you'll be able to create your own apple box — choose your favorites, gift them, or enjoy yourself 🍎
+//       </p>
+//     </div>
+//   );
+// }
 
