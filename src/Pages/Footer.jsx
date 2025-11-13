@@ -80,8 +80,9 @@ export default function Footer() {
           <ul className="space-y-2 text-sm text-gray-700">
             <li className="flex items-start gap-2">
               <IoLocationSharp className="text-green-700 text-lg mt-0.5" />
-              <span>Village Bareon,Kotkai,Shimla, Himachal Pradesh, India - 17204</span>
-            </li>
+              <span>Village Bareon, Tehsil Kotkhai, District Shimla, Himachal Pradesh, India - 17204</span>
+
+            </li> 
             <li className="flex items-center gap-2">
               <FaPhoneAlt className="text-green-700" />
               <a href="tel:+916230867344" className="hover:text-green-700">

@@ -315,13 +315,13 @@
 //         >
 //           {productList.map((item) => (
 //             <SwiperSlide key={item._id}>
-              
+
 //                 <ShoppingProductTile
 //                   product={item}
 //                   handleAddToCart={handleAddToCart}
 //                   handleAddToWishList={handleAddToWishList}
 //                 />
-              
+
 //             </SwiperSlide>
 //           ))}
 //         </Swiper>
@@ -511,7 +511,6 @@
 //     </div>
 //   );
 // }
-
 
 // import React, { useEffect, useState } from "react";
 // import bgImage from "../assets/bgImage.png";
@@ -855,7 +854,12 @@
 import React, { useEffect, useState } from "react";
 import bgImage from "../assets/bgImage.png";
 import foundersImage from "../assets/foundersLetter.png";
-import { FaInstagram, FaFacebook, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaFacebook,
+  FaArrowLeft,
+  FaArrowRight,
+} from "react-icons/fa";
 import TopSelections from "./TopSelections";
 import { useDispatch, useSelector } from "react-redux";
 import { getGalleryItems } from "@/store/slices/gallerySlice";
@@ -871,9 +875,11 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const dispatch = useDispatch();
-  const { images: galleryItems, loading } = useSelector((state) => state.gallery);
- useEffect(() => {
-   dispatch(getGalleryItems());
+  const { images: galleryItems, loading } = useSelector(
+    (state) => state.gallery
+  );
+  useEffect(() => {
+    dispatch(getGalleryItems());
   }, [dispatch]);
   const filteredItems =
     activeCategory === "All"
@@ -884,7 +890,8 @@ export default function Home() {
     if (currentImageIndex > 0) {
       setCurrentImageIndex((prev) => prev - 1);
     } else {
-      const prevItemIndex = currentIndex === 0 ? filteredItems.length - 1 : currentIndex - 1;
+      const prevItemIndex =
+        currentIndex === 0 ? filteredItems.length - 1 : currentIndex - 1;
       setCurrentIndex(prevItemIndex);
       setCurrentImageIndex(filteredItems[prevItemIndex].images.length - 1);
     }
@@ -894,17 +901,30 @@ export default function Home() {
     if (currentImageIndex < filteredItems[currentIndex].images.length - 1) {
       setCurrentImageIndex((prev) => prev + 1);
     } else {
-      const nextItemIndex = currentIndex === filteredItems.length - 1 ? 0 : currentIndex + 1;
+      const nextItemIndex =
+        currentIndex === filteredItems.length - 1 ? 0 : currentIndex + 1;
       setCurrentIndex(nextItemIndex);
       setCurrentImageIndex(0);
     }
   };
 
   const features = [
-    { title: "🍎 Naturally Grown", desc: "Apples nurtured in the crisp Himalayan air." },
-    { title: "🌿 Sustainable Practices", desc: "Farming rooted in care, not chemicals." },
-    { title: "🍏 Family Orchards", desc: "From our home in Himachal, straight to you." },
-    { title: "🏔 Pure & Authentic", desc: "Unmatched mountain freshness in every bite." },
+    {
+      title: "🍎 Naturally Grown",
+      desc: "Apples nurtured in the crisp Himalayan air.",
+    },
+    {
+      title: "🌿 Sustainable Practices",
+      desc: "Farming rooted in care, not chemicals.",
+    },
+    {
+      title: "🍏 Family Orchards",
+      desc: "From our home in Himachal, straight to you.",
+    },
+    {
+      title: "🏔 Pure & Authentic",
+      desc: "Unmatched mountain freshness in every bite.",
+    },
   ];
 
   const { productList } = useSelector((state) => state.products);
@@ -920,8 +940,12 @@ export default function Home() {
       </Helmet>
 
       <section className="bg-gradient-to-r from-green-700 to-green-600 text-white text-center py-5 px-6 shadow-md">
-        <h1 className="text-2xl font-bold">🍎 Range Of Himalayas — Prelaunch Is Live!</h1>
-        <p className="mt-2 text-lg">Be among the first to taste this season’s Himalayan apples 🍏</p>
+        <h1 className="text-2xl font-bold">
+          🍎 Range Of Himalayas — Prelaunch Is Live!
+        </h1>
+        <p className="mt-2 text-lg">
+          Be among the first to taste this season’s Himalayan apples 🍏
+        </p>
         <a
           href="https://forms.gle/5M73wYV9Je6SJtow9"
           target="_blank"
@@ -938,14 +962,20 @@ export default function Home() {
       />
 
       <section className="text-center py-12 px-6">
-        <h2 className="font-bold text-3xl text-[#D84C3C]">Himalayan Selections 🍎</h2>
+        <h2 className="font-bold text-3xl text-[#D84C3C]">
+          Himalayan Selections 🍎
+        </h2>
         <p className="text-gray-700 mt-2">
-          Our fresh harvest is almost here — sign up to get early access when we launch.
+          Our fresh harvest is almost here — sign up to get early access when we
+          launch.
         </p>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10">
           {productList?.length > 0 ? (
             productList.slice(0, 3).map((item) => (
-              <div key={item._id} className="hover:-translate-y-1 transition-transform">
+              <div
+                key={item._id}
+                className="hover:-translate-y-1 transition-transform"
+              >
                 <TopSelections product={item} />
               </div>
             ))
@@ -955,7 +985,7 @@ export default function Home() {
         </div>
 
         <a
-          href="https://forms.gle/YOUR_GOOGLE_FORM_LINK"
+          href="https://forms.gle/5M73wYV9Je6SJtow9"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -964,16 +994,19 @@ export default function Home() {
           </button>
         </a>
       </section>
-
-      {/* Features */}
       <section className="px-6 py-10 bg-white">
         <h1 className="text-center text-4xl font-bold mb-8 text-green-700">
           Why Choose Range Of Himalayas?
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {features.map((feature, i) => (
-            <div key={i} className="bg-green-50 rounded-xl p-6 shadow-sm hover:shadow-md transition">
-              <h3 className="font-semibold text-lg text-green-800">{feature.title}</h3>
+            <div
+              key={i}
+              className="bg-green-50 rounded-xl p-6 shadow-sm hover:shadow-md transition"
+            >
+              <h3 className="font-semibold text-lg text-green-800">
+                {feature.title}
+              </h3>
               <p className="text-gray-600 mt-2">{feature.desc}</p>
             </div>
           ))}
@@ -984,8 +1017,9 @@ export default function Home() {
       <section className="px-6 py-12 text-center bg-gradient-to-b from-green-50 to-white">
         <h2 className="text-4xl font-bold mb-4">🍏 From Orchard to You</h2>
         <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-          Born in the misty valleys of Himachal, nurtured by family hands, and delivered with love.
-          Experience freshness that travels from the orchard straight to your table.
+          Born in the misty valleys of Himachal, nurtured by family hands, and
+          delivered with love. Experience freshness that travels from the
+          orchard straight to your table.
         </p>
       </section>
 
@@ -999,7 +1033,8 @@ export default function Home() {
       <section className="px-6 py-12 bg-white text-center">
         <h2 className="text-3xl font-bold mb-3">Follow Our Journey 🍃</h2>
         <p className="text-gray-600 text-lg mb-8">
-          Watch behind-the-scenes updates as we prepare for our grand harvest launch!
+          Watch behind-the-scenes updates as we prepare for our grand harvest
+          launch!
         </p>
         <div className="flex flex-col md:flex-row justify-center gap-6">
           <a
@@ -1020,13 +1055,20 @@ export default function Home() {
             <FaFacebook className="text-3xl text-blue-600 mx-auto mb-2" />
             <h3 className="font-semibold">@rangeofhimalayas</h3>
           </a>
+          <a
+            href="https://whatsapp.com/channel/0029Vb7Bkv84SpkMGym1LW2V"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-6 border border-green-300 rounded-xl hover:shadow-md transition"
+          >
+            <FaWhatsapp className="text-3xl text-green-600 mx-auto mb-2" />
+            <h3 className="font-semibold">WhatsApp Us</h3>
+          </a>
         </div>
       </section>
 
       <HomeBlog />
 
-      {/* Gallery */}
-      
       <div className="px-6 py-12 text-center">
         <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
           🌿 Orchard Moments
@@ -1122,4 +1164,3 @@ export default function Home() {
     </div>
   );
 }
-
