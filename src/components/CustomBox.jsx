@@ -478,28 +478,38 @@
 import React, { useEffect, useState } from "react";
 
 export default function CustomBoxTile() {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    mins: 0,
+    secs: 0,
+  });
 
   useEffect(() => {
-    // ✅ Use local time (March 1, 2025, 00:00)
-    const launchDate = new Date(2025, 2, 1, 0, 0, 0).getTime();
+    // ✅ Use a *future* date in local time (March 1, 2025, 00:00)
+    const launchDate = new Date(2025, 2, 1, 0, 0, 0); // March = 2
 
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
+    const updateTimer = () => {
+      const now = new Date();
       const diff = launchDate - now;
 
       if (diff <= 0) {
-        clearInterval(timer);
         setTimeLeft({ days: 0, hours: 0, mins: 0, secs: 0 });
-      } else {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const secs = Math.floor((diff % (1000 * 60)) / 1000);
-        setTimeLeft({ days, hours, mins, secs });
+        return;
       }
-    }, 1000);
 
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      setTimeLeft({ days, hours, mins, secs });
+    };
+
+    // Run immediately once
+    updateTimer();
+
+    const timer = setInterval(updateTimer, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -509,15 +519,23 @@ export default function CustomBoxTile() {
         🍎 Build Your Own Box
       </h1>
       <p className="text-gray-700 text-lg mb-6">
-        Exciting things are coming! Customize your own Himalayan fruit box — launching soon. 🌄
+        Exciting things are coming! Customize your own Himalayan fruit box —
+        launching soon. 🌄
       </p>
 
       <div className="flex justify-center gap-4 text-center">
         {["Days", "Hours", "Mins", "Secs"].map((label, index) => {
-          const value = [timeLeft.days, timeLeft.hours, timeLeft.mins, timeLeft.secs][index];
+          const value = [
+            timeLeft.days,
+            timeLeft.hours,
+            timeLeft.mins,
+            timeLeft.secs,
+          ][index];
           return (
             <div key={label} className="bg-white rounded-xl p-4 shadow w-20">
-              <p className="text-3xl font-bold text-[#d97706]">{value}</p>
+              <p className="text-3xl font-bold text-[#d97706]">
+                {value.toString().padStart(2, "0")}
+              </p>
               <p className="text-sm text-gray-600">{label}</p>
             </div>
           );
