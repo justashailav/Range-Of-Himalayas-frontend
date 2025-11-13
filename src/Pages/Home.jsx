@@ -939,7 +939,6 @@ export default function Home() {
         className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
       />
 
-      {/* Products Coming Soon */}
       <section className="text-center py-12 px-6">
         <h2 className="font-bold text-3xl text-[#D84C3C]">Himalayan Selections 🍎</h2>
         <p className="text-gray-700 mt-2">
@@ -1117,9 +1116,9 @@ export default function Home() {
           </div>
         )}
       </div>
-      <section className="bg-gradient-to-b from-green-50 to-white py-16 px-6 sm:px-10">
+      {/* <section className="bg-gradient-to-b from-green-50 to-white py-16 px-6 sm:px-10">
         <CustomerReviews />
-      </section>
+      </section> */}
 
       <Footer />
     </div>
