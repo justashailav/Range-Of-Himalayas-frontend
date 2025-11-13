@@ -5,6 +5,7 @@ import logo from "../assets/logo-himalayas.png";
 import { FaInstagram, FaFacebook } from "react-icons/fa";
 import { contactFormHandler } from "@/store/slices/contactSlice";
 import { Helmet } from "react-helmet";
+import Footer from "./Footer";
 
 export default function ContactUs() {
   const dispatch = useDispatch();
@@ -139,100 +140,7 @@ export default function ContactUs() {
         </p>
       </section>
 
-      <footer className="bg-[#F08C7D] text-white p-8 sm:p-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-lg">
-          <div>
-            <h3 className="text-2xl font-semibold mb-4">Helpful Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="hover:underline">
-                  Our Story
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  All Products
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Lab Reports
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-semibold mb-4">Policies</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="hover:underline">
-                  Refund Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Shipping Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Terms of Service
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-semibold mb-4">Support</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="#" className="hover:underline">
-                  Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Help
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-2xl font-semibold mb-4">Follow Us</h3>
-            <ul className="flex gap-6 text-3xl justify-center sm:justify-start">
-              <li>
-                <a
-                  href="https://www.instagram.com/range.of.himalayas?igsh=eXZ4OHVidGk1c3M4&utm_source=ig_contact_invite"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                  className="hover:text-yellow-300 transition"
-                >
-                  <FaInstagram />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.facebook.com/rangeofhimalayas"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="hover:text-yellow-300 transition"
-                >
-                  <FaFacebook />
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 }
