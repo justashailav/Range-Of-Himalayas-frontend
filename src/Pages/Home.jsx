@@ -872,7 +872,9 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const dispatch = useDispatch();
   const { images: galleryItems, loading } = useSelector((state) => state.gallery);
-
+ useEffect(() => {
+   dispatch(getGalleryItems());
+  }, [dispatch]);
   const filteredItems =
     activeCategory === "All"
       ? galleryItems
