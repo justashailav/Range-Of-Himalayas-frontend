@@ -701,9 +701,148 @@ export default function Home() {
           className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg rounded-xl"
         />
       </div>
+      <div className="px-6 py-12">
+        <div className="text-center mb-10">
+          <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+            🍎 From Our Orchards
+          </span>
+          <h1 className="text-4xl font-bold mt-4 mb-3">Himalayan Harvest</h1>
+          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+            Discover how we nurture premium apples with a blend of time-honored
+            traditions and thoughtful modern practices in the pristine Himalayan
+            foothills.
+          </p>
+        </div>
+      </div>
+      <div className="px-6 py-12 bg-white ">
+        <div className="text-center mb-10">
+          <h2 className="text-4xl font-bold mb-2">Follow Us</h2>
+          <p className="text-gray-600 text-xl">
+            🌱 Get the freshest updates on our harvests and apple collections
+          </p>
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <div className="p-6 border border-green-200 rounded-xl text-center hover:shadow-md transition">
+            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
+              <FaInstagram className="text-3xl text-pink-600" />
+            </div>
+            <h3 className="font-semibold text-lg">Instagram</h3>
+            <p className="text-gray-600">@range.of.himalayas</p>
+            <a
+              href="https://www.instagram.com/range.of.himalayas"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-700 font-medium mt-2 inline-block"
+            >
+              Follow →
+            </a>
+          </div>
+          <div className="p-6 border border-green-200 rounded-xl text-center hover:shadow-md transition">
+            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
+              <FaFacebook className="text-3xl text-blue-600" />
+            </div>
+            <h3 className="font-semibold text-lg">Facebook</h3>
+            <p className="text-gray-600">@rangeofhimalayas</p>
+            <a
+              href="https://www.facebook.com/rangeofhimalayas"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-700 font-medium mt-2 inline-block"
+            >
+              Follow →
+            </a>
+          </div>
+        </div>
+      </div>
       <HomeBlog />
+       <div className="px-6 py-12 text-center">
+        <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+          🌿 Orchard Moments
+        </span>
+        <h1 className="text-4xl font-bold mt-4 mb-3">
+          🍏 From Orchard to Table
+        </h1>
+        <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+          Witness the journey of our orchards through the seasons — a
+          celebration of purity, tradition, and mindful farming at Range Of
+          Himalayas.
+        </p>
+        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-8">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setActiveCategory(cat);
+                setCurrentIndex(0);
+                setCurrentImageIndex(0);
+              }}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 transform
+        ${
+          activeCategory === cat
+            ? "bg-gradient-to-r from-red-500 to-red-700 text-white shadow-lg scale-105"
+            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:scale-105"
+        }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
+        {loading ? (
+          <p className="text-gray-500">Loading images...</p>
+        ) : filteredItems.length > 0 ? (
+          <div className="relative max-w-3xl mx-auto">
+            <img
+              src={filteredItems[currentIndex]?.images[currentImageIndex]}
+              alt={filteredItems[currentIndex]?.title}
+              className="w-full h-full object-cover rounded-xl shadow-md"
+            />
+            <button
+              onClick={prevSlide}
+              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60  text-white p-3 rounded-full shadow-md hover:bg-black/80"
+            >
+              <FaArrowLeft />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80"
+            >
+              <FaArrowRight />
+            </button>
+            <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg">
+              <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
+                {filteredItems[currentIndex]?.category}
+              </span>
+              <h3 className="font-semibold text-xl mt-2">
+                {filteredItems[currentIndex]?.title}
+              </h3>
+              <p className="text-sm text-gray-200 mt-1">
+                {filteredItems[currentIndex]?.desc}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-500">No images found</p>
+        )}
+        {filteredItems.length > 0 && (
+          <div className="flex justify-center gap-4 mt-6">
+            {filteredItems[currentIndex].images.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt="thumb"
+                onClick={() => setCurrentImageIndex(index)}
+                className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 ${
+                  index === currentImageIndex
+                    ? "border-red-600"
+                    : "border-transparent"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
       <section className="bg-gradient-to-b from-green-50 to-white py-16 px-6 sm:px-10">
         <CustomerReviews />
       </section>
