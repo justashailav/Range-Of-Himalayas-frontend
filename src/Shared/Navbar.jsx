@@ -405,12 +405,8 @@
 import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaTimes } from "react-icons/fa";
-// import { FaShoppingCart } from "react-icons/fa"; // 🛒 Cart temporarily disabled
-// import { CiSearch } from "react-icons/ci"; // 🔍 Search temporarily disabled
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-himalayas.png";
-// import UserCartWrapper from "@/components/Cart-wrapper"; // 🛒 Not needed now
-// import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -419,31 +415,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react"; // ❤️ and tracking removed for now
+import { LogOut, User } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-// import { searchProducts } from "@/store/slices/searchSlice";
-import { Button } from "@/components/ui/button";
 import { resetAuthSlice } from "@/store/slices/authSlice";
 import { persistor } from "@/store/store";
 
 export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
-  // const [openCart, setOpenCart] = useState(false);
-  // const [searchTerm, setSearchTerm] = useState("");
   const { user } = useSelector((state) => state.auth);
-  // const { cartItems, boxes } = useSelector((state) => state.cart);
-  // const { wishListItems } = useSelector((state) => state.wishList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenu((prev) => !prev);
-
-  // const handleSearch = () => {
-  //   if (searchTerm.trim().length > 2) {
-  //     dispatch(searchProducts(searchTerm.trim()));
-  //     navigate(`/search?keyword=${searchTerm.trim()}`);
-  //   }
-  // };
 
   const handleLogout = () => {
     dispatch(resetAuthSlice());
@@ -451,19 +434,11 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  // const handleKeyDown = (e) => {
-  //   if (e.key === "Enter") handleSearch();
-  // };
-
-  // const cartCount =
-  //   cartItems?.reduce((sum, item) => sum + (item.quantity || 1), 0) || 0;
-  // const boxCount = boxes?.length || 0;
-  // const totalCount = cartCount + boxCount;
-  // const wishListCount = wishListItems?.length || 0;
-
   return (
     <nav className="bg-[#F08C7D] min-h-16 md:h-20 px-4 sm:px-6 lg:px-10 shadow-md">
       <div className="flex items-center justify-between w-full">
+
+        {/* ------------------ MOBILE NAV ------------------ */}
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
           <a href="/">
             <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
@@ -478,19 +453,12 @@ export default function Navbar() {
               </a>
             )}
 
-            {/* 🛒 Cart temporarily hidden */}
-            {/* <Sheet open={openCart} onOpenChange={setOpenCart}>
-              ...
-            </Sheet> */}
-
+            {/* User Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
                   <AvatarImage
-                    src={
-                      user?.profile?.profilePhoto ||
-                      "https://github.com/shadcn.png"
-                    }
+                    src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
                   />
                 </Avatar>
               </DropdownMenuTrigger>
@@ -504,9 +472,6 @@ export default function Navbar() {
                           Profile
                         </DropdownMenuItem>
                       </a>
-
-                      {/* Temporarily removing account and order-tracking */}
-                      {/* <a href="/account">...</a> */}
 
                       <DropdownMenuItem
                         className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
@@ -528,6 +493,7 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Hamburger */}
             {isMenu ? (
               <FaTimes
                 className="text-2xl sm:text-3xl text-white cursor-pointer hover:text-gray-200 transition"
@@ -542,19 +508,32 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Desktop Navbar */}
+        {/* ------------------ MOBILE MENU DROPDOWN ------------------ */}
+        {isMenu && (
+          <div className="absolute top-16 left-0 w-full bg-[#F08C7D] flex flex-col items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50">
+            <a href="/">HOME</a>
+            <a href="/about-us">OUR STORY</a>
+            <a href="/custom-box">CREATE BOX</a>
+            <a href="/contact-us">CONTACT US</a>
+          </div>
+        )}
+
+        {/* ------------------ DESKTOP NAV ------------------ */}
         <div className="hidden lg:flex items-center justify-between w-full">
-          <a href="/" className="flex-shrink-0 ">
+          <a href="/" className="flex-shrink-0">
             <img src={logo} className="w-28 sm:w-32 lg:w-36" alt="Logo" />
           </a>
 
-          {/* Only show HOME and ABOUT */}
-          <div className="flex mb-2 gap-4 lg:gap-6 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
+          {/* MAIN MENU */}
+          <div className="flex mb-2 gap-6 lg:gap-10 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
             <a href="/">HOME</a>
             <a href="/about-us">OUR STORY</a>
+            <a href="/custom-box">CREATE BOX</a>
+            <a href="/contact-us">CONTACT US</a>
           </div>
 
-          <div className="flex mb-2 items-center gap-3 lg:gap-6">
+          {/* USER / LOGIN BUTTON */}
+          <div className="flex mb-2 items-center gap-6">
             {!user && (
               <a href="/login">
                 <button className="border-[#F08C7D] font-semibold bg-[#F08C7D] text-white py-1 md:py-2 px-3 md:px-4 rounded-lg hover:bg-[#FFECE8] hover:text-[#F08C7D] transition duration-500 text-sm md:text-base">
@@ -567,10 +546,7 @@ export default function Navbar() {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
                   <AvatarImage
-                    src={
-                      user?.profile?.profilePhoto ||
-                      "https://github.com/shadcn.png"
-                    }
+                    src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
                   />
                 </Avatar>
               </DropdownMenuTrigger>
