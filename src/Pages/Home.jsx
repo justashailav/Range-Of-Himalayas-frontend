@@ -878,7 +878,8 @@ export default function Home() {
     dispatch(getGalleryItems());
   }, [dispatch]);
   useEffect(() => {
-    const launchDate = new Date("2025-08-01T00:00:00"); // Your launch date
+    const launchDate = new Date("2025-03-01T00:00:00+05:30").getTime();
+
     const timer = setInterval(() => {
       const now = new Date();
       const difference = launchDate - now;
