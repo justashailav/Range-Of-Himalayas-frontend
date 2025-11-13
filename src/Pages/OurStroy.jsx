@@ -232,6 +232,11 @@ export default function OurStory() {
           farming values.
         </p>
 
+        {/* ⭐ PRE-LAUNCH MESSAGE ⭐ */}
+        <p className="mt-4 text-lg text-red-600 font-semibold">
+          🚀 Pre-Launch Offer: You can place your orders now!
+        </p>
+
         <div className="mt-10 flex justify-center">
           <Link to="/viewproducts">
             <button className="bg-red-600 text-white px-8 py-3 rounded-full font-medium text-lg hover:bg-red-700 transition">
