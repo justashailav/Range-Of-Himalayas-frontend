@@ -475,6 +475,7 @@
 //   );
 // }
 
+import Footer from "@/Pages/Footer";
 import React from "react";
 
 export default function CustomBoxTile() {
@@ -497,6 +498,8 @@ export default function CustomBoxTile() {
           Stay tuned for our launch — freshness from the Himalayas, soon at your doorstep!
         </p>
       </div>
+
+      <Footer/>
     </div>
   );
 }
