@@ -1080,23 +1080,19 @@ export default function Home() {
       <HomeBlog />
 
      <div className="px-6 py-12 text-center">
+  <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+    🌿 Orchard Moments
+  </span>
 
-  {/* TEXT SECTION – Hidden on phones, visible on md and above */}
-  <div className="hidden md:block">
-    <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-      🌿 Orchard Moments
-    </span>
+  <h1 className="text-4xl font-bold mt-4 mb-3">
+    🍏 From Orchard to Table
+  </h1>
 
-    <h1 className="text-4xl font-bold mt-4 mb-3">
-      🍏 From Orchard to Table
-    </h1>
-
-    <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-      Witness the journey of our orchards through the seasons — a
-      celebration of purity, tradition, and mindful farming at
-      Range Of Himalayas.
-    </p>
-  </div>
+  <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+    Witness the journey of our orchards through the seasons — a
+    celebration of purity, tradition, and mindful farming at Range Of
+    Himalayas.
+  </p>
 
   <div className="flex flex-wrap justify-center gap-3 mt-6 mb-8">
     {categories.map((cat) => (
@@ -1143,7 +1139,8 @@ export default function Home() {
         <FaArrowRight />
       </button>
 
-      <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg">
+      {/* TEXT OVERLAY — hidden on mobile */}
+      <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg hidden md:block">
         <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
           {filteredItems[currentIndex]?.category}
         </span>
