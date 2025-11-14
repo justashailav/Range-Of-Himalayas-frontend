@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import heroImage from "../assets/hero-image.png";
+
 import logo from "../assets/logo-himalayas.png";
 import { FaInstagram, FaFacebook } from "react-icons/fa";
 import { contactFormHandler } from "@/store/slices/contactSlice";
