@@ -162,7 +162,6 @@ export default function Viewallproducts() {
                 prelaunch={true}
               />
 
-              {/* Softer Coming Soon Overlay */}
               <div className="absolute inset-0 flex items-center justify-center rounded-2xl pointer-events-none">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-black/10 backdrop-blur-sm rounded-2xl transition-opacity duration-300 group-hover:opacity-60"></div>
                 <span className="relative text-white text-2xl md:text-3xl font-bold drop-shadow-md">
