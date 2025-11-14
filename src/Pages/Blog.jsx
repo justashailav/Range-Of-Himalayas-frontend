@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs, toggleLikeBlog } from "@/store/slices/blogSlice";
+
 import {
   Calendar,
   User,
@@ -9,11 +10,12 @@ import {
   Share2,
   Heart,
 } from "lucide-react";
+
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "./Footer";
+
 import {
   FaFacebook,
-  FaInstagram,
   FaLinkedin,
   FaPinterest,
   FaTelegramPlane,
@@ -23,12 +25,24 @@ import {
 export default function Blog() {
   const dispatch = useDispatch();
   const { blogs } = useSelector((state) => state.blogs);
-  const [activeShare, setActiveShare] = useState(null);
-  let closeTimer = null;
+
+  const [openShareId, setOpenShareId] = useState(null);
+
+  const shareRef = useRef(null);
 
   useEffect(() => {
     dispatch(getAllBlogs());
   }, [dispatch]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (shareRef.current && !shareRef.current.contains(e.target)) {
+        setOpenShareId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLike = (e, blogId) => {
     e.preventDefault();
@@ -36,48 +50,29 @@ export default function Blog() {
     dispatch(toggleLikeBlog(blogId));
   };
 
-  const handleMouseEnter = (id) => {
-    if (closeTimer) clearTimeout(closeTimer);
-    setActiveShare(id);
-  };
-
-  const handleMouseLeave = () => {
-    closeTimer = setTimeout(() => {
-      setActiveShare(null);
-    }, 200);
+  const handleShareClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpenShareId(openShareId === id ? null : id);
   };
 
   return (
-    <div className="bg-[#FFF8E1] min-h-screen">
+    <div className="bg-[#F9F5EF] min-h-screen">
       <Helmet>
         <title>Our Blogs | Range of Himalayas</title>
         <meta
           name="description"
-          content="Explore the Range of Himalayas blog — stories, wellness insights, and Himalayan freshness. Learn about our apples, kiwis, and the pure natural lifestyle we promote."
+          content="Explore Himalayan stories, wellness guides, and insights from Range of Himalayas. Freshness, purity, and nature in every post."
         />
-        <meta
-          name="keywords"
-          content="Himalayan apples, fresh fruits, organic kiwis, health blog, natural lifestyle, Range of Himalayas"
-        />
-        <meta property="og:title" content="Our Blogs | Range of Himalayas" />
-        <meta
-          property="og:description"
-          content="Discover the latest stories, tips, and insights from the Himalayas. Fresh perspectives on health, nature, and taste."
-        />
-        <meta
-          property="og:image"
-          content="https://res.cloudinary.com/dwxebof4m/image/upload/v1729934210/himalayas-cover.jpg"
-        />
-        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Range of Himalayas Blogs" />
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-4xl font-extrabold text-center text-[#3B2F2F] mb-4 tracking-tight">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <h2 className="text-4xl font-bold text-center text-[#2E1F1A] mb-3">
           Our Blogs
         </h2>
-        <p className="text-center text-[#5C4033] mb-10 max-w-2xl mx-auto leading-relaxed">
-          Discover stories, tips, and insights fresh from the Himalayas —
-          crafted to inspire a healthy, natural lifestyle.
+        <p className="text-center text-[#5C4033] mb-12 max-w-2xl mx-auto">
+          Inspiring stories and natural wisdom — straight from the Himalayas.
         </p>
 
         <motion.div
@@ -87,38 +82,40 @@ export default function Blog() {
           transition={{ duration: 0.5 }}
         >
           {blogs?.map((b) => {
-            // Encode URL for sharing
             const shareUrl = b.slug
               ? `${window.location.origin}/blog/${b.slug}`
               : window.location.origin;
+
             const encodedUrl = encodeURIComponent(shareUrl);
 
             return (
               <motion.div
                 key={b._id}
-                whileHover={{ y: -6 }}
+                whileHover={{ y: -5 }}
                 transition={{ type: "spring", stiffness: 120 }}
-                className="relative bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl overflow-hidden transition-all duration-300"
+                className="bg-white shadow-lg rounded-3xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300"
               >
-                <a href={`/blog/${b.slug}`} className="block cursor-pointer">
+                <a href={`/blog/${b.slug}`} className="block">
+                  {/* COVER IMAGE */}
                   {b.coverImage && (
-                    <div className="relative w-full h-56 overflow-hidden">
+                    <div className="relative h-56 overflow-hidden">
                       <img
                         src={b.coverImage}
                         alt={b.title}
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                       />
                       {b.category && (
-                        <span className="absolute top-4 left-4 bg-pink-600/80 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+                        <span className="absolute top-4 left-4 bg-gradient-to-r from-green-600 to-lime-500 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide shadow-md">
                           {b.category}
                         </span>
                       )}
                     </div>
                   )}
 
+                  {/* CONTENT */}
                   <div className="p-6 flex flex-col justify-between h-[260px]">
                     <div>
-                      <div className="flex items-center text-gray-400 text-xs gap-3 mb-2">
+                      <div className="flex items-center text-gray-400 text-xs gap-4 mb-2">
                         <div className="flex items-center gap-1">
                           <Calendar size={14} />
                           {new Date(b.createdAt).toLocaleDateString("en-IN", {
@@ -132,93 +129,85 @@ export default function Blog() {
                         </div>
                       </div>
 
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-snug hover:text-pink-600 transition-colors duration-300">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-snug hover:text-green-700 transition">
                         {b.title}
                       </h3>
 
-                      <p className="text-sm text-gray-600 line-clamp-3 mb-3">
+                      <p className="text-sm text-gray-600 line-clamp-3">
                         {b.metaDescription ||
-                          ((b.content ?? "")
-                            .replace(/<[^>]+>/g, "")
-                            .slice(0, 150) + "...")}
+                          b.content?.replace(/<[^>]+>/g, "").slice(0, 150) +
+                            "..."}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between text-gray-500 text-xs border-t border-gray-100 pt-3 relative">
-                      <div className="flex items-center gap-4">
+                    {/* FOOTER ACTIONS */}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-3 relative">
+                      <div className="flex items-center gap-5">
+                        {/* LIKE */}
                         <button
                           onClick={(e) => handleLike(e, b._id)}
-                          className="flex items-center gap-1 hover:text-pink-600 transition"
+                          className="flex items-center gap-1 hover:text-red-600 transition"
                         >
                           <Heart
-                            size={14}
+                            size={16}
                             fill={b.isLiked ? "currentColor" : "none"}
-                            className={b.isLiked ? "text-pink-600" : ""}
+                            className={b.isLiked ? "text-red-600" : ""}
                           />
-                          <span>{b.likesCount || 0}</span>
+                          <span className="text-xs">{b.likesCount || 0}</span>
                         </button>
 
-                        <div className="flex items-center gap-1">
-                          <MessageSquare size={14} />
-                          <span>{b.comments?.length || 0}</span>
+                        {/* COMMENTS */}
+                        <div className="flex items-center gap-1 text-gray-600">
+                          <MessageSquare size={16} />
+                          <span className="text-xs">
+                            {b.comments?.length || 0}
+                          </span>
                         </div>
 
-                        <div
-                          className="relative"
-                          onMouseEnter={() => handleMouseEnter(b._id)}
-                          onMouseLeave={handleMouseLeave}
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <button className="flex items-center gap-1 hover:text-pink-600 transition">
-                            <Share2 size={14} />
-                            <span>Share</span>
+                        {/* SHARE */}
+                        <div className="relative" ref={shareRef}>
+                          <button
+                            onClick={(e) => handleShareClick(e, b._id)}
+                            className="flex items-center gap-1 hover:text-green-700 transition"
+                          >
+                            <Share2 size={16} />
+                            <span className="text-xs">Share</span>
                           </button>
 
                           <AnimatePresence>
-                            {activeShare === b._id && (
+                            {openShareId === b._id && (
                               <motion.div
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 10 }}
                                 transition={{ duration: 0.2 }}
-                                className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full flex items-center gap-2 px-3 py-2 z-50"
+                                className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
                               >
                                 {[
                                   {
                                     href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
                                     icon: <FaFacebook />,
                                     bg: "bg-blue-600",
-                                    hover: "hover:bg-blue-700",
                                   },
                                   {
                                     href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
                                     icon: <FaTwitter />,
                                     bg: "bg-sky-500",
-                                    hover: "hover:bg-sky-600",
                                   },
                                   {
                                     href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
                                     icon: <FaPinterest />,
-                                    bg: "bg-red-500",
-                                    hover: "hover:bg-red-600",
+                                    bg: "bg-red-600",
                                   },
                                   {
                                     href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
                                     icon: <FaLinkedin />,
                                     bg: "bg-blue-700",
-                                    hover: "hover:bg-blue-800",
-                                  },
-                                  {
-                                    href: `https://www.instagram.com/?url=${encodedUrl}`,
-                                    icon: <FaInstagram />,
-                                    bg: "bg-pink-500",
-                                    hover: "hover:bg-pink-600",
                                   },
                                   {
                                     href: `https://t.me/share/url?url=${encodedUrl}`,
                                     icon: <FaTelegramPlane />,
                                     bg: "bg-sky-600",
-                                    hover: "hover:bg-sky-700",
                                   },
                                 ].map((btn, i) => (
                                   <a
@@ -226,8 +215,8 @@ export default function Blog() {
                                     href={btn.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`${btn.bg} ${btn.hover} text-white w-8 h-8 flex items-center justify-center rounded-full shadow-sm transform transition-transform duration-200 hover:scale-105`}
-                                    title="Share"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className={`${btn.bg} text-white w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-transform`}
                                   >
                                     {btn.icon}
                                   </a>
@@ -238,7 +227,7 @@ export default function Blog() {
                         </div>
                       </div>
 
-                      <span className="text-pink-600 text-sm font-medium hover:underline">
+                      <span className="text-green-700 text-sm font-medium hover:underline">
                         Read More →
                       </span>
                     </div>
@@ -249,6 +238,7 @@ export default function Blog() {
           })}
         </motion.div>
       </div>
+
       <Footer />
     </div>
   );
