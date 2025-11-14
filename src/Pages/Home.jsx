@@ -995,6 +995,14 @@ export default function Home() {
           </button>
         </a>
       </section>
+
+      <div className="w-full sm:w-auto">
+        <a href="/viewproducts">
+          <button className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out">
+            View All Products
+          </button>
+        </a>
+      </div>
       <section className="px-6 py-10 bg-white">
         <h1 className="text-center text-4xl font-bold mb-8 text-green-700">
           Why Choose Range Of Himalayas?
