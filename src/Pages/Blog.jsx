@@ -8,14 +8,17 @@ import {
   MessageSquare,
   Share2,
   Heart,
-  Facebook,
-  Twitter,
-  Linkedin,
 } from "lucide-react";
-import { PiPinterestLogoBold, PiTelegramLogoBold } from "react-icons/pi";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "./Footer";
-import { FaFacebook, FaInstagram, FaLinkedin, FaPinterest, FaTelegramPlane, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaPinterest,
+  FaTelegramPlane,
+  FaTwitter,
+} from "react-icons/fa";
 
 export default function Blog() {
   const dispatch = useDispatch();
@@ -28,7 +31,7 @@ export default function Blog() {
   }, [dispatch]);
 
   const handleLike = (e, blogId) => {
-    e.preventDefault(); // prevent <a> navigation when liking
+    e.preventDefault();
     e.stopPropagation();
     dispatch(toggleLikeBlog(blogId));
   };
@@ -98,7 +101,7 @@ export default function Blog() {
                       <img
                         src={b.coverImage}
                         alt={b.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                       />
                       {b.category && (
                         <span className="absolute top-4 left-4 bg-pink-600/80 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
@@ -130,8 +133,9 @@ export default function Blog() {
 
                       <p className="text-sm text-gray-600 line-clamp-3 mb-3">
                         {b.metaDescription ||
-                          b.content?.replace(/<[^>]+>/g, "").slice(0, 150) +
-                            "..."}
+                          ((b.content ?? "")
+                            .replace(/<[^>]+>/g, "")
+                            .slice(0, 150) + "...")}
                       </p>
                     </div>
 
@@ -166,37 +170,66 @@ export default function Blog() {
                           </button>
 
                           <AnimatePresence>
-  {activeShare === b._id && (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
-      transition={{ duration: 0.2 }}
-      className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full flex items-center gap-2 px-3 py-2 z-50"
-    >
-      {[ 
-        { href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, icon: <FaFacebook />, bg: "bg-blue-600", hover: "hover:bg-blue-700" },
-        { href: `https://twitter.com/intent/tweet?url=${shareUrl}`, icon: <FaTwitter />, bg: "bg-sky-500", hover: "hover:bg-sky-600" },
-        { href: `https://pinterest.com/pin/create/button/?url=${shareUrl}`, icon: <FaPinterest />, bg: "bg-red-500", hover: "hover:bg-red-600" },
-        { href: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`, icon: <FaLinkedin />, bg: "bg-blue-700", hover: "hover:bg-blue-800" },
-        { href: `https://www.instagram.com/?url=${shareUrl}`, icon: <FaInstagram />, bg: "bg-pink-500", hover: "hover:bg-pink-600" },
-        { href: `https://t.me/share/url?url=${shareUrl}`, icon: <FaTelegramPlane />, bg: "bg-sky-600", hover: "hover:bg-sky-700" },
-      ].map((btn, i) => (
-        <a
-          key={i}
-          href={btn.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${btn.bg} ${btn.hover} text-white w-8 h-8 flex items-center justify-center rounded-full shadow-sm transform transition-transform duration-200 hover:scale-105`}
-          title={`Share on ${btn.icon.type.displayName.replace('Fa', '')}`}
-        >
-          {btn.icon}
-        </a>
-      ))}
-    </motion.div>
-  )}
-</AnimatePresence>
-
+                            {activeShare === b._id && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full flex items-center gap-2 px-3 py-2 z-50"
+                              >
+                                {[
+                                  {
+                                    href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+                                    icon: <FaFacebook />,
+                                    bg: "bg-blue-600",
+                                    hover: "hover:bg-blue-700",
+                                  },
+                                  {
+                                    href: `https://twitter.com/intent/tweet?url=${shareUrl}`,
+                                    icon: <FaTwitter />,
+                                    bg: "bg-sky-500",
+                                    hover: "hover:bg-sky-600",
+                                  },
+                                  {
+                                    href: `https://pinterest.com/pin/create/button/?url=${shareUrl}`,
+                                    icon: <FaPinterest />,
+                                    bg: "bg-red-500",
+                                    hover: "hover:bg-red-600",
+                                  },
+                                  {
+                                    href: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
+                                    icon: <FaLinkedin />,
+                                    bg: "bg-blue-700",
+                                    hover: "hover:bg-blue-800",
+                                  },
+                                  {
+                                    href: `https://www.instagram.com/?url=${shareUrl}`,
+                                    icon: <FaInstagram />,
+                                    bg: "bg-pink-500",
+                                    hover: "hover:bg-pink-600",
+                                  },
+                                  {
+                                    href: `https://t.me/share/url?url=${shareUrl}`,
+                                    icon: <FaTelegramPlane />,
+                                    bg: "bg-sky-600",
+                                    hover: "hover:bg-sky-700",
+                                  },
+                                ].map((btn, i) => (
+                                  <a
+                                    key={i}
+                                    href={btn.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`${btn.bg} ${btn.hover} text-white w-8 h-8 flex items-center justify-center rounded-full shadow-sm transform transition-transform duration-200 hover:scale-105`}
+                                    title={`Share`}
+                                  >
+                                    {btn.icon}
+                                  </a>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </div>
                       </div>
 
