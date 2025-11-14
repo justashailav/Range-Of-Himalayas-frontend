@@ -134,7 +134,7 @@ export default function Blog() {
                       </h3>
 
                       <p className="text-sm text-gray-600 line-clamp-3">
-                        {b.metaDescription ||
+                        {
                           b.content?.replace(/<[^>]+>/g, "").slice(0, 150) +
                             "..."}
                       </p>
