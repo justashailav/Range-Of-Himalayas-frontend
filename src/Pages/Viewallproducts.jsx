@@ -153,16 +153,19 @@ export default function Viewallproducts() {
           productList.map((item) => (
             <div
               key={item._id}
-              className="relative group bg-white rounded-2xl shadow-md overflow-hidden hover:scale-[1.02] transition-transform duration-300"
+              className="relative group bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300"
             >
               <TopSelections
                 product={item}
                 handleAddToCart={null}
                 handleAddToWishList={null}
-                prelaunch={true} // Optional: disables buttons inside TopSelections
+                prelaunch={true}
               />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-2xl">
-                <span className="text-white font-semibold text-lg">
+
+              {/* Elegant Coming Soon Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center rounded-2xl pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-black/20 backdrop-blur-sm rounded-2xl transition-opacity duration-300 group-hover:opacity-80"></div>
+                <span className="relative text-white text-2xl md:text-3xl font-bold drop-shadow-lg">
                   Coming Soon
                 </span>
               </div>
