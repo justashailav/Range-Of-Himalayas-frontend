@@ -91,7 +91,6 @@ export default function Blog() {
                 transition={{ type: "spring", stiffness: 120 }}
                 className="relative bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl overflow-hidden transition-all duration-300"
               >
-                {/* Wrap the card inside <a> */}
                 <a href={`/blog/${b.slug}`} className="block cursor-pointer">
                   {b.coverImage && (
                     <div className="relative w-full h-56 overflow-hidden">
@@ -174,45 +173,64 @@ export default function Blog() {
                                 transition={{ duration: 0.2 }}
                                 className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full flex items-center gap-3 px-4 py-2 z-50"
                               >
+                                {/* Facebook */}
                                 <a
                                   href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-blue-600 hover:scale-110 transition-transform"
+                                  className="bg-blue-600 hover:bg-blue-700 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
                                 >
-                                  <Facebook size={16} />
+                                  <FaFacebook size={18} />
                                 </a>
+
+                                {/* Twitter */}
                                 <a
                                   href={`https://twitter.com/intent/tweet?url=${shareUrl}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-sky-500 hover:scale-110 transition-transform"
+                                  className="bg-sky-500 hover:bg-sky-600 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
                                 >
-                                  <Twitter size={16} />
+                                  <FaTwitter size={18} />
                                 </a>
+
+                                {/* Pinterest */}
                                 <a
                                   href={`https://pinterest.com/pin/create/button/?url=${shareUrl}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-red-500 hover:scale-110 transition-transform"
+                                  className="bg-red-500 hover:bg-red-600 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
                                 >
-                                  <PiPinterestLogoBold size={17} />
+                                  <FaPinterest size={18} />
                                 </a>
+
+                                {/* LinkedIn */}
                                 <a
                                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-blue-700 hover:scale-110 transition-transform"
+                                  className="bg-blue-700 hover:bg-blue-800 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
                                 >
-                                  <Linkedin size={16} />
+                                  <FaLinkedin size={18} />
                                 </a>
+
+                                {/* Instagram */}
+                                <a
+                                  href={`https://www.instagram.com/?url=${shareUrl}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="bg-pink-500 hover:bg-pink-600 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
+                                >
+                                  <FaInstagram size={18} />
+                                </a>
+
+                                {/* Telegram */}
                                 <a
                                   href={`https://t.me/share/url?url=${shareUrl}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-sky-600 hover:scale-110 transition-transform"
+                                  className="bg-sky-600 hover:bg-sky-700 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
                                 >
-                                  <PiTelegramLogoBold size={17} />
+                                  <FaTelegramPlane size={18} />
                                 </a>
                               </motion.div>
                             )}
@@ -231,7 +249,7 @@ export default function Blog() {
           })}
         </motion.div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
