@@ -1023,7 +1023,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Behind the Scenes */}
       <section className="px-6 py-12 text-center bg-gradient-to-b from-green-50 to-white">
         <h2 className="text-4xl font-bold mb-4">🍏 From Orchard to You</h2>
         <p className="text-gray-600 text-xl max-w-2xl mx-auto">
@@ -1036,7 +1035,7 @@ export default function Home() {
       <img
         src={foundersImage}
         alt="Founder"
-        className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg rounded-xl mt-8"
+        className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg mt-4"
       />
 
       {/* Socials */}
