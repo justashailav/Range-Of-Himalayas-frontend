@@ -230,6 +230,7 @@ export default function Blog() {
           })}
         </motion.div>
       </div>
+      <Footer/>
     </div>
   );
 }
