@@ -102,7 +102,7 @@ function App() {
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-        <RecentOrderToast />
+        {/* <RecentOrderToast /> */}
       <ToastContainer />
     </div>
   );
