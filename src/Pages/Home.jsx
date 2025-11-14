@@ -1035,7 +1035,7 @@ export default function Home() {
       <img
         src={foundersImage}
         alt="Founder"
-        className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg mt-4"
+        className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg "
       />
 
       {/* Socials */}
