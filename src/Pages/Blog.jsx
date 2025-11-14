@@ -166,76 +166,37 @@ export default function Blog() {
                           </button>
 
                           <AnimatePresence>
-                            {activeShare === b._id && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 10 }}
-                                transition={{ duration: 0.2 }}
-                                className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full flex items-center gap-3 px-4 py-2 z-50"
-                              >
-                                {/* Facebook */}
-                                <a
-                                  href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-blue-600 hover:bg-blue-700 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
-                                >
-                                  <FaFacebook size={18} />
-                                </a>
+  {activeShare === b._id && (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.2 }}
+      className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full flex items-center gap-2 px-3 py-2 z-50"
+    >
+      {[ 
+        { href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, icon: <FaFacebook />, bg: "bg-blue-600", hover: "hover:bg-blue-700" },
+        { href: `https://twitter.com/intent/tweet?url=${shareUrl}`, icon: <FaTwitter />, bg: "bg-sky-500", hover: "hover:bg-sky-600" },
+        { href: `https://pinterest.com/pin/create/button/?url=${shareUrl}`, icon: <FaPinterest />, bg: "bg-red-500", hover: "hover:bg-red-600" },
+        { href: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`, icon: <FaLinkedin />, bg: "bg-blue-700", hover: "hover:bg-blue-800" },
+        { href: `https://www.instagram.com/?url=${shareUrl}`, icon: <FaInstagram />, bg: "bg-pink-500", hover: "hover:bg-pink-600" },
+        { href: `https://t.me/share/url?url=${shareUrl}`, icon: <FaTelegramPlane />, bg: "bg-sky-600", hover: "hover:bg-sky-700" },
+      ].map((btn, i) => (
+        <a
+          key={i}
+          href={btn.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${btn.bg} ${btn.hover} text-white w-8 h-8 flex items-center justify-center rounded-full shadow-sm transform transition-transform duration-200 hover:scale-105`}
+          title={`Share on ${btn.icon.type.displayName.replace('Fa', '')}`}
+        >
+          {btn.icon}
+        </a>
+      ))}
+    </motion.div>
+  )}
+</AnimatePresence>
 
-                                {/* Twitter */}
-                                <a
-                                  href={`https://twitter.com/intent/tweet?url=${shareUrl}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-sky-500 hover:bg-sky-600 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
-                                >
-                                  <FaTwitter size={18} />
-                                </a>
-
-                                {/* Pinterest */}
-                                <a
-                                  href={`https://pinterest.com/pin/create/button/?url=${shareUrl}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-red-500 hover:bg-red-600 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
-                                >
-                                  <FaPinterest size={18} />
-                                </a>
-
-                                {/* LinkedIn */}
-                                <a
-                                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-blue-700 hover:bg-blue-800 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
-                                >
-                                  <FaLinkedin size={18} />
-                                </a>
-
-                                {/* Instagram */}
-                                <a
-                                  href={`https://www.instagram.com/?url=${shareUrl}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-pink-500 hover:bg-pink-600 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
-                                >
-                                  <FaInstagram size={18} />
-                                </a>
-
-                                {/* Telegram */}
-                                <a
-                                  href={`https://t.me/share/url?url=${shareUrl}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-sky-600 hover:bg-sky-700 transition-transform transform hover:scale-110 text-white p-2 rounded-full flex items-center justify-center"
-                                >
-                                  <FaTelegramPlane size={18} />
-                                </a>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
                         </div>
                       </div>
 
