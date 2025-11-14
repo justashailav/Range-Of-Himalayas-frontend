@@ -480,27 +480,29 @@ import React from "react";
 
 export default function CustomBoxTile() {
   return (
-    <div>
-      <div className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-10 rounded-3xl shadow-lg max-w-xl mx-auto mt-10">
-      <h1 className="text-4xl font-extrabold text-[#d97706] mb-3">
-        🍎 Build Your Own Box
-      </h1>
+    <div className="bg-[#FFF8E1] min-h-screen flex flex-col">
+      <div className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-6 sm:p-10 rounded-3xl shadow-lg max-w-md sm:max-w-xl md:max-w-2xl mx-auto mt-10">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#d97706] mb-3">
+          🍎 Build Your Own Box
+        </h1>
 
-      <p className="text-gray-700 text-lg mb-6">
-        Exciting things are coming! Customize your own Himalayan fruit box —
-        launching soon. 🌄
-      </p>
+        <p className="text-gray-700 text-base sm:text-lg md:text-xl mb-6 px-2 sm:px-0">
+          Exciting things are coming! Customize your own Himalayan fruit box — launching soon. 🌄
+        </p>
 
-      <div className="mt-6">
-        <p className="text-3xl font-bold text-[#d97706] mb-2">
-          🚀 Coming Soon
-        </p>
-        <p className="text-sm text-gray-600">
-          Stay tuned for our launch — freshness from the Himalayas, soon at your doorstep!
-        </p>
+        <div className="mt-6">
+          <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#d97706] mb-2">
+            🚀 Coming Soon
+          </p>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 px-2 sm:px-0">
+            Stay tuned for our launch — freshness from the Himalayas, soon at your doorstep!
+          </p>
+        </div>
       </div>
-    </div>
-    <Footer/>
+      
+      <div className="mt-auto">
+        <Footer />
+      </div>
     </div>
   );
 }
