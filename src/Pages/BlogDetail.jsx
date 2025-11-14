@@ -8,9 +8,6 @@ import {
   Share2,
   MessageSquare,
   Tag,
-  Facebook,
-  Twitter,
-  Linkedin,
   Copy,
   Check,
 } from "lucide-react";
@@ -18,6 +15,7 @@ import { PiPinterestLogoBold, PiTelegramLogoBold } from "react-icons/pi";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { FaFacebook, FaLinkedin, FaPinterest, FaTelegram, FaTwitter } from "react-icons/fa";
 
 export default function BlogDetail() {
   const { slug } = useParams();
@@ -156,31 +154,31 @@ export default function BlogDetail() {
                   {
                     href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
                     color: "bg-blue-600",
-                    icon: <Facebook size={16} />,
+                    icon: <FaFacebook size={16} />,
                     title: "Share on Facebook",
                   },
                   {
                     href: `https://twitter.com/intent/tweet?url=${shareUrl}`,
                     color: "bg-sky-400",
-                    icon: <Twitter size={16} />,
+                    icon: <FaTwitter size={16} />,
                     title: "Share on Twitter/X",
                   },
                   {
                     href: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
                     color: "bg-blue-700",
-                    icon: <Linkedin size={16} />,
+                    icon: <FaLinkedin size={16} />,
                     title: "Share on LinkedIn",
                   },
                   {
                     href: `https://pinterest.com/pin/create/button/?url=${shareUrl}`,
                     color: "bg-red-500",
-                    icon: <PiPinterestLogoBold size={17} />,
+                    icon: <FaPinterest size={17} />,
                     title: "Share on Pinterest",
                   },
                   {
                     href: `https://t.me/share/url?url=${shareUrl}`,
                     color: "bg-sky-600",
-                    icon: <PiTelegramLogoBold size={17} />,
+                    icon: <FaTelegram size={17} />,
                     title: "Share on Telegram",
                   },
                 ].map((btn, i) => (

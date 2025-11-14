@@ -15,6 +15,7 @@ import {
 import { PiPinterestLogoBold, PiTelegramLogoBold } from "react-icons/pi";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "./Footer";
+import { FaFacebook, FaInstagram, FaLinkedin, FaPinterest, FaTelegramPlane, FaTwitter } from "react-icons/fa";
 
 export default function Blog() {
   const dispatch = useDispatch();
