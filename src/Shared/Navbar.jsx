@@ -437,8 +437,6 @@ export default function Navbar() {
   return (
     <nav className="bg-[#F08C7D] min-h-16 md:h-20 px-4 sm:px-6 lg:px-10 shadow-md">
       <div className="flex items-center justify-between w-full">
-
-        {/* ------------------ MOBILE NAV ------------------ */}
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
           <a href="/">
             <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
@@ -452,8 +450,6 @@ export default function Navbar() {
                 </button>
               </a>
             )}
-
-            {/* User Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
@@ -492,8 +488,6 @@ export default function Navbar() {
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* Hamburger */}
             {isMenu ? (
               <FaTimes
                 className="text-2xl sm:text-3xl text-white cursor-pointer hover:text-gray-200 transition"
@@ -507,13 +501,12 @@ export default function Navbar() {
             )}
           </div>
         </div>
-
-        {/* ------------------ MOBILE MENU DROPDOWN ------------------ */}
         {isMenu && (
           <div className="absolute top-16 left-0 w-full bg-[#F08C7D] flex flex-col items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50">
             <a href="/">HOME</a>
             <a href="/about-us">OUR STORY</a>
             <a href="/custombox">CREATE BOX</a>
+            <a href="/blog">BLOG</a>
             <a href="/contact-us">CONTACT US</a>
           </div>
         )}
@@ -529,6 +522,7 @@ export default function Navbar() {
             <a href="/">HOME</a>
             <a href="/about-us">OUR STORY</a>
             <a href="/custombox">CREATE BOX</a>
+            <a href="/blog">BLOG</a>
             <a href="/contact-us">CONTACT US</a>
           </div>
 
