@@ -87,7 +87,12 @@ export default function Blog() {
           transition={{ duration: 0.5 }}
         >
           {blogs?.map((b) => {
-            const shareUrl = `${window.location.origin}/blog/${b.slug}`;
+            // Encode URL for sharing
+            const shareUrl = b.slug
+              ? `${window.location.origin}/blog/${b.slug}`
+              : window.location.origin;
+            const encodedUrl = encodeURIComponent(shareUrl);
+
             return (
               <motion.div
                 key={b._id}
@@ -180,37 +185,37 @@ export default function Blog() {
                               >
                                 {[
                                   {
-                                    href: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+                                    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
                                     icon: <FaFacebook />,
                                     bg: "bg-blue-600",
                                     hover: "hover:bg-blue-700",
                                   },
                                   {
-                                    href: `https://twitter.com/intent/tweet?url=${shareUrl}`,
+                                    href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
                                     icon: <FaTwitter />,
                                     bg: "bg-sky-500",
                                     hover: "hover:bg-sky-600",
                                   },
                                   {
-                                    href: `https://pinterest.com/pin/create/button/?url=${shareUrl}`,
+                                    href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
                                     icon: <FaPinterest />,
                                     bg: "bg-red-500",
                                     hover: "hover:bg-red-600",
                                   },
                                   {
-                                    href: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
+                                    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
                                     icon: <FaLinkedin />,
                                     bg: "bg-blue-700",
                                     hover: "hover:bg-blue-800",
                                   },
                                   {
-                                    href: `https://www.instagram.com/?url=${shareUrl}`,
+                                    href: `https://www.instagram.com/?url=${encodedUrl}`,
                                     icon: <FaInstagram />,
                                     bg: "bg-pink-500",
                                     hover: "hover:bg-pink-600",
                                   },
                                   {
-                                    href: `https://t.me/share/url?url=${shareUrl}`,
+                                    href: `https://t.me/share/url?url=${encodedUrl}`,
                                     icon: <FaTelegramPlane />,
                                     bg: "bg-sky-600",
                                     hover: "hover:bg-sky-700",
@@ -222,7 +227,7 @@ export default function Blog() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={`${btn.bg} ${btn.hover} text-white w-8 h-8 flex items-center justify-center rounded-full shadow-sm transform transition-transform duration-200 hover:scale-105`}
-                                    title={`Share`}
+                                    title="Share"
                                   >
                                     {btn.icon}
                                   </a>
