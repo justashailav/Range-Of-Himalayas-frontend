@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { PiPinterestLogoBold, PiTelegramLogoBold } from "react-icons/pi";
 import { motion, AnimatePresence } from "framer-motion";
+import Footer from "./Footer";
 
 export default function Blog() {
   const dispatch = useDispatch();
