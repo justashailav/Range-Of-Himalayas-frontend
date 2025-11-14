@@ -971,15 +971,14 @@ export default function Home() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10">
           {productList?.length > 0 ? (
             productList.slice(0, 3).map((item) => (
-              <div key={item._id} className="relative hover:-translate-y-1 transition-transform">
+              <div key={item._id} className="relative group bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
                 <TopSelections product={item} prelaunch={true} />
-                {/* Ultra-light Coming Soon Overlay */}
-                 <div className="absolute inset-0 flex items-center justify-center rounded-2xl pointer-events-none">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-black/10 backdrop-blur-sm rounded-2xl transition-opacity duration-300 group-hover:opacity-60"></div>
-                <span className="relative text-white text-2xl md:text-3xl font-bold drop-shadow-md">
-                  Coming Soon
-                </span>
-              </div>
+                <div className="absolute inset-0 flex items-center justify-center rounded-2xl pointer-events-none">
+                  <div className="absolute inset-0 bg-black/10 backdrop-blur-sm rounded-2xl transition-opacity duration-300 group-hover:opacity-20"></div>
+                  <span className="relative text-white text-xl md:text-2xl font-semibold drop-shadow-sm">
+                    Coming Soon
+                  </span>
+                </div>
               </div>
             ))
           ) : (
