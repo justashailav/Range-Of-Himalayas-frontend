@@ -56,7 +56,7 @@ export default function Profile() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center p-4">
        <Helmet>
         <title>Profile - Range Of Himalayas</title>
         <meta
