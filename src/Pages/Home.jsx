@@ -1079,93 +1079,105 @@ export default function Home() {
 
       <HomeBlog />
 
-      <div className="px-6 py-12 text-center">
-        <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-          🌿 Orchard Moments
-        </span>
-        <h1 className="text-4xl font-bold mt-4 mb-3">
-          🍏 From Orchard to Table
-        </h1>
-        <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-          Witness the journey of our orchards through the seasons — a
-          celebration of purity, tradition, and mindful farming at Range Of
-          Himalayas.
-        </p>
-        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-8">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setCurrentIndex(0);
-                setCurrentImageIndex(0);
-              }}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 transform
+     <div className="px-6 py-12 text-center">
+
+  {/* TEXT SECTION – Hidden on phones, visible on md and above */}
+  <div className="hidden md:block">
+    <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+      🌿 Orchard Moments
+    </span>
+
+    <h1 className="text-4xl font-bold mt-4 mb-3">
+      🍏 From Orchard to Table
+    </h1>
+
+    <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+      Witness the journey of our orchards through the seasons — a
+      celebration of purity, tradition, and mindful farming at
+      Range Of Himalayas.
+    </p>
+  </div>
+
+  <div className="flex flex-wrap justify-center gap-3 mt-6 mb-8">
+    {categories.map((cat) => (
+      <button
+        key={cat}
+        onClick={() => {
+          setActiveCategory(cat);
+          setCurrentIndex(0);
+          setCurrentImageIndex(0);
+        }}
+        className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 transform
         ${
           activeCategory === cat
             ? "bg-gradient-to-r from-red-500 to-red-700 text-white shadow-lg scale-105"
             : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:scale-105"
         }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+      >
+        {cat}
+      </button>
+    ))}
+  </div>
 
-        {loading ? (
-          <p className="text-gray-500">Loading images...</p>
-        ) : filteredItems.length > 0 ? (
-          <div className="relative max-w-3xl mx-auto">
-            <img
-              src={filteredItems[currentIndex]?.images[currentImageIndex]}
-              alt={filteredItems[currentIndex]?.title}
-              className="w-full h-full object-cover rounded-xl shadow-md"
-            />
-            <button
-              onClick={prevSlide}
-              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60  text-white p-3 rounded-full shadow-md hover:bg-black/80"
-            >
-              <FaArrowLeft />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80"
-            >
-              <FaArrowRight />
-            </button>
-            <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg">
-              <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
-                {filteredItems[currentIndex]?.category}
-              </span>
-              <h3 className="font-semibold text-xl mt-2">
-                {filteredItems[currentIndex]?.title}
-              </h3>
-              <p className="text-sm text-gray-200 mt-1">
-                {filteredItems[currentIndex]?.desc}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-gray-500">No images found</p>
-        )}
-        {filteredItems.length > 0 && (
-          <div className="flex justify-center gap-4 mt-6">
-            {filteredItems[currentIndex].images.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt="thumb"
-                onClick={() => setCurrentImageIndex(index)}
-                className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 ${
-                  index === currentImageIndex
-                    ? "border-red-600"
-                    : "border-transparent"
-                }`}
-              />
-            ))}
-          </div>
-        )}
+  {loading ? (
+    <p className="text-gray-500">Loading images...</p>
+  ) : filteredItems.length > 0 ? (
+    <div className="relative max-w-3xl mx-auto">
+      <img
+        src={filteredItems[currentIndex]?.images[currentImageIndex]}
+        alt={filteredItems[currentIndex]?.title}
+        className="w-full h-full object-cover rounded-xl shadow-md"
+      />
+
+      <button
+        onClick={prevSlide}
+        className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80"
+      >
+        <FaArrowLeft />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80"
+      >
+        <FaArrowRight />
+      </button>
+
+      <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg">
+        <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
+          {filteredItems[currentIndex]?.category}
+        </span>
+        <h3 className="font-semibold text-xl mt-2">
+          {filteredItems[currentIndex]?.title}
+        </h3>
+        <p className="text-sm text-gray-200 mt-1">
+          {filteredItems[currentIndex]?.desc}
+        </p>
       </div>
+    </div>
+  ) : (
+    <p className="text-gray-500">No images found</p>
+  )}
+
+  {filteredItems.length > 0 && (
+    <div className="flex justify-center gap-4 mt-6">
+      {filteredItems[currentIndex].images.map((img, index) => (
+        <img
+          key={index}
+          src={img}
+          alt="thumb"
+          onClick={() => setCurrentImageIndex(index)}
+          className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 ${
+            index === currentImageIndex
+              ? "border-red-600"
+              : "border-transparent"
+          }`}
+        />
+      ))}
+    </div>
+  )}
+</div>
+
       <Footer />
     </div>
   );
