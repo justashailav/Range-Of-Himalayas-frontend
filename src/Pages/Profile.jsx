@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Dialog from "@radix-ui/react-dialog";
 import { updateProfile } from "@/store/slices/authSlice";
@@ -19,14 +19,13 @@ export default function Profile() {
   );
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [preview, setPreview] = useState(user?.profile?.profilePhoto || "");
+
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setProfilePhoto(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
+      reader.onloadend = () => setPreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -38,10 +37,8 @@ export default function Profile() {
     data.append("phone", phone);
     data.append("gender", gender);
     data.append("dateOfBirth", dateOfBirth);
-    if (profilePhoto) {
-      data.append("profilePhoto", profilePhoto);
-    }
-    console.log(profilePhoto)
+    if (profilePhoto) data.append("profilePhoto", profilePhoto);
+
     dispatch(updateProfile(data));
     setOpen(false);
   };
@@ -57,18 +54,19 @@ export default function Profile() {
   return (
     <>
       <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center p-4">
-       <Helmet>
-        <title>Profile - Range Of Himalayas</title>
-        <meta
-          name="description"
-          content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
-        />
-      </Helmet>
-        <div className="relative bg-white rounded-3xl shadow-md max-w-xl w-full p-8">
+        <Helmet>
+          <title>Profile - Range Of Himalayas</title>
+          <meta
+            name="description"
+            content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
+          />
+        </Helmet>
+
+        <div className="relative bg-white rounded-3xl shadow-lg max-w-xl w-full p-8">
           <button
             onClick={() => setOpen(true)}
             aria-label="Edit Profile"
-            className="absolute top-4 right-4 text-gray-400 hover:text-blue-600 transition"
+            className="absolute top-4 right-4 text-gray-400 hover:text-blue-600 transition text-xl"
             title="Edit Profile"
           >
             ✏️
@@ -79,7 +77,7 @@ export default function Profile() {
           </h2>
 
           <div className="flex items-center space-x-6 mb-8">
-            <div className="relative w-24 h-24 rounded-full bg-gray-200 overflow-hidden">
+            <div className="relative w-24 h-24 rounded-full bg-gray-200 overflow-hidden shadow-inner">
               {preview ? (
                 <img
                   src={preview}
@@ -100,22 +98,17 @@ export default function Profile() {
           </div>
 
           <div className="space-y-6 text-gray-800">
-            <ProfileItem
-              label="Phone"
-              value={user.profile?.phone || "Not provided"}
-            />
-            <ProfileItem
-              label="Gender"
-              value={user.profile?.gender || "Not specified"}
-            />
+            <ProfileItem label="Phone" value={user.profile?.phone || "Not provided"} />
+            <ProfileItem label="Gender" value={user.profile?.gender || "Not specified"} />
             <ProfileItem
               label="Date of Birth"
               value={
                 user.profile?.dateOfBirth
-                  ? new Date(user.profile.dateOfBirth).toLocaleDateString(
-                      undefined,
-                      { year: "numeric", month: "long", day: "numeric" }
-                    )
+                  ? new Date(user.profile.dateOfBirth).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
                   : "Not specified"
               }
             />
@@ -127,18 +120,14 @@ export default function Profile() {
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
-          <Dialog.Content className="fixed top-1/2 left-1/2 max-w-md w-full -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 shadow-lg focus:outline-none max-h-[90vh] overflow-auto">
+          <Dialog.Content className="fixed top-1/2 left-1/2 max-w-md w-full -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 shadow-xl focus:outline-none max-h-[90vh] overflow-hidden scrollbar-hide">
             <Dialog.Title className="text-xl font-semibold mb-6">
               Edit Profile
             </Dialog.Title>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Profile Image */}
               <div>
-                <label
-                  htmlFor="profile-image"
-                  className="block mb-2 font-medium text-gray-700"
-                >
+                <label htmlFor="profile-image" className="block mb-2 font-medium text-gray-700">
                   Profile Photo
                 </label>
                 <input
@@ -161,7 +150,7 @@ export default function Profile() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   type="text"
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 outline-none"
                   required
                 />
               </label>
@@ -172,7 +161,7 @@ export default function Profile() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   type="tel"
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </label>
 
@@ -181,7 +170,7 @@ export default function Profile() {
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 outline-none"
                 >
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
@@ -196,7 +185,7 @@ export default function Profile() {
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
                   type="date"
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </label>
 
