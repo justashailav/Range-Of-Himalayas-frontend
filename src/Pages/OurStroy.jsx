@@ -267,6 +267,45 @@ export default function OurStory() {
               </div>
             ))}
           </div>
+          {/* Why Prelaunch Matters */}
+<section className="px-6 py-20 bg-white">
+  <h2 className="text-4xl font-bold text-center text-green-700 mb-10">
+    🌿 Why Join the Prelaunch?
+  </h2>
+
+  <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 text-center">
+    <div className="p-6 bg-green-50 border border-green-200 rounded-xl shadow">
+      <h3 className="font-bold text-lg">🍏 Early Access</h3>
+      <p className="text-gray-600 mt-2 text-sm">
+        Be first to order this season’s apple harvest.
+      </p>
+    </div>
+    <div className="p-6 bg-green-50 border border-green-200 rounded-xl shadow">
+      <h3 className="font-bold text-lg">📦 Guaranteed Stock</h3>
+      <p className="text-gray-600 mt-2 text-sm">
+        Limited boxes available — priority for members.
+      </p>
+    </div>
+    <div className="p-6 bg-green-50 border border-green-200 rounded-xl shadow">
+      <h3 className="font-bold text-lg">💸 Member Pricing</h3>
+      <p className="text-gray-600 mt-2 text-sm">
+        Exclusive offers for early supporters.
+      </p>
+    </div>
+  </div>
+
+  <div className="text-center mt-12">
+    <a
+      href="https://forms.gle/5M73wYV9Je6SJtow9"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <button className="bg-green-700 text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-green-800 transition">
+        Join the Prelaunch 🌱
+      </button>
+    </a>
+  </div>
+</section>
 
           <div className="flex justify-center">
             <img
@@ -288,6 +327,27 @@ export default function OurStory() {
           />
         </div>
       </section>
+      {/* Prelaunch CTA - Soft Invite */}
+<section className="px-6 py-20 bg-[#FFF3EA] text-center">
+  <h2 className="text-4xl font-bold text-[#D84C3C] mb-4">
+    🍎 Be Part of Our First Harvest
+  </h2>
+
+  <p className="text-gray-700 max-w-2xl mx-auto text-lg mb-8">
+    Our apples will soon be available for preorder. Join the prelaunch list to get 
+    early access, exclusive pricing, and behind-the-scenes orchard updates.
+  </p>
+
+  <a
+    href="https://forms.gle/5M73wYV9Je6SJtow9"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <button className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition">
+      Join Prelaunch Waitlist 🚀
+    </button>
+  </a>
+</section>
 
       <Footer />
     </div>
