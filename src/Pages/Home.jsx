@@ -956,6 +956,7 @@ export default function Home() {
           Join the Waitlist
         </a>
       </section>
+
       <img
         src={bgImage}
         alt="Banner"
@@ -1029,6 +1030,53 @@ export default function Home() {
           ))}
         </div>
       </section>
+      {/* Prelaunch Benefits */}
+      <section className="px-6 py-14 bg-[#FFF3EA] text-center">
+        <h2 className="text-4xl font-bold text-[#D84C3C] mb-4">
+          🎁 Prelaunch Benefits
+        </h2>
+
+        <p className="text-gray-700 max-w-2xl mx-auto mb-10">
+          Join the prelaunch waitlist and unlock exclusive early access to our
+          Himalayan apple harvest — limited stock, premium quality, and
+          guaranteed freshness.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="bg-white p-6 rounded-xl shadow-md border border-red-100">
+            <h3 className="font-bold text-lg mb-2">🍏 Early Access</h3>
+            <p className="text-gray-600">
+              Prelaunch members order before public launch.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md border border-red-100">
+            <h3 className="font-bold text-lg mb-2">📦 Guaranteed Stock</h3>
+            <p className="text-gray-600">
+              Limited harvest — your box is secured.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-md border border-red-100">
+            <h3 className="font-bold text-lg mb-2">
+              💸 Special Member Pricing
+            </h3>
+            <p className="text-gray-600">
+              Exclusive launch-day offers for early members.
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="https://forms.gle/5M73wYV9Je6SJtow9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="mt-10 bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition">
+            Join the Prelaunch List 🚀
+          </button>
+        </a>
+      </section>
 
       <section className="px-6 py-12 text-center bg-gradient-to-b from-green-50 to-white">
         <h2 className="text-4xl font-bold mb-4">🍏 From Orchard to You</h2>
@@ -1044,6 +1092,21 @@ export default function Home() {
         alt="Founder"
         className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg "
       />
+      {/* Our Story */}
+      <section className="px-6 py-14 bg-white text-center max-w-4xl mx-auto">
+        <h2 className="text-4xl font-bold text-green-700 mb-5">🌱 Our Story</h2>
+        <p className="text-gray-700 text-lg leading-relaxed">
+          Range Of Himalayas began as a small family orchard tucked away in the
+          misty mountains of Himachal. For generations, we’ve grown apples with
+          care, patience, and respect for nature — without shortcuts or
+          chemicals.
+          <br />
+          <br />
+          Today, we’re bringing that same orchard-fresh experience straight to
+          your home. Each apple you receive carries the purity of the Himalayas
+          and the love of our family.
+        </p>
+      </section>
 
       {/* Socials */}
       <section className="px-6 py-12 bg-white text-center">
@@ -1082,8 +1145,77 @@ export default function Home() {
           </a>
         </div>
       </section>
+      {/* Trust Badges */}
+      <section className="px-6 py-10 bg-[#F6FFF4]">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto text-center">
+          <div className="p-6 border border-green-200 rounded-xl shadow-sm bg-white">
+            <h3 className="font-semibold text-lg">🥇 Farm Fresh Guaranteed</h3>
+            <p className="text-gray-600 text-sm mt-2">
+              Straight from our Himachal orchards.
+            </p>
+          </div>
+
+          <div className="p-6 border border-green-200 rounded-xl shadow-sm bg-white">
+            <h3 className="font-semibold text-lg">❄️ Cold Chain Maintained</h3>
+            <p className="text-gray-600 text-sm mt-2">
+              Handled at 3°C–6°C for freshness.
+            </p>
+          </div>
+
+          <div className="p-6 border border-green-200 rounded-xl shadow-sm bg-white">
+            <h3 className="font-semibold text-lg">
+              🍃 Zero Artificial Ripening
+            </h3>
+            <p className="text-gray-600 text-sm mt-2">
+              Pure, clean, naturally grown apples.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <HomeBlog />
+      {/* Prelaunch FAQ */}
+      <section className="px-6 py-16 bg-white max-w-4xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-10 text-green-700">
+          ❓ Prelaunch FAQ
+        </h2>
+
+        <div className="space-y-6">
+          <div className="p-6 bg-green-50 rounded-xl shadow">
+            <h3 className="font-semibold text-lg">
+              📅 When will preorders open?
+            </h3>
+            <p className="text-gray-700 mt-2">
+              We will notify all waitlist members before opening to the public.
+            </p>
+          </div>
+
+          <div className="p-6 bg-green-50 rounded-xl shadow">
+            <h3 className="font-semibold text-lg">
+              📦 How much will the apples cost?
+            </h3>
+            <p className="text-gray-700 mt-2">
+              Prelaunch members get exclusive discounted pricing.
+            </p>
+          </div>
+
+          <div className="p-6 bg-green-50 rounded-xl shadow">
+            <h3 className="font-semibold text-lg">
+              🚚 Do you deliver across India?
+            </h3>
+            <p className="text-gray-700 mt-2">
+              Yes! Nationwide delivery will be available during launch.
+            </p>
+          </div>
+
+          <div className="p-6 bg-green-50 rounded-xl shadow">
+            <h3 className="font-semibold text-lg">🔔 How do I get updates?</h3>
+            <p className="text-gray-700 mt-2">
+              Join the waitlist — you’ll receive all updates directly.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <div className="px-6 py-12 text-center">
         <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
