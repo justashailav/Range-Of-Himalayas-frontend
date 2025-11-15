@@ -499,6 +499,104 @@ export default function CustomBoxTile() {
           </p>
         </div>
       </div>
+      {/* Prelaunch Benefits */}
+<section className="mt-12 px-6 text-center">
+  <h2 className="text-3xl font-bold text-[#d97706] mb-4">
+    🎁 Why You'll Love This Feature
+  </h2>
+
+  <p className="text-gray-700 max-w-2xl mx-auto mb-8">
+    Our Build-Your-Own Box option lets you create a personalized box full of fresh 
+    Himalayan fruits — perfect for families, gifting, or your daily nutrition.
+  </p>
+
+  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+    <div className="bg-white p-5 rounded-xl shadow border border-orange-200">
+      <h3 className="font-semibold text-lg">🍏 Your Fruit, Your Way</h3>
+      <p className="text-sm text-gray-600 mt-1">
+        Choose apples, kiwis, pears & more — fully customizable.
+      </p>
+    </div>
+
+    <div className="bg-white p-5 rounded-xl shadow border border-orange-200">
+      <h3 className="font-semibold text-lg">📦 Pick Your Box Size</h3>
+      <p className="text-sm text-gray-600 mt-1">
+        2kg, 4kg, 7kg, or create your own combination.
+      </p>
+    </div>
+
+    <div className="bg-white p-5 rounded-xl shadow border border-orange-200">
+      <h3 className="font-semibold text-lg">🌿 Fresh & Natural</h3>
+      <p className="text-sm text-gray-600 mt-1">
+        Straight from Himalayan orchards — no middlemen.
+      </p>
+    </div>
+  </div>
+</section>
+{/* Notify Me CTA */}
+<section className="text-center mt-10">
+  <a
+    href="https://forms.gle/5M73wYV9Je6SJtow9"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <button className="bg-[#d97706] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#b66104] transition">
+      Notify Me When It Launches 🚀
+    </button>
+  </a>
+</section>
+{/* Feature Preview Mockup */}
+<section className="px-6 mt-14 text-center">
+  <h2 className="text-2xl font-bold text-gray-800 mb-4">
+    👀 What You’ll Be Able To Customize
+  </h2>
+
+  <div className="max-w-3xl mx-auto grid gap-6 sm:grid-cols-2">
+    <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
+      <h3 className="font-semibold">🍎 Pick Your Fruits</h3>
+      <p className="text-sm text-gray-600 mt-1">
+        Apples, kiwis, pears, plums — seasonally available.
+      </p>
+    </div>
+
+    <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
+      <h3 className="font-semibold">📏 Choose Box Size</h3>
+      <p className="text-sm text-gray-600 mt-1">
+        From single-person boxes to family-size crates.
+      </p>
+    </div>
+  </div>
+</section>
+{/* FAQ */}
+<section className="px-6 mt-16 pb-12 max-w-3xl mx-auto">
+  <h2 className="text-3xl font-bold text-center text-[#d97706] mb-8">
+    ❓ Frequently Asked
+  </h2>
+
+  <div className="space-y-5">
+    <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
+      <h3 className="font-semibold">When is the feature launching?</h3>
+      <p className="text-gray-600 text-sm mt-1">
+        We're preparing the experience — join the waitlist to be first notified.
+      </p>
+    </div>
+
+    <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
+      <h3 className="font-semibold">What fruits can I add?</h3>
+      <p className="text-gray-600 text-sm mt-1">
+        Apples, kiwis, and seasonal Himalayan fruits depending on harvest time.
+      </p>
+    </div>
+
+    <div className="bg-white p-5 rounded-xl shadow">
+      <h3 className="font-semibold">Will it deliver across India?</h3>
+      <p className="text-gray-600 text-sm mt-1">
+        Yes, we will ship nationwide once we launch.
+      </p>
+    </div>
+  </div>
+</section>
+
       
       <div className="mt-auto">
         <Footer />
