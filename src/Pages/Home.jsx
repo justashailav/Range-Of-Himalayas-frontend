@@ -1126,7 +1126,7 @@ export default function Home() {
             <h3 className="font-semibold">@range.of.himalayas</h3>
           </a>
           <a
-            href="https://www.facebook.com/rangeofhimalayas"
+            href="https://www.facebook.com/share/1L1TZdfp8J/"
             target="_blank"
             rel="noopener noreferrer"
             className="p-6 border border-green-300 rounded-xl hover:shadow-md transition"
