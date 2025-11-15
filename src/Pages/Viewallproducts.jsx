@@ -122,7 +122,6 @@
 //   );
 // }
 
-
 import React from "react";
 import { useSelector } from "react-redux";
 import TopSelections from "./TopSelections";
@@ -133,7 +132,8 @@ export default function Viewallproducts() {
   const { productList } = useSelector((state) => state.products);
 
   return (
-    <div className="min-h-screen p-10 bg-[#FFF8E1]">
+    <div>
+       <div className="min-h-screen p-10 bg-[#FFF8E1]">
       <Helmet>
         <title>All Products - Range Of Himalayas</title>
         <meta
@@ -178,28 +178,29 @@ export default function Viewallproducts() {
         )}
       </div>
       {/* Prelaunch CTA */}
-<section className="mt-16 px-6 py-14 bg-gradient-to-br from-[#FFF3EA] to-[#FFE5D0] rounded-3xl shadow-lg text-center max-w-4xl mx-auto">
-  <h2 className="text-3xl sm:text-4xl font-bold text-[#D84C3C] mb-4">
-    🍎 Be First to Order When We Launch
-  </h2>
+      <section className="mt-16 px-6 py-14 bg-gradient-to-br from-[#FFF3EA] to-[#FFE5D0] rounded-3xl shadow-lg text-center max-w-4xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#D84C3C] mb-4">
+          🍎 Be First to Order When We Launch
+        </h2>
 
-  <p className="text-gray-700 text-lg max-w-2xl mx-auto mb-8">
-    Our full collection of Himalayan fruits will be available soon.  
-    Join the prelaunch waitlist to get early access, member-only pricing,  
-    and fresh harvest updates directly from our orchards.
-  </p>
+        <p className="text-gray-700 text-lg max-w-2xl mx-auto mb-8">
+          Our full collection of Himalayan fruits will be available soon. Join
+          the prelaunch waitlist to get early access, member-only pricing, and
+          fresh harvest updates directly from our orchards.
+        </p>
 
-  <a
-    href="https://forms.gle/5M73wYV9Je6SJtow9"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <button className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition shadow-md">
-      Join Prelaunch Waitlist 🚀
-    </button>
-  </a>
-</section>
-<Footer/>
+        <a
+          href="https://forms.gle/5M73wYV9Je6SJtow9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition shadow-md">
+            Join Prelaunch Waitlist 🚀
+          </button>
+        </a>
+      </section>
+    </div>
+    <Footer/>
     </div>
   );
 }
