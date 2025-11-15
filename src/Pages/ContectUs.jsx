@@ -27,17 +27,16 @@ export default function ContactUs() {
     dispatch(contactFormHandler(formData));
   };
 
-
   return (
     <div>
       <div className="relative h-72 sm:h-96">
-      <Helmet>
-        <title>Contact us - Range Of Himalayas</title>
-        <meta
-          name="description"
-          content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
-        />
-      </Helmet>
+        <Helmet>
+          <title>Contact us - Range Of Himalayas</title>
+          <meta
+            name="description"
+            content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
+          />
+        </Helmet>
         {/* Background Image can be uncommented */}
         {/* <img src={heroImage} alt="Hero" className="w-full h-full object-cover" /> */}
         <div className="absolute inset-0 bg-black/60"></div>
@@ -139,8 +138,30 @@ export default function ContactUs() {
           "Bringing you pure organic produce from the heart of the Himalayas."
         </p>
       </section>
+      {/* Prelaunch CTA */}
+      <section className="px-6 py-14 bg-gradient-to-br from-[#FFF5EC] to-[#FFE8D6] text-center shadow-inner">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#d97706] mb-3">
+          🍎 Prelaunch Is Live!
+        </h2>
 
-      <Footer/>
+        <p className="text-gray-700 text-lg max-w-2xl mx-auto mb-8">
+          Our fresh Himalayan apples and seasonal produce are launching soon.
+          Join our prelaunch list to get early access, member-only pricing, and
+          updates straight from our orchards.
+        </p>
+
+        <a
+          href="https://forms.gle/5M73wYV9Je6SJtow9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="bg-[#d97706] text-white px-10 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-[#b76104] transition">
+            Join Prelaunch Waitlist 🚀
+          </button>
+        </a>
+      </section>
+
+      <Footer />
     </div>
   );
 }
