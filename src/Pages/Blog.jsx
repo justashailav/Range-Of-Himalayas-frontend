@@ -238,6 +238,28 @@ export default function Blog() {
           })}
         </motion.div>
       </div>
+      {/* Prelaunch CTA */}
+<section className="px-6 py-16 bg-gradient-to-br from-green-50 to-green-100 mt-10 rounded-3xl max-w-5xl mx-auto shadow-lg text-center">
+  <h2 className="text-3xl sm:text-4xl font-bold text-green-800 mb-4">
+    🍎 Be First to Taste Our Himalayan Harvest
+  </h2>
+
+  <p className="text-gray-700 text-lg max-w-2xl mx-auto mb-8">
+    Our fresh apples and Himalayan produce are launching soon.  
+    Join the prelaunch waitlist to get early access, member-only prices,  
+    and behind-the-scenes orchard updates.
+  </p>
+
+  <a
+    href="https://forms.gle/5M73wYV9Je6SJtow9"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <button className="bg-green-700 text-white px-10 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-green-800 transition">
+      Join Prelaunch Waitlist 🚀
+    </button>
+  </a>
+</section>
 
       <Footer />
     </div>
