@@ -502,7 +502,8 @@ export default function Navbar() {
           </div>
         </div>
         {isMenu && (
-          <div className="absolute top-16 left-0 w-full bg-[#F08C7D] flex flex-col items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50">
+          <div className="fixed top-16 left-0 w-full bg-[#F08C7D] flex flex-col 
+items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50">
             <a href="/">HOME</a>
             <a href="/about-us">OUR STORY</a>
             <a href="/custombox">CREATE BOX</a>
