@@ -435,7 +435,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-[#F08C7D] min-h-16 md:h-20 px-4 sm:px-6 lg:px-10 shadow-md">
+    <div className="pt-20">
+      <nav className="bg-[#F08C7D] h-20 px-4 sm:px-6 lg:px-10 shadow-md fixed w-full top-0 z-50">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
           <a href="/">
@@ -524,7 +525,7 @@ items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50"
           </a>
 
           {/* MAIN MENU */}
-          <div className="flex mb-2 gap-6 lg:gap-10 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
+          <div className="flex gap-6 lg:gap-10 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
             <a href="/">HOME</a>
             <a href="/about-us">OUR STORY</a>
             <a href="/custombox">CREATE BOX</a>
@@ -533,7 +534,7 @@ items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50"
           </div>
 
           {/* USER / LOGIN BUTTON */}
-          <div className="flex mb-2 items-center gap-6">
+          <div className="flex items-center gap-6">
             {!user && (
               <a href="/login">
                 <button className="border-[#F08C7D] font-semibold bg-[#F08C7D] text-white py-1 md:py-2 px-3 md:px-4 rounded-lg hover:bg-[#FFECE8] hover:text-[#F08C7D] transition duration-500 text-sm md:text-base">
@@ -587,5 +588,6 @@ items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50"
         </div>
       </div>
     </nav>
+    </div>
   );
 }
