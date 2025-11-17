@@ -435,8 +435,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="pt-20">
-      <nav className="bg-[#F08C7D] h-20 px-4 sm:px-6 lg:px-10 shadow-md fixed w-full top-0 z-50">
+    <nav className="bg-[#F08C7D] h-20 px-4 sm:px-6 lg:px-10 shadow-md fixed w-full top-0 z-50">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
           <a href="/">
@@ -588,6 +587,5 @@ items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50"
         </div>
       </div>
     </nav>
-    </div>
   );
 }
