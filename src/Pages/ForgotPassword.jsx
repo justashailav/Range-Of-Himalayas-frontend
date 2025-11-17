@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/logo-himalayas.png";
+import { Helmet } from "react-helmet";
 export default function ForgotPassword() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");

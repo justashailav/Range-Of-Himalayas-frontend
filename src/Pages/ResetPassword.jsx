@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import logo from "../assets/logo-himalayas.png"
+import { Helmet } from 'react-helmet';
 export default function ResetPassword() {
   const dispatch=useDispatch();
   const[password,setPassword]=useState("");
