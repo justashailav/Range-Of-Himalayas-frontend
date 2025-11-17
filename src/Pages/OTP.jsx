@@ -30,6 +30,18 @@ export default function OTP() {
   }
   return (
     <div>
+      <Helmet>
+        <title>Verify OTP - Range of Himalayas</title>
+        <meta
+          name="description"
+          content="Enter the OTP sent to your email to verify your account on Range of Himalayas."
+        />
+        <meta property="og:title" content="Verify OTP - Range of Himalayas" />
+        <meta
+          property="og:description"
+          content="Secure your account by verifying your email using OTP."
+        />
+      </Helmet>
       <div className="flex flex-col justify-center md:flex-row h-screen bg-[#FFECE8]">
         <div className="w-full md:w-1/2  flex items-center justify-center p-8 relative">
           <Link

@@ -35,6 +35,18 @@ export default function ResetPassword() {
   }
   return (
     <div>
+    <Helmet>
+        <title>Reset Password - Range of Himalayas</title>
+        <meta
+          name="description"
+          content="Reset your account password securely at Range of Himalayas. Enter your new password to continue."
+        />
+        <meta property="og:title" content="Reset Password - Range of Himalayas" />
+        <meta
+          property="og:description"
+          content="Reset your password and regain access to your Range of Himalayas account."
+        />
+      </Helmet>
     <div className="flex flex-col justify-center bg-[#FFECE8]  md:flex-row h-screen">
       <div className="hidden w-full md:w-1/2 bg-[#F7B6A7] text-white md:flex flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
         <div className="text-center h-[376px]">

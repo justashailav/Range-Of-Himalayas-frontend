@@ -90,7 +90,20 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="bg-gradient-to-b from-[#FFF8E1] to-white py-16 px-6 sm:px-10">
+    <div>
+      <Helmet>
+        <title>FAQ – Range Of Himalayas</title>
+        <meta
+          name="description"
+          content="Find answers to the most frequently asked questions about our Himalayan fruits, delivery, storage tips, ordering process, and more."
+        />
+        <meta property="og:title" content="FAQ – Range Of Himalayas" />
+        <meta
+          property="og:description"
+          content="Everything you need to know about our fruits, delivery, packing, and services."
+        />
+      </Helmet>
+      <section className="bg-gradient-to-b from-[#FFF8E1] to-white py-16 px-6 sm:px-10">
       <div className="max-w-4xl mx-auto text-center mb-12">
         <span className="px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
           🌿 Frequently Asked Questions
@@ -162,5 +175,6 @@ export default function FAQSection() {
         ))}
       </div>
     </section>
+    </div>
   );
 }
