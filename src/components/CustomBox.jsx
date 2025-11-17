@@ -477,10 +477,40 @@
 
 import Footer from "@/Pages/Footer";
 import React from "react";
+import { Helmet } from "react-helmet";
 
 export default function CustomBoxTile() {
   return (
     <div className="bg-[#FFF8E1] min-h-screen flex flex-col">
+    <Helmet>
+        <title>Build Your Own Fruit Box – Coming Soon | Range Of Himalayas</title>
+
+        <meta
+          name="description"
+          content="Customize your own Himalayan fruit box with apples, kiwis, pears & more. Launching soon! Join the waitlist for early access."
+        />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="Build Your Own Fruit Box – Coming Soon" />
+        <meta
+          property="og:description"
+          content="Create your personalized Himalayan fruit box — fresh from our orchards. Coming soon!"
+        />
+        <meta property="og:image" content="https://rangeofhimalayas.co.in/og-custom-box.png" />
+        <meta property="og:url" content="https://rangeofhimalayas.co.in/custom-box" />
+
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Build Your Own Fruit Box – Custom Box" />
+        <meta
+          name="twitter:description"
+          content="A customizable Himalayan fruit box experience — launching soon!"
+        />
+        <meta name="twitter:image" content="https://rangeofhimalayas.co.in/og-custom-box.png" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://rangeofhimalayas.co.in/custom-box" />
+      </Helmet>
       <div className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-6 sm:p-10 rounded-3xl shadow-lg max-w-md sm:max-w-xl md:max-w-2xl mx-auto mt-10">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#d97706] mb-3">
           🍎 Build Your Own Box

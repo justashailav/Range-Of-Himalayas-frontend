@@ -231,7 +231,6 @@ export default function Blog() {
           })}
         </motion.div>
       </div>
-      {/* Prelaunch CTA */}
       <section className="px-6 py-16 bg-gradient-to-br from-green-50 to-green-100 mt-10 rounded-3xl max-w-5xl mx-auto shadow-lg text-center">
         <h2 className="text-3xl sm:text-4xl font-bold text-green-800 mb-4">
           🍎 Be First to Taste Our Himalayan Harvest
