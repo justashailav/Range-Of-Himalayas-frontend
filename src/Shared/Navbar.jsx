@@ -40,8 +40,8 @@
 //     }
 //   };
 //   const handleLogout = () => {
-//   dispatch(resetAuthSlice());       
-//   persistor.purge();                
+//   dispatch(resetAuthSlice());
+//   persistor.purge();
 //   navigate("/login");
 // };
 //   const handleKeyDown = (e) => {
@@ -176,7 +176,7 @@
 //                 value={searchTerm}
 //                 onChange={(e) => setSearchTerm(e.target.value)}
 //                 onKeyDown={handleKeyDown}
-//                 className="w-full pl-2 pr-10 py-2 rounded-md border-none placeholder-white text-white 
+//                 className="w-full pl-2 pr-10 py-2 rounded-md border-none placeholder-white text-white
 //                            bg-white/20 backdrop-blur-sm"
 //               />
 //             </div>
@@ -454,7 +454,10 @@ export default function Navbar() {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
                   <AvatarImage
-                    src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
+                    src={
+                      user?.profile?.profilePhoto ||
+                      "https://github.com/shadcn.png"
+                    }
                   />
                 </Avatar>
               </DropdownMenuTrigger>
@@ -502,13 +505,15 @@ export default function Navbar() {
           </div>
         </div>
         {isMenu && (
-          <div className="fixed top-16 left-0 w-full bg-[#F08C7D] flex flex-col 
-items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50">
+          <div
+            className="fixed top-16 left-0 w-full bg-[#F08C7D] flex flex-col 
+items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50"
+          >
             <a href="/">HOME</a>
-            <a href="/about-us">OUR STORY</a>
-            <a href="/custombox">CREATE BOX</a>
-            <a href="/blog">BLOG</a>
-            <a href="/contact-us">CONTACT US</a>
+            <a href="/about-us" onClick={() => setIsMenu(false)}>OUR STORY</a>
+            <a href="/custombox" onClick={() => setIsMenu(false)}>CREATE BOX</a>
+            <a href="/blog" onClick={() => setIsMenu(false)}>BLOG</a>
+            <a href="/contact-us" onClick={() => setIsMenu(false)}>CONTACT US</a>
           </div>
         )}
 
@@ -541,7 +546,10 @@ items-center py-6 gap-6 text-white font-bold text-lg lg:hidden z-50">
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
                   <AvatarImage
-                    src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
+                    src={
+                      user?.profile?.profilePhoto ||
+                      "https://github.com/shadcn.png"
+                    }
                   />
                 </Avatar>
               </DropdownMenuTrigger>
