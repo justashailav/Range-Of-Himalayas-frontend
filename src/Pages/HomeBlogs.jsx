@@ -99,6 +99,9 @@ export default function HomeBlog() {
           className="pb-12"
         >
           {blogs?.map((b) => {
+            const shareUrl = b.slug
+              ? `${window.location.origin}/blog/${b.slug}`
+              : window.location.origin;
             const encodedUrl = encodeURIComponent(shareUrl);
             return (
               <SwiperSlide key={b._id}>
