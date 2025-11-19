@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs, toggleLikeBlog } from "@/store/slices/blogSlice";
 import {
@@ -19,35 +19,47 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { FaFacebook, FaLinkedin, FaPinterest, FaTelegramPlane, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaLinkedin,
+  FaPinterest,
+  FaTelegramPlane,
+  FaTwitter,
+} from "react-icons/fa";
 
 export default function HomeBlog() {
   const dispatch = useDispatch();
   const { blogs } = useSelector((state) => state.blogs);
-  const [activeShare, setActiveShare] = useState(null);
-  let closeTimer = null;
+
+  const [openShareId, setOpenShareId] = useState(null);
+
+  const shareRef = useRef(null);
+
 
   useEffect(() => {
     dispatch(getAllBlogs());
   }, [dispatch]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (shareRef.current && !shareRef.current.contains(e.target)) {
+        setOpenShareId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   const handleLike = (e, blogId) => {
-    e.stopPropagation();
-    e.preventDefault(); // Prevent link click
-    dispatch(toggleLikeBlog(blogId));
-  };
-
-  const handleMouseEnter = (id) => {
-    if (closeTimer) clearTimeout(closeTimer);
-    setActiveShare(id);
-  };
-
-  const handleMouseLeave = () => {
-    closeTimer = setTimeout(() => {
-      setActiveShare(null);
-    }, 200);
-  };
-
+      e.preventDefault();
+      e.stopPropagation();
+      dispatch(toggleLikeBlog(blogId));
+    };
+  
+    const handleShareClick = (e, id) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpenShareId(openShareId === id ? null : id);
+    };
   return (
     <div className="bg-[#FFF8E1] min-h-screen relative">
       <div className="max-w-6xl mx-auto px-4 py-16 relative">
