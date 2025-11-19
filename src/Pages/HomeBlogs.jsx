@@ -35,7 +35,6 @@ export default function HomeBlog() {
 
   const shareRef = useRef(null);
 
-
   useEffect(() => {
     dispatch(getAllBlogs());
   }, [dispatch]);
@@ -50,16 +49,16 @@ export default function HomeBlog() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   const handleLike = (e, blogId) => {
-      e.preventDefault();
-      e.stopPropagation();
-      dispatch(toggleLikeBlog(blogId));
-    };
-  
-    const handleShareClick = (e, id) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setOpenShareId(openShareId === id ? null : id);
-    };
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(toggleLikeBlog(blogId));
+  };
+
+  const handleShareClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpenShareId(openShareId === id ? null : id);
+  };
   return (
     <div className="bg-[#FFF8E1] min-h-screen relative">
       <div className="max-w-6xl mx-auto px-4 py-16 relative">
@@ -193,68 +192,66 @@ export default function HomeBlog() {
                           </div>
 
                           {/* 🔗 Share */}
-                          <div
-                            className="relative"
-                            onMouseEnter={() => handleMouseEnter(b._id)}
-                            onMouseLeave={handleMouseLeave}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <button className="flex items-center gap-1 hover:text-pink-600 transition">
-                              <Share2 size={14} />
-                              <span>Share</span>
-                            </button>
+                          <div className="relative" ref={shareRef}>
+                              <button
+                                onClick={(e) => handleShareClick(e, b._id)}
+                                className="flex items-center gap-1 hover:text-green-700 transition"
+                              >
+                                <Share2 size={16} />
+                                <span className="text-xs">Share</span>
+                              </button>
 
-                            <AnimatePresence>
-                              {openShareId === b._id && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: 10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: 10 }}
-                                  transition={{ duration: 0.2 }}
-                                  className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
-                                >
-                                  {[
-                                    {
-                                      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-                                      icon: <FaFacebook />,
-                                      bg: "bg-blue-600",
-                                    },
-                                    {
-                                      href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
-                                      icon: <FaTwitter />,
-                                      bg: "bg-sky-500",
-                                    },
-                                    {
-                                      href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
-                                      icon: <FaPinterest />,
-                                      bg: "bg-red-600",
-                                    },
-                                    {
-                                      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-                                      icon: <FaLinkedin />,
-                                      bg: "bg-blue-700",
-                                    },
-                                    {
-                                      href: `https://t.me/share/url?url=${encodedUrl}`,
-                                      icon: <FaTelegramPlane />,
-                                      bg: "bg-sky-600",
-                                    },
-                                  ].map((btn, i) => (
-                                    <a
-                                      key={i}
-                                      href={btn.href}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      onClick={(e) => e.stopPropagation()}
-                                      className={`${btn.bg} text-white w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-transform`}
-                                    >
-                                      {btn.icon}
-                                    </a>
-                                  ))}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
+                              <AnimatePresence>
+                                {openShareId === b._id && (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
+                                  >
+                                    {[
+                                      {
+                                        href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+                                        icon: <FaFacebook />,
+                                        bg: "bg-blue-600",
+                                      },
+                                      {
+                                        href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
+                                        icon: <FaTwitter />,
+                                        bg: "bg-sky-500",
+                                      },
+                                      {
+                                        href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
+                                        icon: <FaPinterest />,
+                                        bg: "bg-red-600",
+                                      },
+                                      {
+                                        href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+                                        icon: <FaLinkedin />,
+                                        bg: "bg-blue-700",
+                                      },
+                                      {
+                                        href: `https://t.me/share/url?url=${encodedUrl}`,
+                                        icon: <FaTelegramPlane />,
+                                        bg: "bg-sky-600",
+                                      },
+                                    ].map((btn, i) => (
+                                      <a
+                                        key={i}
+                                        href={btn.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        className={`${btn.bg} text-white w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-transform`}
+                                      >
+                                        {btn.icon}
+                                      </a>
+                                    ))}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
                         </div>
 
                         <span className="text-pink-600 text-sm font-medium hover:underline">
