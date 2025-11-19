@@ -124,8 +124,6 @@ export default function Login() {
             </form>
           </div>
         </div>
-
-        {/* Right Side: Info / Signup */}
         <div className="hidden w-full md:w-1/2 bg-[#F7B6A7] text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px]">
           <div className="text-center h-[400px]">
             <img src={logo} alt="logo" className="h-44 w-auto mb-6" />

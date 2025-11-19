@@ -19,6 +19,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { FaFacebook, FaLinkedin, FaPinterest, FaTelegramPlane, FaTwitter } from "react-icons/fa";
 
 export default function HomeBlog() {
   const dispatch = useDispatch();
@@ -58,7 +59,8 @@ export default function HomeBlog() {
             From Our Himalayan Journal
           </h2>
           <p className="text-[#5C4033] max-w-2xl mx-auto leading-relaxed">
-            Discover stories, tips, and insights fresh from the Himalayas — crafted to inspire a healthy, natural lifestyle.
+            Discover stories, tips, and insights fresh from the Himalayas —
+            crafted to inspire a healthy, natural lifestyle.
           </p>
         </div>
 
@@ -97,10 +99,9 @@ export default function HomeBlog() {
           className="pb-12"
         >
           {blogs?.map((b) => {
-            const shareUrl = `${window.location.origin}/blog/${b.slug}`;
+            const encodedUrl = encodeURIComponent(shareUrl);
             return (
               <SwiperSlide key={b._id}>
-                {/* ✅ Replaced navigate() with <a> */}
                 <a
                   href={`/blog/${b.slug}`}
                   onClick={() =>
@@ -189,54 +190,52 @@ export default function HomeBlog() {
                             </button>
 
                             <AnimatePresence>
-                              {activeShare === b._id && (
+                              {openShareId === b._id && (
                                 <motion.div
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   exit={{ opacity: 0, y: 10 }}
                                   transition={{ duration: 0.2 }}
-                                  className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full flex items-center gap-3 px-4 py-2 z-50"
+                                  className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
                                 >
-                                  <a
-                                    href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-600 hover:scale-110 transition-transform"
-                                  >
-                                    <Facebook size={16} />
-                                  </a>
-                                  <a
-                                    href={`https://twitter.com/intent/tweet?url=${shareUrl}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-sky-500 hover:scale-110 transition-transform"
-                                  >
-                                    <Twitter size={16} />
-                                  </a>
-                                  <a
-                                    href={`https://pinterest.com/pin/create/button/?url=${shareUrl}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-red-500 hover:scale-110 transition-transform"
-                                  >
-                                    <PiPinterestLogoBold size={17} />
-                                  </a>
-                                  <a
-                                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-700 hover:scale-110 transition-transform"
-                                  >
-                                    <Linkedin size={16} />
-                                  </a>
-                                  <a
-                                    href={`https://t.me/share/url?url=${shareUrl}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-sky-600 hover:scale-110 transition-transform"
-                                  >
-                                    <PiTelegramLogoBold size={17} />
-                                  </a>
+                                  {[
+                                    {
+                                      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+                                      icon: <FaFacebook />,
+                                      bg: "bg-blue-600",
+                                    },
+                                    {
+                                      href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
+                                      icon: <FaTwitter />,
+                                      bg: "bg-sky-500",
+                                    },
+                                    {
+                                      href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
+                                      icon: <FaPinterest />,
+                                      bg: "bg-red-600",
+                                    },
+                                    {
+                                      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+                                      icon: <FaLinkedin />,
+                                      bg: "bg-blue-700",
+                                    },
+                                    {
+                                      href: `https://t.me/share/url?url=${encodedUrl}`,
+                                      icon: <FaTelegramPlane />,
+                                      bg: "bg-sky-600",
+                                    },
+                                  ].map((btn, i) => (
+                                    <a
+                                      key={i}
+                                      href={btn.href}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className={`${btn.bg} text-white w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-transform`}
+                                    >
+                                      {btn.icon}
+                                    </a>
+                                  ))}
                                 </motion.div>
                               )}
                             </AnimatePresence>
