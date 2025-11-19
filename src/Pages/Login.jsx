@@ -119,7 +119,7 @@ export default function Login() {
                 className="mt-5 w-full font-semibold bg-[#F08C7D] text-white py-2 rounded-lg hover:bg-white hover:text-[#F08C7D] border-2 border-[#F08C7D] transition"
                 disabled={loading}
               >
-                {loading ? "Signing In..." : "SIGN IN"}
+                SIGN IN
               </button>
             </form>
           </div>
