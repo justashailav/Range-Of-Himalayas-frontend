@@ -29,8 +29,8 @@
 //         </h1>
 
 //         <p className="mt-8 max-w-3xl mx-auto text-xl text-gray-600 leading-relaxed">
-//           We are proud orchard farmers from Himachal Pradesh, nurturing apples 
-//           and kiwis with pure Himalayan water, clean air, and traditional 
+//           We are proud orchard farmers from Himachal Pradesh, nurturing apples
+//           and kiwis with pure Himalayan water, clean air, and traditional
 //           farming values.
 //         </p>
 
@@ -154,7 +154,7 @@
 //             </h2>
 
 //             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-//               Nestled at 2,300m elevation, our orchards grow in the cleanest 
+//               Nestled at 2,300m elevation, our orchards grow in the cleanest
 //               climate with natural Himalayan snowmelt—producing unmatched quality.
 //             </p>
 
@@ -200,7 +200,7 @@ import logo from "../assets/logo-himalayas.png";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import ourImage from "../assets/meandyug.png";
-import farmImage from "../assets/royal-3.jpg";
+import farmImage from "../assets/ad3.jpg";
 import { Helmet } from "react-helmet";
 
 export default function OurStory() {
@@ -221,15 +221,15 @@ export default function OurStory() {
         </span>
 
         <h1 className="text-5xl md:text-6xl font-extrabold mt-6 text-gray-900">
-          From Himalayan Orchards  
+          From Himalayan Orchards
           <br />
           <span className="text-red-600">to Your Table</span>
         </h1>
 
         <p className="mt-8 max-w-3xl mx-auto text-xl text-gray-600">
-          We are orchard farmers from Himachal Pradesh, growing apples and
-          kiwis naturally with Himalayan water, clean air, and traditional
-          farming values.
+          We are orchard farmers from Himachal Pradesh, growing apples and kiwis
+          naturally with Himalayan water, clean air, and traditional farming
+          values.
         </p>
       </section>
 
@@ -245,22 +245,24 @@ export default function OurStory() {
               {
                 num: "01",
                 title: "Orchard Roots",
-                desc: "Our story began in the traditional Himachal orchards where every harvest is guided by nature."
+                desc: "Our story began in the traditional Himachal orchards where every harvest is guided by nature.",
               },
               {
                 num: "02",
                 title: "Inspired by Nature",
-                desc: "We grow fruits with purity, patience and sustainable farming practices."
+                desc: "We grow fruits with purity, patience and sustainable farming practices.",
               },
               {
                 num: "03",
                 title: "Farm to Home",
-                desc: "Fresh apples delivered directly from our orchards to your doorstep."
-              }
+                desc: "Fresh apples delivered directly from our orchards to your doorstep.",
+              },
             ].map((item) => (
               <div key={item.num}>
                 <h3 className="text-3xl font-semibold flex items-center gap-3 text-gray-900">
-                  <span className="text-red-600 font-bold text-2xl">{item.num}.</span>
+                  <span className="text-red-600 font-bold text-2xl">
+                    {item.num}.
+                  </span>
                   {item.title}
                 </h3>
                 <p className="text-gray-600 text-lg mt-2 ml-10">{item.desc}</p>
@@ -288,26 +290,27 @@ export default function OurStory() {
         </div>
       </section>
       {/* Prelaunch CTA - Soft Invite */}
-<section className="px-6 py-20 bg-[#FFF3EA] text-center">
-  <h2 className="text-4xl font-bold text-[#D84C3C] mb-4">
-    🍎 Be Part of Our First Harvest
-  </h2>
+      <section className="px-6 py-20 bg-[#FFF3EA] text-center">
+        <h2 className="text-4xl font-bold text-[#D84C3C] mb-4">
+          🍎 Be Part of Our First Harvest
+        </h2>
 
-  <p className="text-gray-700 max-w-2xl mx-auto text-lg mb-8">
-    Our apples will soon be available for preorder. Join the prelaunch list to get 
-    early access, exclusive pricing, and behind-the-scenes orchard updates.
-  </p>
+        <p className="text-gray-700 max-w-2xl mx-auto text-lg mb-8">
+          Our apples will soon be available for preorder. Join the prelaunch
+          list to get early access, exclusive pricing, and behind-the-scenes
+          orchard updates.
+        </p>
 
-  <a
-    href="https://forms.gle/5M73wYV9Je6SJtow9"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <button className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition">
-      Join Prelaunch Waitlist 🚀
-    </button>
-  </a>
-</section>
+        <a
+          href="https://forms.gle/5M73wYV9Je6SJtow9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition">
+            Join Prelaunch Waitlist 🚀
+          </button>
+        </a>
+      </section>
 
       <Footer />
     </div>
