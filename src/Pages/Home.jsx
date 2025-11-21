@@ -971,7 +971,7 @@ export default function Home() {
         <p className="text-gray-700 max-w-2xl mx-auto text-lg">
           Join the official waitlist to access a{" "}
           <span className="font-semibold">mystery launch-day offer</span>
-          and shop before the public. Only waitlist members get early access.
+           and shop before the public. Only waitlist members get early access.
         </p>
 
         <div className="mt-8">
