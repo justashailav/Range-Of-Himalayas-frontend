@@ -77,7 +77,7 @@ export default function Footer() {
           <h4 className="font-semibold text-lg mb-3">Contact</h4>
           <ul className="space-y-2 text-sm text-gray-700">
             <li className="flex items-start gap-2">
-              <IoLocationSharp className="text-green-700  mt-0.5" />
+              <IoLocationSharp className="text-green-700  mt-0.5" size={22} />
               <span>
                 Village Bareon, Kotkhai, Shimla, Himachal Pradesh – 17204
               </span>
