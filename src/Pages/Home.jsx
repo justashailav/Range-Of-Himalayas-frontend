@@ -962,6 +962,34 @@ export default function Home() {
         alt="Banner"
         className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
       />
+      {/* 🔒 Secret Launch Offer Section */}
+      <section className="px-6 py-14 bg-[#FFF0ED] text-center shadow-inner">
+        <h2 className="text-4xl font-bold text-[#B3362B] mb-4">
+          🔒 Unlock a Secret Launch Offer
+        </h2>
+
+        <p className="text-gray-700 max-w-2xl mx-auto text-lg">
+          Join the official waitlist to access a{" "}
+          <span className="font-semibold">mystery launch-day offer</span>
+          and shop before the public. Only waitlist members get early access.
+        </p>
+
+        <div className="mt-8">
+          <a
+            href="https://forms.gle/5M73wYV9Je6SJtow9"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition-all">
+              Join the Waitlist 🚀
+            </button>
+          </a>
+        </div>
+
+        <p className="mt-4 text-sm text-gray-600">
+          Limited access • Secret offer revealed on launch day
+        </p>
+      </section>
 
       <section className="text-center py-12 px-6">
         <h2 className="font-bold text-3xl text-[#D84C3C]">
