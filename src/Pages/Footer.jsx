@@ -77,19 +77,21 @@ export default function Footer() {
           <h4 className="font-semibold text-lg mb-3">Contact</h4>
           <ul className="space-y-2 text-sm text-gray-700">
             <li className="flex items-start gap-2">
-              <IoLocationSharp className="text-green-700  mt-0.5" size={22} />
+              <IoLocationSharp size={20} className="text-green-700 mt-0.5" />
               <span>
                 Village Bareon, Kotkhai, Shimla, Himachal Pradesh – 17204
               </span>
             </li>
+
             <li className="flex items-center gap-2">
-              <FaPhoneAlt className="text-green-700" size={22} />
+              <FaPhoneAlt size={16} className="text-green-700" />
               <a href="tel:+916230867344" className="hover:text-green-700">
                 +91 62308 67344
               </a>
             </li>
+
             <li className="flex items-center gap-2">
-              <IoMailSharp className="text-green-700" size={22}/>
+              <IoMailSharp size={18} className="text-green-700" />
               <a
                 href="mailto:contactrangeofhimalayas@gmail.com"
                 className="hover:text-green-700"
@@ -97,11 +99,13 @@ export default function Footer() {
                 contactrangeofhimalayas@gmail.com
               </a>
             </li>
+
             <li className="flex items-center gap-2">
-              <IoTimeSharp className="text-green-700" size={22}/>
+              <IoTimeSharp size={18} className="text-green-700" />
               <span>Mon–Sat: 9 AM – 6 PM</span>
             </li>
           </ul>
+
           <div className="mt-4">
             <h5 className="font-medium mb-2">Follow Us</h5>
             <div className="flex items-center gap-3 text-xl">
@@ -127,7 +131,7 @@ export default function Footer() {
                 rel="noreferrer"
                 className="hover:text-green-700"
               >
-                <FaWhatsapp/>
+                <FaWhatsapp />
               </a>
             </div>
           </div>
