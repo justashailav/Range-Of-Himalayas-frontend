@@ -202,8 +202,36 @@ import { Link } from "react-router-dom";
 import ourImage from "../assets/meandyug.png";
 import farmImage from "../assets/ad3.jpg";
 import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
 
 export default function OurStory() {
+  // Soft fade + slide variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 28 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut", delay },
+    }),
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      transition: { duration: 0.65, ease: "easeOut", delay },
+    }),
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.96 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: "easeOut", delay },
+    }),
+  };
+
   return (
     <div className="bg-[#FFFDF7]">
       <Helmet>
@@ -215,31 +243,58 @@ export default function OurStory() {
       </Helmet>
 
       {/* HERO */}
-      <section className="text-center px-6 py-24 bg-gradient-to-b from-green-100/50 to-white">
-        <span className="px-4 py-1 bg-green-200 text-green-900 rounded-full text-sm font-semibold">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0}
+        className="text-center px-6 py-24 bg-gradient-to-b from-green-100/50 to-white"
+      >
+        <motion.span
+          variants={fadeIn}
+          custom={0}
+          className="px-4 py-1 bg-green-200 text-green-900 rounded-full text-sm font-semibold"
+        >
           🌿 Our Story
-        </span>
+        </motion.span>
 
-        <h1 className="text-5xl md:text-6xl font-extrabold mt-6 text-gray-900">
+        <motion.h1
+          variants={fadeUp}
+          custom={0.05}
+          className="text-5xl md:text-6xl font-extrabold mt-6 text-gray-900"
+        >
           From Himalayan Orchards
           <br />
           <span className="text-red-600">to Your Table</span>
-        </h1>
+        </motion.h1>
 
-        <p className="mt-8 max-w-3xl mx-auto text-xl text-gray-600">
+        <motion.p
+          variants={fadeIn}
+          custom={0.12}
+          className="mt-8 max-w-3xl mx-auto text-xl text-gray-600"
+        >
           We are orchard farmers from Himachal Pradesh, growing apples and kiwis
           naturally with Himalayan water, clean air, and traditional farming
           values.
-        </p>
-      </section>
+        </motion.p>
+      </motion.section>
 
-      {/* JOURNEY */}
+      {/* JOURNEY SECTION */}
       <section className="bg-gray-50 py-24 px-6">
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
+        <motion.h2
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={0}
+          className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16"
+        >
           🌱 Our Journey
-        </h2>
+        </motion.h2>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          {/* TEXT STEPS */}
           <div className="space-y-10">
             {[
               {
@@ -257,8 +312,15 @@ export default function OurStory() {
                 title: "Farm to Home",
                 desc: "Fresh apples delivered directly from our orchards to your doorstep.",
               },
-            ].map((item) => (
-              <div key={item.num}>
+            ].map((item, idx) => (
+              <motion.div
+                key={item.num}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={idx * 0.1}
+              >
                 <h3 className="text-3xl font-semibold flex items-center gap-3 text-gray-900">
                   <span className="text-red-600 font-bold text-2xl">
                     {item.num}.
@@ -266,51 +328,95 @@ export default function OurStory() {
                   {item.title}
                 </h3>
                 <p className="text-gray-600 text-lg mt-2 ml-10">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-          <div className="flex justify-center">
+
+          {/* IMAGE */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={scaleIn}
+            custom={0}
+            className="flex justify-center"
+          >
             <img
               src={ourImage}
               alt="Our Orchard Journey"
               className="rounded-xl shadow-xl object-cover"
             />
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* IMAGE SECTION */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-5xl mx-auto relative">
+      {/* IMAGE FULL WIDTH SECTION */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0}
+        className="py-20 px-6 bg-white"
+      >
+        <motion.div
+          variants={scaleIn}
+          custom={0.1}
+          className="max-w-5xl mx-auto relative"
+        >
           <img
             src={farmImage}
             alt="Orchard"
             className="rounded-2xl shadow-xl w-full object-cover"
           />
-        </div>
-      </section>
-      {/* Prelaunch CTA - Soft Invite */}
-      <section className="px-6 py-20 bg-[#FFF3EA] text-center">
-        <h2 className="text-4xl font-bold text-[#D84C3C] mb-4">
-          🍎 Be Part of Our First Harvest
-        </h2>
+        </motion.div>
+      </motion.section>
 
-        <p className="text-gray-700 max-w-2xl mx-auto text-lg mb-8">
+      {/* PRELAUNCH CTA */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0}
+        className="px-6 py-20 bg-[#FFF3EA] text-center"
+      >
+        <motion.h2
+          variants={fadeIn}
+          custom={0.05}
+          className="text-4xl font-bold text-[#D84C3C] mb-4"
+        >
+          🍎 Be Part of Our First Harvest
+        </motion.h2>
+
+        <motion.p
+          variants={fadeIn}
+          custom={0.1}
+          className="text-gray-700 max-w-2xl mx-auto text-lg mb-8"
+        >
           Our apples will soon be available for preorder. Join the prelaunch
           list to get early access, exclusive pricing, and behind-the-scenes
           orchard updates.
-        </p>
+        </motion.p>
 
-        <a
+        <motion.a
           href="https://forms.gle/5M73wYV9Je6SJtow9"
           target="_blank"
           rel="noopener noreferrer"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          viewport={{ once: true }}
         >
-          <button className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition">
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="bg-[#D84C3C] text-white px-10 py-3 rounded-full text-lg font-semibold hover:bg-[#b53e30] transition"
+          >
             Join Prelaunch Waitlist 🚀
-          </button>
-        </a>
-      </section>
+          </motion.button>
+        </motion.a>
+      </motion.section>
 
       <Footer />
     </div>

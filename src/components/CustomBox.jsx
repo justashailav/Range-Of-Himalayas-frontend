@@ -478,11 +478,39 @@
 import Footer from "@/Pages/Footer";
 import React from "react";
 import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
 
 export default function CustomBoxTile() {
+  // Soft animation variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 25 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.65, ease: "easeOut", delay },
+    }),
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      transition: { duration: 0.6, ease: "easeOut", delay },
+    }),
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.97 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.55, ease: "easeOut", delay },
+    }),
+  };
+
   return (
     <div className="bg-[#FFF8E1] min-h-screen flex flex-col">
-    <Helmet>
+      <Helmet>
         <title>Build Your Own Fruit Box – Coming Soon | Range Of Himalayas</title>
 
         <meta
@@ -490,7 +518,6 @@ export default function CustomBoxTile() {
           content="Customize your own Himalayan fruit box with apples, kiwis, pears & more. Launching soon! Join the waitlist for early access."
         />
 
-        {/* Open Graph / Facebook */}
         <meta property="og:title" content="Build Your Own Fruit Box – Coming Soon" />
         <meta
           property="og:description"
@@ -499,7 +526,6 @@ export default function CustomBoxTile() {
         <meta property="og:image" content="https://rangeofhimalayas.co.in/og-custom-box.png" />
         <meta property="og:url" content="https://rangeofhimalayas.co.in/custom-box" />
 
-        {/* Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Build Your Own Fruit Box – Custom Box" />
         <meta
@@ -508,20 +534,36 @@ export default function CustomBoxTile() {
         />
         <meta name="twitter:image" content="https://rangeofhimalayas.co.in/og-custom-box.png" />
 
-        {/* Canonical URL */}
         <link rel="canonical" href="https://rangeofhimalayas.co.in/custom-box" />
       </Helmet>
-      <div className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-6 sm:p-10 rounded-3xl shadow-lg max-w-md sm:max-w-xl md:max-w-2xl mx-auto mt-10">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#d97706] mb-3">
-          🍎 Build Your Own Box
-        </h1>
 
-        <p className="text-gray-700 text-base sm:text-lg md:text-xl mb-6 px-2 sm:px-0">
+      {/* HERO CARD */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0}
+        className="text-center bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] p-6 sm:p-10 rounded-3xl shadow-lg max-w-md sm:max-w-xl md:max-w-2xl mx-auto mt-10"
+      >
+        <motion.h1
+          variants={fadeIn}
+          custom={0.05}
+          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#d97706] mb-3"
+        >
+          🍎 Build Your Own Box
+        </motion.h1>
+
+        <motion.p
+          variants={fadeIn}
+          custom={0.12}
+          className="text-gray-700 text-base sm:text-lg md:text-xl mb-6 px-2 sm:px-0"
+        >
           Exciting things are coming! Customize your own Himalayan fruit box —
           launching soon. 🌄
-        </p>
+        </motion.p>
 
-        <div className="mt-6">
+        <motion.div variants={fadeIn} custom={0.15} className="mt-6">
           <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#d97706] mb-2">
             🚀 Coming Soon
           </p>
@@ -529,108 +571,173 @@ export default function CustomBoxTile() {
             Stay tuned for our launch — freshness from the Himalayas, soon at
             your doorstep!
           </p>
-        </div>
-      </div>
-      {/* Prelaunch Benefits */}
-      <section className="mt-12 px-6 text-center">
-        <h2 className="text-3xl font-bold text-[#d97706] mb-4">
-          🎁 Why You'll Love This Feature
-        </h2>
+        </motion.div>
+      </motion.div>
 
-        <p className="text-gray-700 max-w-2xl mx-auto mb-8">
+      {/* PRELAUNCH BENEFITS */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        className="mt-12 px-6 text-center"
+      >
+        <motion.h2
+          variants={fadeIn}
+          custom={0}
+          className="text-3xl font-bold text-[#d97706] mb-4"
+        >
+          🎁 Why You'll Love This Feature
+        </motion.h2>
+
+        <motion.p
+          variants={fadeIn}
+          custom={0.08}
+          className="text-gray-700 max-w-2xl mx-auto mb-8"
+        >
           Our Build-Your-Own Box option lets you create a personalized box full
           of fresh Himalayan fruits — perfect for families, gifting, or your
           daily nutrition.
-        </p>
+        </motion.p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="bg-white p-5 rounded-xl shadow border border-orange-200">
-            <h3 className="font-semibold text-lg">🍏 Your Fruit, Your Way</h3>
-            <p className="text-sm text-gray-600 mt-1">
-              Choose apples, kiwis, pears & more — fully customizable.
-            </p>
-          </div>
-
-          <div className="bg-white p-5 rounded-xl shadow border border-orange-200">
-            <h3 className="font-semibold text-lg">📦 Pick Your Box Size</h3>
-            <p className="text-sm text-gray-600 mt-1">
-              2kg, 4kg, 7kg, or create your own combination.
-            </p>
-          </div>
-
-          <div className="bg-white p-5 rounded-xl shadow border border-orange-200">
-            <h3 className="font-semibold text-lg">🌿 Fresh & Natural</h3>
-            <p className="text-sm text-gray-600 mt-1">
-              Straight from Himalayan orchards — no middlemen.
-            </p>
-          </div>
+          {[
+            {
+              title: "🍏 Your Fruit, Your Way",
+              desc: "Choose apples, kiwis, pears & more — fully customizable.",
+            },
+            {
+              title: "📦 Pick Your Box Size",
+              desc: "2kg, 4kg, 7kg, or create your own combination.",
+            },
+            {
+              title: "🌿 Fresh & Natural",
+              desc: "Straight from Himalayan orchards — no middlemen.",
+            },
+          ].map((b, i) => (
+            <motion.div
+              key={i}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={scaleIn}
+              custom={0.08 * i}
+              className="bg-white p-5 rounded-xl shadow border border-orange-200"
+            >
+              <h3 className="font-semibold text-lg">{b.title}</h3>
+              <p className="text-sm text-gray-600 mt-1">{b.desc}</p>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </motion.section>
+
       {/* Notify Me CTA */}
-      <section className="text-center mt-10">
-        <a
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.1}
+        className="text-center mt-10"
+      >
+        <motion.a
           href="https://forms.gle/5M73wYV9Je6SJtow9"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <button className="bg-[#d97706] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#b66104] transition">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            className="bg-[#d97706] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#b66104] transition"
+          >
             Notify Me When It Launches 🚀
-          </button>
-        </a>
-      </section>
-      {/* Feature Preview Mockup */}
-      <section className="px-6 mt-14 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          </motion.button>
+        </motion.a>
+      </motion.section>
+
+      {/* Feature Preview */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        className="px-6 mt-14 text-center"
+      >
+        <motion.h2
+          variants={fadeIn}
+          custom={0}
+          className="text-2xl font-bold text-gray-800 mb-4"
+        >
           👀 What You’ll Be Able To Customize
-        </h2>
+        </motion.h2>
 
         <div className="max-w-3xl mx-auto grid gap-6 sm:grid-cols-2">
-          <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
-            <h3 className="font-semibold">🍎 Pick Your Fruits</h3>
-            <p className="text-sm text-gray-600 mt-1">
-              Apples, kiwis, pears, plums — seasonally available.
-            </p>
-          </div>
-
-          <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
-            <h3 className="font-semibold">📏 Choose Box Size</h3>
-            <p className="text-sm text-gray-600 mt-1">
-              From single-person boxes to family-size crates.
-            </p>
-          </div>
+          {[
+            {
+              title: "🍎 Pick Your Fruits",
+              desc: "Apples, kiwis, pears, plums — seasonally available.",
+            },
+            {
+              title: "📏 Choose Box Size",
+              desc: "From single-person boxes to family-size crates.",
+            },
+          ].map((f, i) => (
+            <motion.div
+              key={i}
+              variants={scaleIn}
+              custom={0.08 * i}
+              className="bg-white p-5 rounded-xl shadow border border-orange-100"
+            >
+              <h3 className="font-semibold">{f.title}</h3>
+              <p className="text-sm text-gray-600 mt-1">{f.desc}</p>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </motion.section>
+
       {/* FAQ */}
-      <section className="px-6 mt-16 pb-12 max-w-3xl mx-auto">
-        <h2 className="text-3xl font-bold text-center text-[#d97706] mb-8">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0.12}
+        className="px-6 mt-16 pb-12 max-w-3xl mx-auto"
+      >
+        <motion.h2
+          variants={fadeIn}
+          className="text-3xl font-bold text-center text-[#d97706] mb-8"
+        >
           ❓ Frequently Asked
-        </h2>
+        </motion.h2>
 
         <div className="space-y-5">
-          <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
-            <h3 className="font-semibold">When is the feature launching?</h3>
-            <p className="text-gray-600 text-sm mt-1">
-              We're preparing the experience — join the waitlist to be first
-              notified.
-            </p>
-          </div>
-
-          <div className="bg-white p-5 rounded-xl shadow border border-orange-100">
-            <h3 className="font-semibold">What fruits can I add?</h3>
-            <p className="text-gray-600 text-sm mt-1">
-              Apples, kiwis, and seasonal Himalayan fruits depending on harvest
-              time.
-            </p>
-          </div>
-
-          <div className="bg-white p-5 rounded-xl shadow">
-            <h3 className="font-semibold">Will it deliver across India?</h3>
-            <p className="text-gray-600 text-sm mt-1">
-              Yes, we will ship nationwide once we launch.
-            </p>
-          </div>
+          {[
+            {
+              q: "When is the feature launching?",
+              a: "We're preparing the experience — join the waitlist to be first notified.",
+            },
+            {
+              q: "What fruits can I add?",
+              a: "Apples, kiwis, and seasonal Himalayan fruits depending on harvest time.",
+            },
+            {
+              q: "Will it deliver across India?",
+              a: "Yes, we will ship nationwide once we launch.",
+            },
+          ].map((faq, i) => (
+            <motion.div
+              key={i}
+              variants={scaleIn}
+              custom={0.07 * i}
+              className="bg-white p-5 rounded-xl shadow border border-orange-100"
+            >
+              <h3 className="font-semibold">{faq.q}</h3>
+              <p className="text-gray-600 text-sm mt-1">{faq.a}</p>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </motion.section>
 
       <div className="mt-auto">
         <Footer />

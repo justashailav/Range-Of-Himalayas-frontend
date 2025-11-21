@@ -50,6 +50,33 @@ export default function Blog() {
     setOpenShareId(openShareId === id ? null : id);
   };
 
+  // Soft motion variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 25 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, ease: "easeOut", delay },
+    }),
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      transition: { duration: 0.5, ease: "easeOut", delay },
+    }),
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.96 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.5, ease: "easeOut", delay },
+    }),
+  };
+
   return (
     <div className="bg-[#F9F5EF] min-h-screen">
       <Helmet>
@@ -62,20 +89,39 @@ export default function Blog() {
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-4xl font-bold text-center text-[#2E1F1A] mb-3">
-          Our Blogs
-        </h2>
-        <p className="text-center text-[#5C4033] mb-12 max-w-2xl mx-auto">
-          Inspiring stories and natural wisdom — straight from the Himalayas.
-        </p>
-
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+        {/* Heading */}
+        <motion.h2
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={0}
+          className="text-4xl font-bold text-center text-[#2E1F1A] mb-3"
         >
-          {blogs?.map((b) => {
+          Our Blogs
+        </motion.h2>
+
+        <motion.p
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+          custom={0.1}
+          className="text-center text-[#5C4033] mb-12 max-w-2xl mx-auto"
+        >
+          Inspiring stories and natural wisdom — straight from the Himalayas.
+        </motion.p>
+
+        {/* Blog Cards Grid */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={0.2}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
+        >
+          {blogs?.map((b, idx) => {
             const shareUrl = b.slug
               ? `${window.location.origin}/blog/${b.slug}`
               : window.location.origin;
@@ -85,8 +131,13 @@ export default function Blog() {
             return (
               <motion.div
                 key={b._id}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={scaleIn}
+                custom={idx * 0.08}
                 whileHover={{ y: -5 }}
-                transition={{ type: "spring", stiffness: 120 }}
+                transition={{ type: "spring", stiffness: 120, damping: 12 }}
                 className="bg-white shadow-lg rounded-3xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300"
               >
                 <a href={`/blog/${b.slug}`} className="block">
@@ -173,7 +224,7 @@ export default function Blog() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 10 }}
-                                transition={{ duration: 0.2 }}
+                                transition={{ duration: 0.25 }}
                                 className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
                               >
                                 {[
@@ -231,27 +282,48 @@ export default function Blog() {
           })}
         </motion.div>
       </div>
-      <section className="px-6 py-16 bg-gradient-to-br from-green-50 to-green-100 mt-10 rounded-3xl max-w-5xl mx-auto shadow-lg text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold text-green-800 mb-4">
-          🍎 Be First to Taste Our Himalayan Harvest
-        </h2>
 
-        <p className="text-gray-700 text-lg max-w-2xl mx-auto mb-8">
+      {/* PRELAUNCH CTA */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+        custom={0}
+        className="px-6 py-16 bg-gradient-to-br from-green-50 to-green-100 mt-10 rounded-3xl max-w-5xl mx-auto shadow-lg text-center"
+      >
+        <motion.h2
+          variants={fadeIn}
+          custom={0.05}
+          className="text-3xl sm:text-4xl font-bold text-green-800 mb-4"
+        >
+          🍎 Be First to Taste Our Himalayan Harvest
+        </motion.h2>
+
+        <motion.p
+          variants={fadeIn}
+          custom={0.1}
+          className="text-gray-700 text-lg max-w-2xl mx-auto mb-8"
+        >
           Our fresh apples and Himalayan produce are launching soon. Join the
           prelaunch waitlist to get early access, member-only prices, and
           behind-the-scenes orchard updates.
-        </p>
+        </motion.p>
 
-        <a
+        <motion.a
           href="https://forms.gle/5M73wYV9Je6SJtow9"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <button className="bg-green-700 text-white px-10 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-green-800 transition">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-green-700 text-white px-10 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-green-800 transition"
+          >
             Join Prelaunch Waitlist 🚀
-          </button>
-        </a>
-      </section>
+          </motion.button>
+        </motion.a>
+      </motion.section>
 
       <Footer />
     </div>
