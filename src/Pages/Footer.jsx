@@ -83,13 +83,13 @@ export default function Footer() {
               </span>
             </li>
             <li className="flex items-center gap-2">
-              <FaPhoneAlt className="text-green-700" />
+              <FaPhoneAlt className="text-green-700" size={22} />
               <a href="tel:+916230867344" className="hover:text-green-700">
                 +91 62308 67344
               </a>
             </li>
             <li className="flex items-center gap-2">
-              <IoMailSharp className="text-green-700" />
+              <IoMailSharp className="text-green-700" size={22}/>
               <a
                 href="mailto:contactrangeofhimalayas@gmail.com"
                 className="hover:text-green-700"
@@ -98,7 +98,7 @@ export default function Footer() {
               </a>
             </li>
             <li className="flex items-center gap-2">
-              <IoTimeSharp className="text-green-700" />
+              <IoTimeSharp className="text-green-700" size={22}/>
               <span>Mon–Sat: 9 AM – 6 PM</span>
             </li>
           </ul>
