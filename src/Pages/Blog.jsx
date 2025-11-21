@@ -324,7 +324,6 @@ export default function Blog() {
           </motion.button>
         </motion.a>
       </motion.section>
-
       <Footer />
     </div>
   );
