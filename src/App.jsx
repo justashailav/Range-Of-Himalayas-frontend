@@ -77,6 +77,7 @@ function App() {
         <Route path="/shipping-policy" element={<><Navbar /><ShippingPolicy /></>} />
           <Route path="/return-policy" element={<><Navbar /><RefundPolicy /></>} />
           <Route path="/privacy-policy" element={<><Navbar /><PrivacyPolicy /></>} />
+          <Route path="/custombox" element={<><Navbar /><CustomBox /></>} />
         <Route element={<CheckAuth user={user} isAuthencated={isAuthencated}><Outlet /></CheckAuth>}>
           <Route path="/account" element={<><Navbar /><ShoppingAccount /></>} />
           <Route path="/checkout" element={<><Navbar /><ShoppingCheckout /></>} />
