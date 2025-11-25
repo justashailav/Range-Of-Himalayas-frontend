@@ -79,7 +79,7 @@ export default function Footer() {
             <li className="flex items-start gap-2">
               <IoLocationSharp size={20} className="text-green-700 mt-0.5" />
               <span className="leading-tight">
-                Village Bareon, Kotkhai, Shimla, Himachal Pradesh – 17204
+                Village Bareon, Kotkhai, Shimla, Himachal Pradesh – 171204
               </span>
             </li>
 
