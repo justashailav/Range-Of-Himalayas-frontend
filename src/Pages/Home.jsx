@@ -2030,7 +2030,7 @@ export default function Home() {
         ) : (
           <motion.p variants={fadeIn} className="text-gray-500">No images found</motion.p>
         )}
-
+        
         {filteredItems.length > 0 && (
           <motion.div initial="hidden" whileInView="visible" variants={fadeIn} viewport={{ once: true }} className="flex justify-center gap-4 mt-6">
             {filteredItems[currentIndex].images.map((img, index) => (
@@ -2039,7 +2039,7 @@ export default function Home() {
                 src={img}
                 alt="thumb"
                 onClick={() => setCurrentImageIndex(index)}
-                className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 ${
+                className={`w-24 h-16 d object-cover rounded-lg cursor-pointer border-2 ${
                   index === currentImageIndex ? "border-red-600" : "border-transparent"
                 }`}
               />
