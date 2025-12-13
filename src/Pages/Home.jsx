@@ -105,48 +105,52 @@ export default function Home() {
   }
 
   function handleAddToCart(getCurrentProductId, getTotalStock, size, weight) {
-    if (!user?._id) {
-      toast.error("Oops! You need to login first to add items to your cart.");
+  if (!user?._id) {
+    toast.error("Oops! You need to login first to add items to your cart.");
+    return;
+  }
+
+  const normalizedSize = size || ""; // ✅ size optional
+
+  const getCartItems = cartItems?.items || [];
+
+  const existingItemIndex = getCartItems.findIndex(
+    (item) =>
+      item.productId.toString() === getCurrentProductId.toString() &&
+      (item.size || "") === normalizedSize &&
+      item.weight === weight
+  );
+
+  if (existingItemIndex > -1) {
+    const currentQuantity = getCartItems[existingItemIndex].quantity;
+    if (currentQuantity + 1 > getTotalStock) {
+      toast.error(`Only ${getTotalStock} items available for this variant`);
       return;
     }
-    const getCartItems = cartItems?.items || [];
-    const existingItemIndex = getCartItems.findIndex(
-      (item) =>
-        item.productId.toString() === getCurrentProductId.toString() &&
-        item.size === size &&
-        item.weight === weight
-    );
-
-    if (existingItemIndex > -1) {
-      const currentQuantity = getCartItems[existingItemIndex].quantity;
-      if (currentQuantity + 1 > getTotalStock) {
-        toast.error(`Only ${getTotalStock} items available for this variant`);
-        return;
-      }
-    }
-
-    dispatch(
-      addToCart({
-        userId: user?._id,
-        productId: getCurrentProductId,
-        quantity: 1,
-        size,
-        weight,
-      })
-    )
-      .then((data) => {
-        if (data?.success) {
-          dispatch(fetchCartItems(user?._id));
-          toast.success("Product added to cart");
-          setOpenCartSheet(true);
-        } else {
-          toast.error(data?.message || "Failed to add item");
-        }
-      })
-      .catch((err) => {
-        toast.error(err || "Failed to add item");
-      });
   }
+
+  dispatch(
+    addToCart({
+      userId: user._id,
+      productId: getCurrentProductId,
+      quantity: 1,
+      size: normalizedSize, // ✅ send empty string if no size
+      weight,
+    })
+  )
+    .then((data) => {
+      if (data?.success) {
+        dispatch(fetchCartItems(user._id));
+        toast.success("Product added to cart");
+        setOpenCartSheet(true);
+      } else {
+        toast.error(data?.message || "Failed to add item");
+      }
+    })
+    .catch(() => {
+      toast.error("Failed to add item");
+    });
+}
 
   function handleAddToWishList(
     getCurrentProductId,
