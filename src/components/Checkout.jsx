@@ -63,14 +63,6 @@ export default function ShoppingCheckout() {
       ? finalAmount
       : grandTotal - (Number(discountAmount) || 0);
 
-  // 🎁 Free Gift Logic
-  const getFreeGift = (grandTotal) => {
-    if (grandTotal > 3000) return { name: "Pahadi Rajma", quantity: 3 };
-    if (grandTotal >= 2000) return { name: "Pahadi Rajma", quantity: 2 };
-    if (grandTotal >= 1000) return { name: "Pahadi Rajma", quantity: 1 };
-    return null;
-  };
-  const freeGift = getFreeGift(grandTotal);
 
   // 🚨 Redirect if no cart or not logged in
   useEffect(() => {
@@ -82,46 +74,43 @@ export default function ShoppingCheckout() {
 
   // 🧾 Place Order
   async function handlePlaceOrder() {
-    if (cartItems.length === 0 && boxes.length === 0)
-      return toast.error("Your cart is empty.");
     if (!currentSelectedAddress)
-      return toast.error("Please select a delivery address.");
+      return toast.error("Please select a delivery address");
 
     const orderData = {
-      userId: user?._id,
+      userId: user._id,
+
       cartItems: cartItems.map((item) => ({
         productId: item.productId,
         title: item.title,
         image: item.image,
         price: item.salesPrice > 0 ? item.salesPrice : item.price,
         quantity: item.quantity,
-        size: item.size,
-        weight: item.weight || item.productWeight || 0,
+        size: item.size || "",
+        weight: item.weight || item.productWeight,
       })),
+
       boxes: boxes.map((box) => ({
         boxId: box._id || box.boxId || null,
         boxName: box.boxName || "",
         items: box.items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
-          size: item.size,
+          size: item.size || "",
         })),
       })),
+
       addressInfo: {
-        addressId: currentSelectedAddress?._id,
-        address: currentSelectedAddress?.address,
-        city: currentSelectedAddress?.city,
-        pincode: currentSelectedAddress?.pincode,
-        phone: currentSelectedAddress?.phone,
-        notes: currentSelectedAddress?.notes,
+        addressId: currentSelectedAddress._id,
+        address: currentSelectedAddress.address,
+        city: currentSelectedAddress.city,
+        pincode: currentSelectedAddress.pincode,
+        phone: currentSelectedAddress.phone,
+        notes: currentSelectedAddress.notes,
       },
+
       paymentMethod,
-      paymentStatus: "pending",
       totalAmount: payableAmount,
-      orderDate: new Date().toISOString(),
-      orderUpdateDate: new Date().toISOString(),
-      codAdvanceAmount: isCOD ? COD_ADVANCE_AMOUNT : 0,
-      freeGift,
       ...(code ? { code } : {}),
     };
 
@@ -131,72 +120,54 @@ export default function ShoppingCheckout() {
       const action = await dispatch(createNewOrder(orderData));
       const res = action.payload;
 
-      if (!res.success) throw new Error("Order creation failed");
-
-      /* ---------- COD FLOW (₹200 advance) ---------- */
-      if (isCOD) {
-        const options = {
-          key: razorpayKey,
-          amount: COD_ADVANCE_AMOUNT * 100,
-          currency: "INR",
-          name: "RANGE OF HIMALAYAS",
-          description: "COD Advance Payment",
-          order_id: res.razorpayOrder.id,
-          handler: async (response) => {
-            await dispatch(
-              capturePayment({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderId: res.orderId,
-              })
-            );
-            toast.success("₹200 advance paid. Order placed!");
-            navigate("/order-success", {
-              state: { orderId: res.orderId },
-            });
-          },
-          prefill: {
-            name: user.name,
-            email: user.email,
-            contact: currentSelectedAddress.phone,
-          },
-        };
-        new window.Razorpay(options).open();
-      } else {
-
-      /* ---------- ONLINE PAYMENT ---------- */
-        const options = {
-          key: razorpayKey,
-          amount: res.razorpayOrder.amount,
-          currency: "INR",
-          name: "RANGE OF HIMALAYAS",
-          description: "Online Payment",
-          order_id: res.razorpayOrder.id,
-          handler: async (response) => {
-            await dispatch(
-              capturePayment({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderId: res.orderId,
-              })
-            );
-            toast.success("Payment successful!");
-            navigate("/order-success", {
-              state: { orderId: res.orderId },
-            });
-          },
-        };
-        new window.Razorpay(options).open();
+      if (!res || !res.success) {
+        throw new Error("Order creation failed");
       }
+
+      const options = {
+        key: razorpayKey,
+        amount:
+          paymentMethod === "cod"
+            ? COD_ADVANCE_AMOUNT * 100
+            : res.razorpayOrder.amount,
+        currency: "INR",
+        name: "RANGE OF HIMALAYAS",
+        description:
+          paymentMethod === "cod"
+            ? "COD Advance Payment"
+            : "Online Payment",
+        order_id: res.razorpayOrder.id,
+
+        handler: async (response) => {
+          await dispatch(
+            capturePayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              orderId: res.orderId,
+            })
+          );
+
+          toast.success("Order placed successfully!");
+          navigate("/order-success", {
+            state: { orderId: res.orderId },
+          });
+        },
+
+        prefill: {
+          name: user.name,
+          email: user.email,
+          contact: currentSelectedAddress.phone,
+        },
+      };
+
+      new window.Razorpay(options).open();
     } catch (err) {
       toast.error(err.message || "Order failed");
     } finally {
       setIsProcessing(false);
     }
   }
-
   return (
     <div className="flex flex-col">
       <Helmet>
