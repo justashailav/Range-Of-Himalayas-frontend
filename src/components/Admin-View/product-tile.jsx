@@ -7,39 +7,37 @@ export default function ProductTile({
   product,
   handleDelete,
 }) {
+  const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const hasVariants = variants.length > 0;
+
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedWeight, setSelectedWeight] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
 
-  const variants = product?.variants || [];
-
-  // Get unique sizes
-  const sizes = [...new Set(variants.map((v) => v.size))];
+  // ---------- VARIANT HELPERS ----------
+  const sizes = [...new Set(variants.map((v) => v.size).filter(Boolean))];
 
   const getWeightsBySize = (size) =>
     variants.filter((v) => v.size === size).map((v) => v.weight);
 
   const getVariant = (size, weight) =>
-    variants.find((v) => v.size === size && v.weight === weight) || {
-      size,
-      weight,
-      stock: 0,
-      price: 0,
-      salesPrice: 0,
-    };
+    variants.find((v) => v.size === size && v.weight === weight) || null;
 
+  // ---------- INITIALIZE VARIANT ----------
   useEffect(() => {
-    if (sizes.length > 0) {
+    if (hasVariants && sizes.length > 0) {
       const initialSize = sizes[0];
       const initialWeight = getWeightsBySize(initialSize)[0];
       setSelectedSize(initialSize);
       setSelectedWeight(initialWeight);
       setSelectedVariant(getVariant(initialSize, initialWeight));
+    } else {
+      setSelectedVariant(null);
     }
   }, [product]);
 
   useEffect(() => {
-    if (selectedSize && selectedWeight) {
+    if (hasVariants && selectedSize && selectedWeight) {
       setSelectedVariant(getVariant(selectedSize, selectedWeight));
     }
   }, [selectedSize, selectedWeight]);
@@ -51,69 +49,91 @@ export default function ProductTile({
 
   if (!product) return null;
 
+  // ---------- PRICE / STOCK LOGIC ----------
+  const stock = hasVariants
+    ? selectedVariant?.stock ?? 0
+    : product.stock ?? 0;
+
+  const price = hasVariants
+    ? selectedVariant?.price ?? 0
+    : product.price ?? 0;
+
+  const salesPrice = hasVariants
+    ? selectedVariant?.salesPrice ?? 0
+    : product.salesPrice ?? 0;
+
+  const finalPrice = salesPrice > 0 ? salesPrice : price;
+
   return (
     <div className="bg-white rounded-2xl shadow-md max-w-sm mx-auto border hover:shadow-xl transition-all duration-200">
       <img
         src={product.image}
         alt={product.title || "Product Image"}
-        className="rounded-t-2xl object-cover"
+        className="rounded-t-2xl object-cover w-full h-48"
       />
+
       <div className="p-4">
         <h2 className="text-xl font-semibold text-gray-800 mb-1 line-clamp-2">
           {product.title}
         </h2>
 
         <div className="flex justify-between items-center mb-2 text-sm text-gray-500">
-          <span>Stock: {selectedVariant?.stock ?? 0}</span>
-          <span>
-            Size: {selectedVariant?.size ?? "-"}, Weight:{" "}
-            {selectedVariant?.weight ?? "-"}
-          </span>
+          <span>Stock: {stock}</span>
+          {hasVariants ? (
+            <span>
+              Size: {selectedVariant?.size}, Weight:{" "}
+              {selectedVariant?.weight}
+            </span>
+          ) : (
+            <span>Single Pack</span>
+          )}
         </div>
 
-        <div className="mb-3 flex gap-2">
-          <select
-            value={selectedSize}
-            onChange={(e) => {
-              const newSize = e.target.value;
-              const newWeight = getWeightsBySize(newSize)[0];
-              setSelectedSize(newSize);
-              setSelectedWeight(newWeight);
-            }}
-            className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {sizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
+        {/* ---------- VARIANT SELECTORS (ONLY IF VARIANTS EXIST) ---------- */}
+        {hasVariants && (
+          <div className="mb-3 flex gap-2">
+            <select
+              value={selectedSize}
+              onChange={(e) => {
+                const newSize = e.target.value;
+                const newWeight = getWeightsBySize(newSize)[0];
+                setSelectedSize(newSize);
+                setSelectedWeight(newWeight);
+              }}
+              className="flex-1 px-3 py-2 border rounded-md"
+            >
+              {sizes.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
 
-          <select
-            value={selectedWeight}
-            onChange={(e) => setSelectedWeight(e.target.value)}
-            className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {getWeightsBySize(selectedSize).map((weight) => (
-              <option key={weight} value={weight}>
-                {weight}
-              </option>
-            ))}
-          </select>
-        </div>
+            <select
+              value={selectedWeight}
+              onChange={(e) => setSelectedWeight(e.target.value)}
+              className="flex-1 px-3 py-2 border rounded-md"
+            >
+              {getWeightsBySize(selectedSize).map((weight) => (
+                <option key={weight} value={weight}>
+                  {weight}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
+        {/* ---------- PRICE ---------- */}
         <div className="flex justify-between items-center mb-4">
           <span className="text-gray-600 line-through text-sm">
-            ₹{selectedVariant?.price?.toFixed(2) ?? "0.00"}
+            ₹{price.toFixed(2)}
           </span>
           <span className="text-green-600 font-bold text-lg">
-            ₹
-            {(selectedVariant?.salesPrice
-              ? selectedVariant.salesPrice.toFixed(2)
-              : selectedVariant?.price?.toFixed(2)) || "0.00"}
+            ₹{finalPrice.toFixed(2)}
           </span>
         </div>
 
+        {/* ---------- ACTIONS ---------- */}
         <div className="flex justify-between">
           <Button
             onClick={handleEditClick}
