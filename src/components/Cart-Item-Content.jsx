@@ -12,28 +12,29 @@ import { useEffect } from "react";
 export default function UserCartItemsContent({ cartItem, boxItem }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  console.log(user)
+  console.log(user);
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
   const { productList = [] } = useSelector((state) => state.products);
-  console.log(cartItems)
-  console.log(productList)
- useEffect(() => {
-  if (user && user._id) {
-    dispatch(fetchCartItems(user._id));
-  }
-}, [user, dispatch]);  
+  console.log(cartItems);
+  console.log(productList);
+  useEffect(() => {
+    if (user && user._id) {
+      dispatch(fetchCartItems(user._id));
+    }
+  }, [user, dispatch]);
 
   const handleUpdateQuantity = (item, action) => {
     if (!item) return;
 
+    const normalizedSize = item.size || "";
+
     const index = cartItems.findIndex((i) => {
-      const cartProductId = i.productId?._id
-        ? i.productId._id.toString()
-        : i.productId?.toString();
+      const cartProductId =
+        i.productId?._id?.toString() || i.productId?.toString();
 
       return (
-        cartProductId === item.productId &&
-        i.size === item.size &&
+        cartProductId === item.productId.toString() &&
+        (i.size || "") === normalizedSize &&
         i.weight === item.weight
       );
     });
@@ -46,7 +47,7 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     if (!productFromList) return;
 
     const variant = productFromList.variants?.find(
-      (v) => v.size === item.size && v.weight === item.weight
+      (v) => (v.size || "") === normalizedSize && v.weight === item.weight
     );
 
     const totalStock = variant?.stock ?? 0;
@@ -58,6 +59,7 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
       toast.error("Quantity cannot be less than 1");
       return;
     }
+
     if (action === "plus" && newQuantity > totalStock) {
       toast.error(`Only ${totalStock} items in stock.`);
       return;
@@ -65,32 +67,37 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
 
     dispatch(
       updateCart({
-        userId: user?._id,
-        productId: productFromList._id.toString(),
+        userId: user._id,
+        productId: item.productId,
         quantity: newQuantity,
-        size: item.size,
+        size: normalizedSize,
         weight: item.weight,
       })
-    ).then((data) => {
-      if (data?.success) toast.success("Cart updated successfully");
-      else toast.error(data?.message || "Failed to update cart");
-    });
+    );
   };
 
   const handleCartItemDelete = (item) => {
     if (!item) return;
+
+    const normalizedSize = item.size || "";
+
     dispatch(
       deleteCartItem({
-        userId: user?._id,
+        userId: user._id,
         productId: item.productId,
-        size: item.size,
+        size: normalizedSize,
         weight: item.weight,
       })
-    ).then((data) => {
-      if (data?.success) toast.success("Item removed from cart");
-      else toast.error("Failed to remove item");
+    ).then((res) => {
+      if (res?.success) {
+        toast.success("Item removed from cart");
+        dispatch(fetchCartItems(user._id)); // 🔥 VERY IMPORTANT
+      } else {
+        toast.error("Failed to remove item");
+      }
     });
   };
+
   if (cartItem) {
     const product = productList.find((p) => p._id === cartItem.productId) || {};
     const variant =
@@ -118,13 +125,13 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
             <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">
               {title}
             </h3>
-            <p className="text-xs sm:text-sm text-gray-600 mt-1">
-              Size:{" "}
-              <span className="font-medium text-gray-800">{cartItem.size}</span>{" "}
-              | Weight:{" "}
-              <span className="font-medium text-gray-800">
-                {cartItem.weight}
-              </span>
+            <p className="text-xs text-gray-600">
+              {cartItem.size && (
+                <>
+                  Size: <span className="font-medium">{cartItem.size}</span> |
+                </>
+              )}
+              Weight: <span className="font-medium">{cartItem.weight}</span>
             </p>
           </div>
 
