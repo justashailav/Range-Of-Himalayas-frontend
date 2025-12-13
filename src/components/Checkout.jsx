@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 import { useNavigate } from "react-router-dom";
-import rajmaImg from "./../assets/Rajma.png";
 import { resetCoupon } from "@/store/slices/couponSlice";
 import { Helmet } from "react-helmet";
 
@@ -26,6 +25,8 @@ export default function ShoppingCheckout() {
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("razorpay");
+
+  const isCOD = paymentMethod === "cod";
   // ✅ Reset coupon if missing
   useEffect(() => {
     if (!code) dispatch(resetCoupon());
@@ -122,12 +123,14 @@ export default function ShoppingCheckout() {
       ...(code ? { code } : {}),
     };
 
-    setIsRazorpayProcessing(true);
+    setIsProcessing(true);
 
     try {
-      const data = await dispatch(createNewOrder(orderData));
+      const action = await dispatch(createNewOrder(orderData));
+const res = action.payload;
 
-      if (!data?.success) throw new Error("Order creation failed");
+if (!res) throw new Error("Order creation failed");
+
 
       /* ---------- COD FLOW (₹200 advance) ---------- */
       if (isCOD) {
@@ -193,11 +196,11 @@ export default function ShoppingCheckout() {
       setIsProcessing(false);
     }
   }
-  }
+
 
   return (
     <div className="flex flex-col">
-    <Helmet>
+      <Helmet>
         <title>Checkout | Range of Himalayas</title>
         <meta
           name="description"
@@ -207,7 +210,6 @@ export default function ShoppingCheckout() {
         <link rel="canonical" href="https://rangeofhimalayas.com/checkout" />
       </Helmet>
       <div className="grid grid-cols-1 gap-6 mt-6 p-6 bg-white shadow-md rounded-xl">
-        {/* 🏠 Address Section */}
         <div className="border rounded-lg p-5 shadow-sm bg-gray-50">
           <Address
             selectedId={currentSelectedAddress}
@@ -343,32 +345,32 @@ export default function ShoppingCheckout() {
           <div className="p-5 bg-gray-100 border rounded-lg">
             <h3 className="text-lg font-bold mb-3 border-b pb-2">
   Price Summary
-</h3>
+            </h3>
 
-<ul className="space-y-1 text-sm text-gray-700">
-  <li>Cart Items Total: ₹{totalCartAmount.toFixed(2)}</li>
-  <li>Boxes Total: ₹{boxesTotal.toFixed(2)}</li>
+        <ul className="space-y-1 text-sm text-gray-700">
+          <li>Cart Items Total: ₹{totalCartAmount.toFixed(2)}</li>
+          <li>Boxes Total: ₹{boxesTotal.toFixed(2)}</li>
 
-  <li className="font-semibold">
-    Grand Total: ₹{grandTotal.toFixed(2)}
-  </li>
+          <li className="font-semibold">
+            Grand Total: ₹{grandTotal.toFixed(2)}
+          </li>
 
-  {discountAmount > 0 && (
-    <li className="text-green-700 font-medium">
-      Coupon Discount: -₹{discountAmount.toFixed(2)}
-    </li>
-  )}
+          {discountAmount > 0 && (
+            <li className="text-green-700 font-medium">
+              Coupon Discount: -₹{discountAmount.toFixed(2)}
+            </li>
+          )}
 
-  {paymentMethod === "cod" && (
-    <li className="text-red-600 font-medium">
-      COD Charges: ₹{COD_CHARGE.toFixed(2)}
-    </li>
-  )}
-</ul>
+          {paymentMethod === "cod" && (
+            <li className="text-red-600 font-medium">
+              COD Charges: ₹{COD_ADVANCE_AMOUNT.toFixed(2)}
+            </li>
+          )}
+        </ul>
 
-<p className="text-xl font-extrabold mt-3 text-blue-800">
-  Payable: ₹{finalPayableAmount.toFixed(2)}
-</p>
+        <p className="text-xl font-extrabold mt-3 text-blue-800">
+          Payable: ₹{payableAmount.toFixed(2)}
+        </p>
 
 
             {code && (
