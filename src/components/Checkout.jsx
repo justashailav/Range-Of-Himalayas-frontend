@@ -383,12 +383,13 @@
 // }
 
 
+
+
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import Address from "@/Pages/Address";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 import { useNavigate } from "react-router-dom";
 import { resetCoupon } from "@/store/slices/couponSlice";
@@ -398,11 +399,12 @@ const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
 const COD_ADVANCE_AMOUNT = 200;
 
 export default function ShoppingCheckout() {
-  const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
-  const { user } = useSelector((state) => state.auth);
-  const { discountAmount = 0, finalAmount, code } = useSelector(
-    (state) => state.coupon
+  const { cartItems = [], boxes = [], cartId } = useSelector(
+    (state) => state.cart
   );
+  const { user } = useSelector((state) => state.auth);
+  const { discountAmount = 0, finalAmount, code } =
+    useSelector((state) => state.coupon);
   const { productList = [] } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
@@ -412,20 +414,14 @@ export default function ShoppingCheckout() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("razorpay");
 
-  const isCOD = paymentMethod === "cod";
-
-  /* -------------------- RESET COUPON -------------------- */
   useEffect(() => {
     if (!code) dispatch(resetCoupon());
   }, [code, dispatch]);
 
-  /* -------------------- TOTAL CALCULATION -------------------- */
   const totalCartAmount = cartItems.reduce((sum, item) => {
     const price =
-      item.salesPrice && item.salesPrice > 0
-        ? Number(item.salesPrice)
-        : Number(item.price);
-    return sum + price * Number(item.quantity || 0);
+      item.salesPrice > 0 ? Number(item.salesPrice) : Number(item.price);
+    return sum + price * item.quantity;
   }, 0);
 
   const boxesTotal = boxes.reduce((sumBoxes, box) => {
@@ -433,41 +429,31 @@ export default function ShoppingCheckout() {
       box.items?.reduce((sum, item) => {
         const product =
           productList.find((p) => p._id === item.productId) || {};
-        const sizePriceObj = (product.customBoxPrices || []).find(
+        const sizePrice = product.customBoxPrices?.find(
           (p) => p.size === item.size
         );
-        const price = sizePriceObj
-          ? Number(sizePriceObj.pricePerPiece)
-          : 0;
-        return sum + price * Number(item.quantity || 1);
+        return sum + (sizePrice?.pricePerPiece || 0) * item.quantity;
       }, 0) || 0;
-
     return sumBoxes + boxTotal;
   }, 0);
 
   const grandTotal = totalCartAmount + boxesTotal;
-
   const payableAmount =
-    finalAmount !== null && finalAmount !== undefined
-      ? finalAmount
-      : grandTotal - Number(discountAmount || 0);
+    finalAmount ?? grandTotal - Number(discountAmount || 0);
 
-  /* -------------------- GUARD -------------------- */
   useEffect(() => {
-    if ((cartItems.length === 0 && boxes.length === 0) || !user) {
-      toast.error("Your cart is empty or you are not logged in.");
+    if ((!cartItems.length && !boxes.length) || !user) {
       navigate("/");
     }
   }, [cartItems, boxes, user, navigate]);
 
-  /* -------------------- PLACE ORDER -------------------- */
   async function handlePlaceOrder() {
-    if (!currentSelectedAddress) {
-      return toast.error("Please select a delivery address");
-    }
+    if (!currentSelectedAddress)
+      return toast.error("Please select delivery address");
 
     const orderData = {
       userId: user._id,
+      cartId,
 
       cartItems: cartItems.map((item) => ({
         productId: item.productId,
@@ -476,12 +462,12 @@ export default function ShoppingCheckout() {
         price: item.salesPrice > 0 ? item.salesPrice : item.price,
         quantity: item.quantity,
         size: item.size || "",
-        weight: item.weight || item.productWeight,
+        weight: typeof item.weight === "string" ? item.weight : "1kg",
       })),
 
       boxes: boxes.map((box) => ({
-        boxId: box._id || box.boxId || null,
-        boxName: box.boxName || "",
+        boxId: box._id || box.boxId,
+        boxName: box.boxName,
         items: box.items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -489,15 +475,7 @@ export default function ShoppingCheckout() {
         })),
       })),
 
-      addressInfo: {
-        addressId: currentSelectedAddress._id,
-        address: currentSelectedAddress.address,
-        city: currentSelectedAddress.city,
-        pincode: currentSelectedAddress.pincode,
-        phone: currentSelectedAddress.phone,
-        notes: currentSelectedAddress.notes,
-      },
-
+      addressInfo: currentSelectedAddress,
       paymentMethod,
       totalAmount: payableAmount,
       ...(code ? { code } : {}),
@@ -509,8 +487,8 @@ export default function ShoppingCheckout() {
       const action = await dispatch(createNewOrder(orderData));
       const res = action.payload;
 
-      if (!res || !res.success) {
-        throw new Error("Order creation failed");
+      if (!res?.success) {
+        throw new Error(res?.message || "Order creation failed");
       }
 
       const options = {
@@ -537,92 +515,32 @@ export default function ShoppingCheckout() {
             })
           );
 
-          toast.success("Order placed successfully!");
+          toast.success("Order placed successfully");
           navigate("/order-success", {
             state: { orderId: res.orderId },
           });
-        },
-
-        prefill: {
-          name: user.name,
-          email: user.email,
-          contact: currentSelectedAddress.phone,
         },
       };
 
       new window.Razorpay(options).open();
     } catch (err) {
-      toast.error(err.message || "Order failed");
+      toast.error(err.message);
     } finally {
       setIsProcessing(false);
     }
   }
 
-  /* -------------------- UI -------------------- */
   return (
-    <div className="flex flex-col">
+    <>
       <Helmet>
         <title>Checkout | Range of Himalayas</title>
-        <meta
-          name="description"
-          content="Complete your order with secure Razorpay checkout."
-        />
       </Helmet>
 
-      <div className="grid grid-cols-1 gap-6 mt-6 p-6 bg-white shadow-md rounded-xl">
-        <div className="border rounded-lg p-5 bg-gray-50">
-          <Address
-            selectedId={currentSelectedAddress}
-            setCurrentSelectedAddress={setCurrentSelectedAddress}
-          />
-        </div>
-
-        <div className="border p-4 rounded-lg bg-gray-50">
-          <h3 className="font-semibold mb-3">Payment Method</h3>
-
-          <label className="flex items-center gap-2 mb-2">
-            <input
-              type="radio"
-              checked={paymentMethod === "razorpay"}
-              onChange={() => setPaymentMethod("razorpay")}
-            />
-            Pay Online (Full Amount)
-          </label>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              checked={paymentMethod === "cod"}
-              onChange={() => setPaymentMethod("cod")}
-            />
-            Cash on Delivery (₹200 advance)
-          </label>
-        </div>
-
-        <div className="p-5 bg-gray-100 border rounded-lg">
-          <p className="text-xl font-bold text-blue-800">
-            Payable: ₹{payableAmount.toFixed(2)}
-          </p>
-
-          {code && (
-            <p className="text-sm text-green-600 mt-2">
-              🎟️ Coupon <strong>{code}</strong> applied
-            </p>
-          )}
-
-          <Button
-            disabled={isProcessing}
-            onClick={handlePlaceOrder}
-            className="bg-green-600 text-white mt-4"
-          >
-            {isProcessing
-              ? "Processing..."
-              : paymentMethod === "cod"
-              ? "Pay ₹200 & Place Order"
-              : "Pay Online"}
-          </Button>
-        </div>
-      </div>
-    </div>
+      <Button onClick={handlePlaceOrder} disabled={isProcessing}>
+        {paymentMethod === "cod"
+          ? "Pay ₹200 & Place Order"
+          : "Pay Online"}
+      </Button>
+    </>
   );
 }
