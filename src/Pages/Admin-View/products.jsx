@@ -1305,8 +1305,6 @@ export default function Adminproducts() {
                     ))}
                   </div>
                 </div>
-
-                {/* Buttons */}
                 <div className="flex flex-col sm:flex-row justify-between mt-6 gap-3">
                   <Button
                     type="button"
