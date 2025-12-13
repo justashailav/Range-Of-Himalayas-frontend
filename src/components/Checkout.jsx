@@ -14,9 +14,11 @@ const COD_ADVANCE_AMOUNT = 200;
 export default function ShoppingCheckout() {
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-  const { discountAmount = 0, finalAmount, code } = useSelector(
-    (state) => state.coupon
-  );
+  const {
+    discountAmount = 0,
+    finalAmount,
+    code,
+  } = useSelector((state) => state.coupon);
   const { productList = [] } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
@@ -127,10 +129,9 @@ export default function ShoppingCheckout() {
 
     try {
       const action = await dispatch(createNewOrder(orderData));
-const res = action.payload;
+      const res = action.payload;
 
-if (!res) throw new Error("Order creation failed");
-
+      if (!res) throw new Error("Order creation failed");
 
       /* ---------- COD FLOW (₹200 advance) ---------- */
       if (isCOD) {
@@ -162,10 +163,9 @@ if (!res) throw new Error("Order creation failed");
           },
         };
         new window.Razorpay(options).open();
-      }
+      } else {
 
       /* ---------- ONLINE PAYMENT ---------- */
-      else {
         const options = {
           key: razorpayKey,
           amount: res.razorpayOrder.amount,
@@ -197,7 +197,6 @@ if (!res) throw new Error("Order creation failed");
     }
   }
 
-
   return (
     <div className="flex flex-col">
       <Helmet>
@@ -206,10 +205,15 @@ if (!res) throw new Error("Order creation failed");
           name="description"
           content="Complete your order for fresh Himalayan apples, kiwis, and organic produce. Safe and secure Razorpay checkout."
         />
-        <meta name="keywords" content="Range of Himalayas, checkout, apples, kiwis, razorpay, organic fruits" />
+        <meta
+          name="keywords"
+          content="Range of Himalayas, checkout, apples, kiwis, razorpay, organic fruits"
+        />
         <link rel="canonical" href="https://rangeofhimalayas.com/checkout" />
       </Helmet>
+
       <div className="grid grid-cols-1 gap-6 mt-6 p-6 bg-white shadow-md rounded-xl">
+        {/* Address */}
         <div className="border rounded-lg p-5 shadow-sm bg-gray-50">
           <Address
             selectedId={currentSelectedAddress}
@@ -218,12 +222,13 @@ if (!res) throw new Error("Order creation failed");
         </div>
 
         <div className="flex flex-col gap-6">
-          {/* 🛍️ Cart Items (Read-only Summary) */}
+          {/* Cart Items */}
           {cartItems.length > 0 && (
             <div>
               <h2 className="text-xl font-bold mb-3 border-b pb-2">
                 Cart Items
               </h2>
+
               <div className="space-y-4 max-h-[300px] overflow-y-auto">
                 {cartItems.map((item) => (
                   <div
@@ -250,6 +255,7 @@ if (!res) throw new Error("Order creation failed");
                         </p>
                       </div>
                     </div>
+
                     <p className="font-semibold text-green-700">
                       ₹
                       {(
@@ -263,10 +269,11 @@ if (!res) throw new Error("Order creation failed");
             </div>
           )}
 
-          {/* 📦 Box Items */}
+          {/* Boxes */}
           {boxes.length > 0 && (
             <div>
               <h2 className="text-xl font-bold mb-3 border-b pb-2">Boxes</h2>
+
               <div className="space-y-4">
                 {boxes.map((box) => (
                   <div
@@ -276,14 +283,17 @@ if (!res) throw new Error("Order creation failed");
                     <h3 className="font-semibold text-lg text-blue-700 mb-2">
                       {box.boxName || "Custom Box"}
                     </h3>
+
                     <ul className="divide-y divide-gray-200">
                       {box.items.map((item, idx) => {
                         const product =
                           productList.find((p) => p._id === item.productId) ||
                           {};
+
                         const sizePriceObj = (
                           product.customBoxPrices || []
                         ).find((p) => p.size === item.size);
+
                         const price = sizePriceObj
                           ? Number(sizePriceObj.pricePerPiece)
                           : 0;
@@ -308,6 +318,7 @@ if (!res) throw new Error("Order creation failed");
                                 </p>
                               </div>
                             </div>
+
                             <p className="text-sm font-semibold text-green-700">
                               ₹{(price * item.quantity).toFixed(2)}
                             </p>
@@ -321,57 +332,60 @@ if (!res) throw new Error("Order creation failed");
             </div>
           )}
 
+          {/* Payment Method */}
           <div className="border p-4 rounded-lg bg-gray-50">
-          <h3 className="font-semibold mb-3">Payment Method</h3>
+            <h3 className="font-semibold mb-3">Payment Method</h3>
 
-          <label className="flex items-center gap-2 mb-2">
-            <input
-              type="radio"
-              checked={paymentMethod === "razorpay"}
-              onChange={() => setPaymentMethod("razorpay")}
-            />
-            Pay Online (Full Amount)
-          </label>
+            <label className="flex items-center gap-2 mb-2">
+              <input
+                type="radio"
+                checked={paymentMethod === "razorpay"}
+                onChange={() => setPaymentMethod("razorpay")}
+              />
+              Pay Online (Full Amount)
+            </label>
 
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              checked={paymentMethod === "cod"}
-              onChange={() => setPaymentMethod("cod")}
-            />
-            Cash on Delivery (₹200 advance required)
-          </label>
-        </div>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                checked={paymentMethod === "cod"}
+                onChange={() => setPaymentMethod("cod")}
+              />
+              Cash on Delivery (₹200 advance required)
+            </label>
+          </div>
+
+          {/* Price Summary */}
           <div className="p-5 bg-gray-100 border rounded-lg">
             <h3 className="text-lg font-bold mb-3 border-b pb-2">
-  Price Summary
+              Price Summary
             </h3>
 
-        <ul className="space-y-1 text-sm text-gray-700">
-          <li>Cart Items Total: ₹{totalCartAmount.toFixed(2)}</li>
-          <li>Boxes Total: ₹{boxesTotal.toFixed(2)}</li>
+            <ul className="space-y-1 text-sm text-gray-700">
+              <li>Cart Items Total: ₹{totalCartAmount.toFixed(2)}</li>
+              <li>Boxes Total: ₹{boxesTotal.toFixed(2)}</li>
 
-          <li className="font-semibold">
-            Grand Total: ₹{grandTotal.toFixed(2)}
-          </li>
+              <li className="font-semibold">
+                Grand Total: ₹{grandTotal.toFixed(2)}
+              </li>
 
-          {discountAmount > 0 && (
-            <li className="text-green-700 font-medium">
-              Coupon Discount: -₹{discountAmount.toFixed(2)}
-            </li>
-          )}
+              {discountAmount > 0 && (
+                <li className="text-green-700 font-medium">
+                  Coupon Discount: -₹
+                  {discountAmount.toFixed(2)}
+                </li>
+              )}
 
-          {paymentMethod === "cod" && (
-            <li className="text-red-600 font-medium">
-              COD Charges: ₹{COD_ADVANCE_AMOUNT.toFixed(2)}
-            </li>
-          )}
-        </ul>
+              {paymentMethod === "cod" && (
+                <li className="text-red-600 font-medium">
+                  COD Charges: ₹{COD_ADVANCE_AMOUNT.toFixed(2)}
+                </li>
+              )}
+            </ul>
 
-        <p className="text-xl font-extrabold mt-3 text-blue-800">
-          Payable: ₹{payableAmount.toFixed(2)}
-        </p>
-
+            <p className="text-xl font-extrabold mt-3 text-blue-800">
+              Payable: ₹{payableAmount.toFixed(2)}
+            </p>
 
             {code && (
               <p className="text-sm text-green-600 mt-2">
@@ -379,20 +393,18 @@ if (!res) throw new Error("Order creation failed");
               </p>
             )}
 
-
-          {/* 🧾 Pay Button */}
-                  <Button
-          disabled={isProcessing}
-          onClick={handlePlaceOrder}
-          className="bg-green-600 text-white"
-        >
-          {isProcessing
-            ? "Processing..."
-            : paymentMethod === "cod"
-            ? "Pay ₹200 & Place Order"
-            : "Pay Online"}
-        </Button>
-
+            <Button
+              disabled={isProcessing}
+              onClick={handlePlaceOrder}
+              className="bg-green-600 text-white mt-4"
+            >
+              {isProcessing
+                ? "Processing..."
+                : paymentMethod === "cod"
+                ? "Pay ₹200 & Place Order"
+                : "Pay Online"}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
