@@ -10,35 +10,57 @@ export default function ProductTile({
   const variants = Array.isArray(product?.variants) ? product.variants : [];
   const hasVariants = variants.length > 0;
 
+  // Detect if size is actually used (fruits)
+  const hasSize = variants.some((v) => v.size && v.size !== "");
+
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedWeight, setSelectedWeight] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
 
-  // ---------- VARIANT HELPERS ----------
-  const sizes = [...new Set(variants.map((v) => v.size).filter(Boolean))];
+  // ---------- HELPERS ----------
+  const sizes = hasSize
+    ? [...new Set(variants.map((v) => v.size).filter(Boolean))]
+    : [];
 
-  const getWeightsBySize = (size) =>
-    variants.filter((v) => v.size === size).map((v) => v.weight);
+  const getWeights = (size) => {
+    return hasSize
+      ? variants.filter((v) => v.size === size).map((v) => v.weight)
+      : variants.map((v) => v.weight);
+  };
 
-  const getVariant = (size, weight) =>
-    variants.find((v) => v.size === size && v.weight === weight) || null;
+  const getVariant = (size, weight) => {
+    return hasSize
+      ? variants.find((v) => v.size === size && v.weight === weight)
+      : variants.find((v) => v.weight === weight);
+  };
 
-  // ---------- INITIALIZE VARIANT ----------
+  // ---------- INIT ----------
   useEffect(() => {
-    if (hasVariants && sizes.length > 0) {
-      const initialSize = sizes[0];
-      const initialWeight = getWeightsBySize(initialSize)[0];
-      setSelectedSize(initialSize);
-      setSelectedWeight(initialWeight);
-      setSelectedVariant(getVariant(initialSize, initialWeight));
-    } else {
+    if (!hasVariants) {
       setSelectedVariant(null);
+      return;
+    }
+
+    if (hasSize && sizes.length > 0) {
+      const s = sizes[0];
+      const w = getWeights(s)[0];
+      setSelectedSize(s);
+      setSelectedWeight(w);
+      setSelectedVariant(getVariant(s, w));
+    } else {
+      const w = getWeights()[0];
+      setSelectedWeight(w);
+      setSelectedVariant(getVariant("", w));
     }
   }, [product]);
 
   useEffect(() => {
-    if (hasVariants && selectedSize && selectedWeight) {
+    if (!hasVariants) return;
+
+    if (hasSize && selectedSize && selectedWeight) {
       setSelectedVariant(getVariant(selectedSize, selectedWeight));
+    } else if (!hasSize && selectedWeight) {
+      setSelectedVariant(getVariant("", selectedWeight));
     }
   }, [selectedSize, selectedWeight]);
 
@@ -49,7 +71,7 @@ export default function ProductTile({
 
   if (!product) return null;
 
-  // ---------- PRICE / STOCK LOGIC ----------
+  // ---------- PRICE / STOCK ----------
   const stock = hasVariants
     ? selectedVariant?.stock ?? 0
     : product.stock ?? 0;
@@ -68,7 +90,7 @@ export default function ProductTile({
     <div className="bg-white rounded-2xl shadow-md max-w-sm mx-auto border hover:shadow-xl transition-all duration-200">
       <img
         src={product.image}
-        alt={product.title || "Product Image"}
+        alt={product.title}
         className="rounded-t-2xl object-cover w-full h-48"
       />
 
@@ -81,40 +103,44 @@ export default function ProductTile({
           <span>Stock: {stock}</span>
           {hasVariants ? (
             <span>
-              Size: {selectedVariant?.size}, Weight:{" "}
-              {selectedVariant?.weight}
+              {hasSize && selectedVariant?.size
+                ? `Size: ${selectedVariant.size}, `
+                : ""}
+              Weight: {selectedVariant?.weight}
             </span>
           ) : (
             <span>Single Pack</span>
           )}
         </div>
 
-        {/* ---------- VARIANT SELECTORS (ONLY IF VARIANTS EXIST) ---------- */}
+        {/* ---------- VARIANT SELECTORS ---------- */}
         {hasVariants && (
           <div className="mb-3 flex gap-2">
-            <select
-              value={selectedSize}
-              onChange={(e) => {
-                const newSize = e.target.value;
-                const newWeight = getWeightsBySize(newSize)[0];
-                setSelectedSize(newSize);
-                setSelectedWeight(newWeight);
-              }}
-              className="flex-1 px-3 py-2 border rounded-md"
-            >
-              {sizes.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
+            {hasSize && (
+              <select
+                value={selectedSize}
+                onChange={(e) => {
+                  const newSize = e.target.value;
+                  const newWeight = getWeights(newSize)[0];
+                  setSelectedSize(newSize);
+                  setSelectedWeight(newWeight);
+                }}
+                className="flex-1 px-3 py-2 border rounded-md"
+              >
+                {sizes.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            )}
 
             <select
               value={selectedWeight}
               onChange={(e) => setSelectedWeight(e.target.value)}
               className="flex-1 px-3 py-2 border rounded-md"
             >
-              {getWeightsBySize(selectedSize).map((weight) => (
+              {getWeights(selectedSize).map((weight) => (
                 <option key={weight} value={weight}>
                   {weight}
                 </option>
