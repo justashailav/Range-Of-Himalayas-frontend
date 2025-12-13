@@ -288,14 +288,10 @@ export default function Home() {
         </div>
       </div>
       <div className="relative p-10">
-        <button
-          className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
-        >
+        <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <button
-          className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
-        >
+        <button className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
           <ChevronRight className="w-5 h-5" />
         </button>
 
@@ -314,13 +310,11 @@ export default function Home() {
         >
           {productList.map((item) => (
             <SwiperSlide key={item._id}>
-
-                <ShoppingProductTile
-                  product={item}
-                  handleAddToCart={handleAddToCart}
-                  handleAddToWishList={handleAddToWishList}
-                />
-
+              <ShoppingProductTile
+                product={item}
+                handleAddToCart={handleAddToCart}
+                handleAddToWishList={handleAddToWishList}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -510,4 +504,3 @@ export default function Home() {
     </div>
   );
 }
-

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
@@ -6,144 +6,172 @@ import { Heart } from "lucide-react";
 export default function ShoppingProductTile({
   product,
   handleAddToCart,
-  setOpenCartSheet,
   handleAddToWishList,
+  setOpenCartSheet,
 }) {
-  const backendVariants = product?.variants || [];
-  const sizes = [...new Set(backendVariants.map((v) => v.size))];
+  const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const hasVariants = variants.length > 0;
 
-  const getWeightsBySize = (size) =>
-    backendVariants.filter((v) => v.size === size).map((v) => v.weight);
+  // ----- DISTINCT SIZES (ignore empty "") -----
+  const sizes = [...new Set(variants.map(v => v.size).filter(Boolean))];
+  const hasSizes = sizes.length > 0; // fruits only
+
+  // ----- HELPERS -----
+  const getWeightsBySize = (size) => {
+    if (!hasSizes) {
+      // dry fruits → all weights
+      return variants.map(v => v.weight);
+    }
+    return variants.filter(v => v.size === size).map(v => v.weight);
+  };
 
   const getVariant = (size, weight) =>
-    backendVariants.find((v) => v.size === size && v.weight === weight) || {
-      size,
-      weight,
-      stock: 0,
-      price: 0,
-      salesPrice: 0,
-      images: [product?.image], 
-    };
+    variants.find(
+      v =>
+        (hasSizes ? v.size === size : true) &&
+        v.weight === weight
+    ) || null;
 
-  const [selectedSize, setSelectedSize] = useState(sizes[0] || "");
+  // ----- STATE -----
+  const [selectedSize, setSelectedSize] = useState(hasSizes ? sizes[0] : "");
   const [selectedWeight, setSelectedWeight] = useState(
-    getWeightsBySize(sizes[0])[0] || ""
+    getWeightsBySize(hasSizes ? sizes[0] : "")[0] || ""
   );
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
-  const selectedVariant = getVariant(selectedSize, selectedWeight);
+  // ----- INIT VARIANT -----
+  useEffect(() => {
+    if (hasVariants) {
+      const w = getWeightsBySize(selectedSize)[0];
+      setSelectedWeight(w);
+      setSelectedVariant(getVariant(selectedSize, w));
+    }
+  }, [product]);
 
-  const totalStock = Number(selectedVariant?.stock) || 0;
-  const price = Number(selectedVariant?.price) || 0;
-  const salePrice = Number(selectedVariant?.salesPrice) || 0;
+  useEffect(() => {
+    if (hasVariants && selectedWeight) {
+      setSelectedVariant(getVariant(selectedSize, selectedWeight));
+    }
+  }, [selectedSize, selectedWeight]);
 
-  // Hover / zoom state
-  const [hoverImage, setHoverImage] = useState(
-    selectedVariant.images?.[0] || product?.image
-  );
+  // ----- PRICE / STOCK -----
+  const stock = selectedVariant?.stock ?? product?.stock ?? 0;
+  const price = selectedVariant?.price ?? product?.price ?? 0;
+  const salesPrice = selectedVariant?.salesPrice ?? product?.salesPrice ?? 0;
+  const finalPrice = salesPrice > 0 ? salesPrice : price;
 
-  const mainImage = selectedVariant.images?.[0] || product?.image;
-  const secondImage = selectedVariant.images?.[1] || mainImage;
+  const mainImage = product?.image;
 
   return (
     <div className="relative bg-white rounded-2xl shadow-lg max-w-sm mx-auto">
-      <div
-        className="overflow-hidden rounded-t-xl relative group"
-        style={{ cursor: "zoom-in" }}
-      >
-        <img
-          src={hoverImage}
-          alt={product?.title || "Product Image"}
-          className="w-full h-full object-cover rounded-t-xl transition-transform duration-300 transform group-hover:scale-110"
-          onMouseEnter={() => setHoverImage(secondImage)}
-          onMouseLeave={() => setHoverImage(mainImage)}
-        />
-      </div>
-      {totalStock === 0 ? (
-        <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
-          Out Of Stock
+      {/* IMAGE */}
+      <img
+        src={mainImage}
+        alt={product?.title}
+        className="w-full h-56 object-cover rounded-t-2xl"
+      />
+
+      {/* BADGES */}
+      {stock === 0 ? (
+        <Badge className="absolute top-2 left-2 bg-red-500">Out Of Stock</Badge>
+      ) : stock < 10 ? (
+        <Badge className="absolute top-2 left-2 bg-orange-500">
+          Only {stock} left
         </Badge>
-      ) : totalStock < 10 ? (
-        <Badge className="absolute top-2 left-2 bg-orange-500 hover:bg-orange-600">
-          Only {totalStock} left
-        </Badge>
-      ) : salePrice > 0 && salePrice < price ? (
-        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
-          Sale
-        </Badge>
+      ) : salesPrice > 0 ? (
+        <Badge className="absolute top-2 left-2 bg-green-500">Sale</Badge>
       ) : null}
 
-      <div className="mt-4 p-4">
+      {/* CONTENT */}
+      <div className="p-4">
         <h2 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
           {product?.title}
         </h2>
+
+        {/* PRICE */}
         <div className="flex justify-between items-center mb-2">
-          <span
-            className={`${
-              salePrice > 0 && salePrice < price
-                ? "line-through text-gray-400"
-                : "text-primary"
-            } text-lg font-semibold`}
-          >
+          <span className="line-through text-gray-400">
             ₹{price.toFixed(2)}
           </span>
-          {salePrice > 0 && salePrice < price ? (
-            <span className="text-lg font-semibold">₹{salePrice.toFixed(2)}</span>
-          ) : null}
+          <span className="text-green-600 font-bold text-lg">
+            ₹{finalPrice.toFixed(2)}
+          </span>
         </div>
-        <div className="mb-3 flex gap-2">
-          <select
-            value={selectedSize}
-            onChange={(e) => {
-              setSelectedSize(e.target.value);
-              setSelectedWeight(getWeightsBySize(e.target.value)[0] || "");
-            }}
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-[#F08C7D] focus:border-[#F08C7D]"
-          >
-            {sizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
 
-          <select
-            value={selectedWeight}
-            onChange={(e) => setSelectedWeight(e.target.value)}
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-[#F08C7D] focus:border-[#F08C7D]"
-          >
-            {getWeightsBySize(selectedSize).map((weight) => (
-              <option key={weight} value={weight}>
-                {weight}
-              </option>
-            ))}
-          </select>
-        </div>
-        {totalStock === 0 ? (
-          <Button className="mt-2 w-full opacity-60 cursor-not-allowed" disabled>
+        {/* VARIANT SELECTORS */}
+        {hasVariants && (
+          <div className="mb-3 flex gap-2">
+            {/* SIZE → ONLY IF EXISTS */}
+            {hasSizes && (
+              <select
+                value={selectedSize}
+                onChange={(e) => {
+                  const size = e.target.value;
+                  setSelectedSize(size);
+                  setSelectedWeight(getWeightsBySize(size)[0]);
+                }}
+                className="flex-1 border rounded-md px-3 py-2"
+              >
+                {sizes.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            )}
+
+            {/* WEIGHT */}
+            <select
+              value={selectedWeight}
+              onChange={(e) => setSelectedWeight(e.target.value)}
+              className="flex-1 border rounded-md px-3 py-2"
+            >
+              {getWeightsBySize(selectedSize).map((weight) => (
+                <option key={weight} value={weight}>
+                  {weight}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* ACTIONS */}
+        {stock === 0 ? (
+          <Button disabled className="w-full opacity-60">
             Out Of Stock
           </Button>
         ) : (
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <Button
               onClick={() => {
-                handleAddToCart(product._id, totalStock, selectedSize, selectedWeight);
-                setOpenCartSheet(true);
+                handleAddToCart(
+                  product._id,
+                  stock,
+                  hasSizes ? selectedSize : "",
+                  selectedWeight
+                );
+                setOpenCartSheet?.(true);
               }}
-              className="mt-2 flex-1 font-semibold bg-[#F08C7D] text-white py-4 rounded-lg 
-               hover:bg-white hover:text-[#F08C7D] border-2 border-[#F08C7D] transition"
+              className="flex-1 bg-[#F08C7D] text-white border-2 border-[#F08C7D]
+               hover:bg-white hover:text-[#F08C7D]"
             >
-              Add to cart
+              Add to Cart
             </Button>
 
             <Button
-              onClick={() => {
-                handleAddToWishList(product._id, totalStock, selectedSize, selectedWeight);
-              }}
-              className="mt-2 flex-1 font-semibold bg-[#F08C7D] text-white py-4 rounded-lg 
-               hover:bg-white hover:text-[#F08C7D] border-2 border-[#F08C7D] transition flex items-center justify-center gap-2"
+              onClick={() =>
+                handleAddToWishList(
+                  product._id,
+                  stock,
+                  hasSizes ? selectedSize : "",
+                  selectedWeight
+                )
+              }
+              className="flex-1 bg-[#F08C7D] text-white border-2 border-[#F08C7D]
+               hover:bg-white hover:text-[#F08C7D] flex items-center gap-2"
             >
               <Heart />
-              <span>WishList</span>
+              Wishlist
             </Button>
           </div>
         )}
