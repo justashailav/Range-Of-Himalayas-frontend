@@ -1593,8 +1593,8 @@ export default function Adminproducts() {
               <form onSubmit={handleProductSubmit} className="space-y-6">
 
                 <div>
-//                   <label className="block mb-1 font-medium text-gray-700">Title</label>
-//                   <input
+                   <label className="block mb-1 font-medium text-gray-700">Title</label>
+                   <input
                     type="text"
                     name="title"
                     placeholder="Product title"
@@ -1616,48 +1616,7 @@ export default function Adminproducts() {
                     rows={3}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md resize-none"
                   />
-                </div>
-
-                {/* Product-level Price / Stock (single-SKU support) */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block mb-1 font-medium text-gray-700">Price</label>
-                    <input
-                      type="number"
-                      name="price"
-                      placeholder="Base price (per unit)"
-                      value={product.price ?? ""}
-                      onChange={(e) => setProduct({ ...product, price: Number(e.target.value) || 0 })}
-                      step="0.01"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 font-medium text-gray-700">Sales Price</label>
-                    <input
-                      type="number"
-                      name="salesPrice"
-                      placeholder="Sales price (optional)"
-                      value={product.salesPrice ?? ""}
-                      onChange={(e) => setProduct({ ...product, salesPrice: Number(e.target.value) || 0 })}
-                      step="0.01"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 font-medium text-gray-700">Stock</label>
-                    <input
-                      type="number"
-                      name="stock"
-                      placeholder="Stock quantity"
-                      value={product.stock ?? ""}
-                      onChange={(e) => setProduct({ ...product, stock: Number(e.target.value) || 0 })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-                </div>
-
-                {/* Product Details */}
+                </div>z
                 <div>
                   <h3 className="text-lg font-semibold text-gray-700 mb-3">Product Details</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
