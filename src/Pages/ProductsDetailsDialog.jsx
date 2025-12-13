@@ -36,7 +36,23 @@ export default function ProductsDetailsDialog() {
   const { cartItems } = useSelector((state) => state.cart);
   const { wishListItems } = useSelector((state) => state.wishList);
 
-  // State
+  const variants = productDetails?.variants || [];
+
+  // ✅ detect if size exists
+  const hasSize = variants.some((v) => v.size && v.size !== "");
+
+  const sizes = hasSize
+    ? [...new Set(variants.map((v) => v.size).filter(Boolean))]
+    : [];
+  const getWeightsBySize = (size) =>
+    hasSize
+      ? variants.filter((v) => v.size === size).map((v) => v.weight)
+      : variants.map((v) => v.weight);
+
+  const getVariant = (size, weight) =>
+    variants.find(
+      (v) => (hasSize ? v.size === size : true) && v.weight === weight
+    ) || null;
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedWeight, setSelectedWeight] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -45,44 +61,33 @@ export default function ProductsDetailsDialog() {
   const [rating, setRating] = useState(0);
   const [reviewImages, setReviewImages] = useState([]);
   const [viewers, setViewers] = useState(0);
-  const variants = productDetails?.variants || [];
-  const sizes = [...new Set(variants.map((v) => v.size))];
 
-  const getWeightsBySize = (size) =>
-    variants.filter((v) => v.size === size).map((v) => v.weight);
-
-  const getVariant = (size, weight) =>
-    variants.find((v) => v.size === size && v.weight === weight) || {
-      size,
-      weight,
-      stock: 0,
-      price: 0,
-      salesPrice: 0,
-      images: [productDetails?.image],
-    };
-
-  // Fetch product details and reviews
   useEffect(() => {
-    if (id) dispatch(fetchProductDetails(id));
-    dispatch(getProductReviews(id));
+    if (id) {
+      dispatch(fetchProductDetails(id));
+      dispatch(getProductReviews(id));
+    }
   }, [dispatch, id]);
 
-  // Initialize variant selection
+  /* ---------------- INIT VARIANT ---------------- */
   useEffect(() => {
-    if (sizes.length > 0) {
-      const initialSize = sizes[0];
-      const initialWeight = getWeightsBySize(initialSize)[0];
-      const initialVariant = getVariant(initialSize, initialWeight);
-      setSelectedSize(initialSize);
-      setSelectedWeight(initialWeight);
-      setSelectedVariant(initialVariant);
-      setMainImage(initialVariant.images?.[0] || productDetails?.image);
-    }
+    if (!variants.length) return;
+
+    const firstVariant = variants[0];
+
+    setSelectedSize(firstVariant.size || "");
+    setSelectedWeight(firstVariant.weight);
+
+    setSelectedVariant(firstVariant);
+    setMainImage(firstVariant.images?.[0] || productDetails?.image);
   }, [productDetails]);
 
+  /* ---------------- UPDATE VARIANT ---------------- */
   useEffect(() => {
-    if (selectedSize && selectedWeight) {
-      const variant = getVariant(selectedSize, selectedWeight);
+    if (!selectedWeight) return;
+
+    const variant = getVariant(selectedSize, selectedWeight);
+    if (variant) {
       setSelectedVariant(variant);
       setMainImage(variant.images?.[0] || productDetails?.image);
     }
@@ -336,28 +341,32 @@ export default function ProductsDetailsDialog() {
             </p>
 
             {/* Size & Weight */}
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <label className="block text-gray-800 font-medium mb-1">
-                  Select Size
-                </label>
-                <select
-                  value={selectedSize}
-                  onChange={(e) => {
-                    const newSize = e.target.value;
-                    setSelectedSize(newSize);
-                    setSelectedWeight(getWeightsBySize(newSize)[0]);
-                  }}
-                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#F08C7D]"
-                >
-                  {sizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="flex gap-4 flex-wrap">
+              {/* SIZE — ONLY IF EXISTS */}
+              {hasSize && (
+                <div className="flex-1">
+                  <label className="block text-gray-800 font-medium mb-1">
+                    Select Size
+                  </label>
+                  <select
+                    value={selectedSize}
+                    onChange={(e) => {
+                      const newSize = e.target.value;
+                      setSelectedSize(newSize);
+                      setSelectedWeight(getWeightsBySize(newSize)[0]);
+                    }}
+                    className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#F08C7D]"
+                  >
+                    {sizes.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
+              {/* WEIGHT — ALWAYS REQUIRED */}
               <div className="flex-1">
                 <label className="block text-gray-800 font-medium mb-1">
                   Select Weight
@@ -375,8 +384,9 @@ export default function ProductsDetailsDialog() {
                         value={weight}
                         disabled={variant.stock === 0}
                       >
-                        {weight} {variant.salesPrice > 0 && "(Sale)"}{" "}
-                        {variant.stock === 0 && "(Out of Stock)"}
+                        {weight}
+                        {variant.salesPrice > 0 && " (Sale)"}
+                        {variant.stock === 0 && " (Out of Stock)"}
                       </option>
                     );
                   })}
