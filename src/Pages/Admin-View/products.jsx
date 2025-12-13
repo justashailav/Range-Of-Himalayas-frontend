@@ -1723,6 +1723,35 @@ export default function Adminproducts() {
                       />
                     </div>
                   ))}
+                  <div>
+               <label className="block mb-2 font-medium text-gray-700">Product Images</label>
+                 <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImagesChange}
+                    className="block w-full text-sm text-gray-700
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-md file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-[#F08C7D] file:text-white
+                      hover:file:bg-[#d9746a]"
+                  />
+                  <div className="flex flex-wrap gap-3 mt-3">
+                    {product.images.map((img, index) => (
+                      <div key={index} className="relative w-20 h-20 border rounded-md overflow-hidden">
+                        <img src={URL.createObjectURL(img)} alt="preview" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full p-1"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                   <Button type="button" onClick={addVariantField}>
                     + Add Variant
