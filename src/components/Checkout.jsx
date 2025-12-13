@@ -535,7 +535,10 @@ export default function ShoppingCheckout() {
       <Helmet>
         <title>Checkout | Range of Himalayas</title>
       </Helmet>
-
+      <Address
+            selectedId={currentSelectedAddress}
+            setCurrentSelectedAddress={setCurrentSelectedAddress}
+          />
       <Button onClick={handlePlaceOrder} disabled={isProcessing}>
         {paymentMethod === "cod"
           ? "Pay ₹200 & Place Order"
