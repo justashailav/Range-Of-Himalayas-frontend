@@ -168,7 +168,7 @@
 // //             </DialogTitle>
 // //             <DialogDescription>
 // //               <form onSubmit={handleProductSubmit} className="space-y-6" autoComplete="off">
-                
+
 // //                 {/* Title */}
 // //                 <div>
 // //                   <label className="block mb-1 font-medium text-gray-700">Title</label>
@@ -259,7 +259,7 @@
 // //                        <option value="1kg">1kg</option>
 // //                         <option value="2kg">2kg</option>
 // //                         <option value="3kg">3kg</option>
-                        
+
 // //                         <option value="5kg">5kg</option>
 // //                         <option value="10kg">10kg</option>
 // //                         <option value="12kg">12kg</option>
@@ -374,7 +374,6 @@
 // //     </Fragment>
 // //   );
 // // }
-
 
 // import React, { useState, useEffect, Fragment } from "react";
 // import { useDispatch, useSelector } from "react-redux";
@@ -825,7 +824,6 @@
 //     </Fragment>
 //   );
 // }
-
 
 // import React, { useState, useEffect, Fragment } from "react";
 // import { useDispatch, useSelector } from "react-redux";
@@ -1332,8 +1330,6 @@
 //   );
 // }
 
-
-
 import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -1387,7 +1383,7 @@ export default function Adminproducts() {
     view360: "",
     variants: [
       {
-        size: "",          // ✅ empty = dry fruits supported
+        size: "", // ✅ empty = dry fruits supported
         weight: "250g",
         stock: 0,
         price: 0,
@@ -1540,7 +1536,9 @@ export default function Adminproducts() {
     const formData = new FormData();
 
     Object.keys(product).forEach((key) => {
-      if (["variants", "nutrition", "details", "customBoxPrices"].includes(key)) {
+      if (
+        ["variants", "nutrition", "details", "customBoxPrices"].includes(key)
+      ) {
         formData.append(key, JSON.stringify(product[key]));
       } else if (key === "images") {
         product.images.forEach((img) => formData.append("images", img));
@@ -1583,7 +1581,10 @@ export default function Adminproducts() {
         ))}
       </div>
 
-      <Dialog open={openCreateProductDialog} onOpenChange={setOpenCreateProductDialog}>
+      <Dialog
+        open={openCreateProductDialog}
+        onOpenChange={setOpenCreateProductDialog}
+      >
         <DialogContent className="bg-[#FFECE8] max-w-3xl w-[95%] mx-auto rounded-lg p-6 sm:p-8 shadow-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
@@ -1591,10 +1592,11 @@ export default function Adminproducts() {
             </DialogTitle>
             <DialogDescription>
               <form onSubmit={handleProductSubmit} className="space-y-6">
-
                 <div>
-                   <label className="block mb-1 font-medium text-gray-700">Title</label>
-                   <input
+                  <label className="block mb-1 font-medium text-gray-700">
+                    Title
+                  </label>
+                  <input
                     type="text"
                     name="title"
                     placeholder="Product title"
@@ -1604,10 +1606,11 @@ export default function Adminproducts() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md"
                   />
                 </div>
-
                 {/* Description */}
                 <div>
-                  <label className="block mb-1 font-medium text-gray-700">Description</label>
+                  <label className="block mb-1 font-medium text-gray-700">
+                    Description
+                  </label>
                   <textarea
                     name="description"
                     placeholder="Product description"
@@ -1616,13 +1619,18 @@ export default function Adminproducts() {
                     rows={3}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md resize-none"
                   />
-                </div>z
+                </div>
+                z
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-700 mb-3">Product Details</h3>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3">
+                    Product Details
+                  </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {Object.keys(product.details).map((key) => (
                       <div key={key}>
-                        <label className="block mb-1 font-medium text-gray-700 capitalize">{key}</label>
+                        <label className="block mb-1 font-medium text-gray-700 capitalize">
+                          {key}
+                        </label>
                         <input
                           type="text"
                           name={key}
@@ -1634,14 +1642,17 @@ export default function Adminproducts() {
                     ))}
                   </div>
                 </div>
-
                 {/* Nutrition Facts */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-700 mb-3">Nutrition Facts (per 100g)</h3>
+                  <h3 className="text-lg font-semibold text-gray-700 mb-3">
+                    Nutrition Facts (per 100g)
+                  </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {Object.keys(product.nutrition).map((key) => (
                       <div key={key}>
-                        <label className="block mb-1 font-medium text-gray-700 capitalize">{key}</label>
+                        <label className="block mb-1 font-medium text-gray-700 capitalize">
+                          {key}
+                        </label>
                         <input
                           type="text"
                           name={key}
@@ -1653,7 +1664,6 @@ export default function Adminproducts() {
                     ))}
                   </div>
                 </div>
-
                 {/* VARIANTS */}
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Variants</h3>
@@ -1721,11 +1731,21 @@ export default function Adminproducts() {
                         onChange={(e) => handleVariantChange(e, index)}
                         className="border rounded-md px-3 py-2"
                       />
+
+                      <Button
+                        type="button"
+                        onClick={addVariantField}
+                        className="bg-[#F08C7D] hover:bg-[#d9746a] text-white px-5 py-2 rounded-md"
+                      >
+                        + Add Variant
+                      </Button>
                     </div>
                   ))}
-                  <div>
-               <label className="block mb-2 font-medium text-gray-700">Product Images</label>
-                 <input
+
+                  <label className="block mb-2 font-medium text-gray-700">
+                    Product Images
+                  </label>
+                  <input
                     type="file"
                     accept="image/*"
                     multiple
@@ -1739,8 +1759,15 @@ export default function Adminproducts() {
                   />
                   <div className="flex flex-wrap gap-3 mt-3">
                     {product.images.map((img, index) => (
-                      <div key={index} className="relative w-20 h-20 border rounded-md overflow-hidden">
-                        <img src={URL.createObjectURL(img)} alt="preview" className="w-full h-full object-cover" />
+                      <div
+                        key={index}
+                        className="relative w-20 h-20 border rounded-md overflow-hidden"
+                      >
+                        <img
+                          src={URL.createObjectURL(img)}
+                          alt="preview"
+                          className="w-full h-full object-cover"
+                        />
                         <button
                           type="button"
                           onClick={() => removeImage(index)}
@@ -1752,16 +1779,22 @@ export default function Adminproducts() {
                     ))}
                   </div>
                 </div>
-
-                  <Button type="button" onClick={addVariantField}>
-                    + Add Variant
+                <div className="flex flex-col sm:flex-row justify-between mt-6 gap-3">
+                  <Button
+                    type="button"
+                    onClick={() => setOpenCreateProductDialog(false)}
+                    variant="outline"
+                    className="px-6 py-2 w-full sm:w-auto"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-[#F08C7D] hover:bg-[#d9746a] text-white px-6 py-2 rounded-md w-full sm:w-auto"
+                  >
+                    {currentEditedId ? "Update Product" : "Save Product"}
                   </Button>
                 </div>
-
-                <Button type="submit" className="bg-[#F08C7D] text-white">
-                  {currentEditedId ? "Update Product" : "Save Product"}
-                </Button>
-
               </form>
             </DialogDescription>
           </DialogHeader>
