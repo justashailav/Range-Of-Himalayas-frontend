@@ -131,7 +131,7 @@ export default function ShoppingCheckout() {
       const action = await dispatch(createNewOrder(orderData));
       const res = action.payload;
 
-      if (!res) throw new Error("Order creation failed");
+      if (!res.success) throw new Error("Order creation failed");
 
       /* ---------- COD FLOW (₹200 advance) ---------- */
       if (isCOD) {
