@@ -1731,16 +1731,16 @@ export default function Adminproducts() {
                         onChange={(e) => handleVariantChange(e, index)}
                         className="border rounded-md px-3 py-2"
                       />
-
-                      <Button
-                        type="button"
-                        onClick={addVariantField}
-                        className="bg-[#F08C7D] hover:bg-[#d9746a] text-white px-5 py-2 rounded-md"
-                      >
-                        + Add Variant
-                      </Button>
                     </div>
                   ))}
+
+                  <Button
+                    type="button"
+                    onClick={addVariantField}
+                    className="bg-[#F08C7D] hover:bg-[#d9746a] text-white px-5 py-2 rounded-md"
+                  >
+                    + Add Variant
+                  </Button>
 
                   <label className="block mb-2 font-medium text-gray-700">
                     Product Images
