@@ -113,7 +113,7 @@ export default function WishListItemContent() {
       </h2>
 
       {wishListItems.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
+        <div className="text-center py-20 rounded-2xl shadow-sm">
           <img
             src="/empty-wishlist.svg"
             alt="Empty Wishlist"
@@ -139,8 +139,8 @@ export default function WishListItemContent() {
                 (cartItem.weight ? v.weight === cartItem.weight : true)
             );
 
-            const image = product?.image || "/placeholder.png";
-            const title = product?.title || "Unnamed Product";
+            const image = product?.image;
+            const title = product?.title;
             const price = variant?.price ?? 0;
             const salePrice = variant?.salesPrice ?? price;
             const totalStock = variant?.stock ?? 0;
