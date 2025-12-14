@@ -12,7 +12,6 @@ export default function ShoppingProductTile({
   const variants = Array.isArray(product?.variants) ? product.variants : [];
   const hasVariants = variants.length > 0;
 
-  // ----- DISTINCT SIZES (ignore empty "") -----
   const sizes = [...new Set(variants.map(v => v.size).filter(Boolean))];
   const hasSizes = sizes.length > 0; // fruits only
 
@@ -68,7 +67,7 @@ export default function ShoppingProductTile({
       <img
         src={mainImage}
         alt={product?.title}
-        className="w-full h-56 object-cover rounded-t-2xl"
+        className=" object-cover rounded-t-2xl"
       />
 
       {/* BADGES */}
