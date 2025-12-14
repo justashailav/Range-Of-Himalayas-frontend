@@ -70,7 +70,7 @@ export default function WishListItemContent() {
         userId: user?._id,
         productId: item.productId,
         size: item.size,
-        weight,
+        weight:item.weight,
       })
     ).then((data) => {
       if (data?.success) toast.success("Item removed from wishlist");
