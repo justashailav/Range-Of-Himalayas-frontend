@@ -135,6 +135,7 @@ export default function ProductsDetailsDialog() {
         setReviewImages([]);
         dispatch(getProductReviews(productDetails?._id));
       }
+      // toast handled by slice message
     });
   };
 
