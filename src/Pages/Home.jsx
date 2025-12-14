@@ -237,13 +237,13 @@ export default function Home() {
         </div>
       </div>
 
-      <a href="/viewproducts">
+      <Link to="/viewproducts">
         <img
           src={bgImage}
           alt="Banner"
           className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
         />
-      </a>
+      </Link>
 
       <div className="border-[#FAD4B3] border-b-1 mt-10 h-[2px] w-full"></div>
       <div>
@@ -254,14 +254,14 @@ export default function Home() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10">
             {productList && productList.length > 0 ? (
               productList.slice(0, 3).map((item) => (
-                <a
+                <Link
                   key={item._id}
-                  href={`/product/${item._id}`}
+                  to={`/product/${item._id}`}
                   onClick={() => handleGetProductDetails(item)}
                   className="block hover:-translate-y-1 transition-transform duration-300"
                 >
                   <TopSelections product={item} />
-                </a>
+                </Link>
               ))
             ) : (
               <p>No products found</p>
@@ -284,11 +284,11 @@ export default function Home() {
           </h1>
         </div>
         <div className="w-full sm:w-auto">
-          <a href="/viewproducts">
+          <Link to="/viewproducts">
             <button className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out">
               View All Products
             </button>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="relative p-10">

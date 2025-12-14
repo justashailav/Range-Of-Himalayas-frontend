@@ -56,17 +56,17 @@ export default function Navbar() {
     <nav className="bg-[#F08C7D] min-h-16 md:h-20 px-4 sm:px-6 lg:px-10 shadow-md">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
-          <a href="/">
+          <Link to="/">
             <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
-          </a>
+          </Link>
 
           <div className="flex items-center gap-3 sm:gap-4">
             {!user && (
-              <a href="/login">
+              <Link to="/login">
                 <button className="border-[#F08C7D] bg-[#F08C7D] text-white py-1 px-3 sm:py-2 sm:px-4 rounded-md text-sm sm:text-base hover:bg-[#FFECE8] hover:text-[#F08C7D] transition">
                   LOGIN
                 </button>
-              </a>
+              </Link>
             )}
             <Sheet open={openCart} onOpenChange={setOpenCart}>
               <div className="relative">
@@ -102,18 +102,18 @@ export default function Navbar() {
                 <DropdownMenuGroup>
                   {user ? (
                     <>
-                      <a href="/profile">
+                      <Link to="/profile">
                         <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                           <User className="w-4 h-4 text-muted-foreground" />
                           Profile
                         </DropdownMenuItem>
-                      </a>
-                      <a href="/account">
+                      </Link>
+                      <Link to="/account">
                         <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                           <User className="w-4 h-4 text-muted-foreground" />
                           Account
                         </DropdownMenuItem>
-                      </a>
+                      </Link>
                       <div>
                         <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                           <Button
@@ -130,12 +130,12 @@ export default function Navbar() {
                       </DropdownMenuItem>
                     </>
                   ) : (
-                    <a href="/login">
+                    <Link to="/login">
                       <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                         <User className="w-4 h-4 text-muted-foreground" />
                         Login
                       </DropdownMenuItem>
-                    </a>
+                    </Link>
                   )}
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -155,15 +155,15 @@ export default function Navbar() {
           </div>
         </div>
         <div className="hidden lg:flex items-center justify-between w-full">
-          <a href="/" className="flex-shrink-0 ">
+          <Link to="/" className="flex-shrink-0 ">
             <img src={logo} className="w-28 sm:w-32 lg:w-36" alt="Logo" />
-          </a>
+          </Link>
           <div className="flex mb-2 gap-4 lg:gap-6 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
-            <a href="/">HOME</a>
-            <a href="/about-us">OUR STORY</a>
-            <a href="/custombox">CREATE BOX</a>
-            <a href="/blog">BLOG</a>
-            <a href="/contact-us">CONTACT US</a>
+            <Link to="/">HOME</Link>
+            <Link to="/about-us">OUR STORY</Link>
+            <Link to="/custombox">CREATE BOX</Link>
+            <Link to="/blog">BLOG</Link>
+            <Link to="/contact-us">CONTACT US</Link>
           </div>
           <div className="flex mb-2 items-center gap-3 lg:gap-6">
             <div className="relative flex-1 min-w-[150px] max-w-[250px] ml-6">
@@ -182,22 +182,22 @@ export default function Navbar() {
             </div>
 
             {!user && (
-              <a href="/login">
+              <Link to="/login">
                 <button className="border-[#F08C7D] font-semibold bg-[#F08C7D] text-white py-1 md:py-2 px-3 md:px-4 rounded-lg hover:bg-[#FFECE8] hover:text-[#F08C7D] transition duration-500 text-sm md:text-base">
                   LOGIN
                 </button>
-              </a>
+              </Link>
             )}
 
             <div className="relative">
-              <a href="/wishlist">
+              <Link href="/wishlist">
                 <Heart color="white" className="cursor-pointer text-2xl" />
                 {wishListCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
                     {wishListCount}
                   </span>
                 )}
-              </a>
+              </Link>
             </div>
 
             <Sheet open={openCart} onOpenChange={setOpenCart}>
@@ -234,18 +234,18 @@ export default function Navbar() {
                 <DropdownMenuGroup>
                   {user ? (
                     <>
-                      <a href="/profile">
+                      <Link to="/profile">
                         <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                           <User className="w-4 h-4 text-muted-foreground" />
                           Profile
                         </DropdownMenuItem>
-                      </a>
-                      <a href="/account">
+                      </Link>
+                      <Link to="/account">
                         <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                           <User className="w-4 h-4 text-muted-foreground" />
                           Account
                         </DropdownMenuItem>
-                      </a>
+                      </Link>
                       <div>
                         <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                           <Button
@@ -263,12 +263,12 @@ export default function Navbar() {
                       </DropdownMenuItem>
                     </>
                   ) : (
-                    <a href="/login">
+                    <Link to="/login">
                       <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                         <User className="w-4 h-4 text-muted-foreground" />
                         Login
                       </DropdownMenuItem>
-                    </a>
+                    </Link>
                   )}
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -285,42 +285,42 @@ export default function Navbar() {
             />
           </div>
 
-          <a
-            href="/"
+          <Link
+            to="/"
             className="hover:text-gray-200 text-base sm:text-lg"
             onClick={toggleMenu}
           >
             HOME
-          </a>
-          <a
-            href="/about-us"
+          </Link>
+          <Link
+            to="/about-us"
             className="hover:text-gray-200 text-base sm:text-lg"
             onClick={toggleMenu}
           >
             OUR STORY
-          </a>
-          <a
-            href="/custombox"
+          </Link>
+          <Link
+            to="/custombox"
             className="hover:text-gray-200 text-base sm:text-lg"
             onClick={toggleMenu}
           >
             CREATE BOX
-          </a>
+          </Link>
 
-          <a
-            href="/blog"
+          <Link
+            to="/blog"
             className="hover:text-gray-200 text-base sm:text-lg"
             onClick={toggleMenu}
           >
             BLOG
-          </a>
-          <a
-            href="/contact-us"
+          </Link>
+          <Link
+            to="/contact-us"
             className="hover:text-gray-200 text-base sm:text-lg"
             onClick={toggleMenu}
           >
             CONTACT US
-          </a>
+          </Link>
 
           <div className="relative mt-2">
             <CiSearch
@@ -350,18 +350,18 @@ export default function Navbar() {
               <DropdownMenuGroup>
                 {user ? (
                   <>
-                    <a href="/profile">
+                    <Link to="/profile">
                       <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                         <User className="w-4 h-4 text-muted-foreground" />
                         Profile
                       </DropdownMenuItem>
-                    </a>
-                    <a href="/account">
+                    </Link>
+                    <Link to="/account">
                       <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                         <User className="w-4 h-4 text-muted-foreground" />
                         Account
                       </DropdownMenuItem>
-                    </a>
+                    </Link>
                     <div>
                       <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                         <Button
@@ -378,23 +378,23 @@ export default function Navbar() {
                     </DropdownMenuItem>
                   </>
                 ) : (
-                  <a href="/login">
+                  <Link to="/login">
                     <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
                       <User className="w-4 h-4 text-muted-foreground" />
                       Login
                     </DropdownMenuItem>
-                  </a>
+                  </Link>
                 )}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
 
           {!user && (
-            <a href="/login">
+            <Link to="/login">
               <button className="border-[#F08C7D] bg-[#FFECE8] text-[#F08C7D] py-2 px-4 rounded-md font-semibold mt-4 hover:bg-[#F08C7D] hover:text-white transition">
                 LOGIN
               </button>
-            </a>
+            </Link>
           )}
         </div>
       )}
