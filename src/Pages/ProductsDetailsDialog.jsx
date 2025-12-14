@@ -138,53 +138,41 @@ export default function ProductsDetailsDialog() {
     });
   };
 
-  //  function handleAddToCart(getCurrentProductId, getTotalStock, size, weight) {
-  //   if (!user?._id) {
-  //     toast.error("Oops! You need to login first to add items to your cart.");
-  //     return;
-  //   }
-  
-  //   const normalizedSize = size || "";
-  
-  //   const getCartItems = cartItems?.items || [];
-  
-  //   const existingItemIndex = getCartItems.findIndex(
-  //     (item) =>
-  //       item.productId.toString() === getCurrentProductId.toString() &&
-  //       (item.size || "") === normalizedSize &&
-  //       item.weight === weight
-  //   );
-  
-  //   if (existingItemIndex > -1) {
-  //     const currentQuantity = getCartItems[existingItemIndex].quantity;
-  //     if (currentQuantity + 1 > getTotalStock) {
-  //       toast.error(`Only ${getTotalStock} items available for this variant`);
-  //       return;
-  //     }
-  //   }
-  
-  //   dispatch(
-  //     addToCart({
-  //       userId: user._id,
-  //       productId: getCurrentProductId,
-  //       quantity: 1,
-  //       size: normalizedSize,
-  //       weight,
-  //     })
-  //   )
-  //     .then((data) => {
-  //       if (data?.success) {
-  //         dispatch(fetchCartItems(user._id));
-  //         toast.success("Product added to cart");
-  //         setOpenCartSheet(true);
-  //       } else {
-  //         toast.error(data?.message || "Failed to add item");
-  //       }
-  //     })
-  //     .catch(() => {
-  //       toast.error("Failed to add item");
-  //     });
-  // }
+  const handleAddToCart = (productId, stock, size, weight) => {
+    if (!user?._id) {
+      toast.error("Oops! You need to login first to add items to your cart.");
+      return;
+    }
+
+    const existingItem = cartItems?.items?.find(
+      (item) =>
+        item.productId.toString() === productId.toString() &&
+        item.size === size &&
+        item.weight === weight
+    );
+
+    if (existingItem && existingItem.quantity + 1 > stock) {
+      toast.error(`Only ${stock} items available for this variant`);
+      return;
+    }
+
+    dispatch(
+      addToCart({
+        userId: user._id,
+        productId,
+        quantity: 1,
+        size,
+        weight,
+      })
+    ).then((data) => {
+      if (data?.success) {
+        dispatch(fetchCartItems(user._id));
+        toast.success("Product added to cart");
+      } else {
+        toast.error(data?.message || "Failed to add item");
+      }
+    });
+  };
 
   function handleAddToWishList(
       getCurrentProductId,
@@ -550,7 +538,7 @@ export default function ProductsDetailsDialog() {
                   handleAddToWishList(
                     productDetails._id,
                     selectedVariant.stock,
-                    selectedVariant.size||"",
+                    selectedVariant.size,
                     selectedVariant.weight
                   )
                 }
