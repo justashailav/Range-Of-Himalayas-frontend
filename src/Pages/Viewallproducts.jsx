@@ -100,9 +100,9 @@ export default function Viewallproducts() {
 
       {productList && productList.length > 0 ? (
         productList.map((item) => (
-          <a
+          <Link
             key={item._id}
-            href={`/product/${item._id}`}
+            to={`/product/${item._id}`}
             className="block hover:scale-[1.02] transition-transform duration-300"
             onClick={() =>
               window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
@@ -113,7 +113,7 @@ export default function Viewallproducts() {
               handleAddToCart={handleAddToCart}
               handleAddToWishList={handleAddToWishList}
             />
-          </a>
+          </Link>
         ))
       ) : (
         <p>No products found</p>

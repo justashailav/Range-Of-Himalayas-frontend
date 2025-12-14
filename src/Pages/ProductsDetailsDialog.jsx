@@ -176,64 +176,64 @@ export default function ProductsDetailsDialog() {
   };
 
   function handleAddToWishList(
-      getCurrentProductId,
-      getTotalStock,
-      size,
-      weight
-    ) {
-      if (!user?._id) {
-        toast.error(
-          "Oops! You need to login first to add items to your wishlist."
-        );
-        return;
-      }
-      const normalizedSize = size || "";
-      const getWishListItems = wishListItems?.items || [];
-  
-      if (getWishListItems.length) {
-        const indexOfCurrentItem = getWishListItems.findIndex((item) => {
-          const sameProduct =
-            item.productId.toString() === getCurrentProductId.toString();
-          const sameSize = item.normalizedSize === normalizedSize;
-          const sameWeight =
-            (item.weight &&
-              weight &&
-              item.weight.toString() === weight.toString()) ||
-            (!item.weight && !weight);
-          return sameProduct && sameSize && sameWeight;
-        });
-  
-        if (indexOfCurrentItem > -1) {
-          const currentQuantity = getWishListItems[indexOfCurrentItem].quantity;
-          if (currentQuantity + 1 > getTotalStock) {
-            toast.error(
-              `Only ${getTotalStock} quantity available for this size${
-                weight ? " and weight" : ""
-              }`
-            );
-            return;
-          }
-        }
-      }
-  
-      dispatch(
-        addToWishList({
-          userId: user?._id,
-          productId: getCurrentProductId,
-          quantity: 1,
-          normalizedSize,
-          weight,
-        })
-      ).then((data) => {
-        if (data?.success) {
-          dispatch(fetchWishListItems(user?._id));
-          toast.success("Product added to wishlist");
-          setOpenCartSheet(true);
-        } else {
-          toast.error(data?.message || "Failed to add item");
-        }
-      });
+    getCurrentProductId,
+    getTotalStock,
+    size,
+    weight
+  ) {
+    if (!user?._id) {
+      toast.error(
+        "Oops! You need to login first to add items to your wishlist."
+      );
+      return;
     }
+    const normalizedSize = size || "";
+    const getWishListItems = wishListItems?.items || [];
+
+    if (getWishListItems.length) {
+      const indexOfCurrentItem = getWishListItems.findIndex((item) => {
+        const sameProduct =
+          item.productId.toString() === getCurrentProductId.toString();
+        const sameSize = item.normalizedSize === normalizedSize;
+        const sameWeight =
+          (item.weight &&
+            weight &&
+            item.weight.toString() === weight.toString()) ||
+          (!item.weight && !weight);
+        return sameProduct && sameSize && sameWeight;
+      });
+
+      if (indexOfCurrentItem > -1) {
+        const currentQuantity = getWishListItems[indexOfCurrentItem].quantity;
+        if (currentQuantity + 1 > getTotalStock) {
+          toast.error(
+            `Only ${getTotalStock} quantity available for this size${
+              weight ? " and weight" : ""
+            }`
+          );
+          return;
+        }
+      }
+    }
+
+    dispatch(
+      addToWishList({
+        userId: user?._id,
+        productId: getCurrentProductId,
+        quantity: 1,
+        normalizedSize,
+        weight,
+      })
+    ).then((data) => {
+      if (data?.success) {
+        dispatch(fetchWishListItems(user?._id));
+        toast.success("Product added to wishlist");
+        setOpenCartSheet(true);
+      } else {
+        toast.error(data?.message || "Failed to add item");
+      }
+    });
+  }
   if (!productDetails) return null;
 
   const allImages =
@@ -535,21 +535,20 @@ export default function ProductsDetailsDialog() {
                 Add to Cart
               </Button>
               <Button
-  disabled={!selectedVariant}
-  onClick={() => {
-    if (!selectedVariant) return;
-    handleAddToWishList(
-      productDetails._id,
-      selectedVariant.stock,
-      selectedVariant.size || "",
-      selectedVariant.weight
-    );
-  }}
-  className="flex-1 bg-white border-2 border-[#F08C7D] text-[#F08C7D] py-4 font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-[#F08C7D] hover:text-white transition disabled:opacity-50"
->
-  <Heart /> Wishlist
-</Button>
-
+                disabled={!selectedVariant}
+                onClick={() => {
+                  if (!selectedVariant) return;
+                  handleAddToWishList(
+                    productDetails._id,
+                    selectedVariant.stock,
+                    selectedVariant.size || "",
+                    selectedVariant.weight
+                  );
+                }}
+                className="flex-1 bg-white border-2 border-[#F08C7D] text-[#F08C7D] py-4 font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-[#F08C7D] hover:text-white transition disabled:opacity-50"
+              >
+                <Heart /> Wishlist
+              </Button>
             </div>
           </div>
         </div>

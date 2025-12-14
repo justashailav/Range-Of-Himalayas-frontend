@@ -190,7 +190,7 @@ export default function Navbar() {
             )}
 
             <div className="relative">
-              <Link href="/wishlist">
+              <Link to="/wishlist">
                 <Heart color="white" className="cursor-pointer text-2xl" />
                 {wishListCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
