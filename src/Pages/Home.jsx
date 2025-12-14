@@ -134,7 +134,7 @@ export default function Home() {
       userId: user._id,
       productId: getCurrentProductId,
       quantity: 1,
-      size: normalizedSize, // ✅ send empty string if no size
+      size: normalizedSize,
       weight,
     })
   )
