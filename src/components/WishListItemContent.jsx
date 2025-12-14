@@ -69,7 +69,7 @@ export default function WishListItemContent() {
       deleteWishListItem({
         userId: user?._id,
         productId: item.productId,
-        size: item.size,
+        size: item.size||"",
         weight:item.weight,
       })
     ).then((data) => {
