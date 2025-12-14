@@ -175,65 +175,66 @@ export default function ProductsDetailsDialog() {
     });
   };
 
-  function handleAddToWishList(
-      getCurrentProductId,
-      getTotalStock,
-      size,
-      weight
-    ) {
-      if (!user?._id) {
-        toast.error(
-          "Oops! You need to login first to add items to your wishlist."
-        );
-        return;
-      }
-      const normalizedSize = size || "";
-      const getWishListItems = wishListItems?.items || [];
-  
-      if (getWishListItems.length) {
-        const indexOfCurrentItem = getWishListItems.findIndex((item) => {
-          const sameProduct =
-            item.productId.toString() === getCurrentProductId.toString();
-          const sameSize = item.normalizedSize === normalizedSize;
-          const sameWeight =
-            (item.weight &&
-              weight &&
-              item.weight.toString() === weight.toString()) ||
-            (!item.weight && !weight);
-          return sameProduct && sameSize && sameWeight;
-        });
-  
-        if (indexOfCurrentItem > -1) {
-          const currentQuantity = getWishListItems[indexOfCurrentItem].quantity;
-          if (currentQuantity + 1 > getTotalStock) {
-            toast.error(
-              `Only ${getTotalStock} quantity available for this size${
-                weight ? " and weight" : ""
-              }`
-            );
-            return;
-          }
-        }
-      }
-  
-      dispatch(
-        addToWishList({
-          userId: user?._id,
-          productId: getCurrentProductId,
-          quantity: 1,
-          normalizedSize,
-          weight,
-        })
-      ).then((data) => {
-        if (data?.success) {
-          dispatch(fetchWishListItems(user?._id));
-          toast.success("Product added to wishlist");
-          setOpenCartSheet(true);
-        } else {
-          toast.error(data?.message || "Failed to add item");
-        }
-      });
-    }
+   function handleAddToWishList(
+       getCurrentProductId,
+       getTotalStock,
+       size,
+       weight
+     ) {
+       if (!user?._id) {
+         toast.error(
+           "Oops! You need to login first to add items to your wishlist."
+         );
+         return;
+       }
+       const normalizedSize = size || "";
+       const getWishListItems = wishListItems?.items || [];
+   
+       if (getWishListItems.length) {
+         const indexOfCurrentItem = getWishListItems.findIndex((item) => {
+           const sameProduct =
+             item.productId.toString() === getCurrentProductId.toString();
+           const sameSize = (item.size || "") === normalizedSize;
+           const sameWeight =
+             (item.weight &&
+               weight &&
+               item.weight.toString() === weight.toString()) ||
+             (!item.weight && !weight);
+           return sameProduct && sameSize && sameWeight;
+         });
+   
+         if (indexOfCurrentItem > -1) {
+           const currentQuantity = getWishListItems[indexOfCurrentItem].quantity;
+           if (currentQuantity + 1 > getTotalStock) {
+             toast.error(
+               `Only ${getTotalStock} quantity available for this size${
+                 weight ? " and weight" : ""
+               }`
+             );
+             return;
+           }
+         }
+       }
+   
+       dispatch(
+         addToWishList({
+           userId: user?._id,
+           productId: getCurrentProductId,
+           quantity: 1,
+           size:normalizedSize,
+           weight,
+         })
+       ).then((data) => {
+         if (data?.success) {
+           dispatch(fetchWishListItems(user?._id));
+           toast.success("Product added to wishlist");
+           setOpenCartSheet(true);
+         } else {
+           toast.error(data?.message || "Failed to add item");
+         }
+       });
+     }
+   
   if (!productDetails) return null;
 
   const allImages =

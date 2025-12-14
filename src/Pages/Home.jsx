@@ -171,7 +171,7 @@ export default function Home() {
       const indexOfCurrentItem = getWishListItems.findIndex((item) => {
         const sameProduct =
           item.productId.toString() === getCurrentProductId.toString();
-        const sameSize = item.normalizedSize === normalizedSize;
+        const sameSize = (item.size || "") === normalizedSize;
         const sameWeight =
           (item.weight &&
             weight &&
@@ -198,7 +198,7 @@ export default function Home() {
         userId: user?._id,
         productId: getCurrentProductId,
         quantity: 1,
-        normalizedSize,
+        size:normalizedSize,
         weight,
       })
     ).then((data) => {
