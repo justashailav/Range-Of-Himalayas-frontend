@@ -550,7 +550,7 @@ export default function ProductsDetailsDialog() {
                   handleAddToWishList(
                     productDetails._id,
                     selectedVariant.stock,
-                    selectedVariant.size,
+                    selectedVariant.size||"",
                     selectedVariant.weight
                   )
                 }
