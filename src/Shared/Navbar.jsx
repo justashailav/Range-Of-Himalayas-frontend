@@ -60,14 +60,7 @@ export default function Navbar() {
             <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
           </Link>
 
-          <div className="flex items-center gap-3 sm:gap-4">
-            {/* {!user && (
-              <Link to="/login">
-                <button className="border-[#F08C7D] bg-[#F08C7D] text-white py-1 px-3 sm:py-2 sm:px-4 rounded-md text-sm sm:text-base hover:bg-[#FFECE8] hover:text-[#F08C7D] transition">
-                  LOGIN
-                </button>
-              </Link>
-            )} */}
+          <div className="flex items-center gap-4 sm:gap-4 mt-2">
             <Sheet open={openCart} onOpenChange={setOpenCart}>
               <div className="relative">
                 <FaShoppingCart
