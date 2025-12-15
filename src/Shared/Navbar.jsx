@@ -62,15 +62,15 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4 sm:gap-4 mt-2">
             <Sheet open={openCart} onOpenChange={setOpenCart}>
+              <Link to="/wishlist">
+                <Heart color="white" className="cursor-pointer text-2xl" />
+                {wishListCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
+                    {wishListCount}
+                  </span>
+                )}
+              </Link>
               <div className="relative">
-                <Link to="/wishlist">
-                    <Heart color="white" className="cursor-pointer text-2xl" />
-                    {wishListCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                        {wishListCount}
-                      </span>
-                    )}
-                  </Link>
                 <FaShoppingCart
                   onClick={() => setOpenCart(true)}
                   className="text-white text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
