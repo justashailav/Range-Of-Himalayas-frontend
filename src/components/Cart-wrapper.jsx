@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import { Button } from "./ui/button";
 import UserCartItemsContent from "./Cart-Item-Content";
@@ -260,8 +260,8 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           </span>
         </div>
 
-        <a
-          href="/checkout"
+        <Link
+          to="/checkout"
           onClick={() => setOpenCartSheet(false)}
           className={`w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-md shadow-md transition-colors duration-200 ${
             cartItems?.length === 0 && boxes?.length === 0
@@ -270,7 +270,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           }`}
         >
           Proceed to Checkout
-        </a>
+        </Link>
       </div>
     </SheetContent>
   );
