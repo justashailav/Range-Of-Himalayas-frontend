@@ -278,7 +278,7 @@ export default function Navbar() {
       </div>
       {isMenu && (
         <div className="fixed top-0 right-0 h-full w-64 sm:w-72 md:w-80 lg:hidden bg-[#F08C7D] shadow-lg p-6 flex flex-col gap-5 text-white z-50 transition-transform transform translate-x-0">
-          <div className="flex justify-end mb-4">
+          <div className="flex justify-end mb-2">
             <FaTimes
               className="text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
               onClick={toggleMenu}
@@ -322,7 +322,7 @@ export default function Navbar() {
             CONTACT US
           </Link>
 
-          <div className="relative mt-2">
+          {/* <div className="relative mt-2">
             <CiSearch
               className="absolute right-3 top-2 text-white text-2xl cursor-pointer"
               onClick={handleSearch}
@@ -334,7 +334,7 @@ export default function Navbar() {
               onKeyDown={handleKeyDown}
               className="w-full pl-2 pr-10 py-2 rounded-md border-none placeholder-white text-white bg-white/20 backdrop-blur-sm"
             />
-          </div>
+          </div> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer ring-2 ring-gray-300 mt-4">
