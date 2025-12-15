@@ -40,10 +40,10 @@ export default function Navbar() {
     }
   };
   const handleLogout = () => {
-  dispatch(resetAuthSlice());
-  persistor.purge();
-  navigate("/login");
-};
+    dispatch(resetAuthSlice());
+    persistor.purge();
+    navigate("/login");
+  };
   const handleKeyDown = (e) => {
     if (e.key === "Enter") handleSearch();
   };
@@ -63,6 +63,16 @@ export default function Navbar() {
           <div className="flex items-center gap-4 sm:gap-4 mt-2">
             <Sheet open={openCart} onOpenChange={setOpenCart}>
               <div className="relative">
+                <div className="relative">
+                  <Link to="/wishlist">
+                    <Heart color="white" className="cursor-pointer text-2xl" />
+                    {wishListCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
+                        {wishListCount}
+                      </span>
+                    )}
+                  </Link>
+                </div>
                 <FaShoppingCart
                   onClick={() => setOpenCart(true)}
                   className="text-white text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
@@ -117,7 +127,10 @@ export default function Navbar() {
                           </Button>
                         </DropdownMenuItem>
                       </div>
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer" onClick={handleLogout}>
+                      <DropdownMenuItem
+                        className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
+                        onClick={handleLogout}
+                      >
                         <LogOut className="w-4 h-4 text-muted-foreground" />
                         Logout
                       </DropdownMenuItem>
@@ -250,7 +263,10 @@ export default function Navbar() {
                         </DropdownMenuItem>
                       </div>
 
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer" onClick={handleLogout}>
+                      <DropdownMenuItem
+                        className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
+                        onClick={handleLogout}
+                      >
                         <LogOut className="w-4 h-4 text-muted-foreground" />
                         Logout
                       </DropdownMenuItem>
@@ -326,4 +342,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
