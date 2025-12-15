@@ -8,6 +8,7 @@ import {
 } from "@/store/slices/wishlistSlice";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 export default function Viewallproducts() {
   const { productList } = useSelector((state) => state.products);
