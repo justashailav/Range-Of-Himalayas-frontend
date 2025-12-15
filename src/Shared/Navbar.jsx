@@ -321,81 +321,13 @@ export default function Navbar() {
           >
             CONTACT US
           </Link>
-
-          {/* <div className="relative mt-2">
-            <CiSearch
-              className="absolute right-3 top-2 text-white text-2xl cursor-pointer"
-              onClick={handleSearch}
-            />
-            <input
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="w-full pl-2 pr-10 py-2 rounded-md border-none placeholder-white text-white bg-white/20 backdrop-blur-sm"
-            />
-          </div> */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer ring-2 ring-gray-300 mt-4">
-                <AvatarImage
-                  src={
-                    user?.profile?.profilePhoto ||
-                    "https://github.com/shadcn.png"
-                  }
-                />
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 p-2 mt-2 shadow-lg rounded-xl">
-              <DropdownMenuGroup>
-                {user ? (
-                  <>
-                    <Link to="/profile">
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                        <User className="w-4 h-4 text-muted-foreground" />
-                        Profile
-                      </DropdownMenuItem>
-                    </Link>
-                    <Link to="/account">
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                        <User className="w-4 h-4 text-muted-foreground" />
-                        Account
-                      </DropdownMenuItem>
-                    </Link>
-                    <div>
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                        <Button
-                          onClick={() => navigate("/order-tracking")}
-                          className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
-                        >
-                          Track your order
-                        </Button>
-                      </DropdownMenuItem>
-                    </div>
-                    <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer" onClick={handleLogout}>
-                      <LogOut className="w-4 h-4 text-muted-foreground" />
-                      Logout
-                    </DropdownMenuItem>
-                  </>
-                ) : (
-                  <Link to="/login">
-                    <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                      <User className="w-4 h-4 text-muted-foreground" />
-                      Login
-                    </DropdownMenuItem>
-                  </Link>
-                )}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {!user && (
+          {/* {!user && (
             <Link to="/login">
               <button className="border-[#F08C7D] bg-[#FFECE8] text-[#F08C7D] py-2 px-4 rounded-md font-semibold mt-4 hover:bg-[#F08C7D] hover:text-white transition">
                 LOGIN
               </button>
             </Link>
-          )}
+          )} */}
         </div>
       )}
     </nav>
