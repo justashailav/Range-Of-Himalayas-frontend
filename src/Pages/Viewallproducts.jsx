@@ -90,7 +90,7 @@ export default function Viewallproducts() {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10 bg-[#FFF8E1]">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10 bg-[#FFF8E1] min-h-screen">
       <Helmet>
         <title>All Products - Range Of Himalayas</title>
         <meta
