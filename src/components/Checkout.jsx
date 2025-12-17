@@ -62,10 +62,6 @@ export default function ShoppingCheckout() {
       ? finalAmount
       : grandTotal - (Number(discountAmount) || 0);
 
-  const COD_ADVANCE_AMOUNT = 200;
-
-  const amountToPayNow =
-    paymentMethod === "cod" ? COD_ADVANCE_AMOUNT : payableAmount;
   useEffect(() => {
     if ((cartItems.length === 0 && boxes.length === 0) || !user) {
       toast.error("Your cart is empty or you are not logged in.");
@@ -74,47 +70,153 @@ export default function ShoppingCheckout() {
   }, [cartItems, boxes, navigate, user]);
 
   // 🧾 Place Order
+  // async function handlePlaceOrder() {
+  //   if (cartItems.length === 0 && boxes.length === 0)
+  //     return toast.error("Your cart is empty.");
+  //   if (!currentSelectedAddress)
+  //     return toast.error("Please select a delivery address.");
+
+  //   const orderData = {
+  //     userId: user?._id,
+  //     cartItems: cartItems.map((item) => ({
+  //       productId: item.productId,
+  //       title: item.title,
+  //       image: item.image,
+  //       price: item.salesPrice > 0 ? item.salesPrice : item.price,
+  //       quantity: item.quantity,
+  //       size: item.size,
+  //       weight: item.weight || item.productWeight,
+  //     })),
+  //     boxes,
+  //     addressInfo: {
+  //       addressId: currentSelectedAddress?._id,
+  //       address: currentSelectedAddress?.address,
+  //       city: currentSelectedAddress?.city,
+  //       pincode: currentSelectedAddress?.pincode,
+  //       phone: currentSelectedAddress?.phone,
+  //       notes: currentSelectedAddress?.notes,
+  //     },
+  //     paymentMethod, // 🔥 razorpay or cod
+  //     paymentStatus: "pending",
+  //     totalAmount: payableAmount,
+  //     ...(code ? { code } : {}),
+  //   };
+
+  //   setIsRazorpayProcessing(true);
+
+  //   const data = await dispatch(createNewOrder(orderData));
+  //   if (!data?.success) {
+  //     throw new Error("Failed to place order");
+  //   }
+
+  //   // 🔒 Razorpay required for BOTH online & COD advance
+  //   if (!data.razorpayOrder?.id) {
+  //     toast.error("Payment initialization failed");
+  //     setIsRazorpayProcessing(false);
+  //     return;
+  //   }
+
+  //   const options = {
+  //     key: razorpayKey,
+  //     amount: data.razorpayOrder.amount, // backend decides
+  //     currency: data.razorpayOrder.currency || "INR",
+  //     name: "RANGE OF HIMALAYAS",
+  //     description:
+  //       paymentMethod === "cod"
+  //         ? "₹200 Advance for COD Order"
+  //         : "Online Payment",
+  //     order_id: data.razorpayOrder.id,
+
+  //     handler: async function (response) {
+  //       try {
+  //         await dispatch(
+  //           capturePayment({
+  //             razorpay_order_id: response.razorpay_order_id,
+  //             razorpay_payment_id: response.razorpay_payment_id,
+  //             razorpay_signature: response.razorpay_signature,
+  //             orderId: data.orderId,
+  //           })
+  //         );
+
+  //         toast.success(
+  //           paymentMethod === "cod"
+  //             ? "₹200 advance paid. COD order placed!"
+  //             : "Payment successful!"
+  //         );
+
+  //         dispatch(resetCoupon());
+
+  //         navigate("/order-success", {
+  //           state: {
+  //             orderId: data.orderId,
+  //             totalAmount: payableAmount,
+  //             paymentMethod,
+  //           },
+  //         });
+  //       } catch (err) {
+  //         toast.error("Payment verification failed");
+  //       } finally {
+  //         setIsRazorpayProcessing(false);
+  //       }
+  //     },
+
+  //     prefill: {
+  //       name: user?.name || "",
+  //       email: user?.email || "",
+  //       contact: currentSelectedAddress?.phone || "",
+  //     },
+
+  //     theme: { color: "#2E8B57" },
+  //   };
+
+  //   const rzp = new window.Razorpay(options);
+  //   rzp.open();
+  // }
+
   async function handlePlaceOrder() {
-    if (cartItems.length === 0 && boxes.length === 0)
-      return toast.error("Your cart is empty.");
-    if (!currentSelectedAddress)
-      return toast.error("Please select a delivery address.");
+  if (cartItems.length === 0 && boxes.length === 0)
+    return toast.error("Your cart is empty.");
 
-    const orderData = {
-      userId: user?._id,
-      cartItems: cartItems.map((item) => ({
-        productId: item.productId,
-        title: item.title,
-        image: item.image,
-        price: item.salesPrice > 0 ? item.salesPrice : item.price,
-        quantity: item.quantity,
-        size: item.size,
-        weight: item.weight || item.productWeight,
-      })),
-      boxes,
-      addressInfo: {
-        addressId: currentSelectedAddress?._id,
-        address: currentSelectedAddress?.address,
-        city: currentSelectedAddress?.city,
-        pincode: currentSelectedAddress?.pincode,
-        phone: currentSelectedAddress?.phone,
-        notes: currentSelectedAddress?.notes,
-      },
-      paymentMethod, // 🔥 razorpay or cod
-      paymentStatus: "pending",
-      totalAmount: payableAmount,
-      ...(code ? { code } : {}),
-    };
+  if (!currentSelectedAddress)
+    return toast.error("Please select a delivery address.");
 
-    setIsRazorpayProcessing(true);
+  const orderData = {
+    userId: user?._id,
+    cartItems: cartItems.map((item) => ({
+      productId: item.productId,
+      title: item.title,
+      image: item.image,
+      price: item.salesPrice > 0 ? item.salesPrice : item.price,
+      quantity: item.quantity,
+      size: item.size,
+      weight: item.weight || item.productWeight,
+    })),
+    boxes,
+    addressInfo: {
+      addressId: currentSelectedAddress?._id,
+      address: currentSelectedAddress?.address,
+      city: currentSelectedAddress?.city,
+      pincode: currentSelectedAddress?.pincode,
+      phone: currentSelectedAddress?.phone,
+      notes: currentSelectedAddress?.notes,
+    },
+    paymentMethod, // razorpay | cod
+    totalAmount: payableAmount,
+    ...(code ? { code } : {}),
+  };
 
+  setIsRazorpayProcessing(true);
+
+  try {
     const data = await dispatch(createNewOrder(orderData));
+
     if (!data?.success) {
-      throw new Error("Failed to place order");
+      throw new Error("Order creation failed");
     }
 
-    // 🔒 Razorpay required for BOTH online & COD advance
-    if (!data.razorpayOrder?.id) {
+    // 🔐 Razorpay MUST exist for both Razorpay & COD advance
+    if (!data.razorpayOrder || !data.razorpayOrder.id) {
+      console.error("❌ Razorpay order missing:", data);
       toast.error("Payment initialization failed");
       setIsRazorpayProcessing(false);
       return;
@@ -122,7 +224,7 @@ export default function ShoppingCheckout() {
 
     const options = {
       key: razorpayKey,
-      amount: data.razorpayOrder.amount, // backend decides
+      amount: data.razorpayOrder.amount, // ✅ ALWAYS from backend
       currency: data.razorpayOrder.currency || "INR",
       name: "RANGE OF HIMALAYAS",
       description:
@@ -131,7 +233,7 @@ export default function ShoppingCheckout() {
           : "Online Payment",
       order_id: data.razorpayOrder.id,
 
-      handler: async function (response) {
+      handler: async (response) => {
         try {
           await dispatch(
             capturePayment({
@@ -175,7 +277,12 @@ export default function ShoppingCheckout() {
 
     const rzp = new window.Razorpay(options);
     rzp.open();
+  } catch (err) {
+    toast.error(err.message || "Order failed");
+    setIsRazorpayProcessing(false);
   }
+}
+
 
   return (
     <div className="flex flex-col">
