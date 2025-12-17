@@ -28,7 +28,7 @@ const searchSlice = createSlice({
 export const searchProducts = (keyword) => (dispatch) => {
     dispatch(searchSlice.actions.searchProductsStart());
     
-    return axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/${keyword}`, {
+    return axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/products/${keyword}`, {
         headers: {
             "Content-Type": "application/json"
         },
