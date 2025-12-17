@@ -115,8 +115,7 @@ export default function ShoppingCheckout() {
         const options = {
           key: razorpayKey,
           amount: amountToPayNow * 100,
-
-          currency: data.razorpayOrder.currency,
+          currency: "INR",
           name: "RANGE OF HIMALAYAS",
           description: "Order Payment",
           order_id: data.razorpayOrder.id,
