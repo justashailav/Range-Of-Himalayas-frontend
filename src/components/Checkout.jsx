@@ -15,10 +15,13 @@ const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
 export default function ShoppingCheckout() {
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-  const { discountAmount = 0, finalAmount, code } = useSelector(
-    (state) => state.coupon
-  );
+  const {
+    discountAmount = 0,
+    finalAmount,
+    code,
+  } = useSelector((state) => state.coupon);
   const { productList = [] } = useSelector((state) => state.products);
+  const [paymentMethod, setPaymentMethod] = useState("razorpay");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +29,6 @@ export default function ShoppingCheckout() {
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isRazorpayProcessing, setIsRazorpayProcessing] = useState(false);
 
-  // ✅ Reset coupon if missing
   useEffect(() => {
     if (!code) dispatch(resetCoupon());
   }, [code, dispatch]);
@@ -60,16 +62,10 @@ export default function ShoppingCheckout() {
       ? finalAmount
       : grandTotal - (Number(discountAmount) || 0);
 
-  // 🎁 Free Gift Logic
-  const getFreeGift = (grandTotal) => {
-    if (grandTotal > 3000) return { name: "Pahadi Rajma", quantity: 3 };
-    if (grandTotal >= 2000) return { name: "Pahadi Rajma", quantity: 2 };
-    if (grandTotal >= 1000) return { name: "Pahadi Rajma", quantity: 1 };
-    return null;
-  };
-  const freeGift = getFreeGift(grandTotal);
+  const COD_ADVANCE_AMOUNT = 200;
 
-  // 🚨 Redirect if no cart or not logged in
+  const amountToPayNow =
+    paymentMethod === "cod" ? COD_ADVANCE_AMOUNT : payableAmount;
   useEffect(() => {
     if ((cartItems.length === 0 && boxes.length === 0) || !user) {
       toast.error("Your cart is empty or you are not logged in.");
@@ -93,17 +89,9 @@ export default function ShoppingCheckout() {
         price: item.salesPrice > 0 ? item.salesPrice : item.price,
         quantity: item.quantity,
         size: item.size,
-        weight: item.weight || item.productWeight || 0,
+        weight: item.weight || item.productWeight,
       })),
-      boxes: boxes.map((box) => ({
-        boxId: box._id || box.boxId || null,
-        boxName: box.boxName || "",
-        items: box.items.map((item) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          size: item.size,
-        })),
-      })),
+      boxes,
       addressInfo: {
         addressId: currentSelectedAddress?._id,
         address: currentSelectedAddress?.address,
@@ -112,12 +100,9 @@ export default function ShoppingCheckout() {
         phone: currentSelectedAddress?.phone,
         notes: currentSelectedAddress?.notes,
       },
-      paymentMethod: "razorpay",
+      paymentMethod, // 🔥 razorpay or cod
       paymentStatus: "pending",
       totalAmount: payableAmount,
-      orderDate: new Date().toISOString(),
-      orderUpdateDate: new Date().toISOString(),
-      freeGift,
       ...(code ? { code } : {}),
     };
 
@@ -129,7 +114,8 @@ export default function ShoppingCheckout() {
       if (data?.success) {
         const options = {
           key: razorpayKey,
-          amount: data.razorpayOrder.amount,
+          amount: amountToPayNow * 100,
+
           currency: data.razorpayOrder.currency,
           name: "RANGE OF HIMALAYAS",
           description: "Order Payment",
@@ -175,13 +161,16 @@ export default function ShoppingCheckout() {
 
   return (
     <div className="flex flex-col">
-    <Helmet>
+      <Helmet>
         <title>Checkout | Range of Himalayas</title>
         <meta
           name="description"
           content="Complete your order for fresh Himalayan apples, kiwis, and organic produce. Safe and secure Razorpay checkout."
         />
-        <meta name="keywords" content="Range of Himalayas, checkout, apples, kiwis, razorpay, organic fruits" />
+        <meta
+          name="keywords"
+          content="Range of Himalayas, checkout, apples, kiwis, razorpay, organic fruits"
+        />
         <link rel="canonical" href="https://rangeofhimalayas.com/checkout" />
       </Helmet>
       <div className="grid grid-cols-1 gap-6 mt-6 p-6 bg-white shadow-md rounded-xl">
@@ -343,14 +332,41 @@ export default function ShoppingCheckout() {
             )}
           </div>
 
-          {/* 🧾 Pay Button */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <div className="flex flex-col gap-4 mt-4">
+            {/* Payment Method */}
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  value="razorpay"
+                  checked={paymentMethod === "razorpay"}
+                  onChange={() => setPaymentMethod("razorpay")}
+                />
+                Pay Online
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  value="cod"
+                  checked={paymentMethod === "cod"}
+                  onChange={() => setPaymentMethod("cod")}
+                />
+                Cash on Delivery (₹200 advance)
+              </label>
+            </div>
+
+            {/* Pay Button */}
             <Button
               onClick={handlePlaceOrder}
               disabled={isRazorpayProcessing}
               className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
             >
-              {isRazorpayProcessing ? "Processing..." : "Pay Online"}
+              {isRazorpayProcessing
+                ? "Processing..."
+                : paymentMethod === "cod"
+                ? "Pay ₹200 & Place COD Order"
+                : "Pay Online"}
             </Button>
           </div>
         </div>
