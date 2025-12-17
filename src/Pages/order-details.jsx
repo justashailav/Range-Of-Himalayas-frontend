@@ -654,17 +654,18 @@ export default function ShoppingOrderDetailsView() {
                                 Size: {item.size}
                               </span>
                             )}
+                            <span className="font-medium">
+                                {item.weight}
+                              </span>
                           </div>
                         </div>
                       </div>
 
-                      {/* Right side: Price */}
                       <div className="mt-2 sm:mt-0 text-gray-900 font-bold text-base sm:text-lg">
                         ₹{item.price * item.quantity}
                       </div>
                     </div>
 
-                    {/* Partial Cancel Actions */}
 
                     {itemReturned && (
                       <p className="text-blue-600 text-sm font-medium">
