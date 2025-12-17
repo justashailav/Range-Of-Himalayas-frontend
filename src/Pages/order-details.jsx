@@ -649,16 +649,18 @@ export default function ShoppingOrderDetailsView() {
                                 {item.quantity}
                               </span>
                             </span>
-                            <span className="flex items-center gap-1 bg-blue-100 text-blue-800 text-sm sm:text-base px-3 py-1 rounded-full font-medium">
-                              Size: {item.size || "-"}
-                            </span>
+                            {item.size && (
+                              <span className="flex items-center gap-1 bg-blue-100 text-blue-800 text-sm sm:text-base px-3 py-1 rounded-full font-medium">
+                                Size: {item.size}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
 
                       {/* Right side: Price */}
                       <div className="mt-2 sm:mt-0 text-gray-900 font-bold text-base sm:text-lg">
-                        ₹{item.price}
+                        ₹{item.price * item.quantity}
                       </div>
                     </div>
 
@@ -753,29 +755,6 @@ export default function ShoppingOrderDetailsView() {
                 )}
               </div>
             ))}
-          </section>
-        )}
-
-        {freeGift && (
-          <section className="bg-green-50 shadow-sm rounded-2xl border border-green-200 p-4 sm:p-6 mt-6">
-            <h3 className="text-lg sm:text-xl font-bold text-green-700 mb-3 border-b border-green-200 pb-2">
-              🎁 Free Gift
-            </h3>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <img
-                src={rajmaImg}
-                alt={freeGift.name}
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border border-gray-200"
-              />
-              <div className="flex flex-col text-center sm:text-left">
-                <span className="font-semibold text-green-800 text-sm sm:text-base">
-                  {freeGift.quantity}kg {freeGift.name}
-                </span>
-                <span className="text-xs sm:text-sm text-green-700">
-                  Added for free 🎉
-                </span>
-              </div>
-            </div>
           </section>
         )}
         <div className="grid gap-4">
