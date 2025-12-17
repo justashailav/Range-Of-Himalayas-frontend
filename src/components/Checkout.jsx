@@ -313,23 +313,6 @@ export default function ShoppingCheckout() {
               </p>
             )}
 
-            {freeGift && (
-              <div className="mt-5 flex items-center gap-3 p-3 rounded-xl border border-green-300 bg-green-50 shadow-sm">
-                <img
-                  src={rajmaImg}
-                  alt={freeGift.name}
-                  className="w-16 h-16 rounded-lg object-cover border border-gray-200"
-                />
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">
-                    🎁 Free Gift: {freeGift.name} ({freeGift.quantity}kg)
-                  </p>
-                  <p className="text-xs text-green-700 bg-green-100 px-2 py-0.5 rounded-md mt-1 inline-block">
-                    Yours Free!
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="flex flex-col gap-4 mt-4">
