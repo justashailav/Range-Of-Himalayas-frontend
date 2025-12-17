@@ -654,9 +654,12 @@ export default function ShoppingOrderDetailsView() {
                                 Size: {item.size}
                               </span>
                             )}
-                            <span className="font-medium">
+                            <span className="flex items-center gap-1 text-gray-700 text-sm sm:text-base">
+                              <span className="font-medium">
                                Weight: {item.weight}
                               </span>
+                            </span>
+                              
                           </div>
                         </div>
                       </div>
