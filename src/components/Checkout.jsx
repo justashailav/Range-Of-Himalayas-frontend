@@ -108,6 +108,7 @@ export default function ShoppingCheckout() {
 
     setIsRazorpayProcessing(true);
 
+    const data = await dispatch(createNewOrder(orderData));
     if (!data?.success) {
       throw new Error("Failed to place order");
     }
