@@ -53,7 +53,7 @@ export default function Navbar() {
   const totalCount = cartCount + boxCount;
   const wishListCount = wishListItems?.length || 0;
   return (
-    <nav className="bg-[#F08C7D] min-h-16 md:h-20 px-4 sm:px-6 lg:px-10 shadow-md">
+    <nav className="fixed bg-[#F08C7D] min-h-16 md:h-20 px-4 sm:px-6 lg:px-10 shadow-md">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
           <Link to="/">
