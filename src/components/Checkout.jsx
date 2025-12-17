@@ -108,54 +108,72 @@ export default function ShoppingCheckout() {
 
     setIsRazorpayProcessing(true);
 
-    try {
-      const data = await dispatch(createNewOrder(orderData));
-
-      if (data?.success) {
-        const options = {
-          key: razorpayKey,
-          amount: amountToPayNow * 100,
-          currency: "INR",
-          name: "RANGE OF HIMALAYAS",
-          description: "Order Payment",
-          order_id: data.razorpayOrder.id,
-          handler: async function (response) {
-            try {
-              await dispatch(
-                capturePayment({
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                  orderId: data.orderId,
-                })
-              );
-              toast.success("Payment successful!");
-              dispatch(resetCoupon());
-              navigate("/order-success", {
-                state: { orderId: data.orderId, totalAmount: payableAmount },
-              });
-            } catch (error) {
-              toast.error("Payment verification failed.");
-            } finally {
-              setIsRazorpayProcessing(false);
-            }
-          },
-          prefill: {
-            name: user?.name || "",
-            email: user?.email || "",
-            contact: currentSelectedAddress?.phone || "",
-          },
-          theme: { color: "#2E8B57" },
-        };
-        const rzp = new window.Razorpay(options);
-        rzp.open();
-      } else {
-        throw new Error("Failed to place order.");
-      }
-    } catch (error) {
-      toast.error(error?.message || "Order failed.");
-      setIsRazorpayProcessing(false);
+    if (!data?.success) {
+      throw new Error("Failed to place order");
     }
+
+    // 🔒 Razorpay required for BOTH online & COD advance
+    if (!data.razorpayOrder?.id) {
+      toast.error("Payment initialization failed");
+      setIsRazorpayProcessing(false);
+      return;
+    }
+
+    const options = {
+      key: razorpayKey,
+      amount: data.razorpayOrder.amount, // backend decides
+      currency: data.razorpayOrder.currency || "INR",
+      name: "RANGE OF HIMALAYAS",
+      description:
+        paymentMethod === "cod"
+          ? "₹200 Advance for COD Order"
+          : "Online Payment",
+      order_id: data.razorpayOrder.id,
+
+      handler: async function (response) {
+        try {
+          await dispatch(
+            capturePayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              orderId: data.orderId,
+            })
+          );
+
+          toast.success(
+            paymentMethod === "cod"
+              ? "₹200 advance paid. COD order placed!"
+              : "Payment successful!"
+          );
+
+          dispatch(resetCoupon());
+
+          navigate("/order-success", {
+            state: {
+              orderId: data.orderId,
+              totalAmount: payableAmount,
+              paymentMethod,
+            },
+          });
+        } catch (err) {
+          toast.error("Payment verification failed");
+        } finally {
+          setIsRazorpayProcessing(false);
+        }
+      },
+
+      prefill: {
+        name: user?.name || "",
+        email: user?.email || "",
+        contact: currentSelectedAddress?.phone || "",
+      },
+
+      theme: { color: "#2E8B57" },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   }
 
   return (
@@ -311,7 +329,6 @@ export default function ShoppingCheckout() {
                 🎟️ Coupon <strong>{code}</strong> applied successfully
               </p>
             )}
-
           </div>
 
           <div className="flex flex-col gap-4 mt-4">
