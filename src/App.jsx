@@ -55,55 +55,100 @@ function App() {
     dispatch(getAllProduct());
     dispatch(getAllCoupons());
   }, [dispatch]);
+  function WithNavbar() {
+    return (
+      <>
+        <Navbar />
+        <div className="pt-16 md:pt-20">
+          <Outlet />
+        </div>
+      </>
+    );
+  }
 
   return (
     <div>
       <Routes>
+        {/* Auth pages (NO navbar) */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/otp-verification/:email" element={<OTP />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
-        <Route path="/" element={<><Navbar /><Home /></>} />
-        <Route path="/about-us" element={<><Navbar /><OurStroy /></>} />
-        <Route path="/contact-us" element={<><Navbar /><ContectUs /></>} />
-        <Route path="/search" element={<SearchProducts />} />
-        <Route path="/cart" element={<><Navbar /><CartPage /></>} />
-        <Route path="/product/:id" element={<><Navbar /><ProductsDetailsDialog /></>} />
-        <Route path="/viewproducts" element={<><Navbar /><Viewallproducts /></>} />
-        <Route path="/blog" element={<><Navbar /><Blog/></>} />
-        <Route path="/blog/:slug" element={<><Navbar /><BlogDetail/></>} />
-        <Route path="/faqs" element={<><Navbar /><FAQSection/></>} />
-        <Route path="/shipping-policy" element={<><Navbar /><ShippingPolicy /></>} />
-          <Route path="/return-policy" element={<><Navbar /><RefundPolicy /></>} />
-          <Route path="/privacy-policy" element={<><Navbar /><PrivacyPolicy /></>} />
-          <Route path="/custombox" element={<><Navbar /><CustomBox /></>} />
-        <Route element={<CheckAuth user={user} isAuthencated={isAuthencated}><Outlet /></CheckAuth>}>
-          <Route path="/account" element={<><Navbar /><ShoppingAccount /></>} />
-          <Route path="/checkout" element={<><Navbar /><ShoppingCheckout /></>} />
-          <Route path="/profile" element={<><Navbar /><Profile /></>} />
-          <Route path="/wishlist" element={<><Navbar /><WishListItemContent /></>} />
-          <Route path="/custombox" element={<><Navbar /><CustomBox /></>} />
-          <Route path="/order-success" element={<OrderSuccess />} />
-          <Route path="/shopping-orders" element={<><Navbar /><ShoppingOrders /></>} />
-          <Route path="/order-details/:orderId" element={<><Navbar /><ShoppingOrderDetailsView /></>} />
-          <Route path="/return-request/:orderId" element={<><Navbar /><ReturnRequestPage/></>} />
-          <Route path="/order-tracking" element={<><Navbar /><OrderTracking/></>} />
+
+        {/* Pages WITH navbar */}
+        <Route element={<WithNavbar />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about-us" element={<OurStroy />} />
+          <Route path="/contact-us" element={<ContectUs />} />
+          <Route path="/search" element={<SearchProducts />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/product/:id" element={<ProductsDetailsDialog />} />
+          <Route path="/viewproducts" element={<Viewallproducts />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogDetail />} />
+          <Route path="/faqs" element={<FAQSection />} />
+          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+          <Route path="/return-policy" element={<RefundPolicy />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/custombox" element={<CustomBox />} />
+
+          {/* User protected */}
+          <Route
+            element={
+              <CheckAuth user={user} isAuthencated={isAuthencated}>
+                <Outlet />
+              </CheckAuth>
+            }
+          >
+            <Route path="/account" element={<ShoppingAccount />} />
+            <Route path="/checkout" element={<ShoppingCheckout />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/wishlist" element={<WishListItemContent />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
+            <Route path="/shopping-orders" element={<ShoppingOrders />} />
+            <Route
+              path="/order-details/:orderId"
+              element={<ShoppingOrderDetailsView />}
+            />
+            <Route
+              path="/return-request/:orderId"
+              element={<ReturnRequestPage />}
+            />
+            <Route path="/order-tracking" element={<OrderTracking />} />
+          </Route>
         </Route>
-        <Route element={<CheckAuth user={user} isAuthencated={isAuthencated} requiredRole="Admin"><Outlet /></CheckAuth>}>
+
+        {/* Admin (NO navbar) */}
+        <Route
+          element={
+            <CheckAuth
+              user={user}
+              isAuthencated={isAuthencated}
+              requiredRole="Admin"
+            >
+              <Outlet />
+            </CheckAuth>
+          }
+        >
           <Route path="/admin" element={<Adminlayout />}>
             <Route path="dashboard" element={<Admindashboard />} />
             <Route path="products" element={<Adminproducts />} />
             <Route path="orders" element={<AdminOrders />} />
-            <Route path="order-details/:orderId" element={<AdminOrderDetailsView />} />
+            <Route
+              path="order-details/:orderId"
+              element={<AdminOrderDetailsView />}
+            />
             <Route path="gallery" element={<Gallery />} />
             <Route path="blog" element={<Blogs />} />
             <Route path="coupons" element={<Admincoupon />} />
           </Route>
         </Route>
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-        {/* <RecentOrderToast /> */}
+
+      {/* <RecentOrderToast /> */}
       <ToastContainer />
     </div>
   );
