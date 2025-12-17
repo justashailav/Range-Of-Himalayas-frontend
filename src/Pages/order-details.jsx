@@ -560,6 +560,22 @@ export default function ShoppingOrderDetailsView() {
                 <span className="text-gray-900 truncate">{value || "-"}</span>
               </div>
             ))}
+            {orderDetails.paymentMethod === "cod" && (
+              <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg space-y-2">
+                <p className="text-sm sm:text-base text-gray-800">
+                  <span className="font-medium">Advance Paid:</span> ₹
+                  {orderDetails.codAdvanceAmount || 200}
+                </p>
+
+                <p className="text-sm sm:text-base text-gray-800">
+                  <span className="font-medium">
+                    Remaining Amount (Pay on Delivery):
+                  </span>{" "}
+                  ₹{orderDetails.codRemainingAmount}
+                </p>
+              </div>
+            )}
+
             <div className="flex justify-between items-center py-2">
               <span className="font-medium text-gray-600">Order Status</span>
               <Badge
@@ -656,10 +672,9 @@ export default function ShoppingOrderDetailsView() {
                             )}
                             <span className="flex items-center gap-1 text-gray-700 text-sm sm:text-base">
                               <span className="font-medium">
-                               Weight: {item.weight}
+                                Weight: {item.weight}
                               </span>
                             </span>
-                              
                           </div>
                         </div>
                       </div>
@@ -668,7 +683,6 @@ export default function ShoppingOrderDetailsView() {
                         ₹{item.price * item.quantity}
                       </div>
                     </div>
-
 
                     {itemReturned && (
                       <p className="text-blue-600 text-sm font-medium">
