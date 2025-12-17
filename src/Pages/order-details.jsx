@@ -655,7 +655,7 @@ export default function ShoppingOrderDetailsView() {
                               </span>
                             )}
                             <span className="font-medium">
-                                {item.weight}
+                               Weight: {item.weight}
                               </span>
                           </div>
                         </div>
