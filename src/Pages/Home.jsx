@@ -14,7 +14,7 @@ import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { toast } from "react-toastify";
 import TopSelections from "./TopSelections";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
@@ -27,7 +27,6 @@ import { getGalleryItems } from "@/store/slices/gallerySlice";
 import Footer from "./Footer";
 import CustomerReviews from "./CustomerReview";
 import { Helmet } from "react-helmet";
-import Blog from "./Blog";
 import HomeBlog from "./HomeBlogs";
 
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
@@ -480,124 +479,282 @@ export default function Home() {
         </div>
       </motion.div>
 
-      <div className="mt-12 sm:mt-16 md:mt-18">
-        <img
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl"
+      >
+        <motion.img
           src={foundersImage}
           alt="Founder"
           className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg rounded-xl"
+          initial={{ scale: 1.05 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         />
-      </div>
-
-      <div className="px-6 py-12">
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="px-6 py-12"
+      >
         <div className="text-center mb-10">
-          <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+          {/* Badge */}
+          <motion.span
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.4 }}
+            className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+          >
             🍎 From Our Orchards
-          </span>
-          <h1 className="text-4xl font-bold mt-4 mb-3">Himalayan Harvest</h1>
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+          </motion.span>
+
+          {/* Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-4xl font-bold mt-4 mb-3"
+          >
+            Himalayan Harvest
+          </motion.h1>
+
+          {/* Paragraph */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.35, duration: 0.5 }}
+            className="text-gray-600 text-xl max-w-2xl mx-auto"
+          >
             Discover how we nurture premium apples with a blend of time-honored
             traditions and thoughtful modern practices in the pristine Himalayan
             foothills.
-          </p>
+          </motion.p>
         </div>
-      </div>
-      <div className="px-6 py-12 bg-white ">
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="px-6 py-12 bg-white"
+      >
+        {/* Heading */}
         <div className="text-center mb-10">
-          <h2 className="text-4xl font-bold mb-2">Follow Us</h2>
-          <p className="text-gray-600 text-xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl font-bold mb-2"
+          >
+            Follow Us
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="text-gray-600 text-xl"
+          >
             🌱 Get the freshest updates on our harvests and apple collections
-          </p>
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-          <div className="p-6 border border-green-200 rounded-xl text-center hover:shadow-md transition">
-            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
+        {/* Cards */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.15 },
+            },
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto"
+        >
+          {/* Instagram */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            whileHover={{ y: -6 }}
+            transition={{ duration: 0.3 }}
+            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
+          >
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 3 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4"
+            >
               <FaInstagram className="text-3xl text-pink-600" />
-            </div>
+            </motion.div>
+
             <h3 className="font-semibold text-lg">Instagram</h3>
             <p className="text-gray-600">@range.of.himalayas</p>
-            <a
+
+            <motion.a
               href="https://www.instagram.com/range.of.himalayas"
               target="_blank"
               rel="noopener noreferrer"
+              whileHover={{ x: 5 }}
               className="text-green-700 font-medium mt-2 inline-block"
             >
               Follow →
-            </a>
-          </div>
-          <div className="p-6 border border-green-200 rounded-xl text-center hover:shadow-md transition">
-            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
+            </motion.a>
+          </motion.div>
+
+          {/* Facebook */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            whileHover={{ y: -6 }}
+            transition={{ duration: 0.3 }}
+            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
+          >
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: -3 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4"
+            >
               <FaFacebook className="text-3xl text-blue-600" />
-            </div>
+            </motion.div>
+
             <h3 className="font-semibold text-lg">Facebook</h3>
             <p className="text-gray-600">@rangeofhimalayas</p>
-            <a
+
+            <motion.a
               href="https://www.facebook.com/rangeofhimalayas"
               target="_blank"
               rel="noopener noreferrer"
+              whileHover={{ x: 5 }}
               className="text-green-700 font-medium mt-2 inline-block"
             >
               Follow →
-            </a>
-          </div>
-        </div>
-      </div>
+            </motion.a>
+          </motion.div>
+        </motion.div>
+      </motion.div>
       <HomeBlog />
-      <div className="px-6 py-12 text-center">
-        <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="px-6 py-12 text-center"
+      >
+        {/* Badge */}
+        <motion.span
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+        >
           🌿 Orchard Moments
-        </span>
-        <h1 className="text-4xl font-bold mt-4 mb-3">
+        </motion.span>
+
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-4xl font-bold mt-4 mb-3"
+        >
           🍏 From Orchard to Table
-        </h1>
-        <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+        </motion.h1>
+
+        {/* Paragraph */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="text-gray-600 text-xl max-w-2xl mx-auto"
+        >
           Witness the journey of our orchards through the seasons — a
           celebration of purity, tradition, and mindful farming at Range Of
           Himalayas.
-        </p>
-        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-8">
+        </motion.p>
+
+        {/* Category Buttons */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={{
+            visible: { transition: { staggerChildren: 0.08 } },
+          }}
+          className="flex flex-wrap justify-center gap-3 mt-6 mb-8"
+        >
           {categories.map((cat) => (
-            <button
+            <motion.button
               key={cat}
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setActiveCategory(cat);
                 setCurrentIndex(0);
                 setCurrentImageIndex(0);
               }}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 transform
-        ${
-          activeCategory === cat
-            ? "bg-gradient-to-r from-red-500 to-red-700 text-white shadow-lg scale-105"
-            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:scale-105"
-        }`}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
+          ${
+            activeCategory === cat
+              ? "bg-gradient-to-r from-red-500 to-red-700 text-white shadow-lg scale-105"
+              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:scale-105"
+          }`}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
+        {/* Gallery */}
         {loading ? (
           <p className="text-gray-500">Loading images...</p>
         ) : filteredItems.length > 0 ? (
           <div className="relative max-w-3xl mx-auto">
-            <img
-              src={filteredItems[currentIndex]?.images[currentImageIndex]}
-              alt={filteredItems[currentIndex]?.title}
-              className="w-full h-full object-cover rounded-xl shadow-md"
-            />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={filteredItems[currentIndex]?.images[currentImageIndex]}
+                src={filteredItems[currentIndex]?.images[currentImageIndex]}
+                alt={filteredItems[currentIndex]?.title}
+                initial={{ opacity: 0, scale: 1.03 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.97 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="w-full h-full object-cover rounded-xl shadow-md"
+              />
+            </AnimatePresence>
             <button
               onClick={prevSlide}
-              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60  text-white p-3 rounded-full shadow-md hover:bg-black/80"
+              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80 transition"
             >
               <FaArrowLeft />
             </button>
+
             <button
               onClick={nextSlide}
-              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80"
+              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80 transition"
             >
               <FaArrowRight />
             </button>
-            <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg"
+            >
               <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
                 {filteredItems[currentIndex]?.category}
               </span>
@@ -607,7 +764,7 @@ export default function Home() {
               <p className="text-sm text-gray-200 mt-1">
                 {filteredItems[currentIndex]?.desc}
               </p>
-            </div>
+            </motion.div>
           </div>
         ) : (
           <p className="text-gray-500">No images found</p>
@@ -615,21 +772,25 @@ export default function Home() {
         {filteredItems.length > 0 && (
           <div className="flex justify-center gap-4 mt-6">
             {filteredItems[currentIndex].images.map((img, index) => (
-              <img
+              <motion.img
                 key={index}
                 src={img}
                 alt="thumb"
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setCurrentImageIndex(index)}
-                className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 ${
-                  index === currentImageIndex
-                    ? "border-red-600"
-                    : "border-transparent"
-                }`}
+                className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 transition
+            ${
+              index === currentImageIndex
+                ? "border-red-600"
+                : "border-transparent"
+            }`}
               />
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
+
       <section className="bg-gradient-to-b from-green-50 to-white py-16 px-6 sm:px-10">
         <CustomerReviews />
       </section>
