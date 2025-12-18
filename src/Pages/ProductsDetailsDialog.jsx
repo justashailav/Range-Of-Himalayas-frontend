@@ -24,11 +24,10 @@ import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import { socket } from "@/utils/socket";
 import { motion } from "framer-motion";
+import { ZoomIn } from "lucide-react";
 export default function ProductsDetailsDialog() {
   const dispatch = useDispatch();
   const { id } = useParams();
-
-  // Selectors
   const productDetails = useSelector((state) => state.product.productDetails);
   const { user } = useSelector((state) => state.auth);
   const { reviews, message, success } = useSelector((state) => state.reviews);
