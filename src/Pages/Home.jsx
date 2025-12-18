@@ -285,7 +285,7 @@ export default function Home() {
         </div>
         <div className="w-full sm:w-auto">
           <Link to="/viewproducts">
-            <button className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out">
+            <button className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white cursor-pointer px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out">
               View All Products
             </button>
           </Link>

@@ -163,8 +163,8 @@ export default function ShoppingProductTile({
                 );
                 setOpenCartSheet?.(true);
               }}
-              className="flex-1 bg-[#F08C7D] text-white font-medium
-                     hover:bg-white hover:text-[#F08C7D]
+              className="flex-1 bg-[#F08C7D] cursor-pointer text-white font-medium
+                     hover:bg-white hover:text-[#411d18]
                      border-2 border-[#F08C7D]
                      transition-colors duration-200"
             >
@@ -180,7 +180,7 @@ export default function ShoppingProductTile({
                   selectedWeight
                 )
               }
-              className="flex-1 bg-white text-[#F08C7D] font-medium
+              className="flex-1 bg-white text-[#F08C7D] cursor-pointer font-medium
                      border-2 border-[#F08C7D]
                      hover:bg-[#F08C7D] hover:text-white
                      transition-colors duration-200 flex items-center justify-center gap-2"
