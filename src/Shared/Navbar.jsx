@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaTimes, FaShoppingCart } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-himalayas.png";
 import UserCartWrapper from "@/components/Cart-wrapper";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -21,19 +21,18 @@ import { searchProducts } from "@/store/slices/searchSlice";
 import { Button } from "@/components/ui/button";
 import { resetAuthSlice } from "@/store/slices/authSlice";
 import { persistor } from "@/store/store";
-import { useScroll, motion, useMotionValueEvent, AnimatePresence, } from "framer-motion";
+import { useScroll,motion,useMotionValueEvent } from "framer-motion";
 
 export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { cartItems, boxes } = useSelector((state) => state.cart);
   const { wishListItems } = useSelector((state) => state.wishList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,9 +41,9 @@ export default function Navbar() {
     const previous = scrollY.getPrevious();
 
     if (latest > previous && latest > 80) {
-      setHidden(true);
+      setHidden(true); 
     } else {
-      setHidden(false);
+      setHidden(false); 
     }
 
     setScrolled(latest > 20);
@@ -70,24 +69,8 @@ export default function Navbar() {
   const boxCount = boxes?.length || 0;
   const totalCount = cartCount + boxCount;
   const wishListCount = wishListItems?.length || 0;
-
-  const NavItem = ({ to, label }) => {
-    const active = location.pathname === to;
-    return (
-      <Link to={to} className="relative px-1">
-        <span>{label}</span>
-        {active && (
-          <motion.span
-            layoutId="nav-underline"
-            className="absolute -bottom-1 left-0 h-[2px] w-full bg-white rounded"
-          />
-        )}
-      </Link>
-    );
-  };
-
   return (
-    <motion.nav
+    <motion.nav 
       variants={{
         visible: { y: 0 },
         hidden: { y: "-100%" },
@@ -105,31 +88,31 @@ export default function Navbar() {
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
           <Link to="/">
-            <motion.img
-              src={logo}
-              className="w-28"
-              alt="Logo"
-              whileHover={{ scale: 1.05 }}
-            />
+            <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
           </Link>
 
           <div className="flex items-center gap-4 sm:gap-4 mt-2">
             <Sheet open={openCart} onOpenChange={setOpenCart}>
+            <div className="relative">
+               <Link to="/wishlist">
+                <Heart color="white" className="cursor-pointer text-2xl" />
+                {wishListCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
+                    {wishListCount}
+                  </span>
+                )}
+              </Link>
+            </div>
+
               <div className="relative">
                 <FaShoppingCart
                   onClick={() => setOpenCart(true)}
-                  className="text-white text-2xl cursor-pointer"
+                  className="text-white text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
                 />
                 {totalCount > 0 && (
-                  <motion.span
-                    key={totalCount}
-                    initial={{ scale: 0.7 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                    className="absolute -top-2 -right-2 bg-red-600 text-xs px-1.5 rounded-full"
-                  >
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
                     {totalCount}
-                  </motion.span>
+                  </span>
                 )}
               </div>
               <SheetContent side="right" className="sm:max-w-md">
@@ -210,13 +193,8 @@ export default function Navbar() {
           </div>
         </div>
         <div className="hidden lg:flex items-center justify-between w-full">
-          <Link to="/">
-            <motion.img
-              src={logo}
-              className="w-28"
-              alt="Logo"
-              whileHover={{ scale: 1.05 }}
-            />
+          <Link to="/" className="flex-shrink-0 ">
+            <img src={logo} className="w-28 sm:w-32 lg:w-36" alt="Logo" />
           </Link>
           <div className="flex mb-2 gap-4 lg:gap-6 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
             <Link to="/">HOME</Link>
@@ -226,24 +204,20 @@ export default function Navbar() {
             <Link to="/contact-us">CONTACT US</Link>
           </div>
           <div className="flex mb-2 items-center gap-3 lg:gap-6">
-            <motion.div
-              animate={{ width: showSearch ? 240 : 40 }}
-              transition={{ duration: 0.3 }}
-              className="hidden lg:block relative overflow-hidden"
-            >
+            <div className="relative flex-1 min-w-[150px] max-w-[250px] ml-6">
               <CiSearch
-                className="absolute right-3 top-2 text-white text-xl cursor-pointer"
-                onClick={() => setShowSearch(true)}
+                className="absolute right-3 top-2 text-white text-2xl cursor-pointer"
+                onClick={handleSearch}
               />
               <input
+                placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                onBlur={() => setShowSearch(false)}
-                placeholder="Search..."
-                className="w-full bg-white/20 text-white placeholder-white px-2 py-1 pr-8 rounded outline-none"
+                onKeyDown={handleKeyDown}
+                className="w-full pl-2 pr-10 py-2 rounded-md border-none placeholder-white text-white
+                           bg-white/20 backdrop-blur-sm"
               />
-            </motion.div>
+            </div>
 
             {!user && (
               <Link to="/login">
@@ -271,15 +245,9 @@ export default function Navbar() {
                   className="text-white text-2xl cursor-pointer"
                 />
                 {totalCount > 0 && (
-                  <motion.span
-                    key={totalCount}
-                    initial={{ scale: 0.7 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                    className="absolute -top-2 -right-2 bg-red-600 text-xs px-1.5 rounded-full"
-                  >
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
                     {totalCount}
-                  </motion.span>
+                  </span>
                 )}
               </div>
               <SheetContent side="right" className="sm:max-w-md">
@@ -349,13 +317,8 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <AnimatePresence>
-        {isMenu && (
-        <motion.div initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.3 }} 
-            className="fixed top-0 right-0 h-full w-64 sm:w-72 md:w-80 lg:hidden bg-[#F08C7D] shadow-lg p-6 flex flex-col gap-5 text-white z-50 transition-transform transform translate-x-0">
+      {isMenu && (
+        <div className="fixed top-0 right-0 h-full w-64 sm:w-72 md:w-80 lg:hidden bg-[#F08C7D] shadow-lg p-6 flex flex-col gap-5 text-white z-50 transition-transform transform translate-x-0">
           <div className="flex justify-end mb-2">
             <FaTimes
               className="text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
@@ -406,9 +369,8 @@ export default function Navbar() {
               </button>
             </Link>
           )}
-        </motion.div>
+        </div>
       )}
-      </AnimatePresence>
     </motion.nav>
   );
 }
