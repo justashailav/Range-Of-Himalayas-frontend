@@ -27,6 +27,7 @@ export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { cartItems, boxes } = useSelector((state) => state.cart);
   const { wishListItems } = useSelector((state) => state.wishList);
