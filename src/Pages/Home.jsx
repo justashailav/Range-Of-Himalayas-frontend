@@ -14,6 +14,7 @@ import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { toast } from "react-toastify";
 import TopSelections from "./TopSelections";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
