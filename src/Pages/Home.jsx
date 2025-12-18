@@ -275,16 +275,40 @@ export default function Home() {
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10"
           >
             {productList && productList.length > 0 ? (
-              productList.slice(0, 3).map((item) => (
-                <Link
-                  key={item._id}
-                  to={`/product/${item._id}`}
-                  onClick={() => handleGetProductDetails(item)}
-                  className="block hover:-translate-y-1 transition-transform duration-300"
-                >
-                  <TopSelections product={item} />
-                </Link>
-              ))
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.15,
+                    },
+                  },
+                }}
+                className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+              >
+                {productList.slice(0, 3).map((item) => (
+                  <motion.div
+                    key={item._id}
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    whileHover={{ y: -6 }}
+                  >
+                    <Link
+                      to={`/product/${item._id}`}
+                      onClick={() => handleGetProductDetails(item)}
+                      className="block"
+                    >
+                      <TopSelections product={item} />
+                    </Link>
+                  </motion.div>
+                ))}
+              </motion.div>
             ) : (
               <p>No products found</p>
             )}
@@ -300,26 +324,56 @@ export default function Home() {
       </div>
 
       <div className="px-5 sm:px-10 flex flex-col sm:flex-row items-start sm:items-center justify-between">
-        <div>
-          <h1 className="mt-8 font-bold text-3xl text-[#D84C3C]">
-            Trending Now
-          </h1>
-        </div>
-        <div className="w-full sm:w-auto">
-          <Link to="/viewproducts">
-            <button className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white cursor-pointer px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out">
-              View All Products
-            </button>
-          </Link>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full"
+        >
+          <div>
+            <h1 className="mt-8 font-bold text-3xl text-[#D84C3C]">
+              Trending Now
+            </h1>
+          </div>
+
+          <div className="w-full sm:w-auto">
+            <Link to="/viewproducts">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white cursor-pointer px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out"
+              >
+                View All Products
+              </motion.button>
+            </Link>
+          </div>
+        </motion.div>
       </div>
-      <div className="relative p-10">
-        <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative p-10"
+      >
+        {/* LEFT ARROW */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
+        >
           <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
+        </motion.button>
+
+        {/* RIGHT ARROW */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
+        >
           <ChevronRight className="w-5 h-5" />
-        </button>
+        </motion.button>
 
         <Swiper
           modules={[Navigation]}
@@ -334,45 +388,98 @@ export default function Home() {
             1024: { slidesPerView: 3 },
           }}
         >
-          {productList.map((item) => (
+          {productList.map((item, index) => (
             <SwiperSlide key={item._id}>
-              <ShoppingProductTile
-                product={item}
-                handleAddToCart={handleAddToCart}
-                handleAddToWishList={handleAddToWishList}
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.45,
+                  ease: "easeOut",
+                  delay: index * 0.1, // ✨ stagger effect
+                }}
+              >
+                <ShoppingProductTile
+                  product={item}
+                  handleAddToCart={handleAddToCart}
+                  handleAddToWishList={handleAddToWishList}
+                />
+              </motion.div>
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
+      </motion.div>
 
-      <div className="px-6 py-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="px-6 py-4"
+      >
+        {/* HEADER */}
         <div className="text-center mb-10">
-          <span className="px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+          >
             🍎 From Orchard to You
-          </span>
-          <h1 className="text-4xl font-bold mt-4 mb-3">
+          </motion.span>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-4xl font-bold mt-4 mb-3"
+          >
             Why Range Of Himalayas?
-          </h1>
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-gray-600 text-xl max-w-2xl mx-auto"
+          >
             Every apple is a reflection of our passion for purity, timeless
             tradition, and uncompromising quality.
-          </p>
+          </motion.p>
         </div>
+
+        {/* FEATURES GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
-              className="flex flex-col items-center bg-white shadow-sm rounded-xl p-6 hover:shadow-md transition"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.45,
+                ease: "easeOut",
+                delay: index * 0.12, // ✨ stagger
+              }}
+              whileHover={{
+                y: -6,
+                boxShadow: "0px 10px 25px rgba(0,0,0,0.08)",
+              }}
+              className="flex flex-col items-center bg-white shadow-sm rounded-xl p-6 transition"
             >
               <h3 className="font-semibold text-lg text-green-700">
                 {feature.title}
               </h3>
               <p className="text-gray-600 text-sm mt-2">{feature.desc}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
+
       <div className="mt-12 sm:mt-16 md:mt-18">
         <img
           src={foundersImage}
