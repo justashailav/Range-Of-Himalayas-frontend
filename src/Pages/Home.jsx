@@ -260,58 +260,47 @@ export default function Home() {
           Himalayan Selections
         </motion.h1>
 
-        
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.15 },
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
               },
-            }}
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10"
-          >
-            {productList && productList.length > 0 ? (
+            },
+          }}
+          className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+        >
+          {productList && productList.length > 0 ? (
+            productList.slice(0, 3).map((item) => (
               <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                key={item._id}
                 variants={{
-                  hidden: {},
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.15,
-                    },
-                  },
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0 },
                 }}
-                className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                whileHover={{ y: -8 }}
+                className="will-change-transform"
               >
-                {productList.slice(0, 3).map((item) => (
-                  <motion.div
-                    key={item._id}
-                    variants={{
-                      hidden: { opacity: 0, y: 30 },
-                      visible: { opacity: 1, y: 0 },
-                    }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    whileHover={{ y: -6 }}
-                  >
-                    <Link
-                      to={`/product/${item._id}`}
-                      onClick={() => handleGetProductDetails(item)}
-                      className="block"
-                    >
-                      <TopSelections product={item} />
-                    </Link>
-                  </motion.div>
-                ))}
+                <Link
+                  to={`/product/${item._id}`}
+                  onClick={() => handleGetProductDetails(item)}
+                  className="block h-full"
+                >
+                  <TopSelections product={item} />
+                </Link>
               </motion.div>
-            ) : (
-              <p>No products found</p>
-            )}
-          </motion.div>
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">
+              No products found
+            </p>
+          )}
+        </motion.div>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
@@ -644,6 +633,7 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </motion.div>
+
       <HomeBlog />
       <motion.div
         initial={{ opacity: 0, y: 50 }}
