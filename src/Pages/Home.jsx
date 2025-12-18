@@ -105,52 +105,52 @@ export default function Home() {
   }
 
   function handleAddToCart(getCurrentProductId, getTotalStock, size, weight) {
-  if (!user?._id) {
-    toast.error("Oops! You need to login first to add items to your cart.");
-    return;
-  }
-
-  const normalizedSize = size || ""; // ✅ size optional
-
-  const getCartItems = cartItems?.items || [];
-
-  const existingItemIndex = getCartItems.findIndex(
-    (item) =>
-      item.productId.toString() === getCurrentProductId.toString() &&
-      (item.size || "") === normalizedSize &&
-      item.weight === weight
-  );
-
-  if (existingItemIndex > -1) {
-    const currentQuantity = getCartItems[existingItemIndex].quantity;
-    if (currentQuantity + 1 > getTotalStock) {
-      toast.error(`Only ${getTotalStock} items available for this variant`);
+    if (!user?._id) {
+      toast.error("Oops! You need to login first to add items to your cart.");
       return;
     }
-  }
 
-  dispatch(
-    addToCart({
-      userId: user._id,
-      productId: getCurrentProductId,
-      quantity: 1,
-      size: normalizedSize,
-      weight,
-    })
-  )
-    .then((data) => {
-      if (data?.success) {
-        dispatch(fetchCartItems(user._id));
-        toast.success("Product added to cart");
-        setOpenCartSheet(true);
-      } else {
-        toast.error(data?.message || "Failed to add item");
+    const normalizedSize = size || ""; // ✅ size optional
+
+    const getCartItems = cartItems?.items || [];
+
+    const existingItemIndex = getCartItems.findIndex(
+      (item) =>
+        item.productId.toString() === getCurrentProductId.toString() &&
+        (item.size || "") === normalizedSize &&
+        item.weight === weight
+    );
+
+    if (existingItemIndex > -1) {
+      const currentQuantity = getCartItems[existingItemIndex].quantity;
+      if (currentQuantity + 1 > getTotalStock) {
+        toast.error(`Only ${getTotalStock} items available for this variant`);
+        return;
       }
-    })
-    .catch(() => {
-      toast.error("Failed to add item");
-    });
-}
+    }
+
+    dispatch(
+      addToCart({
+        userId: user._id,
+        productId: getCurrentProductId,
+        quantity: 1,
+        size: normalizedSize,
+        weight,
+      })
+    )
+      .then((data) => {
+        if (data?.success) {
+          dispatch(fetchCartItems(user._id));
+          toast.success("Product added to cart");
+          setOpenCartSheet(true);
+        } else {
+          toast.error(data?.message || "Failed to add item");
+        }
+      })
+      .catch(() => {
+        toast.error("Failed to add item");
+      });
+  }
 
   function handleAddToWishList(
     getCurrentProductId,
@@ -238,20 +238,41 @@ export default function Home() {
       </div>
 
       <Link to="/viewproducts">
-        <img
+        <motion.img
           src={bgImage}
           alt="Banner"
+          initial={{ scale: 1.05, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1 }}
           className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
         />
       </Link>
 
       <div className="border-[#FAD4B3] border-b-1 mt-10 h-[2px] w-full"></div>
       <div>
-        <h1 className="text-center mt-8 font-bold text-3xl text-[#D84C3C]">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mt-8 font-bold text-3xl text-[#D84C3C]"
+        >
           Himalayan Selections
-        </h1>
+        </motion.h1>
+
         <div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-10"
+          >
             {productList && productList.length > 0 ? (
               productList.slice(0, 3).map((item) => (
                 <Link
@@ -266,7 +287,7 @@ export default function Home() {
             ) : (
               <p>No products found</p>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
