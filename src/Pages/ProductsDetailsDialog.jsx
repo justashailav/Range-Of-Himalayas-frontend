@@ -260,15 +260,43 @@ export default function ProductsDetailsDialog() {
       </Helmet>
       <div className="max-w-[95vw] md:max-w-[90vw] lg:max-w-[85vw] mx-auto p-4 sm:p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* LEFT SECTION */}
           <div className="flex flex-col gap-4">
-            <div className="relative overflow-hidden rounded-xl group cursor-zoom-in">
-              <img
+            <motion.div
+              initial="rest"
+              animate="rest"
+              whileHover="hover"
+              className="relative overflow-hidden rounded-xl cursor-zoom-in"
+            >
+              <motion.img
                 src={mainImage}
                 alt={productDetails?.title}
-                className="w-full h-full object-contain mx-auto rounded-lg transition-transform duration-300 transform group-hover:scale-110"
+                variants={{
+                  rest: { scale: 1 },
+                  hover: { scale: 1.12 },
+                }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                className="w-full h-full object-contain mx-auto rounded-lg"
               />
-            </div>
+              <motion.div
+                variants={{
+                  rest: { opacity: 0 },
+                  hover: { opacity: 1 },
+                }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 bg-black/10 flex items-center justify-center"
+              >
+                <motion.div
+                  variants={{
+                    rest: { scale: 0.8, opacity: 0 },
+                    hover: { scale: 1, opacity: 1 },
+                  }}
+                  transition={{ duration: 0.25 }}
+                  className="bg-white p-3 rounded-full shadow-lg"
+                >
+                  <ZoomIn className="w-5 h-5 text-gray-700" />
+                </motion.div>
+              </motion.div>
+            </motion.div>
 
             {allImages.length > 1 && (
               <div className="mt-2 overflow-x-auto scrollbar-hide">
