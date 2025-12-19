@@ -380,7 +380,6 @@ export default function ProductsDetailsDialog() {
                   </motion.span>
                 </button>
 
-                {/* ACCORDION CONTENT */}
                 <AnimatePresence initial={false}>
                   {infoOpen && (
                     <motion.div
@@ -431,59 +430,79 @@ export default function ProductsDetailsDialog() {
 
             {productDetails?.nutrition && (
               <motion.div
+                className={`rounded-xl mt-4 border shadow-sm bg-white
+      transition-all duration-500
+       md:top-28
+      ${variantHighlight ? "ring-2 ring-[#F08C7D]/40" : ""}
+    `}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="bg-[#FFF8E1] rounded-xl p-6 mt-4 border shadow-sm"
               >
-                <motion.h3
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="font-bold mb-4 text-xl pb-2"
+                {/* HEADER */}
+                <button
+                  onClick={() => setInfoOpen((p) => !p)}
+                  className="w-full flex items-center justify-between px-6 py-4 font-bold text-xl"
                 >
-                  Nutrition
-                </motion.h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🍎</span>
+                    Nutrition
+                  </div>
+                  <motion.span
+                    animate={{ rotate: infoOpen ? 180 : 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="text-xl"
+                  >
+                    ⌃
+                  </motion.span>
+                </button>
 
-                <motion.div
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={{
-                    hidden: {},
-                    visible: {
-                      transition: {
-                        staggerChildren: 0.08,
-                      },
-                    },
-                  }}
-                  className="space-y-3"
-                >
-                  {Object.entries(productDetails.nutrition)
-                    .filter(([key]) => !["_id", "__v"].includes(key))
-                    .map(([key, value]) => (
+                <AnimatePresence initial={false}>
+                  {infoOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden px-6 pb-6"
+                    >
                       <motion.div
-                        key={key}
+                        initial="hidden"
+                        animate="visible"
                         variants={{
-                          hidden: { opacity: 0, y: 12 },
-                          visible: { opacity: 1, y: 0 },
+                          hidden: {},
+                          visible: {
+                            transition: { staggerChildren: 0.08 },
+                          },
                         }}
-                        transition={{ duration: 0.35, ease: "easeOut" }}
-                        className="flex justify-between items-center p-2 rounded-lg hover:bg-[#FFEAC2] transition-colors"
+                        className="space-y-3"
                       >
-                        <span className="capitalize font-medium text-gray-800">
-                          {key
-                            .replace(/_/g, " ")
-                            .replace(/\b\w/g, (c) => c.toUpperCase())}
-                        </span>
-                        <span className="text-gray-900 font-semibold">
-                          {value}
-                        </span>
+                        {Object.entries(productDetails.nutrition)
+                          .filter(([key]) => !["_id", "__v"].includes(key))
+                          .map(([key, value]) => (
+                            <motion.div
+                              key={key}
+                              variants={{
+                                hidden: { opacity: 0, y: 12 },
+                                visible: { opacity: 1, y: 0 },
+                              }}
+                              transition={{ duration: 0.35, ease: "easeOut" }}
+                              whileHover={{ backgroundColor: "#FFEAC2" }}
+                              className="flex justify-between items-center p-2 rounded-lg"
+                            >
+                              <span className="font-medium text-gray-800 capitalize">
+                                {key.replace(/_/g, " ")}
+                              </span>
+                              <span className="text-gray-900 font-semibold">
+                                {value}
+                              </span>
+                            </motion.div>
+                          ))}
                       </motion.div>
-                    ))}
-                </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
           </div>
