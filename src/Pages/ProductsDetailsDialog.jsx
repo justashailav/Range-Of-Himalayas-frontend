@@ -260,32 +260,34 @@ export default function ProductsDetailsDialog() {
       </Helmet>
       <div className="max-w-[95vw] md:max-w-[90vw] lg:max-w-[85vw] mx-auto p-4 sm:p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* LEFT SECTION */}
           <div className="flex flex-col gap-4">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              whileHover={{
-                boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
-              }}
-              className="relative overflow-hidden rounded-xl bg-white"
-            >
-              {/* Image */}
-              <img
-                src={mainImage}
-                alt={productDetails?.title}
-                className="w-full h-full object-contain mx-auto rounded-lg"
-              />
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, ease: "easeOut" }}
+  whileHover={{
+    boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
+  }}
+  className="relative overflow-hidden rounded-xl bg-white"
+>
+  {/* Image with zoom */}
+  <motion.img
+    src={mainImage}
+    alt={productDetails?.title}
+    initial={{ scale: 1 }}
+    whileHover={{ scale: 1.08 }}
+    transition={{ duration: 0.4, ease: "easeOut" }}
+    className="w-full h-full object-contain mx-auto rounded-lg"
+  />
 
-              {/* Soft overlay on hover */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"
-              />
-            </motion.div>
+  {/* Soft overlay */}
+  <motion.div
+    initial={{ opacity: 0 }}
+    whileHover={{ opacity: 1 }}
+    transition={{ duration: 0.3 }}
+    className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"
+  />
+</motion.div>
 
             {allImages.length > 1 && (
               <div className="mt-2 overflow-x-auto scrollbar-hide">
