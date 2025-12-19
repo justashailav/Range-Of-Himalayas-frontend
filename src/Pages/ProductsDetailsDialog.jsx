@@ -354,7 +354,7 @@ export default function ProductsDetailsDialog() {
               <motion.div
                 className={`rounded-xl mt-4 border shadow-sm bg-white
       transition-all duration-500
-      md:sticky md:top-28
+       md:top-28
       ${variantHighlight ? "ring-2 ring-[#F08C7D]/40" : ""}
     `}
                 initial={{ opacity: 0, y: 30 }}
