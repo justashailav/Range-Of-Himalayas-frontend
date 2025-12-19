@@ -71,12 +71,12 @@ export default function ProductsDetailsDialog() {
     }
   }, [dispatch, id]);
   useEffect(() => {
-  if (selectedVariant) {
-    setVariantHighlight(true);
-    const t = setTimeout(() => setVariantHighlight(false), 600);
-    return () => clearTimeout(t);
-  }
-}, [selectedVariant]);
+    if (selectedVariant) {
+      setVariantHighlight(true);
+      const t = setTimeout(() => setVariantHighlight(false), 600);
+      return () => clearTimeout(t);
+    }
+  }, [selectedVariant]);
 
   /* ---------------- INIT VARIANT ---------------- */
   useEffect(() => {
@@ -507,33 +507,119 @@ export default function ProductsDetailsDialog() {
             )}
           </div>
           <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-2 mt-3">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="flex items-center gap-2 mt-3"
+            >
+              {/* Live indicator */}
               <div className="relative flex items-center justify-center">
-                <span className="absolute inline-flex h-4 w-4 rounded-full bg-green-400 opacity-75 animate-ping"></span>
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+                {/* soft glow */}
+                <motion.span
+                  animate={{ scale: [1, 1.6, 1], opacity: [0.6, 0, 0.6] }}
+                  transition={{
+                    duration: 1.8,
+                    repeat: Infinity,
+                    ease: "easeOut",
+                  }}
+                  className="absolute inline-flex h-4 w-4 rounded-full bg-green-400"
+                />
+                {/* solid dot */}
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
               </div>
-              <span className="text-green-600 font-semibold text-sm">
-                {viewers}
-              </span>
+
+              {/* Animated number */}
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={viewers}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="text-green-600 font-semibold text-sm"
+                >
+                  {viewers}
+                </motion.span>
+              </AnimatePresence>
+
               <span className="text-gray-800 text-sm font-medium">
                 People are watching
               </span>
-            </div>
-            <div className="font-semibold text-gray-700">
-              RANGE OF HIMALAYAS
-            </div>
-            <h1 className="text-4xl font-bold text-gray-900">
-              {productDetails?.title}
-            </h1>
-            <p className="text-gray-700 text-base leading-relaxed">
-              {productDetails?.description}
-            </p>
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.15 },
+                },
+              }}
+            >
+              {/* Brand Name */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="font-semibold text-gray-700 tracking-wide"
+              >
+                RANGE OF HIMALAYAS
+              </motion.div>
 
-            {/* Size & Weight */}
-            <div className="flex gap-4 flex-wrap">
+              {/* Product Title */}
+              <motion.h1
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="text-4xl font-bold text-gray-900 mt-2"
+              >
+                {productDetails?.title}
+              </motion.h1>
+
+              {/* Description */}
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="text-gray-700 text-base leading-relaxed mt-4"
+              >
+                {productDetails?.description}
+              </motion.p>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { staggerChildren: 0.15 },
+                },
+              }}
+              className="flex gap-4 flex-wrap"
+            >
               {/* SIZE — ONLY IF EXISTS */}
               {hasSize && (
-                <div className="flex-1">
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="flex-1"
+                >
                   <label className="block text-gray-800 font-medium mb-1">
                     Select Size
                   </label>
@@ -552,11 +638,18 @@ export default function ProductsDetailsDialog() {
                       </option>
                     ))}
                   </select>
-                </div>
+                </motion.div>
               )}
 
               {/* WEIGHT — ALWAYS REQUIRED */}
-              <div className="flex-1">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                className="flex-1"
+              >
                 <label className="block text-gray-800 font-medium mb-1">
                   Select Weight
                 </label>
@@ -580,8 +673,8 @@ export default function ProductsDetailsDialog() {
                     );
                   })}
                 </select>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Price & Stock */}
             <div className="flex items-center gap-4">
