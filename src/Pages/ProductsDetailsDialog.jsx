@@ -261,48 +261,36 @@ export default function ProductsDetailsDialog() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="flex flex-col gap-4">
             <motion.div
-  className="relative overflow-hidden rounded-xl bg-white touch-pan-y"
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.4, ease: "easeOut" }}
->
-  <motion.img
-    key={mainImage} // IMPORTANT for smooth transition
-    src={mainImage}
-    alt={productDetails?.title}
-    drag="x"
-    dragConstraints={{ left: 0, right: 0 }}
-    dragElastic={0.15}
-    onDragEnd={(e, info) => {
-      const swipePower = Math.abs(info.offset.x) * info.velocity.x;
-
-      if (swipePower < -500) {
-        // 👉 swipe left → next image
-        const index = allImages.indexOf(mainImage);
-        setMainImage(allImages[(index + 1) % allImages.length]);
-      }
-
-      if (swipePower > 500) {
-        // 👈 swipe right → previous image
-        const index = allImages.indexOf(mainImage);
-        setMainImage(
-          allImages[(index - 1 + allImages.length) % allImages.length]
-        );
-      }
-    }}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.25, ease: "easeOut" }}
-    className="w-full h-full object-contain mx-auto rounded-lg select-none"
-  />
-
-  {/* Mobile swipe hint */}
-  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-gray-500 md:hidden">
-    Swipe to view →
-  </div>
-</motion.div>
-
+              className="relative overflow-hidden rounded-xl bg-white"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <motion.img
+                key={mainImage} // 🔑 IMPORTANT for cross-fade
+                src={mainImage}
+                alt={productDetails?.title}
+                onClick={() => setIsImageOpen(true)}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -80) {
+                    const i = allImages.indexOf(mainImage);
+                    setMainImage(allImages[(i + 1) % allImages.length]);
+                  }
+                  if (info.offset.x > 80) {
+                    const i = allImages.indexOf(mainImage);
+                    setMainImage(
+                      allImages[(i - 1 + allImages.length) % allImages.length]
+                    );
+                  }
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="w-full h-full object-contain mx-auto rounded-lg cursor-zoom-in"
+              />
+            </motion.div>
             <AnimatePresence>
               {isImageOpen && (
                 <motion.div
