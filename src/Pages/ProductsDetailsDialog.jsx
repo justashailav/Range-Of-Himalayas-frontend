@@ -23,22 +23,21 @@ import { FaStar } from "react-icons/fa";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import { socket } from "@/utils/socket";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 export default function ProductsDetailsDialog() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  // Selectors
   const productDetails = useSelector((state) => state.product.productDetails);
   const { user } = useSelector((state) => state.auth);
   const { reviews, message, success } = useSelector((state) => state.reviews);
   const { productList } = useSelector((state) => state.products);
   const { cartItems } = useSelector((state) => state.cart);
   const { wishListItems } = useSelector((state) => state.wishList);
-
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const variants = productDetails?.variants || [];
 
-  // ✅ detect if size exists
   const hasSize = variants.some((v) => v.size && v.size !== "");
 
   const sizes = hasSize
@@ -262,30 +261,57 @@ export default function ProductsDetailsDialog() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="flex flex-col gap-4">
             <motion.div
+              className="relative overflow-hidden rounded-xl bg-white"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              whileHover={{
-                boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
-              }}
-              className="relative overflow-hidden rounded-xl bg-white"
             >
-              {/* Image with zoom */}
               <motion.img
+                key={mainImage} // 🔑 IMPORTANT for cross-fade
                 src={mainImage}
                 alt={productDetails?.title}
-                initial={{ scale: 1 }}
-                whileHover={{ scale: 1.08 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="w-full h-full object-contain mx-auto rounded-lg"
-              />
-              <motion.div
+                onClick={() => setIsImageOpen(true)}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={(e, info) => {
+                  if (info.offset.x < -80) {
+                    const i = allImages.indexOf(mainImage);
+                    setMainImage(allImages[(i + 1) % allImages.length]);
+                  }
+                  if (info.offset.x > 80) {
+                    const i = allImages.indexOf(mainImage);
+                    setMainImage(
+                      allImages[(i - 1 + allImages.length) % allImages.length]
+                    );
+                  }
+                }}
                 initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="w-full h-full object-contain mx-auto rounded-lg cursor-zoom-in"
               />
             </motion.div>
+            <AnimatePresence>
+              {isImageOpen && (
+                <motion.div
+                  className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setIsImageOpen(false)}
+                >
+                  <motion.img
+                    src={mainImage}
+                    initial={{ scale: 0.92, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.92, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="max-w-[90vw] max-h-[90vh] object-contain"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {allImages.length > 1 && (
               <div className="mt-3 overflow-x-auto scrollbar-hide">
@@ -300,26 +326,20 @@ export default function ProductsDetailsDialog() {
                         alt={`Variant ${idx}`}
                         onMouseEnter={() => setMainImage(img)}
                         onClick={() => setMainImage(img)}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`flex-shrink-0 w-24 h-24 object-cover rounded-lg cursor-pointer snap-center
-              transition-all duration-300
-              ${
-                isActive
-                  ? "border-2 border-[#F08C7D] ring-2 ring-[#F08C7D]/40"
-                  : "border border-gray-300 hover:border-[#F08C7D]"
-              }`}
+                        className={`flex-shrink-0 w-24 h-24 object-cover rounded-lg cursor-pointer
+    ${
+      mainImage === img
+        ? "border-2 border-[#F08C7D] ring-2 ring-[#F08C7D]/40"
+        : "border border-gray-300 hover:border-[#F08C7D]"
+    }`}
                       />
                     );
                   })}
                 </div>
               </div>
             )}
-
-            {/* Product Information & Nutrition */}
             {productDetails?.details && (
               <div className="rounded-xl p-6 mt-4 border shadow-sm">
                 <h3 className="font-bold mb-4 text-xl pb-2">
@@ -552,19 +572,27 @@ export default function ProductsDetailsDialog() {
             </Button>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <Button
-                onClick={() =>
-                  handleAddToCart(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size,
-                    selectedVariant.weight
-                  )
-                }
-                className="flex-1 bg-[#F08C7D] text-white py-4 font-semibold rounded-md hover:bg-[#e77b6c] transition"
+              <motion.div
+                animate={isAddingToCart ? { scale: [1, 1.08, 1] } : {}}
+                transition={{ duration: 0.3 }}
               >
-                Add to Cart
-              </Button>
+                <Button
+                  onClick={() => {
+                    setIsAddingToCart(true);
+                    handleAddToCart(
+                      productDetails._id,
+                      selectedVariant.stock,
+                      selectedVariant.size,
+                      selectedVariant.weight
+                    );
+                    setTimeout(() => setIsAddingToCart(false), 300);
+                  }}
+                  className="w-full bg-[#F08C7D] text-white py-4 font-semibold rounded-md"
+                >
+                  Add to Cart
+                </Button>
+              </motion.div>
+
               <Button
                 disabled={!selectedVariant}
                 onClick={() => {
