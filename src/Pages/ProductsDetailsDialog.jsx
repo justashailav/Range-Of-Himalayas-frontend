@@ -71,12 +71,12 @@ export default function ProductsDetailsDialog() {
     }
   }, [dispatch, id]);
   useEffect(() => {
-    if (selectedVariant) {
-      setVariantChanged(true);
-      const t = setTimeout(() => setVariantChanged(false), 600);
-      return () => clearTimeout(t);
-    }
-  }, [selectedVariant]);
+  if (selectedVariant) {
+    setVariantHighlight(true);
+    const t = setTimeout(() => setVariantHighlight(false), 600);
+    return () => clearTimeout(t);
+  }
+}, [selectedVariant]);
 
   /* ---------------- INIT VARIANT ---------------- */
   useEffect(() => {
