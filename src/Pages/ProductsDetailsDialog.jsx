@@ -36,6 +36,9 @@ export default function ProductsDetailsDialog() {
   const { wishListItems } = useSelector((state) => state.wishList);
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(true);
+  const [variantChanged, setVariantChanged] = useState(false);
+
   const variants = productDetails?.variants || [];
 
   const hasSize = variants.some((v) => v.size && v.size !== "");
@@ -67,6 +70,13 @@ export default function ProductsDetailsDialog() {
       dispatch(getProductReviews(id));
     }
   }, [dispatch, id]);
+  useEffect(() => {
+    if (selectedVariant) {
+      setVariantChanged(true);
+      const t = setTimeout(() => setVariantChanged(false), 600);
+      return () => clearTimeout(t);
+    }
+  }, [selectedVariant]);
 
   /* ---------------- INIT VARIANT ---------------- */
   useEffect(() => {
@@ -109,7 +119,39 @@ export default function ProductsDetailsDialog() {
       socket.off("productViewers");
     };
   }, [id]);
-  // Handlers
+  function AnimatedAccordion({ title, icon, children, defaultOpen = false }) {
+    const [open, setOpen] = useState(defaultOpen);
+
+    return (
+      <div className="border rounded-xl bg-white overflow-hidden">
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-full flex items-center justify-between px-5 py-4 font-semibold text-gray-800"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{icon}</span>
+            {title}
+          </div>
+          <span className="text-lg">{open ? "−" : "+"}</span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="px-5 pb-5">{children}</div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
   const handleRatingChange = (getRating) => setRating(getRating);
   const handleImageChange = (e) => setReviewImages(Array.from(e.target.files));
 
@@ -341,21 +383,101 @@ export default function ProductsDetailsDialog() {
               </div>
             )}
             {productDetails?.details && (
+  <motion.div
+    className={`rounded-xl mt-4 border shadow-sm bg-white
+      transition-all duration-500
+      md:sticky md:top-28
+      ${variantHighlight ? "ring-2 ring-[#F08C7D]/40" : ""}
+    `}
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, ease: "easeOut" }}
+  >
+    {/* HEADER */}
+    <button
+      onClick={() => setInfoOpen((p) => !p)}
+      className="w-full flex items-center justify-between px-6 py-4 font-bold text-xl"
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-2xl">🍎</span>
+        Product Information
+      </div>
+      <motion.span
+        animate={{ rotate: infoOpen ? 180 : 0 }}
+        transition={{ duration: 0.25 }}
+        className="text-xl"
+      >
+        ⌃
+      </motion.span>
+    </button>
+
+    {/* ACCORDION CONTENT */}
+    <AnimatePresence initial={false}>
+      {infoOpen && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="overflow-hidden px-6 pb-6"
+        >
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.08 },
+              },
+            }}
+            className="space-y-3"
+          >
+            {Object.entries(productDetails.details)
+              .filter(([key]) => !["_id", "__v"].includes(key))
+              .map(([key, value]) => (
+                <motion.div
+                  key={key}
+                  variants={{
+                    hidden: { opacity: 0, y: 12 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  whileHover={{ backgroundColor: "#FFEAC2" }}
+                  className="flex justify-between items-center p-2 rounded-lg"
+                >
+                  <span className="font-medium text-gray-800 capitalize">
+                    {key.replace(/_/g, " ")}
+                  </span>
+                  <span className="text-gray-900 font-semibold">
+                    {value}
+                  </span>
+                </motion.div>
+              ))}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </motion.div>
+)}
+
+
+            {productDetails?.nutrition && (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="rounded-xl p-6 mt-4 border shadow-sm bg-white"
+                className="bg-[#FFF8E1] rounded-xl p-6 mt-4 border shadow-sm"
               >
                 <motion.h3
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
                   className="font-bold mb-4 text-xl pb-2"
                 >
-                  Product Information
+                  Nutrition
                 </motion.h3>
 
                 <motion.div
@@ -365,12 +487,14 @@ export default function ProductsDetailsDialog() {
                   variants={{
                     hidden: {},
                     visible: {
-                      transition: { staggerChildren: 0.08 },
+                      transition: {
+                        staggerChildren: 0.08,
+                      },
                     },
                   }}
                   className="space-y-3"
                 >
-                  {Object.entries(productDetails.details)
+                  {Object.entries(productDetails.nutrition)
                     .filter(([key]) => !["_id", "__v"].includes(key))
                     .map(([key, value]) => (
                       <motion.div
@@ -380,33 +504,7 @@ export default function ProductsDetailsDialog() {
                           visible: { opacity: 1, y: 0 },
                         }}
                         transition={{ duration: 0.35, ease: "easeOut" }}
-                        whileHover={{
-                          backgroundColor: "#FFEAC2",
-                        }}
-                        className="flex justify-between items-center p-2 rounded-lg"
-                      >
-                        <span className="font-medium text-gray-800 capitalize">
-                          {key.replace(/_/g, " ")}
-                        </span>
-                        <span className="text-gray-900 font-semibold">
-                          {value}
-                        </span>
-                      </motion.div>
-                    ))}
-                </motion.div>
-              </motion.div>
-            )}
-
-            {productDetails?.nutrition && (
-              <div className="bg-[#FFF8E1] rounded-xl p-6 mt-4 border shadow-sm">
-                <h3 className="font-bold mb-4 text-xl pb-2">Nutrition</h3>
-                <div className="space-y-3">
-                  {Object.entries(productDetails.nutrition)
-                    .filter(([key]) => !["_id", "__v"].includes(key))
-                    .map(([key, value]) => (
-                      <div
-                        key={key}
-                        className="flex justify-between items-center p-2 rounded-lg hover:bg-[#FFEAC2] transition"
+                        className="flex justify-between items-center p-2 rounded-lg hover:bg-[#FFEAC2] transition-colors"
                       >
                         <span className="capitalize font-medium text-gray-800">
                           {key
@@ -416,10 +514,10 @@ export default function ProductsDetailsDialog() {
                         <span className="text-gray-900 font-semibold">
                           {value}
                         </span>
-                      </div>
+                      </motion.div>
                     ))}
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
           </div>
           <div className="flex flex-col gap-6">
