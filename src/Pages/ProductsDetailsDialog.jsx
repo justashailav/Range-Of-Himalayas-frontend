@@ -341,17 +341,49 @@ export default function ProductsDetailsDialog() {
               </div>
             )}
             {productDetails?.details && (
-              <div className="rounded-xl p-6 mt-4 border shadow-sm">
-                <h3 className="font-bold mb-4 text-xl pb-2">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="rounded-xl p-6 mt-4 border shadow-sm bg-white"
+              >
+                <motion.h3
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                  className="font-bold mb-4 text-xl pb-2"
+                >
                   Product Information
-                </h3>
-                <div className="space-y-3">
+                </motion.h3>
+
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={{
+                    hidden: {},
+                    visible: {
+                      transition: { staggerChildren: 0.08 },
+                    },
+                  }}
+                  className="space-y-3"
+                >
                   {Object.entries(productDetails.details)
                     .filter(([key]) => !["_id", "__v"].includes(key))
                     .map(([key, value]) => (
-                      <div
+                      <motion.div
                         key={key}
-                        className="flex justify-between items-center p-2 rounded-lg hover:bg-[#FFEAC2] transition"
+                        variants={{
+                          hidden: { opacity: 0, y: 12 },
+                          visible: { opacity: 1, y: 0 },
+                        }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        whileHover={{
+                          backgroundColor: "#FFEAC2",
+                        }}
+                        className="flex justify-between items-center p-2 rounded-lg"
                       >
                         <span className="font-medium text-gray-800 capitalize">
                           {key.replace(/_/g, " ")}
@@ -359,10 +391,10 @@ export default function ProductsDetailsDialog() {
                         <span className="text-gray-900 font-semibold">
                           {value}
                         </span>
-                      </div>
+                      </motion.div>
                     ))}
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
 
             {productDetails?.nutrition && (
