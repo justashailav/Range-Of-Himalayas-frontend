@@ -276,14 +276,31 @@ export default function Home() {
 
       <div className="border-[#FAD4B3] border-b-1 mt-10 h-[2px] w-full"></div>
       <div>
-        <h1 className="text-center mt-8 font-bold text-3xl text-[#D84C3C]">
+        <motion.h1
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-center mt-8 font-bold text-3xl text-[#D84C3C]"
+        >
           Himalayan Selections
-        </h1>
+        </motion.h1>
 
-        <div className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+        >
           {productList && productList.length > 0 ? (
             productList.slice(0, 3).map((item) => (
-              <div className="will-change-transform">
+              <motion.div
+                variants={fadeUp}
+                whileHover={{ y: -8 }}
+                transition={{ type: "spring", stiffness: 200 }}
+                className="will-change-transform"
+              >
                 <Link
                   to={`/product/${item._id}`}
                   onClick={() => handleGetProductDetails(item)}
@@ -291,14 +308,14 @@ export default function Home() {
                 >
                   <TopSelections product={item} />
                 </Link>
-              </div>
+              </motion.div>
             ))
           ) : (
             <p className="text-center col-span-full text-gray-500">
               No products found
             </p>
           )}
-        </div>
+        </motion.div>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
