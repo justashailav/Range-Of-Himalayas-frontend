@@ -285,199 +285,394 @@ export default function ShoppingCheckout() {
 
 
   return (
-    <div className="flex flex-col">
-      <Helmet>
-        <title>Checkout | Range of Himalayas</title>
-        <meta
-          name="description"
-          content="Complete your order for fresh Himalayan apples, kiwis, and organic produce. Safe and secure Razorpay checkout."
-        />
-        <meta
-          name="keywords"
-          content="Range of Himalayas, checkout, apples, kiwis, razorpay, organic fruits"
-        />
-        <link rel="canonical" href="https://rangeofhimalayas.com/checkout" />
-      </Helmet>
-      <div className="grid grid-cols-1 gap-6 mt-6 p-6 bg-white shadow-md rounded-xl">
-        {/* 🏠 Address Section */}
-        <div className="border rounded-lg p-5 shadow-sm bg-gray-50">
-          <Address
-            selectedId={currentSelectedAddress}
-            setCurrentSelectedAddress={setCurrentSelectedAddress}
-          />
-        </div>
+    // <div className="flex flex-col">
+    //   <Helmet>
+    //     <title>Checkout | Range of Himalayas</title>
+    //     <meta
+    //       name="description"
+    //       content="Complete your order for fresh Himalayan apples, kiwis, and organic produce. Safe and secure Razorpay checkout."
+    //     />
+    //     <meta
+    //       name="keywords"
+    //       content="Range of Himalayas, checkout, apples, kiwis, razorpay, organic fruits"
+    //     />
+    //     <link rel="canonical" href="https://rangeofhimalayas.com/checkout" />
+    //   </Helmet>
+    //   <div className="grid grid-cols-1 gap-6 mt-6 p-6 bg-white shadow-md rounded-xl">
+    //     {/* 🏠 Address Section */}
+    //     <div className="border rounded-lg p-5 shadow-sm bg-gray-50">
+    //       <Address
+    //         selectedId={currentSelectedAddress}
+    //         setCurrentSelectedAddress={setCurrentSelectedAddress}
+    //       />
+    //     </div>
 
-        <div className="flex flex-col gap-6">
-          {/* 🛍️ Cart Items (Read-only Summary) */}
-          {cartItems.length > 0 && (
-            <div>
-              <h2 className="text-xl font-bold mb-3 border-b pb-2">
-                Cart Items
-              </h2>
-              <div className="space-y-4 max-h-[300px] overflow-y-auto">
-                {cartItems.map((item) => (
-                  <div
-                    key={`${item.productId}-${item.size || "default"}`}
-                    className="flex justify-between items-center border p-4 rounded-lg shadow-sm bg-white"
-                  >
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-20 h-20 object-cover rounded-md border"
-                      />
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          {item.title}
-                        </p>
-                        {item.size && (
-                          <p className="text-sm text-gray-600">
-                            Size: {item.size}
-                          </p>
-                        )}
-                        <p className="text-sm text-gray-600">
-                          Quantity: {item.quantity}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="font-semibold text-green-700">
-                      ₹
-                      {(
-                        (item.salesPrice > 0 ? item.salesPrice : item.price) *
-                        item.quantity
-                      ).toFixed(2)}
+    //     <div className="flex flex-col gap-6">
+    //       {/* 🛍️ Cart Items (Read-only Summary) */}
+    //       {cartItems.length > 0 && (
+    //         <div>
+    //           <h2 className="text-xl font-bold mb-3 border-b pb-2">
+    //             Cart Items
+    //           </h2>
+    //           <div className="space-y-4 max-h-[300px] overflow-y-auto">
+    //             {cartItems.map((item) => (
+    //               <div
+    //                 key={`${item.productId}-${item.size || "default"}`}
+    //                 className="flex justify-between items-center border p-4 rounded-lg shadow-sm bg-white"
+    //               >
+    //                 <div className="flex items-center gap-4">
+    //                   <img
+    //                     src={item.image}
+    //                     alt={item.title}
+    //                     className="w-20 h-20 object-cover rounded-md border"
+    //                   />
+    //                   <div>
+    //                     <p className="font-medium text-gray-900">
+    //                       {item.title}
+    //                     </p>
+    //                     {item.size && (
+    //                       <p className="text-sm text-gray-600">
+    //                         Size: {item.size}
+    //                       </p>
+    //                     )}
+    //                     <p className="text-sm text-gray-600">
+    //                       Quantity: {item.quantity}
+    //                     </p>
+    //                   </div>
+    //                 </div>
+    //                 <p className="font-semibold text-green-700">
+    //                   ₹
+    //                   {(
+    //                     (item.salesPrice > 0 ? item.salesPrice : item.price) *
+    //                     item.quantity
+    //                   ).toFixed(2)}
+    //                 </p>
+    //               </div>
+    //             ))}
+    //           </div>
+    //         </div>
+    //       )}
+
+    //       {/* 📦 Box Items */}
+    //       {boxes.length > 0 && (
+    //         <div>
+    //           <h2 className="text-xl font-bold mb-3 border-b pb-2">Boxes</h2>
+    //           <div className="space-y-4">
+    //             {boxes.map((box) => (
+    //               <div
+    //                 key={box._id || box.boxId}
+    //                 className="border p-4 rounded-lg bg-white shadow-sm"
+    //               >
+    //                 <h3 className="font-semibold text-lg text-blue-700 mb-2">
+    //                   {box.boxName || "Custom Box"}
+    //                 </h3>
+    //                 <ul className="divide-y divide-gray-200">
+    //                   {box.items.map((item, idx) => {
+    //                     const product =
+    //                       productList.find((p) => p._id === item.productId) ||
+    //                       {};
+    //                     const sizePriceObj = (
+    //                       product.customBoxPrices || []
+    //                     ).find((p) => p.size === item.size);
+    //                     const price = sizePriceObj
+    //                       ? Number(sizePriceObj.pricePerPiece)
+    //                       : 0;
+
+    //                     return (
+    //                       <li
+    //                         key={`${item.productId}-${idx}`}
+    //                         className="py-2 flex justify-between items-center"
+    //                       >
+    //                         <div className="flex items-center gap-3">
+    //                           <img
+    //                             src={product.image || "/placeholder.png"}
+    //                             alt={product.title}
+    //                             className="w-12 h-12 rounded-md border"
+    //                           />
+    //                           <div>
+    //                             <p className="text-sm font-medium">
+    //                               {product.title}
+    //                             </p>
+    //                             <p className="text-xs text-gray-600">
+    //                               Size: {item.size} | Qty: {item.quantity}
+    //                             </p>
+    //                           </div>
+    //                         </div>
+    //                         <p className="text-sm font-semibold text-green-700">
+    //                           ₹{(price * item.quantity).toFixed(2)}
+    //                         </p>
+    //                       </li>
+    //                     );
+    //                   })}
+    //                 </ul>
+    //               </div>
+    //             ))}
+    //           </div>
+    //         </div>
+    //       )}
+
+    //       {/* 💰 Price Summary */}
+    //       <div className="p-5 bg-gray-100 border rounded-lg">
+    //         <h3 className="text-lg font-bold mb-3 border-b pb-2">
+    //           Price Summary
+    //         </h3>
+    //         <ul className="space-y-1 text-sm text-gray-700">
+    //           <li>Cart Items Total: ₹{totalCartAmount.toFixed(2)}</li>
+    //           <li>Boxes Total: ₹{boxesTotal.toFixed(2)}</li>
+    //           <li className="font-semibold">
+    //             Grand Total: ₹{grandTotal.toFixed(2)}
+    //           </li>
+    //           {discountAmount > 0 && (
+    //             <li className="text-green-700 font-medium">
+    //               Coupon Discount: -₹{discountAmount.toFixed(2)}
+    //             </li>
+    //           )}
+    //         </ul>
+    //         <p className="text-xl font-extrabold mt-3 text-blue-800">
+    //           Payable: ₹{payableAmount.toFixed(2)}
+    //         </p>
+
+    //         {code && (
+    //           <p className="text-sm text-green-600 mt-2">
+    //             🎟️ Coupon <strong>{code}</strong> applied successfully
+    //           </p>
+    //         )}
+    //       </div>
+
+    //       <div className="flex flex-col gap-4 mt-4">
+    //         {/* Payment Method */}
+    //         <div className="flex gap-4">
+    //           <label className="flex items-center gap-2">
+    //             <input
+    //               type="radio"
+    //               value="razorpay"
+    //               checked={paymentMethod === "razorpay"}
+    //               onChange={() => setPaymentMethod("razorpay")}
+    //             />
+    //             Pay Online
+    //           </label>
+
+    //           <label className="flex items-center gap-2">
+    //             <input
+    //               type="radio"
+    //               value="cod"
+    //               checked={paymentMethod === "cod"}
+    //               onChange={() => setPaymentMethod("cod")}
+    //             />
+    //             Cash on Delivery (₹200 advance)
+    //           </label>
+    //         </div>
+
+    //         {/* Pay Button */}
+    //         <Button
+    //           onClick={handlePlaceOrder}
+    //           disabled={isRazorpayProcessing}
+    //           className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
+    //         >
+    //           {isRazorpayProcessing
+    //             ? "Processing..."
+    //             : paymentMethod === "cod"
+    //             ? "Pay ₹200 & Place COD Order"
+    //             : "Pay Online"}
+    //         </Button>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+    <div className="min-h-screen bg-gray-50 py-8">
+  <Helmet>
+    <title>Checkout | Range of Himalayas</title>
+  </Helmet>
+
+  <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    {/* ================= LEFT SECTION ================= */}
+    <div className="lg:col-span-2 space-y-6">
+
+      {/* ADDRESS */}
+      <div className="bg-white rounded-xl shadow p-6">
+        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+          🏠 Delivery Address
+        </h2>
+        <Address
+          selectedId={currentSelectedAddress}
+          setCurrentSelectedAddress={setCurrentSelectedAddress}
+        />
+      </div>
+
+      {/* CART ITEMS */}
+      {cartItems.length > 0 && (
+        <div className="bg-white rounded-xl shadow p-6">
+          <h2 className="text-xl font-bold mb-4">🛍️ Cart Items</h2>
+
+          <div className="space-y-4 max-h-[320px] overflow-y-auto pr-2">
+            {cartItems.map((item) => (
+              <div
+                key={`${item.productId}-${item.size || "default"}`}
+                className="flex items-center justify-between border rounded-lg p-4"
+              >
+                <div className="flex gap-4">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-16 h-16 rounded-md object-cover border"
+                  />
+                  <div>
+                    <p className="font-semibold">{item.title}</p>
+                    {item.size && (
+                      <p className="text-sm text-gray-500">
+                        Size: {item.size}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-500">
+                      Qty: {item.quantity}
                     </p>
                   </div>
-                ))}
+                </div>
+
+                <p className="font-bold text-green-700">
+                  ₹{(
+                    (item.salesPrice > 0 ? item.salesPrice : item.price) *
+                    item.quantity
+                  ).toFixed(2)}
+                </p>
               </div>
-            </div>
-          )}
-
-          {/* 📦 Box Items */}
-          {boxes.length > 0 && (
-            <div>
-              <h2 className="text-xl font-bold mb-3 border-b pb-2">Boxes</h2>
-              <div className="space-y-4">
-                {boxes.map((box) => (
-                  <div
-                    key={box._id || box.boxId}
-                    className="border p-4 rounded-lg bg-white shadow-sm"
-                  >
-                    <h3 className="font-semibold text-lg text-blue-700 mb-2">
-                      {box.boxName || "Custom Box"}
-                    </h3>
-                    <ul className="divide-y divide-gray-200">
-                      {box.items.map((item, idx) => {
-                        const product =
-                          productList.find((p) => p._id === item.productId) ||
-                          {};
-                        const sizePriceObj = (
-                          product.customBoxPrices || []
-                        ).find((p) => p.size === item.size);
-                        const price = sizePriceObj
-                          ? Number(sizePriceObj.pricePerPiece)
-                          : 0;
-
-                        return (
-                          <li
-                            key={`${item.productId}-${idx}`}
-                            className="py-2 flex justify-between items-center"
-                          >
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={product.image || "/placeholder.png"}
-                                alt={product.title}
-                                className="w-12 h-12 rounded-md border"
-                              />
-                              <div>
-                                <p className="text-sm font-medium">
-                                  {product.title}
-                                </p>
-                                <p className="text-xs text-gray-600">
-                                  Size: {item.size} | Qty: {item.quantity}
-                                </p>
-                              </div>
-                            </div>
-                            <p className="text-sm font-semibold text-green-700">
-                              ₹{(price * item.quantity).toFixed(2)}
-                            </p>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 💰 Price Summary */}
-          <div className="p-5 bg-gray-100 border rounded-lg">
-            <h3 className="text-lg font-bold mb-3 border-b pb-2">
-              Price Summary
-            </h3>
-            <ul className="space-y-1 text-sm text-gray-700">
-              <li>Cart Items Total: ₹{totalCartAmount.toFixed(2)}</li>
-              <li>Boxes Total: ₹{boxesTotal.toFixed(2)}</li>
-              <li className="font-semibold">
-                Grand Total: ₹{grandTotal.toFixed(2)}
-              </li>
-              {discountAmount > 0 && (
-                <li className="text-green-700 font-medium">
-                  Coupon Discount: -₹{discountAmount.toFixed(2)}
-                </li>
-              )}
-            </ul>
-            <p className="text-xl font-extrabold mt-3 text-blue-800">
-              Payable: ₹{payableAmount.toFixed(2)}
-            </p>
-
-            {code && (
-              <p className="text-sm text-green-600 mt-2">
-                🎟️ Coupon <strong>{code}</strong> applied successfully
-              </p>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-4 mt-4">
-            {/* Payment Method */}
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  value="razorpay"
-                  checked={paymentMethod === "razorpay"}
-                  onChange={() => setPaymentMethod("razorpay")}
-                />
-                Pay Online
-              </label>
-
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  value="cod"
-                  checked={paymentMethod === "cod"}
-                  onChange={() => setPaymentMethod("cod")}
-                />
-                Cash on Delivery (₹200 advance)
-              </label>
-            </div>
-
-            {/* Pay Button */}
-            <Button
-              onClick={handlePlaceOrder}
-              disabled={isRazorpayProcessing}
-              className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
-            >
-              {isRazorpayProcessing
-                ? "Processing..."
-                : paymentMethod === "cod"
-                ? "Pay ₹200 & Place COD Order"
-                : "Pay Online"}
-            </Button>
+            ))}
           </div>
         </div>
-      </div>
+      )}
+
+      {/* BOXES */}
+      {boxes.length > 0 && (
+        <div className="bg-white rounded-xl shadow p-6">
+          <h2 className="text-xl font-bold mb-4">📦 Boxes</h2>
+
+          <div className="space-y-4">
+            {boxes.map((box) => (
+              <div
+                key={box._id || box.boxId}
+                className="border rounded-lg p-4"
+              >
+                <h3 className="font-semibold text-blue-700 mb-3">
+                  {box.boxName || "Custom Box"}
+                </h3>
+
+                <ul className="space-y-2">
+                  {box.items.map((item, idx) => {
+                    const product =
+                      productList.find((p) => p._id === item.productId) || {};
+                    const sizePrice = (product.customBoxPrices || []).find(
+                      (p) => p.size === item.size
+                    );
+                    const price = sizePrice
+                      ? Number(sizePrice.pricePerPiece)
+                      : 0;
+
+                    return (
+                      <li
+                        key={`${item.productId}-${idx}`}
+                        className="flex justify-between items-center text-sm"
+                      >
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={product.image || "/placeholder.png"}
+                            className="w-10 h-10 rounded border"
+                          />
+                          <div>
+                            <p className="font-medium">{product.title}</p>
+                            <p className="text-gray-500">
+                              {item.size} · Qty {item.quantity}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="font-semibold text-green-700">
+                          ₹{(price * item.quantity).toFixed(2)}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
+
+    {/* ================= RIGHT SUMMARY ================= */}
+    <div className="bg-white rounded-xl shadow p-6 h-fit sticky top-6">
+
+      <h2 className="text-xl font-bold mb-4">💰 Order Summary</h2>
+
+      <div className="space-y-2 text-sm text-gray-700">
+        <div className="flex justify-between">
+          <span>Cart Items</span>
+          <span>₹{totalCartAmount.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Boxes</span>
+          <span>₹{boxesTotal.toFixed(2)}</span>
+        </div>
+
+        {discountAmount > 0 && (
+          <div className="flex justify-between text-green-600 font-medium">
+            <span>Coupon ({code})</span>
+            <span>-₹{discountAmount.toFixed(2)}</span>
+          </div>
+        )}
+
+        <hr />
+
+        <div className="flex justify-between text-lg font-bold">
+          <span>Total</span>
+          <span className="text-blue-700">
+            ₹{payableAmount.toFixed(2)}
+          </span>
+        </div>
+      </div>
+
+      {/* PAYMENT METHOD */}
+      <div className="mt-6 space-y-3">
+        <label className="flex items-center gap-2 border rounded-lg p-3 cursor-pointer">
+          <input
+            type="radio"
+            checked={paymentMethod === "razorpay"}
+            onChange={() => setPaymentMethod("razorpay")}
+          />
+          <span className="font-medium">Pay Online (Razorpay)</span>
+        </label>
+
+        <label className="flex items-center gap-2 border rounded-lg p-3 cursor-pointer">
+          <input
+            type="radio"
+            checked={paymentMethod === "cod"}
+            onChange={() => setPaymentMethod("cod")}
+          />
+          <span className="font-medium">
+            Cash on Delivery (₹200 advance)
+          </span>
+        </label>
+      </div>
+
+      {/* PAY BUTTON */}
+      <Button
+        onClick={handlePlaceOrder}
+        disabled={isRazorpayProcessing}
+        className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white text-lg py-3 rounded-lg"
+      >
+        {isRazorpayProcessing
+          ? "Processing..."
+          : paymentMethod === "cod"
+          ? "Pay ₹200 & Place Order"
+          : "Pay Securely"}
+      </Button>
+
+      <p className="text-xs text-gray-500 text-center mt-3">
+        🔒 100% secure payments powered by Razorpay
+      </p>
+    </div>
+  </div>
+</div>
+
   );
 }
