@@ -1,18 +1,19 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, CardContent } from "./ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./ui/table";
 import { getAllOrdersByUserId } from "@/store/slices/orderSlice";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+
+const statusStyles = {
+  confirmed: "bg-green-100 text-green-700",
+  packed: "bg-blue-100 text-blue-700",
+  shipping: "bg-yellow-100 text-yellow-700",
+  delivered: "bg-emerald-100 text-emerald-700",
+  cancelled: "bg-red-100 text-red-700",
+  rejected: "bg-red-100 text-red-700",
+};
 
 export default function ShoppingOrders() {
   const dispatch = useDispatch();
@@ -28,175 +29,109 @@ export default function ShoppingOrders() {
 
   if (!user) {
     return (
-      <p className="text-center mt-10 text-gray-500 text-lg">
-        Please login to view orders.
+      <p className="text-center mt-16 text-gray-500 text-lg">
+        Please login to view your orders.
       </p>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF8E1] p-4 sm:p-6">
+    <div className="bg-gray-50 min-h-screen p-4 sm:p-6">
       <div className="max-w-6xl mx-auto space-y-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-          Order History
-        </h1>
 
-        <Card className="shadow-lg rounded-2xl border border-gray-200">
-          <CardContent>
-            {error && <p className="text-red-600 mb-4">{error}</p>}
+        {/* HEADER */}
+        <div>
+          <h1 className="text-3xl font-extrabold text-gray-900">
+            My Orders
+          </h1>
+          <p className="text-gray-500 mt-1">
+            Track and manage your recent purchases
+          </p>
+        </div>
 
-            {/* ✅ Responsive handling */}
-            <div className="hidden md:block overflow-x-auto">
-              <Table className="min-w-full bg-white rounded-lg overflow-hidden shadow-sm">
-                <TableHeader className="bg-gray-200">
-                  <TableRow>
-                    <TableHead className="px-4 py-2 text-gray-700">
-                      Order ID
-                    </TableHead>
-                    <TableHead className="px-4 py-2 text-gray-700">
-                      Order Date
-                    </TableHead>
-                    <TableHead className="px-4 py-2 text-gray-700">
-                      Status
-                    </TableHead>
-                    <TableHead className="px-4 py-2 text-gray-700">
-                      Total Amount
-                    </TableHead>
-                    <TableHead className="px-4 py-2 text-gray-700">
-                      Actions
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
+        {error && (
+          <p className="text-red-600 bg-red-50 p-3 rounded-lg">
+            {error}
+          </p>
+        )}
 
-                <TableBody>
-                  {orderList?.length > 0 ? (
-                    orderList.map((order, idx) => (
-                      <TableRow
-                        key={order._id}
-                        className={`transition-colors duration-150 ${
-                          idx % 2 === 0 ? "bg-gray-50" : "bg-white"
-                        } hover:bg-gray-100`}
-                      >
-                        <TableCell className="px-4 py-3 font-medium text-gray-800">
-                          {order._id}
-                        </TableCell>
-                        <TableCell className="px-4 py-3">
-                          {order.orderDate.split("T")[0]}
-                        </TableCell>
-                        <TableCell className="px-4 py-3">
-                          <Badge
-                            className={`py-1 px-3 rounded-full text-white text-sm font-semibold ${
-                              order.orderStatus === "confirmed"
-                                ? "bg-green-500"
-                                : order.orderStatus === "packed"
-                                ? "bg-blue-500"
-                                : order.orderStatus === "shipping"
-                                ? "bg-yellow-400"
-                                : order.orderStatus === "delivered"
-                                ? "bg-teal-500"
-                                : order.orderStatus === "rejected" ||
-                                  order.orderStatus === "cancelled"
-                                ? "bg-red-600"
-                                : "bg-gray-500"
-                            }`}
-                          >
-                            {order.orderStatus}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="px-4 py-3 font-semibold">
-                          ₹{order.totalAmount}
-                        </TableCell>
-                        <TableCell className="px-4 py-3">
-                          <div className="flex gap-2">
-                            <Button
-                            onClick={() =>
-                              navigate(`/order-details/${order._id}`, {
-                                state: { orderDetails: order },
-                              })
-                            }
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
-                          >
-                            View Details
-                          </Button>
-                          
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={5}
-                        className="text-center py-6 text-gray-500"
-                      >
-                        No orders found.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
+        {/* ORDERS */}
+        {orderList?.length > 0 ? (
+          <div className="space-y-4">
+            {orderList.map((order) => (
+              <Card
+                key={order._id}
+                className="rounded-2xl border shadow-sm hover:shadow-md transition"
+              >
+                <CardContent className="p-5 sm:p-6">
 
-            {/* ✅ Mobile Card Layout */}
-            <div className="md:hidden space-y-4">
-              {orderList?.length > 0 ? (
-                orderList.map((order) => (
-                  <div
-                    key={order._id}
-                    className="bg-white p-4 rounded-lg shadow-sm border border-gray-200"
-                  >
-                    <div className="flex justify-between items-center mb-2">
+                  {/* TOP */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
                       <p className="text-sm text-gray-500">
-                        {order.orderDate.split("T")[0]}
+                        Order ID
                       </p>
-                      <Badge
-                        className={`py-1 px-3 rounded-full text-white text-xs font-semibold ${
-                          order.orderStatus === "confirmed"
-                            ? "bg-green-500"
-                            : order.orderStatus === "packed"
-                            ? "bg-blue-500"
-                            : order.orderStatus === "shipping"
-                            ? "bg-yellow-400"
-                            : order.orderStatus === "delivered"
-                            ? "bg-teal-500"
-                            : order.orderStatus === "rejected" ||
-                              order.orderStatus === "cancelled"
-                            ? "bg-red-600"
-                            : "bg-gray-500"
-                        }`}
-                      >
-                        {order.orderStatus}
-                      </Badge>
+                      <p className="font-medium text-gray-800 truncate max-w-xs">
+                        {order._id}
+                      </p>
                     </div>
 
-                    <p className="text-gray-800 font-medium text-sm truncate">
-                      Order ID: {order._id}
-                    </p>
-                    <p className="text-gray-900 font-bold mt-2">
-                      ₹{order.totalAmount}
-                    </p>
+                    <Badge
+                      className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        statusStyles[order.orderStatus] ||
+                        "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {order.orderStatus}
+                    </Badge>
+                  </div>
 
+                  {/* MIDDLE */}
+                  <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        Order Date
+                      </p>
+                      <p className="font-medium">
+                        {order.orderDate.split("T")[0]}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        Total Amount
+                      </p>
+                      <p className="font-bold text-green-700">
+                        ₹{order.totalAmount}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* ACTION */}
+                  <div className="mt-5 flex justify-end">
                     <Button
                       onClick={() =>
                         navigate(`/order-details/${order._id}`, {
                           state: { orderDetails: order },
                         })
                       }
-                      className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-5"
                     >
-                      View Details
+                      View Order
                     </Button>
-                    
                   </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500 py-6">
-                  No orders found.
-                </p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center bg-white p-10 rounded-xl shadow-sm">
+            <p className="text-gray-500 text-lg">
+              You haven’t placed any orders yet.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
