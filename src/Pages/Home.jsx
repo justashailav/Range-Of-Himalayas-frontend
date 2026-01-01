@@ -110,7 +110,7 @@ export default function Home() {
       return;
     }
 
-    const normalizedSize = size || ""; // ✅ size optional
+    const normalizedSize = size || ""; 
 
     const getCartItems = cartItems?.items || [];
 
@@ -238,52 +238,27 @@ export default function Home() {
       </div>
 
       <Link to="/viewproducts">
-        <motion.img
+        <img
           src={bgImage}
           alt="Banner"
-          initial={{ scale: 1.05, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1 }}
           className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
         />
       </Link>
 
       <div className="border-[#FAD4B3] border-b-1 mt-10 h-[2px] w-full"></div>
       <div>
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+        <h1
           className="text-center mt-8 font-bold text-3xl text-[#D84C3C]"
         >
           Himalayan Selections
-        </motion.h1>
+        </h1>
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.15,
-              },
-            },
-          }}
+        <div
           className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
         >
           {productList && productList.length > 0 ? (
             productList.slice(0, 3).map((item) => (
-              <motion.div
-                key={item._id}
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                whileHover={{ y: -8 }}
+              <div
                 className="will-change-transform"
               >
                 <Link
@@ -293,14 +268,14 @@ export default function Home() {
                 >
                   <TopSelections product={item} />
                 </Link>
-              </motion.div>
+              </div>
             ))
           ) : (
             <p className="text-center col-span-full text-gray-500">
               No products found
             </p>
           )}
-        </motion.div>
+        </div>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
@@ -311,11 +286,7 @@ export default function Home() {
       </div>
 
       <div className="px-5 sm:px-10 flex flex-col sm:flex-row items-start sm:items-center justify-between">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+        <div
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full"
         >
           <div>
@@ -326,41 +297,31 @@ export default function Home() {
 
           <div className="w-full sm:w-auto">
             <Link to="/viewproducts">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white cursor-pointer px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out"
               >
                 View All Products
-              </motion.button>
+              </button>
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+      <div
         className="relative p-10"
       >
         {/* LEFT ARROW */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+        <button
           className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
         >
           <ChevronLeft className="w-5 h-5" />
-        </motion.button>
+        </button>
 
         {/* RIGHT ARROW */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+        <button
           className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
         >
           <ChevronRight className="w-5 h-5" />
-        </motion.button>
+        </button>
 
         <Swiper
           modules={[Navigation]}
@@ -377,320 +338,200 @@ export default function Home() {
         >
           {productList.map((item, index) => (
             <SwiperSlide key={item._id}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.45,
-                  ease: "easeOut",
-                  delay: index * 0.1, // ✨ stagger effect
-                }}
+              <div
               >
                 <ShoppingProductTile
                   product={item}
                   handleAddToCart={handleAddToCart}
                   handleAddToWishList={handleAddToWishList}
                 />
-              </motion.div>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="px-6 py-4"
+      <div
       >
         {/* HEADER */}
         <div className="text-center mb-10">
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+          <span
             className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
           >
             🍎 From Orchard to You
-          </motion.span>
+          </span>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+          <h1
             className="text-4xl font-bold mt-4 mb-3"
           >
             Why Range Of Himalayas?
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          <p
             className="text-gray-600 text-xl max-w-2xl mx-auto"
           >
             Every apple is a reflection of our passion for purity, timeless
             tradition, and uncompromising quality.
-          </motion.p>
+          </p>
         </div>
 
         {/* FEATURES GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {features.map((feature, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.45,
-                ease: "easeOut",
-                delay: index * 0.12, // ✨ stagger
-              }}
-              whileHover={{
-                y: -6,
-                boxShadow: "0px 10px 25px rgba(0,0,0,0.08)",
-              }}
               className="flex flex-col items-center bg-white shadow-sm rounded-xl p-6 transition"
             >
               <h3 className="font-semibold text-lg text-green-700">
                 {feature.title}
               </h3>
               <p className="text-gray-600 text-sm mt-2">{feature.desc}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+      <div
         className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl"
       >
-        <motion.img
+        <img
           src={foundersImage}
           alt="Founder"
           className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg rounded-xl"
-          initial={{ scale: 1.05 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
         />
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+      </div>
+      <div
         className="px-6 py-12"
       >
         <div className="text-center mb-10">
           {/* Badge */}
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.4 }}
+          <span
             className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
           >
             🍎 From Our Orchards
-          </motion.span>
+          </span>
 
           {/* Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+          <h1
             className="text-4xl font-bold mt-4 mb-3"
           >
             Himalayan Harvest
-          </motion.h1>
+          </h1>
 
           {/* Paragraph */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.35, duration: 0.5 }}
+          <p
             className="text-gray-600 text-xl max-w-2xl mx-auto"
           >
             Discover how we nurture premium apples with a blend of time-honored
             traditions and thoughtful modern practices in the pristine Himalayan
             foothills.
-          </motion.p>
+          </p>
         </div>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+      </div>
+      <div
         className="px-6 py-12 bg-white"
       >
         {/* Heading */}
         <div className="text-center mb-10">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+          <h2
             className="text-4xl font-bold mb-2"
           >
             Follow Us
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
+          <p
             className="text-gray-600 text-xl"
           >
             🌱 Get the freshest updates on our harvests and apple collections
-          </motion.p>
+          </p>
         </div>
 
         {/* Cards */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={{
-            visible: {
-              transition: { staggerChildren: 0.15 },
-            },
-          }}
+        <div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto"
         >
           {/* Instagram */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            whileHover={{ y: -6 }}
-            transition={{ duration: 0.3 }}
+          <div
             className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
           >
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 3 }}
-              transition={{ type: "spring", stiffness: 200 }}
+            <div
               className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4"
             >
               <FaInstagram className="text-3xl text-pink-600" />
-            </motion.div>
+            </div>
 
             <h3 className="font-semibold text-lg">Instagram</h3>
             <p className="text-gray-600">@range.of.himalayas</p>
 
-            <motion.a
+            <a
               href="https://www.instagram.com/range.of.himalayas"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ x: 5 }}
               className="text-green-700 font-medium mt-2 inline-block"
             >
               Follow →
-            </motion.a>
-          </motion.div>
+            </a>
+          </div>
 
           {/* Facebook */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            whileHover={{ y: -6 }}
-            transition={{ duration: 0.3 }}
+          <div
             className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
           >
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: -3 }}
-              transition={{ type: "spring", stiffness: 200 }}
+            <div
               className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4"
             >
               <FaFacebook className="text-3xl text-blue-600" />
-            </motion.div>
+            </div>
 
             <h3 className="font-semibold text-lg">Facebook</h3>
             <p className="text-gray-600">@rangeofhimalayas</p>
 
-            <motion.a
+            <a
               href="https://www.facebook.com/rangeofhimalayas"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ x: 5 }}
               className="text-green-700 font-medium mt-2 inline-block"
             >
               Follow →
-            </motion.a>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+            </a>
+          </div>
+        </div>
+      </div>
 
       <HomeBlog />
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+      <div
         className="px-6 py-12 text-center"
       >
         {/* Badge */}
-        <motion.span
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
+        <span
           className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
         >
           🌿 Orchard Moments
-        </motion.span>
+        </span>
 
         {/* Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+        <h1
           className="text-4xl font-bold mt-4 mb-3"
         >
           🍏 From Orchard to Table
-        </motion.h1>
+        </h1>
 
         {/* Paragraph */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
+        <p
           className="text-gray-600 text-xl max-w-2xl mx-auto"
         >
           Witness the journey of our orchards through the seasons — a
           celebration of purity, tradition, and mindful farming at Range Of
           Himalayas.
-        </motion.p>
+        </p>
 
         {/* Category Buttons */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          variants={{
-            visible: { transition: { staggerChildren: 0.08 } },
-          }}
+        <div
           className="flex flex-wrap justify-center gap-3 mt-6 mb-8"
         >
           {categories.map((cat) => (
-            <motion.button
+            <button
               key={cat}
-              variants={{
-                hidden: { opacity: 0, y: 10 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setActiveCategory(cat);
                 setCurrentIndex(0);
@@ -704,27 +545,23 @@ export default function Home() {
           }`}
             >
               {cat}
-            </motion.button>
+            </button>
           ))}
-        </motion.div>
+        </div>
 
         {/* Gallery */}
         {loading ? (
           <p className="text-gray-500">Loading images...</p>
         ) : filteredItems.length > 0 ? (
           <div className="relative max-w-3xl mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.img
+            <>
+              <img
                 key={filteredItems[currentIndex]?.images[currentImageIndex]}
                 src={filteredItems[currentIndex]?.images[currentImageIndex]}
                 alt={filteredItems[currentIndex]?.title}
-                initial={{ opacity: 0, scale: 1.03 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
                 className="w-full h-full object-cover rounded-xl shadow-md"
               />
-            </AnimatePresence>
+            </>
             <button
               onClick={prevSlide}
               className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80 transition"
@@ -738,10 +575,7 @@ export default function Home() {
             >
               <FaArrowRight />
             </button>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+            <div
               className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg"
             >
               <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
@@ -753,7 +587,7 @@ export default function Home() {
               <p className="text-sm text-gray-200 mt-1">
                 {filteredItems[currentIndex]?.desc}
               </p>
-            </motion.div>
+            </div>
           </div>
         ) : (
           <p className="text-gray-500">No images found</p>
@@ -761,12 +595,10 @@ export default function Home() {
         {filteredItems.length > 0 && (
           <div className="flex justify-center gap-4 mt-6">
             {filteredItems[currentIndex].images.map((img, index) => (
-              <motion.img
+              <img
                 key={index}
                 src={img}
                 alt="thumb"
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
                 onClick={() => setCurrentImageIndex(index)}
                 className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 transition
             ${
@@ -778,7 +610,7 @@ export default function Home() {
             ))}
           </div>
         )}
-      </motion.div>
+      </div>
 
       <section className="bg-gradient-to-b from-green-50 to-white py-16 px-6 sm:px-10">
         <CustomerReviews />
