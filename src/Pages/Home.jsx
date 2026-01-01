@@ -285,37 +285,36 @@ export default function Home() {
         </motion.h1>
 
         <motion.div
-  variants={stagger}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, margin: "-120px" }}
-  className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
->
-  {productList && productList.length > 0 ? (
-    productList.slice(0, 3).map((item) => (
-      <motion.div
-        key={item._id}
-        variants={fadeUp}
-        whileHover={{ y: -6 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="will-change-transform"
-      >
-        <Link
-          to={`/product/${item._id}`}
-          onClick={() => handleGetProductDetails(item)}
-          className="block h-full"
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+          viewport={{ once: true, margin: "-120px" }}
+          className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
         >
-          <TopSelections product={item} />
-        </Link>
-      </motion.div>
-    ))
-  ) : (
-    <p className="text-center col-span-full text-gray-500">
-      No products found
-    </p>
-  )}
-</motion.div>
-
+          {productList && productList.length > 0 ? (
+            productList.slice(0, 3).map((item) => (
+              <motion.div
+                key={item._id}
+                variants={fadeUp}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="will-change-transform"
+              >
+                <Link
+                  to={`/product/${item._id}`}
+                  onClick={() => handleGetProductDetails(item)}
+                  className="block h-full"
+                >
+                  <TopSelections product={item} />
+                </Link>
+              </motion.div>
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">
+              No products found
+            </p>
+          )}
+        </motion.div>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
