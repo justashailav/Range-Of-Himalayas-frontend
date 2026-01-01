@@ -277,7 +277,7 @@ export default function Home() {
         <motion.h1
           variants={fadeUp}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
           viewport={{ once: true }}
           className="text-center mt-8 font-bold text-3xl text-[#D84C3C]"
         >
