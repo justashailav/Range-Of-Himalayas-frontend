@@ -20,7 +20,8 @@ export default function ShoppingCheckout() {
     code,
   } = useSelector((state) => state.coupon);
   const { productList = [] } = useSelector((state) => state.products);
-  const [paymentMethod, setPaymentMethod] = useState("razorpay");
+  const [paymentMethod, setPaymentMethod] = useState("");
+
   const [currentStep, setCurrentStep] = useState(1);
 
   const dispatch = useDispatch();
@@ -178,19 +179,19 @@ export default function ShoppingCheckout() {
       setIsRazorpayProcessing(false);
     }
   }
-  // Step 2 when address selected
-  useEffect(() => {
-    if (currentSelectedAddress) {
-      setCurrentStep(2);
-    }
-  }, [currentSelectedAddress]);
+  // Step 2 → Address selected
+useEffect(() => {
+  if (currentSelectedAddress) {
+    setCurrentStep(2);
+  }
+}, [currentSelectedAddress]);
 
-  // Step 3 when payment selected
-  useEffect(() => {
-    if (paymentMethod) {
-      setCurrentStep(3);
-    }
-  }, [paymentMethod]);
+// Step 3 → Payment clicked
+useEffect(() => {
+  if (paymentMethod) {
+    setCurrentStep(3);
+  }
+}, [paymentMethod]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
