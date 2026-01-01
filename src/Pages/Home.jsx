@@ -28,6 +28,7 @@ import CustomerReviews from "./CustomerReview";
 import { Helmet } from "react-helmet";
 import HomeBlog from "./HomeBlogs";
 import { motion, AnimatePresence } from "framer-motion";
+import HimalayanLoader from "./HimalayanLoader";
 
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
@@ -240,7 +241,13 @@ export default function Home() {
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
-
+  if (loading && !galleryItems?.length) {
+  return (
+    <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center">
+      <HimalayanLoader text="Waking up the Himalayas…" />
+    </div>
+  );
+}
   return (
     <div className="bg-[#FFF8E1] overflow-x-hidden">
       <Helmet>
@@ -463,10 +470,11 @@ export default function Home() {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
           {/* Instagram */}
-          <motion.div 
-           whileHover={{ y: -5, scale: 1.02 }}
-  transition={{ duration: 0.3 }}
-          className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
+          <motion.div
+            whileHover={{ y: -5, scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
+          >
             <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
               <FaInstagram className="text-3xl text-pink-600" />
             </div>
@@ -485,8 +493,11 @@ export default function Home() {
           </motion.div>
 
           {/* Facebook */}
-          <motion.div  whileHover={{ y: -5, scale: 1.02 }}
-  transition={{ duration: 0.3 }} className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
+          <motion.div
+            whileHover={{ y: -5, scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
+          >
             <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
               <FaFacebook className="text-3xl text-blue-600" />
             </div>
@@ -549,7 +560,7 @@ export default function Home() {
 
         {/* Gallery */}
         {loading ? (
-          <p className="text-gray-500">Loading images...</p>
+          <HimalayanLoader text="Loading orchard moments…" />
         ) : filteredItems.length > 0 ? (
           <div className="relative max-w-3xl mx-auto">
             <AnimatePresence mode="wait">
