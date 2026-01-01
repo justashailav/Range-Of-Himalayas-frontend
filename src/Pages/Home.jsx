@@ -29,6 +29,7 @@ import { Helmet } from "react-helmet";
 import HomeBlog from "./HomeBlogs";
 import { motion, AnimatePresence } from "framer-motion";
 import HimalayanLoader from "./HimalayanLoader";
+import TopSelectionSkeleton from "./TopSelectionSkeleton";
 
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
@@ -242,12 +243,12 @@ export default function Home() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
   if (loading && !galleryItems?.length) {
-  return (
-    <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center">
-      <HimalayanLoader text="Waking up the Himalayas…" />
-    </div>
-  );
-}
+    return (
+      <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center">
+        <HimalayanLoader text="Waking up the Himalayas…" />
+      </div>
+    );
+  }
   return (
     <div className="bg-[#FFF8E1] overflow-x-hidden">
       <Helmet>
@@ -317,9 +318,11 @@ export default function Home() {
               </motion.div>
             ))
           ) : (
-            <p className="text-center col-span-full text-gray-500">
-              No products found
-            </p>
+            <>
+              {[1, 2, 3].map((i) => (
+                <TopSelectionSkeleton key={i} />
+              ))}
+            </>
           )}
         </motion.div>
       </div>
