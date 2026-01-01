@@ -398,8 +398,6 @@ export default function Home() {
             tradition, and uncompromising quality.
           </p>
         </div>
-
-        {/* FEATURES GRID */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -408,23 +406,29 @@ export default function Home() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center"
         >
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={fadeUp}
+              whileHover={{ y: -6 }}
               className="flex flex-col items-center bg-white shadow-sm rounded-xl p-6 transition"
             >
               <h3 className="font-semibold text-lg text-green-700">
                 {feature.title}
               </h3>
               <p className="text-gray-600 text-sm mt-2">{feature.desc}</p>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>
 
       <div className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl">
-        <img
+        <motuion.img
           src={foundersImage}
           alt="Founder"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg rounded-xl"
         />
       </div>
@@ -459,7 +463,10 @@ export default function Home() {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
           {/* Instagram */}
-          <div className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
+          <motion.div 
+           whileHover={{ y: -5, scale: 1.02 }}
+  transition={{ duration: 0.3 }}
+          className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
             <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
               <FaInstagram className="text-3xl text-pink-600" />
             </div>
@@ -475,10 +482,11 @@ export default function Home() {
             >
               Follow →
             </a>
-          </div>
+          </motion.div>
 
           {/* Facebook */}
-          <div className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
+          <motion.div  whileHover={{ y: -5, scale: 1.02 }}
+  transition={{ duration: 0.3 }} className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
             <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
               <FaFacebook className="text-3xl text-blue-600" />
             </div>
@@ -494,7 +502,7 @@ export default function Home() {
             >
               Follow →
             </a>
-          </div>
+          </motion.div>
         </div>
       </div>
 
@@ -544,14 +552,18 @@ export default function Home() {
           <p className="text-gray-500">Loading images...</p>
         ) : filteredItems.length > 0 ? (
           <div className="relative max-w-3xl mx-auto">
-            <>
-              <img
+            <AnimatePresence mode="wait">
+              <motion.img
                 key={filteredItems[currentIndex]?.images[currentImageIndex]}
                 src={filteredItems[currentIndex]?.images[currentImageIndex]}
                 alt={filteredItems[currentIndex]?.title}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
                 className="w-full h-full object-cover rounded-xl shadow-md"
               />
-            </>
+            </AnimatePresence>
             <button
               onClick={prevSlide}
               className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80 transition"
