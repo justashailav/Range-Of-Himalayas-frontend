@@ -27,7 +27,8 @@ import Footer from "./Footer";
 import CustomerReviews from "./CustomerReview";
 import { Helmet } from "react-helmet";
 import HomeBlog from "./HomeBlogs";
-import {motion} from "motion-framer"
+import { motion, AnimatePresence } from "framer-motion";
+
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
