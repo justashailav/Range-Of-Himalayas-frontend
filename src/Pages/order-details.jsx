@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { cancelOrder, getAllOrderDetails } from "@/store/slices/orderSlice";
-
+const statusSteps = ["confirmed", "packed", "shipping", "delivered"];
 export default function ShoppingOrderDetailsView() {
   const { state } = useLocation();
   const { user } = useSelector((state) => state.auth);
