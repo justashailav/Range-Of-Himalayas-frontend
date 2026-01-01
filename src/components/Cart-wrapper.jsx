@@ -8,7 +8,6 @@ import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { applyCoupon } from "@/store/slices/couponSlice";
-import rajmaImg from "./../assets/Rajma.png";
 
 export default function UserCartWrapper({ setOpenCartSheet }) {
   const navigate = useNavigate();
@@ -63,14 +62,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     setIsCouponApplied(false);
   }, [cartItems, boxes, productList]);
 
-  const getFreeGift = (total) => {
-    if (total >= 5000) return { name: "Pahadi Rajma", quantity: 3 };
-    if (total >= 3500) return { name: "Pahadi Rajma", quantity: 2 };
-    if (total >= 2000) return { name: "Pahadi Rajma", quantity: 1 };
-    return null;
-  };
-
-  const freeGift = getFreeGift(finalAmount);
+ 
   const handleAddToCart = (productId, totalStock, size, weight) => {
     if (!user?._id) {
       toast.error("Oops! You need to login first to add items to your cart.");
@@ -151,127 +143,124 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   }, [message]);
 
   return (
-    <SheetContent className="h-screen w-full sm:max-w-md shadow-lg rounded-l-lg flex flex-col">
-      <SheetHeader className="border-b border-gray-200 px-6 py-4 sticky top-0 bg-white z-20">
-        <SheetTitle className="text-2xl font-semibold text-gray-900">
-          Your Cart ({(cartItems || []).length} item
-          {(cartItems || []).length !== 1 ? "s" : ""})
-        </SheetTitle>
-      </SheetHeader>
-      <div className="flex-grow space-y-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 px-6 pt-4">
-        {(cartItems || []).length > 0 ? (
-          cartItems.map((item) => (
+    <SheetContent className="h-screen w-full sm:max-w-md flex flex-col bg-gray-50">
+
+  {/* ================= HEADER ================= */}
+  <SheetHeader className="px-4 py-4 bg-white border-b sticky top-0 z-20">
+    <SheetTitle className="text-lg font-bold text-gray-900">
+      Your Cart ({cartItems?.length || 0})
+    </SheetTitle>
+  </SheetHeader>
+
+  {/* ================= CART BODY ================= */}
+  <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5">
+
+    {/* CART ITEMS */}
+    {(cartItems || []).length > 0 ? (
+      cartItems.map((item) => (
+        <UserCartItemsContent
+          key={`${item.productId}-${item.size}`}
+          cartItem={item}
+          mobile
+        />
+      ))
+    ) : (
+      <p className="text-center text-gray-500 mt-16">
+        Your cart is empty
+      </p>
+    )}
+
+    {/* BOXES */}
+    {(boxes || []).length > 0 && (
+      <div className="mt-6">
+        <h4 className="text-sm font-semibold text-gray-700 mb-2">
+          Boxes
+        </h4>
+        <div className="space-y-3">
+          {boxes.map((boxItem) => (
             <UserCartItemsContent
-              key={`${item.productId}-${item.size}`}
-              cartItem={item}
+              key={`box-${boxItem.boxId}`}
+              boxItem={boxItem}
+              productList={productList}
+              mobile
             />
-          ))
-        ) : (
-          <p className="text-center text-gray-500 italic mt-12">
-            Your cart is empty.
-          </p>
-        )}
-        {(boxes || []).length > 0 && (
-          <>
-            <h4 className="text-xl font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-2">
-              Boxes Details
-            </h4>
-            {boxes.map((boxItem) => (
-              <UserCartItemsContent
-                key={`box-${boxItem.boxId}`}
-                boxItem={boxItem}
-                productList={productList}
-              />
-            ))}
-          </>
-        )}
-        {freeGift && (
-          <div className="flex items-center justify-between gap-4 bg-green-50 rounded-lg p-3 shadow-sm border border-green-200 mb-4">
-            <div className="flex items-center gap-3">
-              <img
-                src={rajmaImg}
-                alt={freeGift.name}
-                className="w-12 h-12 rounded-lg object-cover border border-gray-200"
-              />
-              <div>
-                <p className="font-semibold text-green-700">
-                  🎁 {freeGift.quantity}kg {freeGift.name}
-                </p>
-                <p className="text-sm text-green-600">Free Gift</p>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="mt-10">
-          <h3 className="text-lg font-semibold mb-4 text-gray-800">
-            You might also like
-          </h3>
-          <div className="flex gap-4 overflow-x-auto px-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-            {(productList || []).length > 0 ? (
-              productList.map((item) => (
-                <div key={item._id} className="flex-shrink-0 ">
-                  <CartProducts
-                    product={item}
-                    handleAddToCart={handleAddToCart}
-                  />
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500">No products found</p>
-            )}
-          </div>
+          ))}
         </div>
       </div>
-      <div className="border-t border-gray-200 px-6 py-5 bg-gray-50">
-        <div className="mb-5">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Apply Coupon
-          </label>
-          <div className="flex gap-3 mt-3">
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              disabled={isCouponApplied}
-              className="flex-1 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-              placeholder="Enter coupon code"
+    )}
+
+    {/* RECOMMENDATIONS */}
+    <div className="mt-8">
+      <h3 className="text-sm font-semibold text-gray-700 mb-3">
+        You might also like
+      </h3>
+      <div className="flex gap-3 overflow-x-auto pb-2">
+        {(productList || []).map((item) => (
+          <div key={item._id} className="min-w-[140px]">
+            <CartProducts
+              product={item}
+              handleAddToCart={handleAddToCart}
+              compact
             />
-            <Button
-              onClick={handleApplyCoupon}
-              disabled={isCouponApplied || couponCode.trim() === ""}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-md transition"
-            >
-              {isCouponApplied ? "Applied" : "Apply"}
-            </Button>
           </div>
-        </div>
+        ))}
+      </div>
+    </div>
 
-        {isCouponApplied && (
-          <div className="flex justify-between items-center mb-4 text-green-700 font-semibold">
-            <span>Discount</span>
-            <span>- ₹{discount.toFixed(2)}</span>
-          </div>
-        )}
-
-        <div className="flex justify-between items-center mb-6">
-          <span className="text-lg font-semibold text-gray-800">Total</span>
-          <span className="text-lg font-semibold text-gray-900">
-            ₹{finalAmount.toFixed(2)}
-          </span>
-        </div>
-
-        <Link
-          to="/checkout"
-          onClick={() => setOpenCartSheet(false)}
-          className={`w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-md shadow-md transition-colors duration-200 ${
-            cartItems?.length === 0 && boxes?.length === 0
-              ? "pointer-events-none opacity-50"
-              : ""
-          }`}
+    {/* COUPON */}
+    <div className="bg-white rounded-xl p-4 mt-6 shadow-sm">
+      <p className="text-sm font-semibold mb-2">Apply Coupon</p>
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+          disabled={isCouponApplied}
+          placeholder="Enter code"
+          className="flex-1 border rounded-lg px-3 py-2 text-sm"
+        />
+        <Button
+          onClick={handleApplyCoupon}
+          disabled={isCouponApplied || couponCode.trim() === ""}
+          className="px-4 py-2 text-sm rounded-lg bg-indigo-600"
         >
-          Proceed to Checkout
-        </Link>
+          {isCouponApplied ? "Applied" : "Apply"}
+        </Button>
       </div>
-    </SheetContent>
+
+      {isCouponApplied && (
+        <div className="flex justify-between mt-3 text-green-600 text-sm font-semibold">
+          <span>Discount</span>
+          <span>-₹{discount.toFixed(2)}</span>
+        </div>
+      )}
+    </div>
+  </div>
+
+  {/* ================= STICKY FOOTER ================= */}
+  <div className="sticky bottom-0 bg-white border-t px-4 py-4">
+    <div className="flex justify-between items-center mb-3">
+      <div>
+        <p className="text-xs text-gray-500">Total</p>
+        <p className="text-lg font-bold text-gray-900">
+          ₹{finalAmount.toFixed(2)}
+        </p>
+      </div>
+    </div>
+
+    <Link
+      to="/checkout"
+      onClick={() => setOpenCartSheet(false)}
+      className={`block text-center w-full py-3 rounded-xl font-semibold text-white
+      bg-gradient-to-r from-indigo-600 to-purple-600
+      ${cartItems?.length === 0 && boxes?.length === 0
+        ? "opacity-50 pointer-events-none"
+        : "hover:opacity-90"}`}
+    >
+      Proceed to Checkout
+    </Link>
+  </div>
+</SheetContent>
+
   );
 }
