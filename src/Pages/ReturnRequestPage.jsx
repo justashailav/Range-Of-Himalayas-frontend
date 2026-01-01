@@ -66,99 +66,145 @@ export default function ReturnRequestPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-white rounded-2xl shadow-md">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Return Request</h1>
+    <div className="max-w-5xl mx-auto p-6 sm:p-8 bg-white rounded-3xl shadow-lg">
 
-      <div className="grid gap-4">
-        {orderDetails.cartItems.map((item) => (
-          <Card
-            key={item.productId}
-            className="transition-shadow hover:shadow-lg border border-gray-100"
-          >
-            <CardContent className="flex flex-col md:flex-row gap-4 p-4">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-24 h-24 object-cover rounded-md border"
-              />
-              <div className="flex-1 flex flex-col">
-                <p className="font-semibold text-gray-900">{item.name}</p>
-                <p className="text-sm text-gray-500">
-                  Qty: {item.quantity} | ₹{item.price}
-                </p>
-                <label className="mt-3 text-sm font-medium text-gray-700">
-                  Reason for return
-                </label>
-                <textarea
-                  placeholder="Enter reason (optional)"
-                  value={reasonInputs[item.productId] || ""}
-                  onChange={(e) =>
-                    handleReasonChange(item.productId, e.target.value)
-                  }
-                  className="mt-1 w-full border border-gray-300 rounded p-2 resize-none focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+  {/* HEADER */}
+  <div className="mb-8">
+    <h1 className="text-3xl font-extrabold text-gray-900">
+      Return Request
+    </h1>
+    <p className="text-gray-500 mt-1">
+      Tell us what went wrong and help us improve
+    </p>
+  </div>
 
-      {/* File Uploads */}
-      <div className="mt-8 space-y-6">
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Upload Photos</label>
-          <Input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => handleFileChange(e, "photo")}
-            className="cursor-pointer"
-          />
-          {photos.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {photos.map((file, idx) => (
-                <img
-                  key={idx}
-                  src={URL.createObjectURL(file)}
-                  alt={`preview-${idx}`}
-                  className="w-24 h-24 object-cover rounded-md border"
-                />
-              ))}
-            </div>
-          )}
-        </div>
+  {/* STEP 1: ITEMS */}
+  <div className="space-y-5">
+    <h2 className="text-xl font-bold text-gray-800">
+      1️⃣ Select items & reason
+    </h2>
 
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Upload Videos</label>
-          <Input
-            type="file"
-            accept="video/*"
-            multiple
-            onChange={(e) => handleFileChange(e, "video")}
-            className="cursor-pointer"
-          />
-          {videos.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {videos.map((file, idx) => (
-                <video
-                  key={idx}
-                  src={URL.createObjectURL(file)}
-                  controls
-                  className="w-32 h-24 rounded-md border"
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <Button
-        onClick={handleSubmit}
-        disabled={isSubmitting}
-        className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg"
+    {orderDetails.cartItems.map((item) => (
+      <Card
+        key={item.productId}
+        className="border border-gray-200 rounded-2xl hover:shadow-md transition"
       >
-        {isSubmitting ? "Submitting..." : "Submit Return Request"}
-      </Button>
+        <CardContent className="p-5 flex flex-col md:flex-row gap-5">
+
+          {/* IMAGE */}
+          <img
+            src={item.image}
+            alt={item.name}
+            className="w-24 h-24 rounded-xl object-cover border"
+          />
+
+          {/* DETAILS */}
+          <div className="flex-1">
+            <p className="font-semibold text-gray-900 text-lg">
+              {item.name}
+            </p>
+            <p className="text-sm text-gray-500 mt-1">
+              Quantity: {item.quantity} · ₹{item.price}
+            </p>
+
+            <label className="block mt-4 text-sm font-medium text-gray-700">
+              Reason for return (optional)
+            </label>
+            <textarea
+              placeholder="e.g. Item damaged, quality issue, wrong item received"
+              value={reasonInputs[item.productId] || ""}
+              onChange={(e) =>
+                handleReasonChange(item.productId, e.target.value)
+              }
+              rows={3}
+              className="mt-1 w-full rounded-xl border border-gray-300 p-3
+              focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+            />
+          </div>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+
+  {/* STEP 2: UPLOADS */}
+  <div className="mt-10 space-y-6">
+    <h2 className="text-xl font-bold text-gray-800">
+      2️⃣ Upload proof (optional)
+    </h2>
+
+    {/* PHOTOS */}
+    <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-blue-500 transition">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Upload photos
+      </label>
+      <Input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={(e) => handleFileChange(e, "photo")}
+        className="cursor-pointer"
+      />
+
+      {photos.length > 0 && (
+        <div className="flex flex-wrap gap-3 mt-4">
+          {photos.map((file, idx) => (
+            <img
+              key={idx}
+              src={URL.createObjectURL(file)}
+              alt={`photo-${idx}`}
+              className="w-24 h-24 rounded-xl object-cover border shadow-sm"
+            />
+          ))}
+        </div>
+      )}
     </div>
+
+    {/* VIDEOS */}
+    <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-blue-500 transition">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Upload videos
+      </label>
+      <Input
+        type="file"
+        accept="video/*"
+        multiple
+        onChange={(e) => handleFileChange(e, "video")}
+        className="cursor-pointer"
+      />
+
+      {videos.length > 0 && (
+        <div className="flex flex-wrap gap-3 mt-4">
+          {videos.map((file, idx) => (
+            <video
+              key={idx}
+              src={URL.createObjectURL(file)}
+              controls
+              className="w-36 h-24 rounded-xl border shadow-sm"
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+
+  {/* CTA */}
+  <div className="mt-10">
+    <Button
+      onClick={handleSubmit}
+      disabled={isSubmitting}
+      className="w-full py-4 text-lg rounded-2xl text-white
+      bg-gradient-to-r from-blue-600 to-indigo-600
+      hover:from-blue-700 hover:to-indigo-700
+      shadow-lg hover:shadow-xl transition disabled:opacity-60"
+    >
+      {isSubmitting ? "Submitting request..." : "Submit Return Request"}
+    </Button>
+
+    <p className="text-xs text-gray-500 text-center mt-3">
+      Our team will review your request within 24–48 hours
+    </p>
+  </div>
+</div>
+
   );
 }
