@@ -14,7 +14,6 @@ import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { toast } from "react-toastify";
 import TopSelections from "./TopSelections";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
@@ -30,6 +29,31 @@ import { Helmet } from "react-helmet";
 import HomeBlog from "./HomeBlogs";
 
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.6 },
+  },
+};
+
+const stagger = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -110,7 +134,7 @@ export default function Home() {
       return;
     }
 
-    const normalizedSize = size || ""; 
+    const normalizedSize = size || "";
 
     const getCartItems = cartItems?.items || [];
 
@@ -237,30 +261,28 @@ export default function Home() {
         </div>
       </div>
 
-      <Link to="/viewproducts">
-        <img
-          src={bgImage}
-          alt="Banner"
-          className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
-        />
-      </Link>
+      <motion.div initial="hidden" animate="visible" variants={fadeIn}>
+        <Link to="/viewproducts">
+          <motion.img
+            src={bgImage}
+            alt="Banner"
+            className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.5 }}
+          />
+        </Link>
+      </motion.div>
 
       <div className="border-[#FAD4B3] border-b-1 mt-10 h-[2px] w-full"></div>
       <div>
-        <h1
-          className="text-center mt-8 font-bold text-3xl text-[#D84C3C]"
-        >
+        <h1 className="text-center mt-8 font-bold text-3xl text-[#D84C3C]">
           Himalayan Selections
         </h1>
 
-        <div
-          className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
-        >
+        <div className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
           {productList && productList.length > 0 ? (
             productList.slice(0, 3).map((item) => (
-              <div
-                className="will-change-transform"
-              >
+              <div className="will-change-transform">
                 <Link
                   to={`/product/${item._id}`}
                   onClick={() => handleGetProductDetails(item)}
@@ -286,9 +308,7 @@ export default function Home() {
       </div>
 
       <div className="px-5 sm:px-10 flex flex-col sm:flex-row items-start sm:items-center justify-between">
-        <div
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full"
-        >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
           <div>
             <h1 className="mt-8 font-bold text-3xl text-[#D84C3C]">
               Trending Now
@@ -297,29 +317,21 @@ export default function Home() {
 
           <div className="w-full sm:w-auto">
             <Link to="/viewproducts">
-              <button
-                className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white cursor-pointer px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out"
-              >
+              <button className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white cursor-pointer px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out">
                 View All Products
               </button>
             </Link>
           </div>
         </div>
       </div>
-      <div
-        className="relative p-10"
-      >
+      <div className="relative p-10">
         {/* LEFT ARROW */}
-        <button
-          className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
-        >
+        <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
           <ChevronLeft className="w-5 h-5" />
         </button>
 
         {/* RIGHT ARROW */}
-        <button
-          className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
-        >
+        <button className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
           <ChevronRight className="w-5 h-5" />
         </button>
 
@@ -338,8 +350,7 @@ export default function Home() {
         >
           {productList.map((item, index) => (
             <SwiperSlide key={item._id}>
-              <div
-              >
+              <div>
                 <ShoppingProductTile
                   product={item}
                   handleAddToCart={handleAddToCart}
@@ -351,25 +362,18 @@ export default function Home() {
         </Swiper>
       </div>
 
-      <div
-      >
+      <div>
         {/* HEADER */}
         <div className="text-center mb-10">
-          <span
-            className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
-          >
+          <span className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
             🍎 From Orchard to You
           </span>
 
-          <h1
-            className="text-4xl font-bold mt-4 mb-3"
-          >
+          <h1 className="text-4xl font-bold mt-4 mb-3">
             Why Range Of Himalayas?
           </h1>
 
-          <p
-            className="text-gray-600 text-xl max-w-2xl mx-auto"
-          >
+          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
             Every apple is a reflection of our passion for purity, timeless
             tradition, and uncompromising quality.
           </p>
@@ -391,72 +395,46 @@ export default function Home() {
         </div>
       </div>
 
-      <div
-        className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl"
-      >
+      <div className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl">
         <img
           src={foundersImage}
           alt="Founder"
           className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg rounded-xl"
         />
       </div>
-      <div
-        className="px-6 py-12"
-      >
+      <div className="px-6 py-12">
         <div className="text-center mb-10">
           {/* Badge */}
-          <span
-            className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
-          >
+          <span className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
             🍎 From Our Orchards
           </span>
 
           {/* Heading */}
-          <h1
-            className="text-4xl font-bold mt-4 mb-3"
-          >
-            Himalayan Harvest
-          </h1>
+          <h1 className="text-4xl font-bold mt-4 mb-3">Himalayan Harvest</h1>
 
           {/* Paragraph */}
-          <p
-            className="text-gray-600 text-xl max-w-2xl mx-auto"
-          >
+          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
             Discover how we nurture premium apples with a blend of time-honored
             traditions and thoughtful modern practices in the pristine Himalayan
             foothills.
           </p>
         </div>
       </div>
-      <div
-        className="px-6 py-12 bg-white"
-      >
+      <div className="px-6 py-12 bg-white">
         {/* Heading */}
         <div className="text-center mb-10">
-          <h2
-            className="text-4xl font-bold mb-2"
-          >
-            Follow Us
-          </h2>
+          <h2 className="text-4xl font-bold mb-2">Follow Us</h2>
 
-          <p
-            className="text-gray-600 text-xl"
-          >
+          <p className="text-gray-600 text-xl">
             🌱 Get the freshest updates on our harvests and apple collections
           </p>
         </div>
 
         {/* Cards */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
           {/* Instagram */}
-          <div
-            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
-          >
-            <div
-              className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4"
-            >
+          <div className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
+            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
               <FaInstagram className="text-3xl text-pink-600" />
             </div>
 
@@ -474,12 +452,8 @@ export default function Home() {
           </div>
 
           {/* Facebook */}
-          <div
-            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
-          >
-            <div
-              className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4"
-            >
+          <div className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md">
+            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
               <FaFacebook className="text-3xl text-blue-600" />
             </div>
 
@@ -499,36 +473,26 @@ export default function Home() {
       </div>
 
       <HomeBlog />
-      <div
-        className="px-6 py-12 text-center"
-      >
+      <div className="px-6 py-12 text-center">
         {/* Badge */}
-        <span
-          className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
-        >
+        <span className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
           🌿 Orchard Moments
         </span>
 
         {/* Heading */}
-        <h1
-          className="text-4xl font-bold mt-4 mb-3"
-        >
+        <h1 className="text-4xl font-bold mt-4 mb-3">
           🍏 From Orchard to Table
         </h1>
 
         {/* Paragraph */}
-        <p
-          className="text-gray-600 text-xl max-w-2xl mx-auto"
-        >
+        <p className="text-gray-600 text-xl max-w-2xl mx-auto">
           Witness the journey of our orchards through the seasons — a
           celebration of purity, tradition, and mindful farming at Range Of
           Himalayas.
         </p>
 
         {/* Category Buttons */}
-        <div
-          className="flex flex-wrap justify-center gap-3 mt-6 mb-8"
-        >
+        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-8">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -575,9 +539,7 @@ export default function Home() {
             >
               <FaArrowRight />
             </button>
-            <div
-              className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg"
-            >
+            <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg">
               <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
                 {filteredItems[currentIndex]?.category}
               </span>
