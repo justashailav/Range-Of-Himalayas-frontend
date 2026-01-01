@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 import { useNavigate } from "react-router-dom";
-import rajmaImg from "./../assets/Rajma.png";
 import { resetCoupon } from "@/store/slices/couponSlice";
 import { Helmet } from "react-helmet";
 
@@ -479,10 +478,27 @@ export default function ShoppingCheckout() {
     //     </div>
     //   </div>
     // </div>
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-10">
   <Helmet>
     <title>Checkout | Range of Himalayas</title>
   </Helmet>
+
+  {/* ===== CHECKOUT STEPS ===== */}
+  <div className="flex items-center justify-between max-w-3xl mx-auto mb-10 px-4">
+    {["Address", "Review", "Payment"].map((step, i) => (
+      <div key={step} className="flex items-center w-full">
+        <div className="flex flex-col items-center">
+          <div className="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center text-sm font-bold">
+            {i + 1}
+          </div>
+          <span className="text-xs mt-2 text-gray-700 font-medium">
+            {step}
+          </span>
+        </div>
+        {i !== 2 && <div className="flex-1 h-[2px] bg-gray-300 mx-3" />}
+      </div>
+    ))}
+  </div>
 
   <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
@@ -490,10 +506,11 @@ export default function ShoppingCheckout() {
     <div className="lg:col-span-2 space-y-6">
 
       {/* ADDRESS */}
-      <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+      <div className="bg-white rounded-2xl shadow p-6">
+        <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
           🏠 Delivery Address
         </h2>
+        <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-4" />
         <Address
           selectedId={currentSelectedAddress}
           setCurrentSelectedAddress={setCurrentSelectedAddress}
@@ -502,20 +519,22 @@ export default function ShoppingCheckout() {
 
       {/* CART ITEMS */}
       {cartItems.length > 0 && (
-        <div className="bg-white rounded-xl shadow p-6">
-          <h2 className="text-xl font-bold mb-4">🛍️ Cart Items</h2>
+        <div className="bg-white rounded-2xl shadow p-6">
+          <h2 className="text-xl font-bold mb-2">🛍️ Cart Items</h2>
+          <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-4" />
 
           <div className="space-y-4 max-h-[320px] overflow-y-auto pr-2">
             {cartItems.map((item) => (
               <div
                 key={`${item.productId}-${item.size || "default"}`}
-                className="flex items-center justify-between border rounded-lg p-4"
+                className="flex items-center justify-between border rounded-xl p-4
+                transition-all duration-200 hover:shadow-md hover:scale-[1.01]"
               >
                 <div className="flex gap-4">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-16 h-16 rounded-md object-cover border"
+                    className="w-16 h-16 rounded-lg object-cover border"
                   />
                   <div>
                     <p className="font-semibold">{item.title}</p>
@@ -544,14 +563,15 @@ export default function ShoppingCheckout() {
 
       {/* BOXES */}
       {boxes.length > 0 && (
-        <div className="bg-white rounded-xl shadow p-6">
-          <h2 className="text-xl font-bold mb-4">📦 Boxes</h2>
+        <div className="bg-white rounded-2xl shadow p-6">
+          <h2 className="text-xl font-bold mb-2">📦 Boxes</h2>
+          <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-4" />
 
           <div className="space-y-4">
             {boxes.map((box) => (
               <div
                 key={box._id || box.boxId}
-                className="border rounded-lg p-4"
+                className="border rounded-xl p-4 transition hover:shadow-sm"
               >
                 <h3 className="font-semibold text-blue-700 mb-3">
                   {box.boxName || "Custom Box"}
@@ -576,7 +596,7 @@ export default function ShoppingCheckout() {
                         <div className="flex items-center gap-3">
                           <img
                             src={product.image || "/placeholder.png"}
-                            className="w-10 h-10 rounded border"
+                            className="w-10 h-10 rounded-md border"
                           />
                           <div>
                             <p className="font-medium">{product.title}</p>
@@ -600,9 +620,14 @@ export default function ShoppingCheckout() {
     </div>
 
     {/* ================= RIGHT SUMMARY ================= */}
-    <div className="bg-white rounded-xl shadow p-6 h-fit sticky top-6">
-
-      <h2 className="text-xl font-bold mb-4">💰 Order Summary</h2>
+    <div
+      className="rounded-2xl p-6 h-fit sticky top-6
+      bg-white/70 backdrop-blur-xl
+      shadow-[0_10px_40px_rgba(0,0,0,0.08)]
+      border border-white/50"
+    >
+      <h2 className="text-xl font-bold mb-2">💰 Order Summary</h2>
+      <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-4" />
 
       <div className="space-y-2 text-sm text-gray-700">
         <div className="flex justify-between">
@@ -622,10 +647,13 @@ export default function ShoppingCheckout() {
         )}
 
         <hr />
+      </div>
 
-        <div className="flex justify-between text-lg font-bold">
-          <span>Total</span>
-          <span className="text-blue-700">
+      {/* PRICE HIGHLIGHT */}
+      <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-green-50">
+        <div className="flex justify-between text-lg font-extrabold">
+          <span>You Pay</span>
+          <span className="text-green-700">
             ₹{payableAmount.toFixed(2)}
           </span>
         </div>
@@ -633,21 +661,45 @@ export default function ShoppingCheckout() {
 
       {/* PAYMENT METHOD */}
       <div className="mt-6 space-y-3">
-        <label className="flex items-center gap-2 border rounded-lg p-3 cursor-pointer">
+        {/* ONLINE */}
+        <label
+          className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition
+          ${paymentMethod === "razorpay"
+            ? "border-green-600 bg-green-50"
+            : "border-gray-200 hover:border-gray-400"}`}
+        >
           <input
             type="radio"
             checked={paymentMethod === "razorpay"}
             onChange={() => setPaymentMethod("razorpay")}
+            className="hidden"
           />
+          <div className="w-4 h-4 rounded-full border-2 border-green-600 flex items-center justify-center">
+            {paymentMethod === "razorpay" && (
+              <div className="w-2 h-2 rounded-full bg-green-600" />
+            )}
+          </div>
           <span className="font-medium">Pay Online (Razorpay)</span>
         </label>
 
-        <label className="flex items-center gap-2 border rounded-lg p-3 cursor-pointer">
+        {/* COD */}
+        <label
+          className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition
+          ${paymentMethod === "cod"
+            ? "border-green-600 bg-green-50"
+            : "border-gray-200 hover:border-gray-400"}`}
+        >
           <input
             type="radio"
             checked={paymentMethod === "cod"}
             onChange={() => setPaymentMethod("cod")}
+            className="hidden"
           />
+          <div className="w-4 h-4 rounded-full border-2 border-green-600 flex items-center justify-center">
+            {paymentMethod === "cod" && (
+              <div className="w-2 h-2 rounded-full bg-green-600" />
+            )}
+          </div>
           <span className="font-medium">
             Cash on Delivery (₹200 advance)
           </span>
@@ -658,7 +710,10 @@ export default function ShoppingCheckout() {
       <Button
         onClick={handlePlaceOrder}
         disabled={isRazorpayProcessing}
-        className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white text-lg py-3 rounded-lg"
+        className="w-full mt-6 py-4 text-lg rounded-xl text-white
+        bg-gradient-to-r from-green-600 to-emerald-500
+        hover:from-green-700 hover:to-emerald-600
+        shadow-lg hover:shadow-xl transition-all"
       >
         {isRazorpayProcessing
           ? "Processing..."
@@ -668,11 +723,12 @@ export default function ShoppingCheckout() {
       </Button>
 
       <p className="text-xs text-gray-500 text-center mt-3">
-        🔒 100% secure payments powered by Razorpay
+        🔒 Free delivery · Fresh from Himalayas · Secure checkout
       </p>
     </div>
   </div>
 </div>
+
 
   );
 }
