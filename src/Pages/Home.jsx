@@ -242,13 +242,13 @@ export default function Home() {
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
-  if (loading && !galleryItems?.length) {
-    return (
-      <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center">
-        <HimalayanLoader text="Waking up the Himalayas…" />
-      </div>
-    );
-  }
+  // if (loading && !galleryItems?.length) {
+  //   return (
+  //     <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center">
+  //       <HimalayanLoader text="Waking up the Himalayas…" />
+  //     </div>
+  //   );
+  // }
   return (
     <div className="bg-[#FFF8E1] overflow-x-hidden">
       <Helmet>
