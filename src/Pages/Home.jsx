@@ -422,7 +422,7 @@ export default function Home() {
       </div>
 
       <div className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl">
-        <motuion.img
+        <motion.img
           src={foundersImage}
           alt="Founder"
           initial={{ opacity: 0, scale: 0.95 }}
