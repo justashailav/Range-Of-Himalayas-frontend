@@ -86,6 +86,7 @@ export default function ShoppingOrderDetailsView() {
     });
   };
 
+ const currentIndex = statusSteps.indexOf(orderDetails.orderStatus);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
