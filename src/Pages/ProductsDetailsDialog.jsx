@@ -53,7 +53,7 @@ export default function ProductsDetailsDialog() {
 
   const getVariant = (size, weight) =>
     variants.find(
-      (v) => (hasSize ? v.size === size : true) && v.weight === weight
+      (v) => (hasSize ? v.size === size : true) && v.weight === weight,
     ) || null;
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedWeight, setSelectedWeight] = useState("");
@@ -158,7 +158,7 @@ export default function ProductsDetailsDialog() {
       (item) =>
         item.productId.toString() === productId.toString() &&
         item.size === size &&
-        item.weight === weight
+        item.weight === weight,
     );
 
     if (existingItem && existingItem.quantity + 1 > stock) {
@@ -173,7 +173,7 @@ export default function ProductsDetailsDialog() {
         quantity: 1,
         size,
         weight,
-      })
+      }),
     ).then((data) => {
       if (data?.success) {
         dispatch(fetchCartItems(user._id));
@@ -188,11 +188,11 @@ export default function ProductsDetailsDialog() {
     getCurrentProductId,
     getTotalStock,
     size,
-    weight
+    weight,
   ) {
     if (!user?._id) {
       toast.error(
-        "Oops! You need to login first to add items to your wishlist."
+        "Oops! You need to login first to add items to your wishlist.",
       );
       return;
     }
@@ -218,7 +218,7 @@ export default function ProductsDetailsDialog() {
           toast.error(
             `Only ${getTotalStock} quantity available for this size${
               weight ? " and weight" : ""
-            }`
+            }`,
           );
           return;
         }
@@ -232,7 +232,7 @@ export default function ProductsDetailsDialog() {
         quantity: 1,
         normalizedSize,
         weight,
-      })
+      }),
     ).then((data) => {
       if (data?.success) {
         dispatch(fetchWishListItems(user?._id));
@@ -277,7 +277,7 @@ export default function ProductsDetailsDialog() {
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <motion.img
-                key={mainImage} 
+                key={mainImage}
                 src={mainImage}
                 alt={productDetails?.title}
                 onClick={() => setIsImageOpen(true)}
@@ -291,7 +291,7 @@ export default function ProductsDetailsDialog() {
                   if (info.offset.x > 80) {
                     const i = allImages.indexOf(mainImage);
                     setMainImage(
-                      allImages[(i - 1 + allImages.length) % allImages.length]
+                      allImages[(i - 1 + allImages.length) % allImages.length],
                     );
                   }
                 }}
@@ -324,21 +324,21 @@ export default function ProductsDetailsDialog() {
             </AnimatePresence>
 
             {allImages.length > 1 && (
-  <div className="mt-4">
-    <div className="flex gap-4 overflow-x-auto scrollbar-hide px-1">
-      {allImages.map((img, idx) => {
-        const isActive = mainImage === img;
+              <div className="mt-4">
+                <div className="flex gap-4 overflow-x-auto scrollbar-hide px-1">
+                  {allImages.map((img, idx) => {
+                    const isActive = mainImage === img;
 
-        return (
-          <motion.img
-            key={idx}
-            src={img}
-            alt={`Variant ${idx}`}
-            onMouseEnter={() => setMainImage(img)}
-            onClick={() => setMainImage(img)}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.95 }}
-            className={`
+                    return (
+                      <motion.img
+                        key={idx}
+                        src={img}
+                        alt={`Variant ${idx}`}
+                        onMouseEnter={() => setMainImage(img)}
+                        onClick={() => setMainImage(img)}
+                        whileHover={{ scale: 1.06 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`
               w-24 h-24 object-cover rounded-xl cursor-pointer
               transition-all duration-200
               ${
@@ -347,94 +347,82 @@ export default function ProductsDetailsDialog() {
                   : "shadow-sm hover:shadow-md"
               }
             `}
-          />
-        );
-      })}
-    </div>
-  </div>
-)}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
-          {productDetails?.nutrition && (
-  <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
-    
-    {/* HEADER (STATIC) */}
-    <div className="px-6 py-4 font-semibold text-lg flex items-center gap-2">
-      <span className="text-xl">🍎</span>
-      Nutrition
-    </div>
+            {productDetails?.details && (
+              <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
+                {/* HEADER (STATIC) */}
+                <div className="px-6 py-4 font-semibold text-lg flex items-center gap-2">
+                  <span className="text-xl">🍎</span>
+                  Product Information
+                </div>
 
-    {/* CONTENT (ALWAYS VISIBLE) */}
-    <div className="px-6 pb-6">
-      {Object.entries(productDetails.nutrition)
-        .filter(
-          ([key, value]) =>
-            !["_id", "__v"].includes(key) &&
-            value !== null &&
-            value !== undefined &&
-            value !== ""
-        )
-        .map(([key, value]) => (
-          <div
-            key={key}
-            className="flex justify-between items-center py-2 border-b last:border-b-0"
-          >
-            <span className="font-medium text-gray-700 capitalize">
-              {key.replace(/_/g, " ")}
-            </span>
-            <span className="font-semibold text-gray-900">
-              {value}
-            </span>
-          </div>
-        ))}
-    </div>
-  </div>
-)}
-
+                {/* CONTENT (ALWAYS VISIBLE) */}
+                <div className="px-6 pb-6">
+                  {Object.entries(productDetails.details)
+                    .filter(
+                      ([key, value]) =>
+                        !["_id", "__v"].includes(key) &&
+                        value !== null &&
+                        value !== undefined &&
+                        value !== "",
+                    )
+                    .map(([key, value]) => (
+                      <div
+                        key={key}
+                        className="flex justify-between items-center py-2 border-b last:border-b-0"
+                      >
+                        <span className="font-medium text-gray-700 capitalize">
+                          {key.replace(/_/g, " ")}
+                        </span>
+                        <span className="font-semibold text-gray-900">
+                          {value}
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
 
             {productDetails?.nutrition && (
-  <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
-    
-    {/* HEADER */}
-    <button
-      onClick={() => setInfoOpen((p) => !p)}
-      className="w-full flex items-center justify-between px-6 py-4 font-semibold text-lg"
-    >
-      <div className="flex items-center gap-2">
-        <span className="text-xl">🍎</span>
-        Nutrition
-      </div>
-      <span
-        className={`text-xl transition-transform ${
-          infoOpen ? "rotate-180" : ""
-        }`}
-      >
-        ⌃
-      </span>
-    </button>
+              <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
+                {/* HEADER (STATIC) */}
+                <div className="px-6 py-4 font-semibold text-lg flex items-center gap-2">
+                  <span className="text-xl">🍎</span>
+                  Nutrition
+                </div>
 
-    {/* CONTENT */}
-    {infoOpen && (
-      <div className="px-6 pb-6 space-y-3">
-        {Object.entries(productDetails.nutrition)
-          .filter(([key]) => !["_id", "__v"].includes(key))
-          .map(([key, value]) => (
-            <div
-              key={key}
-              className="flex justify-between items-center py-2 border-b last:border-b-0"
-            >
-              <span className="font-medium text-gray-700 capitalize">
-                {key.replace(/_/g, " ")}
-              </span>
-              <span className="font-semibold text-gray-900">
-                {value}
-              </span>
-            </div>
-          ))}
-      </div>
-    )}
-  </div>
-)}
-
+                {/* CONTENT (ALWAYS VISIBLE) */}
+                <div className="px-6 pb-6">
+                  {Object.entries(productDetails.nutrition)
+                    .filter(
+                      ([key, value]) =>
+                        !["_id", "__v"].includes(key) &&
+                        value !== null &&
+                        value !== undefined &&
+                        value !== "",
+                    )
+                    .map(([key, value]) => (
+                      <div
+                        key={key}
+                        className="flex justify-between items-center py-2 border-b last:border-b-0"
+                      >
+                        <span className="font-medium text-gray-700 capitalize">
+                          {key.replace(/_/g, " ")}
+                        </span>
+                        <span className="font-semibold text-gray-900">
+                          {value}
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-6">
             <motion.div
@@ -621,7 +609,7 @@ export default function ProductsDetailsDialog() {
                     {Math.round(
                       100 -
                         (selectedVariant.salesPrice / selectedVariant.price) *
-                          100
+                          100,
                     )}
                     %
                   </span>
@@ -722,7 +710,7 @@ export default function ProductsDetailsDialog() {
                       productDetails._id,
                       selectedVariant.stock,
                       selectedVariant.size,
-                      selectedVariant.weight
+                      selectedVariant.weight,
                     );
                     setTimeout(() => setIsAddingToCart(false), 300);
                   }}
@@ -740,7 +728,7 @@ export default function ProductsDetailsDialog() {
                     productDetails._id,
                     selectedVariant.stock,
                     selectedVariant.size || "",
-                    selectedVariant.weight
+                    selectedVariant.weight,
                   );
                 }}
                 className="flex-1 bg-white border-2 border-[#F08C7D] text-[#F08C7D] py-4 font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-[#F08C7D] hover:text-white transition disabled:opacity-50"
@@ -800,7 +788,7 @@ export default function ProductsDetailsDialog() {
                     <img
                       src={`http://localhost:3000/${r.reviewImages[0].replace(
                         "\\",
-                        "/"
+                        "/",
                       )}`}
                       alt="review"
                       className="w-full h-56 object-cover rounded-xl shadow mb-4"
