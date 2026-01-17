@@ -58,7 +58,9 @@ export default function ShoppingProductTile({
   const finalPrice = salesPrice > 0 ? salesPrice : price;
 
   const mainImage = product?.image;
-
+  const images = Array.isArray(product?.images) && product.images.length > 0
+  ? product.images
+  : [product?.image].filter(Boolean);
   return (
     <div className="relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition max-w-sm mx-auto overflow-hidden">
 
