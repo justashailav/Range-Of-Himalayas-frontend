@@ -354,51 +354,7 @@ export default function ProductsDetailsDialog() {
   </div>
 )}
 
-            {productDetails?.details && (
-  <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
-    
-    {/* HEADER */}
-    <button
-      onClick={() => setInfoOpen((p) => !p)}
-      className="w-full flex items-center justify-between px-6 py-4 font-semibold text-lg"
-    >
-      <div className="flex items-center gap-2">
-        <span className="text-xl">🍎</span>
-        Product Information
-      </div>
-      <span
-        className={`text-xl transition-transform ${
-          infoOpen ? "rotate-180" : ""
-        }`}
-      >
-        ⌃
-      </span>
-    </button>
-
-    {/* CONTENT */}
-    {infoOpen && (
-      <div className="px-6 pb-6 space-y-3">
-        {Object.entries(productDetails.details)
-          .filter(([key]) => !["_id", "__v"].includes(key))
-          .map(([key, value]) => (
-            <div
-              key={key}
-              className="flex justify-between items-center p-2 rounded-md bg-gray-50"
-            >
-              <span className="font-medium text-gray-700 capitalize">
-                {key.replace(/_/g, " ")}
-              </span>
-              <span className="font-semibold text-gray-900">
-                {value}
-              </span>
-            </div>
-          ))}
-      </div>
-    )}
-  </div>
-)}
-
-        {productDetails?.nutrition && (
+          {productDetails?.nutrition && (
   <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
     
     {/* HEADER (STATIC) */}
@@ -431,6 +387,51 @@ export default function ProductsDetailsDialog() {
           </div>
         ))}
     </div>
+  </div>
+)}
+
+
+            {productDetails?.nutrition && (
+  <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
+    
+    {/* HEADER */}
+    <button
+      onClick={() => setInfoOpen((p) => !p)}
+      className="w-full flex items-center justify-between px-6 py-4 font-semibold text-lg"
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-xl">🍎</span>
+        Nutrition
+      </div>
+      <span
+        className={`text-xl transition-transform ${
+          infoOpen ? "rotate-180" : ""
+        }`}
+      >
+        ⌃
+      </span>
+    </button>
+
+    {/* CONTENT */}
+    {infoOpen && (
+      <div className="px-6 pb-6 space-y-3">
+        {Object.entries(productDetails.nutrition)
+          .filter(([key]) => !["_id", "__v"].includes(key))
+          .map(([key, value]) => (
+            <div
+              key={key}
+              className="flex justify-between items-center py-2 border-b last:border-b-0"
+            >
+              <span className="font-medium text-gray-700 capitalize">
+                {key.replace(/_/g, " ")}
+              </span>
+              <span className="font-semibold text-gray-900">
+                {value}
+              </span>
+            </div>
+          ))}
+      </div>
+    )}
   </div>
 )}
 
