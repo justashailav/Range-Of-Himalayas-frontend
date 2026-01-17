@@ -698,66 +698,64 @@ export default function ProductsDetailsDialog() {
               Submit Review
             </Button>
 
-            <div className="mt-6 flex flex-col sm:flex-row gap-4">
-              {/* ADD TO CART */}
-              <div>
-                <Button
-                  onClick={() => {
-                    setIsAddingToCart(true);
-                    handleAddToCart(
-                      productDetails._id,
-                      selectedVariant.stock,
-                      selectedVariant.size,
-                      selectedVariant.weight,
-                    );
-                    setTimeout(() => setIsAddingToCart(false), 250);
-                  }}
-                  className="
-        w-full sm:w-auto
-        bg-[#F08C7D] text-white
-        px-10 py-4
-        text-base font-semibold
-        rounded-lg
-        shadow-md hover:shadow-lg
-        hover:bg-[#ee7f6e]
-        active:scale-[0.98]
-        transition
-      "
-                >
-                  Add to Cart
-                </Button>
-              </div>
-
-              {/* WISHLIST */}
-              <Button
-                disabled={!selectedVariant}
-                onClick={() => {
-                  if (!selectedVariant) return;
-                  handleAddToWishList(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size || "",
-                    selectedVariant.weight,
-                  );
-                }}
-                className="
+            <div className="mt-6 flex flex-col sm:flex-row gap-4 items-center">
+  
+  {/* ADD TO CART */}
+  <Button
+    onClick={() => {
+      setIsAddingToCart(true);
+      handleAddToCart(
+        productDetails._id,
+        selectedVariant.stock,
+        selectedVariant.size,
+        selectedVariant.weight,
+      );
+      setTimeout(() => setIsAddingToCart(false), 250);
+    }}
+    className="
       w-full sm:w-auto
-      bg-white
-      border border-[#F08C7D]
-      text-[#F08C7D]
-      px-10 py-4
+      bg-[#F08C7D] text-white
+      px-12 py-4
       text-base font-semibold
       rounded-lg
-      flex items-center justify-center gap-2
-      hover:bg-[#F08C7D] hover:text-white
+      shadow-md hover:shadow-lg
+      hover:bg-[#ee7f6e]
+      active:scale-[0.98]
+      transition
+    "
+  >
+    Add to Cart
+  </Button>
+
+  {/* WISHLIST ICON */}
+  <button
+    disabled={!selectedVariant}
+    onClick={() => {
+      if (!selectedVariant) return;
+      handleAddToWishList(
+        productDetails._id,
+        selectedVariant.stock,
+        selectedVariant.size || "",
+        selectedVariant.weight,
+      );
+    }}
+    className="
+      h-14 w-14
+      rounded-full
+      border border-gray-300
+      flex items-center justify-center
+      text-gray-600
+      hover:border-[#F08C7D]
+      hover:text-[#F08C7D]
+      hover:bg-[#F08C7D]/10
       transition
       disabled:opacity-50
     "
-              >
-                <Heart className="w-5 h-5" />
-                Wishlist
-              </Button>
-            </div>
+  >
+    <Heart className="w-6 h-6" />
+  </button>
+</div>
+
           </div>
         </div>
         <div className="mt-10  mx-auto">
