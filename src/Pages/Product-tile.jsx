@@ -26,13 +26,13 @@ export default function ShoppingProductTile({
 
   const getVariant = (size, weight) =>
     variants.find(
-      (v) => (hasSizes ? v.size === size : true) && v.weight === weight
+      (v) => (hasSizes ? v.size === size : true) && v.weight === weight,
     ) || null;
 
   // ----- STATE -----
   const [selectedSize, setSelectedSize] = useState(hasSizes ? sizes[0] : "");
   const [selectedWeight, setSelectedWeight] = useState(
-    getWeightsBySize(hasSizes ? sizes[0] : "")[0] || ""
+    getWeightsBySize(hasSizes ? sizes[0] : "")[0] || "",
   );
   const [selectedVariant, setSelectedVariant] = useState(null);
 
@@ -63,12 +63,32 @@ export default function ShoppingProductTile({
     <div className="relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition max-w-sm mx-auto overflow-hidden">
 
   {/* IMAGE */}
-  <div className="relative">
+  <div className="relative group overflow-hidden">
+    {/* MAIN IMAGE */}
     <img
-      src={mainImage}
+      src={images[0]}   // first image
       alt={product?.title}
-      className="w-full h-56 object-cover"
+      className="
+        w-full h-56 object-cover
+        transition-opacity duration-300
+        group-hover:opacity-0
+      "
     />
+
+    {/* HOVER IMAGE */}
+    {images[1] && (
+      <img
+        src={images[1]} // second image
+        alt={`${product?.title} hover`}
+        className="
+          absolute inset-0
+          w-full h-56 object-cover
+          opacity-0
+          transition-opacity duration-300
+          group-hover:opacity-100
+        "
+      />
+    )}
 
     {/* BADGE */}
     {stock === 0 ? (
@@ -85,14 +105,14 @@ export default function ShoppingProductTile({
       </span>
     ) : null}
 
-    {/* WISHLIST (ICON) */}
+    {/* WISHLIST */}
     <button
       onClick={() =>
         handleAddToWishList(
           product._id,
           stock,
           hasSizes ? selectedSize : "",
-          selectedWeight
+          selectedWeight,
         )
       }
       className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/90
@@ -105,7 +125,6 @@ export default function ShoppingProductTile({
 
   {/* CONTENT */}
   <div className="p-4 flex flex-col gap-3">
-
     {/* TITLE */}
     <h2 className="text-sm font-semibold text-gray-800 line-clamp-2">
       {product?.title}
@@ -156,7 +175,7 @@ export default function ShoppingProductTile({
       </div>
     )}
 
-    {/* CTA */}
+    {/* ADD TO CART (UNCHANGED) */}
     {stock === 0 ? (
       <Button disabled className="w-full bg-gray-200 text-gray-500">
         Out of Stock
@@ -168,7 +187,7 @@ export default function ShoppingProductTile({
             product._id,
             stock,
             hasSizes ? selectedSize : "",
-            selectedWeight
+            selectedWeight,
           );
           setOpenCartSheet?.(true);
         }}
