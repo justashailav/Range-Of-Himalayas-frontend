@@ -63,7 +63,11 @@ export default function ShoppingProductTile({
       ? product.images
       : [product?.image].filter(Boolean);
   return (
-    <div className="relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition max-w-sm mx-auto overflow-hidden">
+    <div className="relative bg-white rounded-2xl
+  shadow-sm hover:shadow-md
+  transition-shadow duration-200
+  transform-none
+  max-w-sm mx-auto overflow-hidden">
       {/* IMAGE */}
       <div className="relative group overflow-hidden">
         {/* MAIN IMAGE */}
