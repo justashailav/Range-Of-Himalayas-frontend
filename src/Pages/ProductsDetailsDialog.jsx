@@ -698,11 +698,9 @@ export default function ProductsDetailsDialog() {
               Submit Review
             </Button>
 
-            <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <motion.div
-                animate={isAddingToCart ? { scale: [1, 1.08, 1] } : {}}
-                transition={{ duration: 0.3 }}
-              >
+            <div className="mt-6 flex flex-col sm:flex-row gap-4">
+              {/* ADD TO CART */}
+              <div>
                 <Button
                   onClick={() => {
                     setIsAddingToCart(true);
@@ -712,14 +710,25 @@ export default function ProductsDetailsDialog() {
                       selectedVariant.size,
                       selectedVariant.weight,
                     );
-                    setTimeout(() => setIsAddingToCart(false), 300);
+                    setTimeout(() => setIsAddingToCart(false), 250);
                   }}
-                  className="w-full bg-[#F08C7D] text-white py-4 font-semibold rounded-md"
+                  className="
+        w-full sm:w-auto
+        bg-[#F08C7D] text-white
+        px-10 py-4
+        text-base font-semibold
+        rounded-lg
+        shadow-md hover:shadow-lg
+        hover:bg-[#ee7f6e]
+        active:scale-[0.98]
+        transition
+      "
                 >
                   Add to Cart
                 </Button>
-              </motion.div>
+              </div>
 
+              {/* WISHLIST */}
               <Button
                 disabled={!selectedVariant}
                 onClick={() => {
@@ -731,9 +740,22 @@ export default function ProductsDetailsDialog() {
                     selectedVariant.weight,
                   );
                 }}
-                className="flex-1 bg-white border-2 border-[#F08C7D] text-[#F08C7D] py-4 font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-[#F08C7D] hover:text-white transition disabled:opacity-50"
+                className="
+      w-full sm:w-auto
+      bg-white
+      border border-[#F08C7D]
+      text-[#F08C7D]
+      px-10 py-4
+      text-base font-semibold
+      rounded-lg
+      flex items-center justify-center gap-2
+      hover:bg-[#F08C7D] hover:text-white
+      transition
+      disabled:opacity-50
+    "
               >
-                <Heart /> Wishlist
+                <Heart className="w-5 h-5" />
+                Wishlist
               </Button>
             </div>
           </div>
