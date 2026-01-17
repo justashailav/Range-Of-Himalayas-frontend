@@ -277,7 +277,7 @@ export default function ProductsDetailsDialog() {
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <motion.img
-                key={mainImage} // 🔑 IMPORTANT for cross-fade
+                key={mainImage} 
                 src={mainImage}
                 alt={productDetails?.title}
                 onClick={() => setIsImageOpen(true)}
@@ -324,32 +324,36 @@ export default function ProductsDetailsDialog() {
             </AnimatePresence>
 
             {allImages.length > 1 && (
-              <div className="mt-3 overflow-x-auto scrollbar-hide">
-                <div className="flex gap-3 snap-x snap-mandatory">
-                  {allImages.map((img, idx) => {
-                    const isActive = mainImage === img;
+  <div className="mt-4">
+    <div className="flex gap-4 overflow-x-auto scrollbar-hide px-1">
+      {allImages.map((img, idx) => {
+        const isActive = mainImage === img;
 
-                    return (
-                      <motion.img
-                        key={idx}
-                        src={img}
-                        alt={`Variant ${idx}`}
-                        onMouseEnter={() => setMainImage(img)}
-                        onClick={() => setMainImage(img)}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`flex-shrink-0 w-24 h-24 object-cover rounded-lg cursor-pointer
-    ${
-      mainImage === img
-        ? "border-2 border-[#F08C7D] ring-2 ring-[#F08C7D]/40"
-        : "border border-gray-300 hover:border-[#F08C7D]"
-    }`}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+        return (
+          <motion.img
+            key={idx}
+            src={img}
+            alt={`Variant ${idx}`}
+            onMouseEnter={() => setMainImage(img)}
+            onClick={() => setMainImage(img)}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.95 }}
+            className={`
+              w-24 h-24 object-cover rounded-xl cursor-pointer
+              transition-all duration-200
+              ${
+                isActive
+                  ? "ring-2 ring-[#F08C7D]/60 shadow-lg"
+                  : "shadow-sm hover:shadow-md"
+              }
+            `}
+          />
+        );
+      })}
+    </div>
+  </div>
+)}
+
             {productDetails?.details && (
               <motion.div
                 className={`rounded-xl mt-4 border shadow-sm bg-white
