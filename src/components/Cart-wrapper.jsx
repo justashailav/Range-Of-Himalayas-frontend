@@ -165,7 +165,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
       </SheetHeader>
 
       {/* ================= CART BODY ================= */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5 pb-36">
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5 pb-[140px]">
         {(cartItems || []).length > 0 ? (
           cartItems.map((item) => (
             <UserCartItemsContent
@@ -196,32 +196,31 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
         {/* RECOMMENDATIONS */}
         <div className="mt-6">
-  <h3 className="text-sm font-semibold text-gray-700 mb-3 px-4">
-    You might also like
-  </h3>
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 px-4">
+            You might also like
+          </h3>
 
-  <div
-    className="
+          <div
+            className="
       flex gap-4 overflow-x-auto px-4 pb-3
       snap-x snap-mandatory
       no-scrollbar
     "
-  >
-    {(productList || []).map((item) => (
-      <div
-        key={item._id}
-        className="snap-start min-w-[180px] sm:min-w-[200px]"
-      >
-        <CartProducts
-          product={item}
-          handleAddToCart={handleAddToCart}
-          compact
-        />
-      </div>
-    ))}
-  </div>
-</div>
-
+          >
+            {(productList || []).map((item) => (
+              <div
+                key={item._id}
+                className="snap-start min-w-[180px] sm:min-w-[200px]"
+              >
+                <CartProducts
+                  product={item}
+                  handleAddToCart={handleAddToCart}
+                  compact
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* ================= BOTTOM CHECKOUT BAR ================= */}
