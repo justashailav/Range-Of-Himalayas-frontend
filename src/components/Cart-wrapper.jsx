@@ -195,22 +195,36 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
         )}
 
         {/* RECOMMENDATIONS */}
-        <div>
-          <h3 className="text-xs font-semibold text-gray-600 mb-3">
-            You might also like
-          </h3>
-          <div className="flex gap-3 overflow-x-auto -mx-4 px-4 pb-2">
-            {(productList || []).map((item) => (
-              <div key={item._id} className="min-w-[130px]">
-                <CartProducts
-                  product={item}
-                  handleAddToCart={handleAddToCart}
-                  compact
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className="mt-6">
+  <h3 className="text-sm font-semibold text-gray-700 mb-3 px-4">
+    You might also like
+  </h3>
+
+  <div
+    className="
+      flex gap-4 overflow-x-auto px-4 pb-3
+      snap-x snap-mandatory
+      scrollbar-hide
+    "
+  >
+    {(productList || []).map((item) => (
+      <div
+        key={item._id}
+        className="
+          snap-start
+          min-w-[180px] sm:min-w-[200px]
+        "
+      >
+        <CartProducts
+          product={item}
+          handleAddToCart={handleAddToCart}
+          compact
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
       </div>
 
       {/* ================= BOTTOM CHECKOUT BAR ================= */}
