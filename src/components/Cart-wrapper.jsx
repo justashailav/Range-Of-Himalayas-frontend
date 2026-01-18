@@ -198,8 +198,8 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
         {/* RECOMMENDATIONS */}
        <div className="mt-10">
-  {/* HEADER */}
-  <div className="flex items-center justify-between mb-4">
+  {/* Header */}
+  <div className="flex items-center justify-between mb-4 px-1">
     <h3 className="text-sm font-semibold text-gray-800">
       You might also like
     </h3>
@@ -208,26 +208,20 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     </span>
   </div>
 
-  {/* SCROLL CONTAINER */}
-  <div className="relative">
-    {/* FADE EDGES (visual polish) */}
-    <div className="pointer-events-none absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-gray-50 to-transparent z-10" />
-    <div className="pointer-events-none absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-gray-50 to-transparent z-10" />
-
-    <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scroll-smooth">
-      {(productList || []).map((item) => (
-        <div
-          key={item._id}
-          className="min-w-[150px] max-w-[150px]"
-        >
-          <CartProducts
-            product={item}
-            handleAddToCart={handleAddToCart}
-            compact
-          />
-        </div>
-      ))}
-    </div>
+  {/* Horizontal list */}
+  <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scroll-smooth">
+    {(productList || []).map((item) => (
+      <div
+        key={item._id}
+        className="min-w-[150px] max-w-[150px]"
+      >
+        <CartProducts
+          product={item}
+          handleAddToCart={handleAddToCart}
+          compact
+        />
+      </div>
+    ))}
   </div>
 </div>
 
