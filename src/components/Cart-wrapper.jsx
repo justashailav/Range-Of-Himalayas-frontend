@@ -197,34 +197,23 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
         )}
 
         {/* RECOMMENDATIONS */}
-       <div className="mt-10">
-  {/* Header */}
-  <div className="flex items-center justify-between mb-4 px-1">
-    <h3 className="text-sm font-semibold text-gray-800">
-      You might also like
-    </h3>
-    <span className="text-xs text-gray-500">
-      Recommended
-    </span>
-  </div>
+        <div className="mt-8">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            You might also like
+          </h3>
 
-  {/* Horizontal list */}
-  <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scroll-smooth">
-    {(productList || []).map((item) => (
-      <div
-        key={item._id}
-        className="min-w-[150px] max-w-[150px]"
-      >
-        <CartProducts
-          product={item}
-          handleAddToCart={handleAddToCart}
-          compact
-        />
-      </div>
-    ))}
-  </div>
-</div>
-
+          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4">
+            {(productList || []).map((item) => (
+              <div key={item._id} className="min-w-[140px]">
+                <CartProducts
+                  product={item}
+                  handleAddToCart={handleAddToCart}
+                  compact
+                />
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="bg-white rounded-xl p-4 mt-6 shadow-sm">
           <p className="text-sm font-semibold mb-2">Apply Coupon</p>
 
