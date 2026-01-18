@@ -214,7 +214,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
       </div>
 
       {/* ================= BOTTOM CHECKOUT BAR ================= */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t z-50">
+      <div className="fixed sm:static bottom-0 left-0 right-0 bg-white border-t z-50">
         <div className="px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+12px)]">
           {/* COUPON */}
           <div className="flex items-center gap-2 mb-3">
@@ -244,7 +244,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           )}
 
           {/* TOTAL + CHECKOUT */}
-          <div className=" items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-[11px] text-gray-500">Total</p>
               <p className="text-lg font-bold text-gray-900">
