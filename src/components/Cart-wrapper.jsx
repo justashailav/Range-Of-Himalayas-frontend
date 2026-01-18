@@ -244,7 +244,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           )}
 
           {/* TOTAL + CHECKOUT */}
-          <div className="flex items-center justify-between gap-3">
+          <div className=" items-center justify-between gap-3">
             <div>
               <p className="text-[11px] text-gray-500">Total</p>
               <p className="text-lg font-bold text-gray-900">
@@ -255,7 +255,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
             <Link
               to="/checkout"
               onClick={() => setOpenCartSheet(false)}
-              className={` text-center py-3 rounded-full font-semibold text-white
+              className={`flex-1 text-center py-3 rounded-full font-semibold text-white
             bg-gradient-to-r from-indigo-500 to-purple-500
             ${
               cartItems?.length === 0 && boxes?.length === 0
