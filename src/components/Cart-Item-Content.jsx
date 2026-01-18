@@ -23,58 +23,68 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     }
   }, [user, dispatch]);
 
-  const handleUpdateQuantity = (item, action) => {
-    if (!item) return;
+   const handleUpdateQuantity = (item, action) => {
+  if (!item) return;
 
-    const normalizedSize = item.size || "";
+  const normalizedSize = item.size || "";
 
-    const index = cartItems.findIndex((i) => {
-      const cartProductId =
-        i.productId?._id?.toString() || i.productId?.toString();
+  // ✅ normalize productId to STRING ONCE
+  const productId =
+    item.productId?._id?.toString() || item.productId?.toString();
 
-      return (
-        cartProductId === item.productId.toString() &&
-        (i.size || "") === normalizedSize &&
-        i.weight === item.weight
-      );
-    });
+  if (!productId) {
+    toast.error("Invalid product");
+    return;
+  }
 
-    if (index === -1) return;
+  const index = cartItems.findIndex((i) => {
+    const cartProductId =
+      i.productId?._id?.toString() || i.productId?.toString();
 
-    const productFromList = productList.find(
-      (p) => p._id.toString() === item.productId.toString()
+    return (
+      cartProductId === productId &&
+      (i.size || "") === normalizedSize &&
+      i.weight === item.weight
     );
-    if (!productFromList) return;
+  });
 
-    const variant = productFromList.variants?.find(
-      (v) => (v.size || "") === normalizedSize && v.weight === item.weight
-    );
+  if (index === -1) return;
 
-    const totalStock = variant?.stock ?? 0;
-    const currentQuantity = cartItems[index].quantity;
-    const newQuantity =
-      action === "plus" ? currentQuantity + 1 : currentQuantity - 1;
+  const productFromList = productList.find(
+    (p) => p._id.toString() === productId
+  );
+  if (!productFromList) return;
 
-    if (newQuantity <= 0) {
-      toast.error("Quantity cannot be less than 1");
-      return;
-    }
+  const variant = productFromList.variants?.find(
+    (v) => (v.size || "") === normalizedSize && v.weight === item.weight
+  );
 
-    if (action === "plus" && newQuantity > totalStock) {
-      toast.error(`Only ${totalStock} items in stock.`);
-      return;
-    }
+  const totalStock = variant?.stock ?? 0;
+  const currentQuantity = cartItems[index].quantity;
+  const newQuantity =
+    action === "plus" ? currentQuantity + 1 : currentQuantity - 1;
 
-    dispatch(
-      updateCart({
-        userId: user._id,
-        productId: item.productId,
-        quantity: newQuantity,
-        size: normalizedSize,
-        weight: item.weight,
-      })
-    );
-  };
+  if (newQuantity <= 0) {
+    toast.error("Quantity cannot be less than 1");
+    return;
+  }
+
+  if (action === "plus" && newQuantity > totalStock) {
+    toast.error(`Only ${totalStock} items in stock.`);
+    return;
+  }
+
+  // ✅ SEND CLEAN PAYLOAD (STRING productId)
+  dispatch(
+    updateCart({
+      userId: user._id,      // allowed (backend verifies)
+      productId,             // ✅ string only
+      quantity: newQuantity,
+      size: normalizedSize,
+      weight: item.weight,
+    })
+  );
+};
 
   const handleCartItemDelete = (item) => {
     if (!item) return;
