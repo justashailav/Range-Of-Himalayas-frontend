@@ -216,7 +216,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
         </div>
       </div>
       <div className="sticky bottom-0 bg-white border-t px-4 py-5 sm:py-4">
-      <div className="bg-white rounded-xl p-4 mt-6 shadow-sm">
+        <div className="bg-white rounded-xl p-4 mt-6 shadow-sm">
           <p className="text-sm font-semibold mb-2">Apply Coupon</p>
 
           <div className="flex gap-2">
@@ -257,7 +257,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
         <Link
           to="/checkout"
           onClick={() => setOpenCartSheet(false)}
-          className={`block text-center w-full py-4 sm:py-3 rounded-xl font-semibold text-white
+          className={`block text-center w-full  sm:py-3 rounded-xl font-semibold text-white
         bg-gradient-to-r from-indigo-600 to-purple-600
         ${
           cartItems?.length === 0 && boxes?.length === 0
