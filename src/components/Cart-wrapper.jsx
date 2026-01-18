@@ -145,16 +145,16 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
        <SheetContent
   className="
     h-screen
-    w-full sm:max-w-md
+    w-[94%] sm:w-full sm:max-w-md
     ml-auto
     flex flex-col
-    bg-gray-100
+    bg-gray-50
     overflow-hidden
   "
 >
-  {/* ================= DRAG INDICATOR ================= */}
-  <div className="sm:hidden flex justify-center py-2">
-    <div className="w-10 h-1 bg-gray-300 rounded-full" />
+  {/* ================= MOBILE DRAG INDICATOR ================= */}
+  <div className="sm:hidden flex justify-center py-2 bg-gray-50">
+    <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
   </div>
 
   {/* ================= HEADER ================= */}
@@ -165,7 +165,8 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   </SheetHeader>
 
   {/* ================= CART BODY ================= */}
-  <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5 pb-36">
+  <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5 pb-36 sm:pb-6">
+    {/* CART ITEMS */}
     {(cartItems || []).length > 0 ? (
       cartItems.map((item) => (
         <UserCartItemsContent
@@ -175,16 +176,18 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
         />
       ))
     ) : (
-      <p className="text-center text-gray-500 mt-20">
+      <p className="text-center text-gray-500 mt-16">
         Your cart is empty
       </p>
     )}
 
+    {/* BOXES */}
     {(boxes || []).length > 0 && (
-      <div>
-        <h4 className="text-xs font-semibold text-gray-600 mb-2">
+      <div className="mt-4">
+        <h4 className="text-sm font-semibold text-gray-700 mb-2">
           Boxes
         </h4>
+
         <div className="space-y-3">
           {boxes.map((boxItem) => (
             <UserCartItemsContent
@@ -199,13 +202,14 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     )}
 
     {/* RECOMMENDATIONS */}
-    <div>
-      <h3 className="text-xs font-semibold text-gray-600 mb-3">
+    <div className="mt-6">
+      <h3 className="text-sm font-semibold text-gray-700 mb-3">
         You might also like
       </h3>
-      <div className="flex gap-3 overflow-x-auto -mx-4 px-4 pb-2">
+
+      <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
         {(productList || []).map((item) => (
-          <div key={item._id} className="min-w-[130px]">
+          <div key={item._id} className="min-w-[140px]">
             <CartProducts
               product={item}
               handleAddToCart={handleAddToCart}
@@ -217,54 +221,57 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     </div>
   </div>
 
-  {/* ================= BOTTOM CHECKOUT BAR ================= */}
-  <div className="fixed bottom-0 left-0 right-0 bg-white border-t z-50">
-    <div className="px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+12px)]">
+  {/* ================= FOOTER ================= */}
+  <div className="fixed sm:static bottom-0 left-0 right-0 bg-white border-t px-4 py-3 sm:py-4 z-50">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
       {/* COUPON */}
-      <div className="flex items-center gap-2 mb-3">
-        <input
-          type="text"
-          value={couponCode}
-          onChange={(e) => setCouponCode(e.target.value)}
-          disabled={isCouponApplied}
-          placeholder="Coupon code"
-          className="flex-1 border rounded-lg px-3 py-2 text-sm"
-        />
+      <div className="flex-1 mb-3 sm:mb-0">
+        <p className="text-xs font-medium text-gray-600 mb-1">
+          Apply Coupon
+        </p>
 
-        <Button
-          onClick={handleApplyCoupon}
-          disabled={isCouponApplied || couponCode.trim() === ""}
-          className="px-4 py-2 text-sm rounded-lg bg-indigo-500"
-        >
-          {isCouponApplied ? "Applied" : "Apply"}
-        </Button>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={couponCode}
+            onChange={(e) => setCouponCode(e.target.value)}
+            disabled={isCouponApplied}
+            placeholder="Enter code"
+            className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none"
+          />
+
+          <Button
+            onClick={handleApplyCoupon}
+            disabled={isCouponApplied || couponCode.trim() === ""}
+            className="px-4 py-2 text-sm rounded-lg bg-indigo-600"
+          >
+            {isCouponApplied ? "Applied" : "Apply"}
+          </Button>
+        </div>
+
+        {isCouponApplied && (
+          <p className="text-xs text-green-600 mt-1 font-medium">
+            You saved ₹{discount.toFixed(2)}
+          </p>
+        )}
       </div>
 
-      {isCouponApplied && (
-        <div className="flex justify-between text-green-600 text-xs font-semibold mb-2">
-          <span>Discount</span>
-          <span>-₹{discount.toFixed(2)}</span>
-        </div>
-      )}
-
       {/* TOTAL + CHECKOUT */}
-      <div className="flex items-center justify-between gap-3">
-        <div>
-          <p className="text-[11px] text-gray-500">Total</p>
-          <p className="text-lg font-bold text-gray-900">
-            ₹{finalAmount.toFixed(2)}
-          </p>
-        </div>
+      <div className="flex flex-col sm:items-end sm:min-w-[180px]">
+        <p className="text-xs text-gray-500">Total</p>
+        <p className="text-lg font-semibold text-gray-900 mb-2">
+          ₹{finalAmount.toFixed(2)}
+        </p>
 
         <Link
           to="/checkout"
           onClick={() => setOpenCartSheet(false)}
-          className={`flex-1 text-center py-3 rounded-full font-semibold text-white
-            bg-gradient-to-r from-indigo-500 to-purple-500
+          className={`w-full sm:w-auto text-center px-6 py-3 sm:py-2 rounded-xl font-semibold text-white
+            bg-gradient-to-r from-indigo-600 to-purple-600 shadow-sm
             ${
               cartItems?.length === 0 && boxes?.length === 0
                 ? "opacity-50 pointer-events-none"
-                : "active:scale-[0.98]"
+                : "hover:opacity-90 active:scale-[0.98]"
             }`}
         >
           Checkout
@@ -273,5 +280,6 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     </div>
   </div>
 </SheetContent>
+
   );
 }
