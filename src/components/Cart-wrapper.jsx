@@ -142,15 +142,18 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   }, [message]);
 
   return (
-    <SheetContent className="min-h-screen w-full sm:max-w-md flex flex-col bg-gray-50">
-      {/* ================= HEADER ================= */}
+    <SheetContent className="fixed inset-x-0 bottom-0 top-0
+    sm:inset-y-0 sm:right-0
+    w-full sm:max-w-md
+    h-screen
+    flex flex-col
+    bg-gray-50
+    rounded-none">
       <SheetHeader className="px-4 py-4 bg-white border-b sticky top-0 z-20">
         <SheetTitle className="text-lg font-bold text-gray-900">
           Your Cart ({cartItems?.length || 0})
         </SheetTitle>
       </SheetHeader>
-
-      {/* ================= CART BODY ================= */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5">
         {/* CART ITEMS */}
         {(cartItems || []).length > 0 ? (
