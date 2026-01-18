@@ -150,7 +150,7 @@ function App() {
       </Routes>
 
       {/* <RecentOrderToast /> */}
-      <Chatbot/>
+      {/* <Chatbot/> */}
       <ToastContainer />
     </div>
   );
