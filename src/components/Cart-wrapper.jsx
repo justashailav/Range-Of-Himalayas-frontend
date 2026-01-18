@@ -204,16 +204,13 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     className="
       flex gap-4 overflow-x-auto px-4 pb-3
       snap-x snap-mandatory
-      scrollbar-hide
+      no-scrollbar
     "
   >
     {(productList || []).map((item) => (
       <div
         key={item._id}
-        className="
-          snap-start
-          min-w-[180px] sm:min-w-[200px]
-        "
+        className="snap-start min-w-[180px] sm:min-w-[200px]"
       >
         <CartProducts
           product={item}
