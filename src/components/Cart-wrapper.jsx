@@ -142,13 +142,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   }, [message]);
 
   return (
-    <SheetContent className=" fixed bottom-0 inset-x-0 sm:inset-y-0 sm:right-0
-    w-full sm:max-w-md
-    h-[75vh] sm:h-full
-    max-h-[75vh] sm:max-h-full
-    flex flex-col
-    bg-gray-50
-    rounded-t-2xl sm:rounded-none">
+    <SheetContent className="min-h-screen w-full sm:max-w-md flex flex-col bg-gray-50">
       {/* ================= HEADER ================= */}
       <SheetHeader className="px-4 py-4 bg-white border-b sticky top-0 z-20">
         <SheetTitle className="text-lg font-bold text-gray-900">
