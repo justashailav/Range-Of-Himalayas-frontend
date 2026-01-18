@@ -214,60 +214,72 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
             ))}
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 mt-6 shadow-sm">
-          <p className="text-sm font-semibold mb-2">Apply Coupon</p>
-
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              disabled={isCouponApplied}
-              placeholder="Enter code"
-              className="flex-1 border rounded-lg px-3 py-2 text-sm"
-            />
-
-            <Button
-              onClick={handleApplyCoupon}
-              disabled={isCouponApplied || couponCode.trim() === ""}
-              className="px-4 py-2 text-sm rounded-lg bg-indigo-600"
-            >
-              {isCouponApplied ? "Applied" : "Apply"}
-            </Button>
-          </div>
-
-          {isCouponApplied && (
-            <div className="flex justify-between mt-3 text-green-600 text-sm font-semibold">
-              <span>Discount</span>
-              <span>-₹{discount.toFixed(2)}</span>
-            </div>
-          )}
-        </div>
       </div>
-      <div className="sticky bottom-0 bg-white border-t px-4 py-5 sm:py-4">
-        <div className="flex justify-between items-center mb-3">
-          <div>
-            <p className="text-xs text-gray-500">Total</p>
-            <p className="text-lg font-bold text-gray-900">
-              ₹{finalAmount.toFixed(2)}
-            </p>
-          </div>
-        </div>
+      <div className="sticky bottom-0 z-30 bg-white border-t px-4 py-4 space-y-4">
+  {/* ================= COUPON ================= */}
+  <div className="bg-gray-50 rounded-xl p-4 border">
+    <p className="text-sm font-semibold mb-2 text-gray-800">
+      Apply Coupon
+    </p>
 
-        <Link
-          to="/checkout"
-          onClick={() => setOpenCartSheet(false)}
-          className={`block text-center w-full py-4 sm:py-3 rounded-xl font-semibold text-white
-        bg-gradient-to-r from-indigo-600 to-purple-600
-        ${
-          cartItems?.length === 0 && boxes?.length === 0
-            ? "opacity-50 pointer-events-none"
-            : "hover:opacity-90"
-        }`}
-        >
-          Proceed to Checkout
-        </Link>
+    <div className="flex gap-2">
+      <input
+        type="text"
+        value={couponCode}
+        onChange={(e) => setCouponCode(e.target.value)}
+        disabled={isCouponApplied}
+        placeholder="Enter code"
+        className="
+          flex-1 border rounded-lg px-3 py-2 text-sm
+          focus:outline-none focus:ring-1 focus:ring-indigo-500
+        "
+      />
+
+      <Button
+        onClick={handleApplyCoupon}
+        disabled={isCouponApplied || couponCode.trim() === ""}
+        className="px-4 py-2 text-sm rounded-lg bg-indigo-600"
+      >
+        {isCouponApplied ? "Applied" : "Apply"}
+      </Button>
+    </div>
+
+    {isCouponApplied && (
+      <div className="flex justify-between mt-3 text-green-600 text-sm font-semibold">
+        <span>Discount</span>
+        <span>-₹{discount.toFixed(2)}</span>
       </div>
+    )}
+  </div>
+
+  {/* ================= TOTAL ================= */}
+  <div className="flex justify-between items-center">
+    <div>
+      <p className="text-xs text-gray-500">Total</p>
+      <p className="text-lg font-bold text-gray-900">
+        ₹{finalAmount.toFixed(2)}
+      </p>
+    </div>
+  </div>
+
+  {/* ================= CHECKOUT ================= */}
+  <Link
+    to="/checkout"
+    onClick={() => setOpenCartSheet(false)}
+    className={`block text-center w-full py-4
+      pb-[env(safe-area-inset-bottom)]
+      rounded-xl font-semibold text-white
+      bg-gradient-to-r from-indigo-600 to-purple-600
+      ${
+        cartItems?.length === 0 && boxes?.length === 0
+          ? "opacity-50 pointer-events-none"
+          : "hover:opacity-90"
+      }`}
+  >
+    Proceed to Checkout
+  </Link>
+</div>
+
     </SheetContent>
   );
 }
