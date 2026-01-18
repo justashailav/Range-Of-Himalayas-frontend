@@ -46,6 +46,7 @@ import Blog from "./Pages/Blog";
 import BlogDetail from "./Pages/BlogDetail";
 import FAQSection from "./Pages/FAQ";
 import PrivacyPolicy from "./Pages/privacyPolicy";
+import Chatbot from "./Pages/Chatbot";
 
 function App() {
   const dispatch = useDispatch();
@@ -149,6 +150,7 @@ function App() {
       </Routes>
 
       {/* <RecentOrderToast /> */}
+      <Chatbot/>
       <ToastContainer />
     </div>
   );
