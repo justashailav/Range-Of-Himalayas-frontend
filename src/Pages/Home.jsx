@@ -67,7 +67,7 @@ export default function Home() {
 
   const dispatch = useDispatch();
   const { images: galleryItems, loading } = useSelector(
-    (state) => state.gallery
+    (state) => state.gallery,
   );
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export default function Home() {
       (item) =>
         item.productId.toString() === getCurrentProductId.toString() &&
         (item.size || "") === normalizedSize &&
-        item.weight === weight
+        item.weight === weight,
     );
 
     if (existingItemIndex > -1) {
@@ -165,7 +165,7 @@ export default function Home() {
         quantity: 1,
         size: normalizedSize,
         weight,
-      })
+      }),
     )
       .then((data) => {
         if (data?.success) {
@@ -185,11 +185,11 @@ export default function Home() {
     getCurrentProductId,
     getTotalStock,
     size,
-    weight
+    weight,
   ) {
     if (!user?._id) {
       toast.error(
-        "Oops! You need to login first to add items to your wishlist."
+        "Oops! You need to login first to add items to your wishlist.",
       );
       return;
     }
@@ -215,7 +215,7 @@ export default function Home() {
           toast.error(
             `Only ${getTotalStock} quantity available for this size${
               weight ? " and weight" : ""
-            }`
+            }`,
           );
           return;
         }
@@ -229,7 +229,7 @@ export default function Home() {
         quantity: 1,
         normalizedSize,
         weight,
-      })
+      }),
     ).then((data) => {
       if (data?.success) {
         dispatch(fetchWishListItems(user?._id));
@@ -354,52 +354,51 @@ export default function Home() {
         </div>
       </div>
       <div className="relative p-10">
-  {/* LEFT ARROW */}
-  <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
-    <ChevronLeft className="w-5 h-5" />
-  </button>
+        {/* LEFT ARROW */}
+        <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
+          <ChevronLeft className="w-5 h-5" />
+        </button>
 
-  {/* RIGHT ARROW */}
-  <button className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
-    <ChevronRight className="w-5 h-5" />
-  </button>
+        {/* RIGHT ARROW */}
+        <button className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
+          <ChevronRight className="w-5 h-5" />
+        </button>
 
-  {productList && productList.length > 0 ? (
-    <Swiper
-      modules={[Navigation]}
-      navigation={{
-        prevEl: ".swiper-button-prev-custom",
-        nextEl: ".swiper-button-next-custom",
-      }}
-      spaceBetween={30}
-      slidesPerView={1}
-      breakpoints={{
-        768: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 },
-      }}
-    >
-      {productList.map((item) => (
-        <SwiperSlide key={item._id}>
-          <motion.div whileHover={{ scale: 1.03 }}>
-            <ShoppingProductTile
-              product={item}
-              handleAddToCart={handleAddToCart}
-              handleAddToWishList={handleAddToWishList}
-            />
-          </motion.div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  ) : (
-    /* 🔥 Skeleton grid */
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {[1, 2, 3].map((i) => (
-        <TrendingProductSkeleton key={i} />
-      ))}
-    </div>
-  )}
-</div>
-
+        {productList && productList.length > 0 ? (
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+              prevEl: ".swiper-button-prev-custom",
+              nextEl: ".swiper-button-next-custom",
+            }}
+            spaceBetween={30}
+            slidesPerView={1}
+            breakpoints={{
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+          >
+            {productList.map((item) => (
+              <SwiperSlide key={item._id}>
+                <motion.div whileHover={{ scale: 1.03 }}>
+                  <ShoppingProductTile
+                    product={item}
+                    handleAddToCart={handleAddToCart}
+                    handleAddToWishList={handleAddToWishList}
+                  />
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          /* 🔥 Skeleton grid */
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <TrendingProductSkeleton key={i} />
+            ))}
+          </div>
+        )}
+      </div>
 
       <div>
         {/* HEADER */}
@@ -572,7 +571,7 @@ export default function Home() {
 
         {/* Gallery */}
         {loading ? (
-          <GallerySkeleton/>
+          <GallerySkeleton />
         ) : filteredItems.length > 0 ? (
           <div className="relative max-w-3xl mx-auto">
             <AnimatePresence mode="wait">
