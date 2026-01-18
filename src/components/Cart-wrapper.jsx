@@ -144,8 +144,12 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   return (
     <SheetContent
   className="
-    min-h-screen w-full sm:max-w-md
-    flex flex-col bg-gray-50
+    min-h-screen
+    w-[94%] sm:w-full sm:max-w-md
+    ml-auto
+    flex flex-col
+    bg-gray-50
+    rounded-none
   "
 >
   {/* ================= MOBILE DRAG INDICATOR ================= */}
