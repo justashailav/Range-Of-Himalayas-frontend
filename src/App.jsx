@@ -46,7 +46,7 @@ import Blog from "./Pages/Blog";
 import BlogDetail from "./Pages/BlogDetail";
 import FAQSection from "./Pages/FAQ";
 import PrivacyPolicy from "./Pages/privacyPolicy";
-import Chatbot from "./Pages/Chatbot";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -149,8 +149,8 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {/* <RecentOrderToast /> */}
-      {/* <Chatbot/> */}
+      <RecentOrderToast />
+      
       <ToastContainer />
     </div>
   );
