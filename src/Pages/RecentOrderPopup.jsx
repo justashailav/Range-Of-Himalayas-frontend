@@ -39,13 +39,28 @@ const RecentOrderToast = () => {
   if (!visibleOrder) return null;
 
   const timeAgo = (date) => {
-    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(seconds / 3600);
-    if (hours > 0) return `About ${hours} hour${hours > 1 ? "s" : ""} ago`;
-    if (minutes > 0) return `About ${minutes} min${minutes > 1 ? "s" : ""} ago`;
-    return "Just now";
-  };
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(seconds / 3600);
+  const days = Math.floor(seconds / 86400);
+  const weeks = Math.floor(seconds / 604800);
+
+  if (weeks > 0)
+    return `About ${weeks} week${weeks > 1 ? "s" : ""} ago`;
+
+  if (days > 0)
+    return `About ${days} day${days > 1 ? "s" : ""} ago`;
+
+  if (hours > 0)
+    return `About ${hours} hour${hours > 1 ? "s" : ""} ago`;
+
+  if (minutes > 0)
+    return `About ${minutes} min${minutes > 1 ? "s" : ""} ago`;
+
+  return "Just now";
+};
+
 
   return (
     <AnimatePresence>
