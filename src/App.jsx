@@ -47,6 +47,7 @@ import BlogDetail from "./Pages/BlogDetail";
 import FAQSection from "./Pages/FAQ";
 import PrivacyPolicy from "./Pages/privacyPolicy";
 import Chatbot from "./Pages/Chatbot";
+import WhatsAppSupport from "./Pages/WhatsAppSupport";
 
 
 function App() {
@@ -77,7 +78,7 @@ function App() {
         <Route path="/otp-verification/:email" element={<OTP />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
-
+        <Route path="/whatsapp-support" element={<WhatsAppSupport />} />
         {/* Pages WITH navbar */}
         <Route element={<WithNavbar />}>
           <Route path="/" element={<Home />} />
@@ -94,7 +95,7 @@ function App() {
           <Route path="/return-policy" element={<RefundPolicy />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/custombox" element={<CustomBox />} />
-
+          
           {/* User protected */}
           <Route
             element={
