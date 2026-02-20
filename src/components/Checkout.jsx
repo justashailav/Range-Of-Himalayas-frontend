@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { resetCoupon } from "@/store/slices/couponSlice";
 import { Helmet } from "react-helmet";
 
-const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
 export default function ShoppingCheckout() {
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
@@ -28,7 +27,7 @@ export default function ShoppingCheckout() {
   const navigate = useNavigate();
 
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
-  const [isRazorpayProcessing, setIsRazorpayProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     if (!code) dispatch(resetCoupon());
@@ -71,114 +70,57 @@ export default function ShoppingCheckout() {
   }, [cartItems, boxes, navigate, user]);
 
   async function handlePlaceOrder() {
-    if (cartItems.length === 0 && boxes.length === 0)
-      return toast.error("Your cart is empty.");
+  if (cartItems.length === 0 && boxes.length === 0)
+    return toast.error("Your cart is empty.");
 
-    if (!currentSelectedAddress)
-      return toast.error("Please select a delivery address.");
+  if (!currentSelectedAddress)
+    return toast.error("Please select a delivery address.");
 
-    const orderData = {
-      userId: user?._id,
-      cartItems: cartItems.map((item) => ({
-        productId: item.productId,
-        title: item.title,
-        image: item.image,
-        price: item.salesPrice > 0 ? item.salesPrice : item.price,
-        quantity: item.quantity,
-        size: item.size,
-        weight: item.weight || item.productWeight,
-      })),
-      boxes,
-      addressInfo: {
-        addressId: currentSelectedAddress?._id,
-        address: currentSelectedAddress?.address,
-        city: currentSelectedAddress?.city,
-        pincode: currentSelectedAddress?.pincode,
-        phone: currentSelectedAddress?.phone,
-        notes: currentSelectedAddress?.notes,
-      },
-      paymentMethod, // razorpay | cod
-      totalAmount: payableAmount,
-      ...(code ? { code } : {}),
-    };
+  if (!paymentMethod)
+    return toast.error("Please select payment method.");
 
-    setIsRazorpayProcessing(true);
+  const orderData = {
+    userId: user?._id,
+    cartItems: cartItems.map((item) => ({
+      productId: item.productId,
+      title: item.title,
+      image: item.image,
+      price: item.salesPrice > 0 ? item.salesPrice : item.price,
+      quantity: item.quantity,
+      size: item.size,
+      weight: item.weight || item.productWeight,
+    })),
+    boxes,
+    addressInfo: {
+      addressId: currentSelectedAddress?._id,
+      address: currentSelectedAddress?.address,
+      city: currentSelectedAddress?.city,
+      pincode: currentSelectedAddress?.pincode,
+      phone: currentSelectedAddress?.phone,
+      notes: currentSelectedAddress?.notes,
+    },
+    paymentMethod, // phonepe | cod
+    totalAmount: payableAmount,
+    ...(code ? { code } : {}),
+  };
 
-    try {
-      const data = await dispatch(createNewOrder(orderData));
+  try {
+    setIsProcessing(true);
 
-      if (!data?.success) {
-        throw new Error("Order creation failed");
-      }
+    const data = await dispatch(createNewOrder(orderData));
 
-      // 🔐 Razorpay MUST exist for both Razorpay & COD advance
-      if (!data.razorpayOrder || !data.razorpayOrder.id) {
-        console.error("❌ Razorpay order missing:", data);
-        toast.error("Payment initialization failed");
-        setIsRazorpayProcessing(false);
-        return;
-      }
-
-      const options = {
-        key: razorpayKey,
-        amount: data.razorpayOrder.amount, // ✅ ALWAYS from backend
-        currency: data.razorpayOrder.currency || "INR",
-        name: "RANGE OF HIMALAYAS",
-        description:
-          paymentMethod === "cod"
-            ? "₹200 Advance for COD Order"
-            : "Online Payment",
-        order_id: data.razorpayOrder.id,
-
-        handler: async (response) => {
-          try {
-            await dispatch(
-              capturePayment({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderId: data.orderId,
-              })
-            );
-
-            toast.success(
-              paymentMethod === "cod"
-                ? "₹200 advance paid. COD order placed!"
-                : "Payment successful!"
-            );
-
-            dispatch(resetCoupon());
-
-            navigate("/order-success", {
-              state: {
-                orderId: data.orderId,
-                totalAmount: payableAmount,
-                paymentMethod,
-              },
-            });
-          } catch (err) {
-            toast.error("Payment verification failed");
-          } finally {
-            setIsRazorpayProcessing(false);
-          }
-        },
-
-        prefill: {
-          name: user?.name || "",
-          email: user?.email || "",
-          contact: currentSelectedAddress?.phone || "",
-        },
-
-        theme: { color: "#2E8B57" },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (err) {
-      toast.error(err.message || "Order failed");
-      setIsRazorpayProcessing(false);
+    if (!data?.success || !data?.redirectUrl) {
+      throw new Error("Payment initialization failed");
     }
+
+    // 🔥 REDIRECT TO PHONEPE
+    window.location.href = data.redirectUrl;
+
+  } catch (err) {
+    toast.error(err.message || "Order failed");
+    setIsProcessing(false);
   }
+}
   // Step 2 → Address selected
 useEffect(() => {
   if (currentSelectedAddress) {
@@ -429,23 +371,23 @@ useEffect(() => {
             <label
               className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition
           ${
-            paymentMethod === "razorpay"
+            paymentMethod === "phonepe"
               ? "border-green-600 bg-green-50"
               : "border-gray-200 hover:border-gray-400"
           }`}
             >
               <input
                 type="radio"
-                checked={paymentMethod === "razorpay"}
-                onChange={() => setPaymentMethod("razorpay")}
+                checked={paymentMethod === "phonepe"}
+                onChange={() => setPaymentMethod("phonepe")}
                 className="hidden"
               />
               <div className="w-4 h-4 rounded-full border-2 border-green-600 flex items-center justify-center">
-                {paymentMethod === "razorpay" && (
+                {paymentMethod === "phonepe" && (
                   <div className="w-2 h-2 rounded-full bg-green-600" />
                 )}
               </div>
-              <span className="font-medium">Pay Online (Razorpay)</span>
+              <span className="font-medium">Pay Online (Phonepe)</span>
             </label>
 
             {/* COD */}
@@ -477,13 +419,13 @@ useEffect(() => {
           {/* PAY BUTTON */}
           <Button
             onClick={handlePlaceOrder}
-            disabled={currentStep < 3 || isRazorpayProcessing}
+            disabled={currentStep < 3 || isProcessing}
             className="w-full mt-6 py-4 text-lg rounded-xl text-white
   bg-gradient-to-r from-green-600 to-emerald-500
   hover:from-green-700 hover:to-emerald-600
   shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
           >
-            {isRazorpayProcessing
+            {isProcessing
               ? "Processing..."
               : paymentMethod === "cod"
               ? "Pay ₹200 & Place Order"

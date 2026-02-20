@@ -53,7 +53,7 @@ export const resetChat = () => (dispatch) => {
 };
 
 export const sendChatMessage = (message) => async (dispatch) => {
-  if (!message || !message.trim()) return; // ✅ BLOCK EMPTY
+  if (!message || !message.trim()) return; 
 
   dispatch(chatSlice.actions.sendMessageStart());
   dispatch(chatSlice.actions.addUserMessage(message));
