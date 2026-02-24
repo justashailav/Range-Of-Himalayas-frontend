@@ -99,7 +99,7 @@ export default function ShoppingCheckout() {
       phone: currentSelectedAddress?.phone,
       notes: currentSelectedAddress?.notes,
     },
-    paymentMethod, // phonepe | cod
+    paymentMethod,
     totalAmount: payableAmount,
     ...(code ? { code } : {}),
   };
@@ -107,14 +107,19 @@ export default function ShoppingCheckout() {
   try {
     setIsProcessing(true);
 
-    const data = await dispatch(createNewOrder(orderData));
+    const response = await dispatch(
+      createNewOrder(orderData)
+    ).unwrap();
 
-    if (!data?.success || !data?.redirectUrl) {
-      throw new Error("Payment initialization failed");
+    // 🔥 PHONEPE FLOW
+    if (response.redirectUrl) {
+      window.location.href = response.redirectUrl;
+      return;
     }
 
-    // 🔥 REDIRECT TO PHONEPE
-    window.location.href = data.redirectUrl;
+    // 🔥 COD FLOW
+    toast.success(response.message || "Order placed successfully");
+    navigate("/order-success");
 
   } catch (err) {
     toast.error(err.message || "Order failed");
