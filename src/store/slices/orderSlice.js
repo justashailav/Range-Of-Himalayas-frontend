@@ -293,30 +293,39 @@ export const createNewOrder = (orderData) => (dispatch) => {
 };
 
 export const capturePayment =
-  ({orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature  }) =>
-  (dispatch) => {
-    dispatch(orderSlice.actions.capturePaymentStart());
-    return axios
-      .post(
+  ({ orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature }) =>
+  async (dispatch) => {
+    try {
+      dispatch(orderSlice.actions.capturePaymentStart());
+
+      const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/capture-payment`,
-        {orderId,razorpay_order_id,razorpay_payment_id, razorpay_signature},
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          orderId,
+          razorpay_order_id,
+          razorpay_payment_id,
+          razorpay_signature,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
-      )
-      .then((res) => {
-        dispatch(orderSlice.actions.capturePaymentSuccess(res.data));
-        dispatch(getRecentOrders());
-        return res.data; 
-      })
-      .catch((error) => {
-        dispatch(
-          orderSlice.actions.capturePaymentFailed(error.response?.data?.message)
-        );
-      });
+      );
+
+      dispatch(orderSlice.actions.capturePaymentSuccess(res.data));
+      dispatch(getRecentOrders());
+
+      return res.data; // ✅ IMPORTANT
+
+    } catch (error) {
+      dispatch(
+        orderSlice.actions.capturePaymentFailed(
+          error.response?.data?.message
+        )
+      );
+
+      throw error; // ✅ VERY IMPORTANT
+    }
   };
 
 export const getAllOrdersByUserId = (userId) => (dispatch) => {

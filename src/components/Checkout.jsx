@@ -140,7 +140,7 @@ export default function ShoppingCheckout() {
                 razorpay_payment_id: rzpResponse.razorpay_payment_id,
                 razorpay_signature: rzpResponse.razorpay_signature,
               })
-            ).unwrap();
+            );
 
             toast.success("Payment successful!");
             navigate("/order-success");
