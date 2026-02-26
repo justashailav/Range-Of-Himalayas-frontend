@@ -111,18 +111,72 @@ export default function ShoppingCheckout() {
       createNewOrder(orderData)
     ).unwrap();
 
-    // 🔥 PHONEPE FLOW
-    if (response.redirectUrl) {
-      window.location.href = response.redirectUrl;
+    // 🔥 Razorpay Flow
+    if (response.razorpayOrderId) {
+
+      if (!window.Razorpay) {
+        toast.error("Payment gateway failed to load. Refresh page.");
+        setIsProcessing(false);
+        return;
+      }
+
+      const options = {
+        key: response.key,
+        amount: response.amount,
+        currency: response.currency,
+        order_id: response.razorpayOrderId,
+        name: "Range of Himalayas",
+        description:
+          paymentMethod === "cod"
+            ? "₹200 COD Advance"
+            : "Secure Payment",
+
+        handler: async function (rzpResponse) {
+          try {
+            await dispatch(
+              capturePayment({
+                orderId: response.orderId,
+                razorpay_order_id: rzpResponse.razorpay_order_id,
+                razorpay_payment_id: rzpResponse.razorpay_payment_id,
+                razorpay_signature: rzpResponse.razorpay_signature,
+              })
+            ).unwrap();
+
+            toast.success("Payment successful!");
+            navigate("/order-success");
+
+          } catch (err) {
+            toast.error("Payment verification failed");
+          }
+        },
+
+        prefill: {
+          name: user?.name,
+          email: user?.email,
+          contact: currentSelectedAddress?.phone,
+        },
+
+        theme: {
+          color: "#16a34a",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+
+      rzp.on("payment.failed", function () {
+        toast.error("Payment failed. Please try again.");
+      });
+
+      rzp.open();
       return;
     }
 
-    // 🔥 COD FLOW
     toast.success(response.message || "Order placed successfully");
     navigate("/order-success");
 
   } catch (err) {
     toast.error(err.message || "Order failed");
+  } finally {
     setIsProcessing(false);
   }
 }
@@ -376,23 +430,23 @@ useEffect(() => {
             <label
               className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition
           ${
-            paymentMethod === "phonepe"
+            paymentMethod === "razorpay"
               ? "border-green-600 bg-green-50"
               : "border-gray-200 hover:border-gray-400"
           }`}
             >
               <input
                 type="radio"
-                checked={paymentMethod === "phonepe"}
-                onChange={() => setPaymentMethod("phonepe")}
+                checked={paymentMethod === "razorpay"}
+                onChange={() => setPaymentMethod("razorpay")}
                 className="hidden"
               />
               <div className="w-4 h-4 rounded-full border-2 border-green-600 flex items-center justify-center">
-                {paymentMethod === "phonepe" && (
+                {paymentMethod === "razorpay" && (
                   <div className="w-2 h-2 rounded-full bg-green-600" />
                 )}
               </div>
-              <span className="font-medium">Pay Online (Phonepe)</span>
+              <span className="font-medium">Pay Online (Razorpay)</span>
             </label>
 
             {/* COD */}
