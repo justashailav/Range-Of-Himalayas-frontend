@@ -299,7 +299,7 @@ export const capturePayment =
     return axios
       .post(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/capture-payment`,
-        { razorpay_order_id,razorpay_payment_id, razorpay_signature, orderId   },
+        {orderId,razorpay_order_id,razorpay_payment_id, razorpay_signature},
         {
           headers: {
             "Content-Type": "application/json",
@@ -309,11 +309,10 @@ export const capturePayment =
       )
       .then((res) => {
         dispatch(orderSlice.actions.capturePaymentSuccess(res.data));
-          dispatch(getRecentOrders());
+        dispatch(getRecentOrders());
+        return res.data; 
       })
       .catch((error) => {
-        console.log("Error response:", error.response);
-        console.log("Error response data:", error.response?.data);
         dispatch(
           orderSlice.actions.capturePaymentFailed(error.response?.data?.message)
         );
@@ -331,6 +330,7 @@ export const getAllOrdersByUserId = (userId) => (dispatch) => {
     })
     .then((res) => {
       dispatch(orderSlice.actions.getAllOrdersSuccessId(res.data));
+      
     })
     .catch((error) => {
       dispatch(
