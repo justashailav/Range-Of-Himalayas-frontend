@@ -109,7 +109,7 @@ export default function ShoppingCheckout() {
 
     const response = await dispatch(
       createNewOrder(orderData)
-    ).unwrap();
+    )
 
     // 🔥 Razorpay Flow
     if (response.razorpayOrderId) {
