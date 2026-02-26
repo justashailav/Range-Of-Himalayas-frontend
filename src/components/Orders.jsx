@@ -91,8 +91,8 @@ export default function ShoppingOrders() {
                         {order._id}
                       </p>
                       <p className="text-sm text-gray-500 mt-1">
-                        {order.orderDate
-  ? order.orderDate.split("T")[0]
+                        {order.createdAt
+  ? new Date(order.createdAt).toLocaleDateString("en-IN")
   : "Date unavailable"}
                       </p>
                     </div>
