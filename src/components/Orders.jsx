@@ -91,7 +91,9 @@ export default function ShoppingOrders() {
                         {order._id}
                       </p>
                       <p className="text-sm text-gray-500 mt-1">
-                        {order.orderDate.split("T")[0]}
+                        {order.orderDate
+  ? order.orderDate.split("T")[0]
+  : "Date unavailable"}
                       </p>
                     </div>
 
