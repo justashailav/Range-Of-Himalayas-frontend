@@ -293,7 +293,7 @@ export const createNewOrder = (orderData) => (dispatch) => {
 };
 
 export const capturePayment =
-  ({ razorpay_order_id, razorpay_payment_id, razorpay_signature, orderId  }) =>
+  ({orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature  }) =>
   (dispatch) => {
     dispatch(orderSlice.actions.capturePaymentStart());
     return axios
