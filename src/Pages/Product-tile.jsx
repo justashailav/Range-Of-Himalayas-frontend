@@ -64,158 +64,144 @@ export default function ShoppingProductTile({
       : [product?.image].filter(Boolean);
   return (
     <div
-  className="group relative bg-white rounded-2xl 
-             border border-gray-100 
-             hover:shadow-2xl hover:-translate-y-1
-             transition-all duration-300 
-             max-w-sm mx-auto overflow-hidden"
->
-  {/* IMAGE */}
-  <div className="relative aspect-[4/5] bg-[#f6f2ea] overflow-hidden">
-
-    {/* MAIN IMAGE */}
-    <img
-      src={mainImage || "/placeholder.png"}
-      alt={product?.title}
-      onError={(e) => (e.target.src = "/placeholder.png")}
-      className="w-full h-full object-contain p-6
-                 transition-all duration-500
-                 group-hover:opacity-0 group-hover:scale-105"
-    />
-
-    {/* HOVER IMAGE */}
-    {images[1] && (
-      <img
-        src={images[1]}
-        alt={`${product?.title} hover`}
-        className="absolute inset-0 w-full h-full object-contain p-6
-                   opacity-0 transition-all duration-500
-                   group-hover:opacity-100 group-hover:scale-105"
-      />
-    )}
-
-    {/* BADGE */}
-    {stock === 0 ? (
-      <span className="absolute top-4 left-4 text-xs px-3 py-1 
-                       rounded-full bg-black text-white font-medium shadow">
-        Out of Stock
-      </span>
-    ) : stock < 10 ? (
-      <span className="absolute top-4 left-4 text-xs px-3 py-1 
-                       rounded-full bg-orange-500 text-white font-medium shadow">
-        Only {stock} left
-      </span>
-    ) : salesPrice > 0 ? (
-      <span className="absolute top-4 left-4 text-xs px-3 py-1 
-                       rounded-full bg-green-600 text-white font-medium shadow">
-        {Math.round(((price - salesPrice) / price) * 100)}% OFF
-      </span>
-    ) : null}
-
-    {/* WISHLIST */}
-    <button
-      onClick={() =>
-        handleAddToWishList(
-          product._id,
-          stock,
-          hasSizes ? selectedSize : "",
-          selectedWeight
-        )
-      }
-      className="absolute top-4 right-4 h-9 w-9 rounded-full 
-                 bg-white shadow-md
-                 flex items-center justify-center 
-                 text-gray-600
-                 hover:text-[#8b5e3c] hover:scale-110
-                 transition"
+      className="relative bg-white rounded-2xl shadow-sm max-w-sm mx-auto overflow-hidden"
     >
-      <Heart className="w-5 h-5" />
-    </button>
-  </div>
+      {/* IMAGE */}
+      <div className="relative group overflow-hidden">
+        {/* MAIN IMAGE */}
+        <img
+          src={mainImage} // first image
+          alt={product?.title}
+          className="
+        transition-opacity duration-300
+        group-hover:opacity-0
+      "
+        />
 
-  {/* CONTENT */}
-  <div className="p-5 flex flex-col gap-3">
-
-    {/* TITLE */}
-    <h2 className="text-base font-medium text-gray-800 
-                   line-clamp-2 group-hover:text-[#8b5e3c] transition">
-      {product?.title}
-    </h2>
-
-    {/* PRICE */}
-    <div className="flex items-center gap-2">
-      {salesPrice > 0 && (
-        <span className="text-sm text-gray-400 line-through">
-          ₹{price.toFixed(2)}
-        </span>
-      )}
-      <span className="text-lg font-semibold text-gray-900">
-        ₹{finalPrice.toFixed(2)}
-      </span>
-    </div>
-
-    {/* VARIANTS */}
-    {hasVariants && (
-      <div className="flex gap-2">
-        {hasSizes && (
-          <select
-            value={selectedSize}
-            onChange={(e) => {
-              const size = e.target.value;
-              setSelectedSize(size);
-              setSelectedWeight(getWeightsBySize(size)[0]);
-            }}
-            className="flex-1 rounded-lg border border-gray-200 
-                       px-3 py-2 text-sm bg-white
-                       focus:ring-1 focus:ring-[#8b5e3c]
-                       focus:border-[#8b5e3c]"
-          >
-            {sizes.map((size) => (
-              <option key={size}>{size}</option>
-            ))}
-          </select>
+        {/* HOVER IMAGE */}
+        {images[1] && (
+          <img
+            src={images[1]} // second image
+            alt={`${product?.title} hover`}
+            className="
+          absolute inset-0
+          opacity-0
+          transition-opacity duration-300
+          group-hover:opacity-100
+        "
+          />
         )}
 
-        <select
-          value={selectedWeight}
-          onChange={(e) => setSelectedWeight(e.target.value)}
-          className="flex-1 rounded-lg border border-gray-200 
-                     px-3 py-2 text-sm bg-white
-                     focus:ring-1 focus:ring-[#8b5e3c]
-                     focus:border-[#8b5e3c]"
-        >
-          {getWeightsBySize(selectedSize).map((weight) => (
-            <option key={weight}>{weight}</option>
-          ))}
-        </select>
-      </div>
-    )}
+        {/* BADGE */}
+        {stock === 0 ? (
+          <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-red-600 text-white">
+            Out of Stock
+          </span>
+        ) : stock < 10 ? (
+          <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-orange-500 text-white">
+            Only {stock} left
+          </span>
+        ) : salesPrice > 0 ? (
+          <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-green-600 text-white">
+            Sale
+          </span>
+        ) : null}
 
-    {/* ADD TO CART */}
-    {stock === 0 ? (
-      <Button disabled className="w-full bg-gray-200 text-gray-500 rounded-lg py-2.5">
-        Out of Stock
-      </Button>
-    ) : (
-      <Button
-        onClick={() => {
-          handleAddToCart(
-            product._id,
-            stock,
-            hasSizes ? selectedSize : "",
-            selectedWeight
-          );
-          setOpenCartSheet?.(true);
-        }}
-        className="w-full bg-[#8b5e3c] text-white font-medium
-                   rounded-lg py-2.5
-                   hover:bg-[#6e472c]
-                   transition duration-300"
-      >
-        Add to Cart
-      </Button>
-    )}
-  </div>
-</div>
+        {/* WISHLIST */}
+        <button
+          onClick={() =>
+            handleAddToWishList(
+              product._id,
+              stock,
+              hasSizes ? selectedSize : "",
+              selectedWeight,
+            )
+          }
+          className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/90
+                 flex items-center justify-center text-gray-600
+                 hover:text-[#F08C7D] transition"
+        >
+          <Heart className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-4 flex flex-col gap-3">
+        {/* TITLE */}
+        <h2 className="text-sm font-semibold text-gray-800 line-clamp-2">
+          {product?.title}
+        </h2>
+
+        {/* PRICE */}
+        <div className="flex items-center gap-2">
+          {salesPrice > 0 && (
+            <span className="text-xs text-gray-400 line-through">
+              ₹{price.toFixed(2)}
+            </span>
+          )}
+          <span className="text-lg font-bold text-gray-900">
+            ₹{finalPrice.toFixed(2)}
+          </span>
+        </div>
+
+        {/* VARIANTS */}
+        {hasVariants && (
+          <div className="flex gap-2">
+            {hasSizes && (
+              <select
+                value={selectedSize}
+                onChange={(e) => {
+                  const size = e.target.value;
+                  setSelectedSize(size);
+                  setSelectedWeight(getWeightsBySize(size)[0]);
+                }}
+                className="flex-1 rounded-md border border-gray-300 px-2 py-1 text-sm
+                       focus:outline-none focus:ring-1 focus:ring-[#F08C7D]"
+              >
+                {sizes.map((size) => (
+                  <option key={size}>{size}</option>
+                ))}
+              </select>
+            )}
+
+            <select
+              value={selectedWeight}
+              onChange={(e) => setSelectedWeight(e.target.value)}
+              className="flex-1 rounded-md border border-gray-300 px-2 py-1 text-sm
+                     focus:outline-none focus:ring-1 focus:ring-[#F08C7D]"
+            >
+              {getWeightsBySize(selectedSize).map((weight) => (
+                <option key={weight}>{weight}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* ADD TO CART (UNCHANGED) */}
+        {stock === 0 ? (
+          <Button disabled className="w-full bg-gray-200 text-gray-500">
+            Out of Stock
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              handleAddToCart(
+                product._id,
+                stock,
+                hasSizes ? selectedSize : "",
+                selectedWeight,
+              );
+              setOpenCartSheet?.(true);
+            }}
+            className="w-full bg-[#F08C7D] text-white font-medium
+                   rounded-lg py-2
+                   hover:bg-[#ee7f6e]
+                   transition"
+          >
+            Add to Cart
+          </Button>
+        )}
+      </div>
+    </div>
   );
 }
