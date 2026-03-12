@@ -63,145 +63,134 @@ export default function ShoppingProductTile({
       ? product.images
       : [product?.image].filter(Boolean);
   return (
-    <div
-      className="relative bg-white rounded-2xl shadow-sm max-w-sm mx-auto overflow-hidden"
+    <div className="group relative bg-[#FCFBFA] rounded-[2rem] border border-gray-100 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:-translate-y-1 max-w-sm mx-auto overflow-hidden">
+  
+  {/* IMAGE SECTION */}
+  <div className="relative aspect-[4/5] overflow-hidden m-2 rounded-[1.5rem] bg-gray-50">
+    {/* MAIN IMAGE */}
+    <img
+      src={mainImage}
+      alt={product?.title}
+      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+    />
+
+    {/* HOVER IMAGE overlay */}
+    {images[1] && (
+      <img
+        src={images[1]}
+        alt={`${product?.title} hover`}
+        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      />
+    )}
+
+    {/* LUXE BADGES */}
+    <div className="absolute top-4 left-4 flex flex-col gap-2">
+      {stock === 0 ? (
+        <span className="backdrop-blur-md bg-black/60 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+          Out of Stock
+        </span>
+      ) : stock < 10 ? (
+        <span className="backdrop-blur-md bg-orange-500/80 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+          Rare: {stock} left
+        </span>
+      ) : salesPrice > 0 ? (
+        <span className="backdrop-blur-md bg-[#D84C3C] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+          Sale
+        </span>
+      ) : null}
+    </div>
+
+    {/* WISHLIST BUTTON */}
+    <button
+      onClick={() => handleAddToWishList(product._id, stock, hasSizes ? selectedSize : "", selectedWeight)}
+      className="absolute top-4 right-4 h-10 w-10 rounded-full bg-white/80 backdrop-blur-md 
+                 flex items-center justify-center text-gray-900 shadow-sm
+                 hover:bg-[#D84C3C] hover:text-white transition-all duration-300 transform active:scale-90"
     >
-      {/* IMAGE */}
-      <div className="relative group overflow-hidden">
-        {/* MAIN IMAGE */}
-        <img
-          src={mainImage} // first image
-          alt={product?.title}
-          className="
-        transition-opacity duration-300
-        group-hover:opacity-0
-      "
-        />
+      <Heart className="w-5 h-5" fill={isWishlisted ? "currentColor" : "none"} />
+    </button>
+  </div>
 
-        {/* HOVER IMAGE */}
-        {images[1] && (
-          <img
-            src={images[1]} // second image
-            alt={`${product?.title} hover`}
-            className="
-          absolute inset-0
-          opacity-0
-          transition-opacity duration-300
-          group-hover:opacity-100
-        "
-          />
-        )}
-
-        {/* BADGE */}
-        {stock === 0 ? (
-          <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-red-600 text-white">
-            Out of Stock
-          </span>
-        ) : stock < 10 ? (
-          <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-orange-500 text-white">
-            Only {stock} left
-          </span>
-        ) : salesPrice > 0 ? (
-          <span className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full bg-green-600 text-white">
-            Sale
-          </span>
-        ) : null}
-
-        {/* WISHLIST */}
-        <button
-          onClick={() =>
-            handleAddToWishList(
-              product._id,
-              stock,
-              hasSizes ? selectedSize : "",
-              selectedWeight,
-            )
-          }
-          className="absolute top-3 right-3 h-9 w-9 rounded-full bg-white/90
-                 flex items-center justify-center text-gray-600
-                 hover:text-[#F08C7D] transition"
-        >
-          <Heart className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* CONTENT */}
-      <div className="p-4 flex flex-col gap-3">
-        {/* TITLE */}
-        <h2 className="text-sm font-semibold text-gray-800 line-clamp-2">
-          {product?.title}
+  {/* CONTENT SECTION */}
+  <div className="p-6 pt-2 flex flex-col gap-4">
+    <div className="space-y-1">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold">Himalayan Origin</p>
+        <h2 className="text-lg font-serif text-gray-900 line-clamp-1 group-hover:text-[#D84C3C] transition-colors">
+        {product?.title}
         </h2>
+    </div>
 
-        {/* PRICE */}
-        <div className="flex items-center gap-2">
-          {salesPrice > 0 && (
-            <span className="text-xs text-gray-400 line-through">
-              ₹{price.toFixed(2)}
-            </span>
-          )}
-          <span className="text-lg font-bold text-gray-900">
-            ₹{finalPrice.toFixed(2)}
-          </span>
-        </div>
+    {/* PRICE AREA */}
+    <div className="flex items-baseline gap-2">
+      <span className="text-xl font-bold text-gray-900">
+        ₹{finalPrice.toFixed(0)}
+      </span>
+      {salesPrice > 0 && (
+        <span className="text-sm text-gray-400 line-through decoration-red-400/50">
+          ₹{price.toFixed(0)}
+        </span>
+      )}
+    </div>
 
-        {/* VARIANTS */}
-        {hasVariants && (
-          <div className="flex gap-2">
-            {hasSizes && (
-              <select
-                value={selectedSize}
-                onChange={(e) => {
-                  const size = e.target.value;
-                  setSelectedSize(size);
-                  setSelectedWeight(getWeightsBySize(size)[0]);
-                }}
-                className="flex-1 rounded-md border border-gray-300 px-2 py-1 text-sm
-                       focus:outline-none focus:ring-1 focus:ring-[#F08C7D]"
-              >
-                {sizes.map((size) => (
-                  <option key={size}>{size}</option>
-                ))}
-              </select>
-            )}
-
+    {/* REFINED VARIANTS */}
+    {hasVariants && (
+      <div className="flex gap-3">
+        {hasSizes && (
+          <div className="flex-1">
+            <label className="text-[9px] uppercase font-bold text-gray-400 mb-1 block">Size</label>
             <select
-              value={selectedWeight}
-              onChange={(e) => setSelectedWeight(e.target.value)}
-              className="flex-1 rounded-md border border-gray-300 px-2 py-1 text-sm
-                     focus:outline-none focus:ring-1 focus:ring-[#F08C7D]"
+              value={selectedSize}
+              onChange={(e) => {
+                const size = e.target.value;
+                setSelectedSize(size);
+                setSelectedWeight(getWeightsBySize(size)[0]);
+              }}
+              className="w-full bg-transparent rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium focus:ring-1 focus:ring-[#D84C3C] focus:border-[#D84C3C] outline-none appearance-none cursor-pointer"
             >
-              {getWeightsBySize(selectedSize).map((weight) => (
-                <option key={weight}>{weight}</option>
+              {sizes.map((size) => (
+                <option key={size}>{size}</option>
               ))}
             </select>
           </div>
         )}
 
-        {/* ADD TO CART (UNCHANGED) */}
-        {stock === 0 ? (
-          <Button disabled className="w-full bg-gray-200 text-gray-500">
-            Out of Stock
-          </Button>
-        ) : (
-          <Button
-            onClick={() => {
-              handleAddToCart(
-                product._id,
-                stock,
-                hasSizes ? selectedSize : "",
-                selectedWeight,
-              );
-              setOpenCartSheet?.(true);
-            }}
-            className="w-full bg-[#F08C7D] text-white font-medium
-                   rounded-lg py-2
-                   hover:bg-[#ee7f6e]
-                   transition"
+        <div className="flex-1">
+          <label className="text-[9px] uppercase font-bold text-gray-400 mb-1 block">Weight</label>
+          <select
+            value={selectedWeight}
+            onChange={(e) => setSelectedWeight(e.target.value)}
+            className="w-full bg-transparent rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium focus:ring-1 focus:ring-[#D84C3C] focus:border-[#D84C3C] outline-none appearance-none cursor-pointer"
           >
-            Add to Cart
-          </Button>
-        )}
+            {getWeightsBySize(selectedSize).map((weight) => (
+              <option key={weight}>{weight}</option>
+            ))}
+          </select>
+        </div>
       </div>
+    )}
+
+    {/* CTA BUTTON */}
+    <div className="pt-2">
+      {stock === 0 ? (
+        <button disabled className="w-full bg-gray-100 text-gray-400 text-sm font-bold uppercase tracking-widest py-4 rounded-xl cursor-not-allowed">
+          Sold Out
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            handleAddToCart(product._id, stock, hasSizes ? selectedSize : "", selectedWeight);
+            setOpenCartSheet?.(true);
+          }}
+          className="w-full bg-[#1A1A1A] text-white text-xs font-bold uppercase tracking-[0.2em] 
+                     rounded-xl py-4 shadow-lg shadow-gray-200
+                     hover:bg-[#D84C3C] hover:shadow-[#D84C3C]/20
+                     transition-all duration-300 active:scale-[0.98]"
+        >
+          Add to Cart
+        </button>
+      )}
     </div>
+  </div>
+</div>
   );
 }

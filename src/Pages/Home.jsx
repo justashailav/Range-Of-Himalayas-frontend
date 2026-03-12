@@ -339,79 +339,80 @@ export default function Home() {
         </div>
 
         <section className="bg-[#F7F3F0] py-24 relative overflow-hidden">
-  {/* Soft atmospheric glows - using clay and amber tones instead of dark red */}
-  <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E8DCD3] rounded-full blur-[120px] opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-  <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#F0E6DF] rounded-full blur-[100px] opacity-70 translate-y-1/2 -translate-x-1/4 pointer-events-none" />
+          {/* Soft atmospheric glows - using clay and amber tones instead of dark red */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E8DCD3] rounded-full blur-[120px] opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#F0E6DF] rounded-full blur-[100px] opacity-70 translate-y-1/2 -translate-x-1/4 pointer-events-none" />
 
-  <motion.div
-    variants={stagger}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, margin: "-120px" }}
-    className="grid gap-12 px-6 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3"
-  >
-    {productList?.slice(0, 3).map((item, index) => (
-      <motion.div
-        key={item._id}
-        variants={fadeUp}
-        className="group relative"
-      >
-        <Link
-          to={`/product/${item._id}`}
-          onClick={() => handleGetProductDetails(item)}
-          className="relative block h-full overflow-hidden rounded-[3rem] bg-[#EBE5E0] border border-white transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(142,125,110,0.2)]"
-        >
-          {/* IMAGE SECTION */}
-          <div className="relative aspect-[4/5] overflow-hidden">
-            <div className="absolute inset-0 scale-100 group-hover:scale-105 transition-transform duration-[2s] ease-out">
-              <TopSelections product={item} />
-            </div>
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-120px" }}
+            className="grid gap-12 px-6 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {productList?.slice(0, 3).map((item, index) => (
+              <motion.div
+                key={item._id}
+                variants={fadeUp}
+                className="group relative"
+              >
+                <Link
+                  to={`/product/${item._id}`}
+                  onClick={() => handleGetProductDetails(item)}
+                  className="relative block h-full overflow-hidden rounded-[3rem] bg-[#EBE5E0] border border-white transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(142,125,110,0.2)]"
+                >
+                  {/* IMAGE SECTION */}
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    <div className="absolute inset-0 scale-100 group-hover:scale-105 transition-transform duration-[2s] ease-out">
+                      <TopSelections product={item} />
+                    </div>
 
-            {/* Subtle light vignette instead of dark gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#EBE5E0] via-transparent to-transparent opacity-80" />
-          </div>
-
-          {/* CONTENT SECTION */}
-          <div className="relative p-8 -mt-24">
-            {/* Bright Floating Card: Contrast against the clay-colored base */}
-            <div className="bg-white/90 backdrop-blur-2xl border border-white p-7 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all duration-500 group-hover:-translate-y-3">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-[1px] w-6 bg-[#D84C3C] origin-left group-hover:w-10 transition-all duration-500" />
-                  <span className="text-[10px] uppercase tracking-[0.4em] text-[#D84C3C] font-black">
-                    Pure Origin
-                  </span>
-                </div>
-
-                <div className="space-y-1">
-                  <h3 className="text-2xl font-serif text-[#2D2926] leading-tight group-hover:text-[#D84C3C] transition-colors duration-300">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs text-[#6B645E] font-light leading-relaxed line-clamp-2">
-                    {item.description || "Thoughtfully curated from the heart of the Himalayas."}
-                  </p>
-                </div>
-
-                {/* Bottom Row */}
-                <div className="mt-2 flex items-center justify-between border-t border-[#F0EBE6] pt-5">
-                  <span className="text-[10px] text-[#A39C94] uppercase tracking-[0.2em] font-bold group-hover:text-[#2D2926] transition-colors duration-300">
-                    Discover More
-                  </span>
-                  
-                  <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#F7F3F0] group-hover:bg-[#D84C3C] transition-all duration-500 overflow-hidden">
-                    <span className="relative z-10 text-[#6B645E] group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
-                      →
-                    </span>
+                    {/* Subtle light vignette instead of dark gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#EBE5E0] via-transparent to-transparent opacity-80" />
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Link>
-      </motion.div>
-    ))}
-  </motion.div>
-</section>
+
+                  {/* CONTENT SECTION */}
+                  <div className="relative p-8 -mt-24">
+                    {/* Bright Floating Card: Contrast against the clay-colored base */}
+                    <div className="bg-white/90 backdrop-blur-2xl border border-white p-7 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all duration-500 group-hover:-translate-y-3">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-[1px] w-6 bg-[#D84C3C] origin-left group-hover:w-10 transition-all duration-500" />
+                          <span className="text-[10px] uppercase tracking-[0.4em] text-[#D84C3C] font-black">
+                            Pure Origin
+                          </span>
+                        </div>
+
+                        <div className="space-y-1">
+                          <h3 className="text-2xl font-serif text-[#2D2926] leading-tight group-hover:text-[#D84C3C] transition-colors duration-300">
+                            {item.name}
+                          </h3>
+                          <p className="text-xs text-[#6B645E] font-light leading-relaxed line-clamp-2">
+                            {item.description ||
+                              "Thoughtfully curated from the heart of the Himalayas."}
+                          </p>
+                        </div>
+
+                        {/* Bottom Row */}
+                        <div className="mt-2 flex items-center justify-between border-t border-[#F0EBE6] pt-5">
+                          <span className="text-[10px] text-[#A39C94] uppercase tracking-[0.2em] font-bold group-hover:text-[#2D2926] transition-colors duration-300">
+                            Discover More
+                          </span>
+
+                          <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#F7F3F0] group-hover:bg-[#D84C3C] transition-all duration-500 overflow-hidden">
+                            <span className="relative z-10 text-[#6B645E] group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
+                              →
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
@@ -421,23 +422,61 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="px-5 sm:px-10 flex flex-col sm:flex-row items-start sm:items-center justify-between">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
-          <div>
-            <h1 className="mt-8 font-bold text-3xl text-[#D84C3C]">
-              Trending Now
-            </h1>
-          </div>
+      <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
+  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+    
+    {/* Title Section */}
+    <div className="space-y-2">
+      <div className="flex items-center gap-3">
+        <span className="h-[1px] w-8 bg-[#D84C3C]" />
+        <span className="text-[11px] uppercase tracking-[0.5em] text-[#D84C3C] font-bold">
+          Curated Selection
+        </span>
+      </div>
+      
+      <h1 className="text-4xl md:text-5xl font-serif text-gray-900 leading-tight">
+        Trending <span className="text-gray-400 italic font-light">Now</span>
+      </h1>
+      
+      <p className="text-sm text-gray-500 max-w-md font-light leading-relaxed">
+        Discover this week's most-loved essentials from the Himalayan foothills, 
+        handpicked for their purity and craftsmanship.
+      </p>
+    </div>
 
-          <div className="w-full sm:w-auto">
-            <Link to="/viewproducts">
-              <button className="w-full sm:w-auto mt-4 sm:mt-8 bg-[#D84C3C] text-white cursor-pointer px-5 py-2.5 rounded-lg font-medium shadow-md hover:bg-[#b53e30] transition duration-300 ease-in-out">
-                View All Products
-              </button>
-            </Link>
+    {/* Action Section */}
+    <div className="flex items-center">
+      <Link to="/viewproducts" className="group relative">
+        <div className="flex items-center gap-4 py-3 px-1">
+          <span className="text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
+            View All Collections
+          </span>
+          
+          <div className="relative w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
+            {/* Background fill effect on hover */}
+            <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+            
+            {/* Arrow icon */}
+            <svg 
+              className="w-5 h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </div>
         </div>
-      </div>
+        {/* Subtle underline that expands */}
+        <div className="absolute bottom-0 left-0 h-[1px] bg-gray-200 w-full group-hover:bg-[#D84C3C]/30 transition-colors" />
+      </Link>
+    </div>
+
+  </div>
+  
+  {/* Optional: A very faint divider to anchor the grid below */}
+  <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
+</div>
       <div className="relative p-10">
         {/* LEFT ARROW */}
         <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
