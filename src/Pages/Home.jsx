@@ -339,38 +339,46 @@ export default function Home() {
 </div>
 
         <motion.div
-          variants={stagger}
-          initial="hidden"
-          animate="visible"
-          viewport={{ once: true, margin: "-120px" }}
-          className="grid gap-6 px-6 py-10 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+  variants={stagger}
+  initial="hidden"
+  whileInView="visible" // Switched from animate to whileInView for scroll discovery
+  viewport={{ once: true, amount: 0.2 }}
+  className="max-w-7xl mx-auto grid gap-8 px-6 py-16 sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+>
+  {productList?.length > 0 ? (
+    productList.slice(0, 3).map((item) => (
+      <motion.div
+        key={item._id}
+        variants={fadeUp}
+        whileHover={{ y: -10 }} // Increased lift for more impact
+        className="group relative bg-white rounded-2xl overflow-hidden transition-shadow hover:shadow-[0_20px_50px_rgba(216,76,60,0.1)]"
+      >
+        <Link
+          to={`/product/${item._id}`}
+          onClick={() => handleGetProductDetails(item)}
+          className="block h-full no-underline"
         >
-          {productList && productList.length > 0 ? (
-            productList.slice(0, 3).map((item) => (
-              <motion.div
-                key={item._id}
-                variants={fadeUp}
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="will-change-transform"
-              >
-                <Link
-                  to={`/product/${item._id}`}
-                  onClick={() => handleGetProductDetails(item)}
-                  className="block h-full"
-                >
-                  <TopSelections product={item} />
-                </Link>
-              </motion.div>
-            ))
-          ) : (
-            <>
-              {[1, 2, 3].map((i) => (
-                <TopSelectionSkeleton key={i} />
-              ))}
-            </>
-          )}
-        </motion.div>
+          {/* We wrap the component to control the inner scaling */}
+          <div className="overflow-hidden h-full">
+             <TopSelections product={item} />
+          </div>
+          
+          {/* A subtle "View Details" hint that appears on hover */}
+          <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 text-[#D84C3C] font-semibold text-sm">
+            Discover <span className="text-xl">→</span>
+          </div>
+        </Link>
+      </motion.div>
+    ))
+  ) : (
+    // Skeleton items should match the grid gap
+    <div className="contents">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="h-[400px] w-full rounded-2xl bg-gray-100 animate-pulse" />
+      ))}
+    </div>
+  )}
+</motion.div>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
