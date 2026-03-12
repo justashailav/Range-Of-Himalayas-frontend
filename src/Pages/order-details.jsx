@@ -89,47 +89,55 @@ export default function ShoppingOrderDetailsView() {
       <div className="max-w-5xl mx-auto space-y-8">
         {/* ================= HEADER ================= */}
         <div className="relative border-b border-stone-200 pb-10">
-  {/* TOP DECORATIVE ELEMENT */}
-  <div className="flex items-center gap-3 mb-6">
-    <div className="h-[1px] w-8 bg-stone-900" />
-    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-400">
-      Official Manifest
-    </span>
-  </div>
+          {/* TOP DECORATIVE ELEMENT */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-[1px] w-8 bg-stone-900" />
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-400">
+              Official Manifest
+            </span>
+          </div>
 
-  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-    <div className="space-y-1">
-      <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-stone-900 leading-none">
-        Order <span className="text-stone-300 font-light italic">Details</span>
-      </h1>
-      <div className="flex items-center gap-2 pt-2">
-        <div className="px-2 py-0.5 bg-stone-100 rounded text-[9px] font-bold text-stone-500 uppercase tracking-widest">
-          ID
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-1">
+              <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-stone-900 leading-none">
+                Order{" "}
+                <span className="text-stone-300 font-light italic">
+                  Details
+                </span>
+              </h1>
+              <div className="flex items-center gap-2 pt-2">
+                <div className="px-2 py-0.5 bg-stone-100 rounded text-[9px] font-bold text-stone-500 uppercase tracking-widest">
+                  ID
+                </div>
+                <p className="text-sm font-black tracking-widest text-stone-400 uppercase">
+                  {orderDetails._id}
+                </p>
+              </div>
+            </div>
+
+            {/* QUICK STATS - Adds professional weight */}
+            <div className="flex gap-10 md:text-right border-t md:border-t-0 md:border-l border-stone-100 pt-6 md:pt-0 md:pl-10">
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
+                  Items Summary
+                </p>
+                <p className="text-sm font-black text-stone-900 italic">
+                  {orderDetails.cartItems.length}{" "}
+                  {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
+                </p>
+              </div>
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
+                  Status
+                </p>
+                <p className="text-sm font-black text-green-700 uppercase tracking-tighter flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                  {orderDetails.orderStatus}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <p className="text-sm font-black tracking-widest text-stone-400 uppercase">
-          {orderDetails._id}
-        </p>
-      </div>
-    </div>
-
-    {/* QUICK STATS - Adds professional weight */}
-    <div className="flex gap-10 md:text-right border-t md:border-t-0 md:border-l border-stone-100 pt-6 md:pt-0 md:pl-10">
-      <div>
-        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">Items Summary</p>
-        <p className="text-sm font-black text-stone-900 italic">
-          {orderDetails.cartItems.length} {orderDetails.cartItems.length === 1 ? 'Parcel' : 'Parcels'}
-        </p>
-      </div>
-      <div>
-        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">Status</p>
-        <p className="text-sm font-black text-green-700 uppercase tracking-tighter flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-          {orderDetails.orderStatus}
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
 
         {/* ================= ORDER SUMMARY ================= */}
         <section className="bg-white rounded-2xl shadow p-6">
