@@ -260,42 +260,59 @@ export default function Home() {
           content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
         />
       </Helmet>
-     <div className="relative overflow-hidden bg-gradient-to-r from-red-700 via-red-600 to-red-700 py-3 shadow-md">
-  {/* Optional: Add a subtle overlay texture or shine */}
-  <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+      <div className="overflow-hidden relative bg-red-600 py-2">
+        <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
+          <span>
+            🎁 Use code{" "}
+            <span className="text-yellow-400 font-bold">HIMALAYA10</span> to get
+            10% off! 🍎
+          </span>
+          <span>🌿 Free gift on orders above ₹2000 – Limited Time!</span>
+          <span>🚚 Fast delivery from our orchards directly to you!</span>
+        </div>
+      </div>
 
-  <div className="animate-marquee whitespace-nowrap text-white font-medium text-sm md:text-base flex items-center gap-12">
-    <span className="flex items-center gap-2">
-      <span className="bg-white/20 px-2 py-0.5 rounded text-xs uppercase tracking-widest font-bold">Offer</span>
-      Use code <span className="text-yellow-300 font-extrabold tracking-tight">HIMALAYA10</span> for 10% off! 🍎
-    </span>
+      <motion.div 
+  initial="hidden" 
+  animate="visible" 
+  variants={fadeIn} 
+  className="relative w-full overflow-hidden group"
+>
+  <Link to="/viewproducts">
+    {/* Image with subtle zoom on hover */}
+    <motion.img
+      src={bgImage}
+      alt="Range of Himalayas Banner"
+      className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-2xl transition-transform duration-700 ease-in-out group-hover:scale-105"
+    />
     
-    <span className="flex items-center gap-2">
-      <span className="text-xl">🌿</span> Free gift on orders above <span className="font-bold">₹2000</span> — Limited Time!
-    </span>
-    
-    <span className="flex items-center gap-2">
-      <span className="text-xl">🚚</span> Direct from our orchards to your doorstep
-    </span>
+    {/* Overlay Gradient for readability */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-    {/* Duplicate for seamless looping if your CSS doesn't handle it */}
-    <span className="flex items-center gap-2">
-      <span className="bg-white/20 px-2 py-0.5 rounded text-xs uppercase tracking-widest font-bold">Offer</span>
-      Use code <span className="text-yellow-300 font-extrabold tracking-tight">HIMALAYA10</span> for 10% off! 🍎
-    </span>
-  </div>
-</div>
-      <motion.div initial="hidden" animate="visible" variants={fadeIn}>
-        <Link to="/viewproducts">
-          <motion.img
-            src={bgImage}
-            alt="Banner"
-            className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-lg"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.5 }}
-          />
-        </Link>
-      </motion.div>
+    {/* Text Content */}
+    <div className="absolute bottom-10 left-6 md:left-16 text-white">
+      <motion.h1 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="text-3xl md:text-5xl font-bold tracking-tight"
+      >
+        Purely Himalayan.
+      </motion.h1>
+      <motion.p 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.7 }}
+        className="mt-2 text-lg md:text-xl text-gray-200"
+      >
+        Authentic Red Rice, Apricots & More.
+      </motion.p>
+      <button className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors">
+        Shop Now
+      </button>
+    </div>
+  </Link>
+</motion.div>
       <div>
         <motion.h1
           variants={fadeUp}
