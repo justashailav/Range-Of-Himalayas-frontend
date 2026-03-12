@@ -338,93 +338,80 @@ export default function Home() {
           <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
         </div>
 
-        <section className="bg-[#121212] py-24 relative overflow-hidden">
-  {/* Ambient background glows - removing the "flat" black look */}
-  <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#D84C3C]/10 rounded-full blur-[120px] pointer-events-none" />
-  <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-orange-900/10 rounded-full blur-[100px] pointer-events-none" />
+        <section className="bg-[#0F0F0F] py-24 relative overflow-hidden">
+  {/* Soft ambient glow to create depth */}
+  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_#251816_0%,_transparent_65%)] opacity-40 pointer-events-none" />
 
   <motion.div
     variants={stagger}
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true, margin: "-120px" }}
-    className="grid gap-10 px-8 py-16 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+    className="grid gap-8 px-6 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3"
   >
-    {productList && productList.length > 0 ? (
-      productList.slice(0, 3).map((item, index) => (
-        <motion.div
-          key={item._id}
-          variants={fadeUp}
-          whileHover={{ y: -12 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="will-change-transform group"
+    {productList?.slice(0, 3).map((item, index) => (
+      <motion.div
+        key={item._id}
+        variants={fadeUp}
+        className="group relative"
+      >
+        <Link
+          to={`/product/${item._id}`}
+          onClick={() => handleGetProductDetails(item)}
+          className="relative block h-full overflow-hidden rounded-[2.5rem] bg-[#1A1A1A] border border-white/5 transition-all duration-500 hover:border-[#D84C3C]/40 hover:shadow-[0_0_40px_rgba(216,76,60,0.1)]"
         >
-          <Link
-            to={`/product/${item._id}`}
-            onClick={() => handleGetProductDetails(item)}
-            className="block h-full relative group"
-          >
-            {/* Main Card Container: Using a Dark Neutral instead of White */}
-            <div className="relative overflow-hidden rounded-[2.5rem] h-full bg-[#1A1A1A] border border-white/5 transition-colors duration-500 group-hover:border-[#D84C3C]/30 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)]">
-              
-              {/* Product Image Section */}
-              <div className="relative aspect-[4/5] overflow-hidden m-2 rounded-[2rem]">
-                <div className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-[1.2s] ease-out">
-                  <TopSelections product={item} />
-                </div>
-                
-                {/* Dark Vignette Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
-                
-                {/* Floating Price Tag */}
-                <div className="absolute bottom-6 left-6">
-                  <span className="bg-white/10 backdrop-blur-md border border-white/10 px-4 py-2 rounded-2xl text-white font-medium">
-                    ${item.price}
-                  </span>
-                </div>
+          {/* IMAGE SECTION: No more awkward borders inside */}
+          <div className="relative aspect-[4/5] overflow-hidden">
+            <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-1000 ease-out">
+              <TopSelections product={item} />
+            </div>
+            
+            {/* Elegant Gradient Overlay - blends the image into the card bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent" />
+            
+            {/* Floating Price Tag: Minimalist */}
+            <div className="absolute top-6 right-6">
+              <div className="bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
+                <p className="text-white font-medium text-sm">${item.price}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* CONTENT SECTION: Spacing is key here */}
+          <div className="relative p-8 -mt-12 transition-transform duration-500 group-hover:-translate-y-2">
+            <div className="flex flex-col gap-3">
+              {/* Small accent tag */}
+              <div className="flex items-center gap-2">
+                <span className="h-[1px] w-5 bg-[#D84C3C]" />
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-bold">
+                  Premium Quality
+                </span>
               </div>
 
-              {/* Text Content: Floating over the dark background */}
-              <div className="p-8 pt-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="h-[1px] w-8 bg-[#D84C3C]" />
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-gray-400 font-bold">
-                    Himalayan Collection
-                  </p>
+              <h3 className="text-2xl font-serif text-white leading-tight">
+                {item.name}
+              </h3>
+
+              <p className="text-sm text-gray-400 font-light leading-relaxed line-clamp-2">
+                {item.description || "Authentic Himalayan harvest, naturally processed for peak nutrition."}
+              </p>
+
+              {/* The "Shop Now" Button: Clean & Subtle */}
+              <div className="mt-4 flex items-center justify-between">
+                <div className="h-10 px-6 rounded-full bg-[#D84C3C] text-white text-xs font-bold uppercase tracking-widest flex items-center justify-center transition-all duration-300 group-hover:bg-[#f05645] group-hover:shadow-[0_10px_20px_-5px_rgba(216,76,60,0.4)]">
+                  Shop Now
                 </div>
                 
-                <h3 className="text-2xl font-light text-white mb-2 group-hover:text-[#D84C3C] transition-colors duration-300">
-                  {item.name}
-                </h3>
-                
-                <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed font-light">
-                  {item.description || "Individually handcrafted using centuries-old techniques."}
-                </p>
-
-                {/* Interactive Footer */}
-                <div className="mt-8 flex items-center justify-between text-white/40 group-hover:text-[#D84C3C] transition-colors">
-                  <span className="text-xs font-semibold uppercase tracking-widest">Explore details</span>
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#D84C3C] group-hover:border-[#D84C3C] group-hover:text-white transition-all duration-500">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </div>
+                {/* Visual cue for interaction */}
+                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 group-hover:text-white group-hover:border-white/30 transition-all duration-300">
+                  <span className="text-xl">→</span>
                 </div>
               </div>
             </div>
-          </Link>
-        </motion.div>
-      ))
-    ) : (
-      <div className="contents">
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="h-[550px] rounded-[2.5rem] bg-[#1A1A1A] animate-pulse border border-white/5"
-          />
-        ))}
-      </div>
-    )}
+          </div>
+        </Link>
+      </motion.div>
+    ))}
   </motion.div>
 </section>
       </div>
