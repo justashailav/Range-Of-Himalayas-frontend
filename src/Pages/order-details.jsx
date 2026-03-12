@@ -240,47 +240,81 @@ export default function ShoppingOrderDetailsView() {
 </section>
 
         {/* ================= ORDERED ITEMS ================= */}
-        <section className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-xl font-bold mb-4 border-b pb-3">
-            Ordered Items
-          </h2>
+       <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+  {/* SECTION HEADER */}
+  <div className="flex items-center gap-4 mb-10">
+    <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em]">
+      Parcel Contents
+    </h2>
+    <div className="h-px flex-1 bg-stone-50" />
+    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
+      {orderDetails.cartItems.length} {orderDetails.cartItems.length === 1 ? 'Item' : 'Items'}
+    </span>
+  </div>
 
-          <div className="space-y-4">
-            {orderDetails.cartItems.map((item) => {
-              const product =
-                productList.find((p) => p._id === item.productId) || {};
+  <div className="divide-y divide-stone-50">
+    {orderDetails.cartItems.map((item) => {
+      const product = productList.find((p) => p._id === item.productId) || {};
 
-              return (
-                <div
-                  key={item.productId}
-                  className="flex gap-4 p-4 border rounded-xl hover:shadow-md transition"
-                >
-                  <img
-                    src={product.image || "/placeholder.png"}
-                    className="w-24 h-24 rounded-lg object-cover border"
-                  />
-
-                  <div className="flex-1">
-                    <p className="font-semibold text-gray-900">
-                      {product.title}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Qty: {item.quantity}
-                      {item.size && ` · Size: ${item.size}`}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Weight: {item.weight}
-                    </p>
-                  </div>
-
-                  <p className="font-bold text-gray-900">
-                    ₹{item.price * item.quantity}
-                  </p>
-                </div>
-              );
-            })}
+      return (
+        <div
+          key={item.productId}
+          className="group flex flex-col sm:flex-row gap-6 py-8 first:pt-0 last:pb-0 transition-all"
+        >
+          {/* PRODUCT IMAGE CONTAINER */}
+          <div className="relative w-full sm:w-32 h-32 rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 flex-shrink-0">
+            <img
+              src={product.image || "/placeholder.png"}
+              alt={product.title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
+            />
+            <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
+               <p className="text-[10px] font-black text-stone-900 uppercase tracking-tighter">
+                 Qty {item.quantity}
+               </p>
+            </div>
           </div>
-        </section>
+
+          {/* PRODUCT DETAILS */}
+          <div className="flex-1 flex flex-col justify-between">
+            <div className="space-y-1">
+              <div className="flex justify-between items-start gap-4">
+                <h3 className="font-black text-stone-900 uppercase tracking-tight leading-tight group-hover:text-[#B23A2E] transition-colors">
+                  {product.title}
+                </h3>
+                <p className="text-lg font-black text-stone-900 tracking-tighter italic shrink-0">
+                  ₹{item.price * item.quantity}
+                </p>
+              </div>
+              
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest">Weight</span>
+                  <span className="text-[11px] font-bold text-stone-600 uppercase tracking-tighter">{item.weight}</span>
+                </div>
+                
+                {item.size && (
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest">Size</span>
+                    <span className="text-[11px] font-bold text-stone-600 uppercase tracking-tighter">{item.size}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* DECORATIVE BRAND TAG */}
+            <div className="mt-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-stone-200" />
+              <span className="text-[8px] font-black text-stone-400 uppercase tracking-[0.2em]">
+                Authentic Himalayan Harvest
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>
 
         {/* ================= SHIPPING INFO ================= */}
         <section className="bg-white rounded-2xl shadow p-6">
