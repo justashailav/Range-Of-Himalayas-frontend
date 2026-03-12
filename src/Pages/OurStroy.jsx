@@ -17,43 +17,90 @@ export default function OurStory() {
       </Helmet>
 
       {/* HERO */}
-      <section className="text-center px-6 py-28 bg-gradient-to-b from-green-100/40 to-white">
-        <span className="px-5 py-1.5 bg-green-200 text-green-900 rounded-full text-sm font-semibold tracking-wide">
-          🌿 Our Story
-        </span>
+      <section className="relative px-6 py-32 overflow-hidden bg-[#FCFAF7]">
+  {/* Background Decorative Element - Subtle topographical lines or mist effect */}
+  <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
+  
+  <div className="max-w-6xl mx-auto text-center relative z-10">
+    {/* Animated Badge */}
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-stone-100 border border-stone-200 shadow-sm"
+    >
+      <span className="text-amber-700 text-xs font-black uppercase tracking-[0.2em]">Our Heritage</span>
+    </motion.div>
 
-        <h1 className="text-5xl md:text-6xl font-extrabold mt-8 text-gray-900 leading-tight">
-          From Himalayan Orchards <br />
-          <span className="text-red-600">to Your Table</span>
-        </h1>
+    {/* Main Headline */}
+    <motion.h2 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2 }}
+      className="text-5xl md:text-7xl font-serif mt-8 text-stone-900 tracking-tight italic"
+    >
+      From Himalayan Orchards <br />
+      <span className="text-[#B23A2E] not-italic font-black uppercase tracking-tighter">to Your Table</span>
+    </motion.h2>
 
-        <p className="mt-10 max-w-3xl mx-auto text-xl text-gray-600 leading-relaxed">
-          We are mountain growers and preservers from Himachal Pradesh—cultivating
-          fresh fruits like apples and kiwis, and preparing dry fruits such as
-          apricots using slow, natural drying methods guided by Himalayan air,
-          sunlight, and time.
-        </p>
+    {/* Story Text */}
+    <motion.p 
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.4 }}
+      className="mt-10 max-w-2xl mx-auto text-lg md:text-xl text-stone-600 font-light leading-relaxed"
+    >
+      We are mountain growers and preservers from <span className="text-stone-900 font-medium">Himachal Pradesh</span>. 
+      By cultivating apples and kiwis and slow-drying apricots in the high-altitude sun, 
+      we capture the soul of the mountains in every bite.
+    </motion.p>
 
-        <div className="mt-12 flex flex-col sm:flex-row gap-5 justify-center">
-          <Link to="/viewproducts">
-            <button className="bg-red-600 text-white px-9 py-3.5 rounded-full font-semibold text-lg hover:bg-red-700 transition">
-              🍎 Explore Our Produce
-            </button>
-          </Link>
+    {/* CTAs */}
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.6 }}
+      className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
+    >
+      <Link to="/viewproducts">
+        <button className="w-full sm:w-auto bg-stone-900 text-white px-10 py-4 rounded-full font-bold hover:bg-[#B23A2E] transition-all duration-300 shadow-xl hover:-translate-y-1">
+          Explore the Harvest
+        </button>
+      </Link>
+      <button className="w-full sm:w-auto border border-stone-300 px-10 py-4 rounded-full font-bold text-stone-900 hover:bg-white transition-all duration-300">
+        Our Journey
+      </button>
+    </motion.div>
 
-          <button className="border border-gray-300 px-9 py-3.5 rounded-full font-semibold text-lg hover:bg-gray-100 transition">
-              🌄 Our Himalayan Journey
-          </button>
-        </div>
+    {/* Stats Grid - Now more "Gallery" style */}
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.8 }}
+      className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-stone-200 pt-16"
+    >
+      <div className="flex flex-col items-center">
+        <span className="text-4xl font-black text-stone-900">8,000 ft</span>
+        <p className="text-stone-500 uppercase text-[10px] font-bold tracking-widest mt-2">Altitude Growth</p>
+      </div>
+      <div className="flex flex-col items-center border-y md:border-y-0 md:border-x border-stone-200 py-8 md:py-0">
+        <span className="text-4xl font-black text-stone-900">10+ Years</span>
+        <p className="text-stone-500 uppercase text-[10px] font-bold tracking-widest mt-2">Mountain Farming</p>
+      </div>
+      <div className="flex flex-col items-center">
+        <span className="text-4xl font-black text-stone-900">100% Raw</span>
+        <p className="text-stone-500 uppercase text-[10px] font-bold tracking-widest mt-2">Sun-Dried Purity</p>
+      </div>
+    </motion.div>
+  </div>
 
-        {/* STAT */}
-        <div className="mt-14 flex justify-center">
-          <div className="text-center">
-            <h3 className="text-5xl font-bold text-gray-900">10+</h3>
-            <p className="text-gray-600 mt-1">Years of Mountain Farming</p>
-          </div>
-        </div>
-      </section>
+  {/* Visual Flourish: A faint mountain silhouette at the bottom */}
+  <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-stone-200/50 to-transparent pointer-events-none" />
+</section>
 
       {/* JOURNEY */}
       <section className="bg-gray-50 py-28 px-6">
