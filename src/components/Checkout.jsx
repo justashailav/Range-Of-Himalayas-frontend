@@ -8,7 +8,7 @@ import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 import { useNavigate } from "react-router-dom";
 import { resetCoupon } from "@/store/slices/couponSlice";
 import { Helmet } from "react-helmet";
-import { Check, Minus, Plus, Trash } from "lucide-react";
+import { Check, Minus, Plus, Trash,MapPin, ShoppingBag, Box } from "lucide-react";
 
 export default function ShoppingCheckout() {
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
