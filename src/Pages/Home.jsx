@@ -423,60 +423,64 @@ export default function Home() {
       </div>
 
       <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
-  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-    
-    {/* Title Section */}
-    <div className="space-y-2">
-      <div className="flex items-center gap-3">
-        <span className="h-[1px] w-8 bg-[#D84C3C]" />
-        <span className="text-[11px] uppercase tracking-[0.5em] text-[#D84C3C] font-bold">
-          Curated Selection
-        </span>
-      </div>
-      
-      <h1 className="text-4xl md:text-5xl font-serif text-gray-900 leading-tight">
-        Trending <span className="text-gray-400 italic font-light">Now</span>
-      </h1>
-      
-      <p className="text-sm text-gray-500 max-w-md font-light leading-relaxed">
-        Discover this week's most-loved essentials from the Himalayan foothills, 
-        handpicked for their purity and craftsmanship.
-      </p>
-    </div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          {/* Title Section */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <span className="h-[1px] w-8 bg-[#D84C3C]" />
+              <span className="text-[11px] uppercase tracking-[0.5em] text-[#D84C3C] font-bold">
+                Curated Selection
+              </span>
+            </div>
 
-    {/* Action Section */}
-    <div className="flex items-center">
-      <Link to="/viewproducts" className="group relative">
-        <div className="flex items-center gap-4 py-3 px-1">
-          <span className="text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
-            View All Collections
-          </span>
-          
-          <div className="relative w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
-            {/* Background fill effect on hover */}
-            <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-            
-            {/* Arrow icon */}
-            <svg 
-              className="w-5 h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+            <h1 className="text-4xl md:text-5xl font-serif text-gray-900 leading-tight">
+              Trending{" "}
+              <span className="text-gray-400 italic font-light">Now</span>
+            </h1>
+
+            <p className="text-sm text-gray-500 max-w-md font-light leading-relaxed">
+              Discover this week's most-loved essentials from the Himalayan
+              foothills, handpicked for their purity and craftsmanship.
+            </p>
+          </div>
+
+          {/* Action Section */}
+          <div className="flex items-center">
+            <Link to="/viewproducts" className="group relative">
+              <div className="flex items-center gap-4 py-3 px-1">
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
+                  View All Collections
+                </span>
+
+                <div className="relative w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
+                  {/* Background fill effect on hover */}
+                  <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+
+                  {/* Arrow icon */}
+                  <svg
+                    className="w-5 h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
+              </div>
+              {/* Subtle underline that expands */}
+              <div className="absolute bottom-0 left-0 h-[1px] bg-gray-200 w-full group-hover:bg-[#D84C3C]/30 transition-colors" />
+            </Link>
           </div>
         </div>
-        {/* Subtle underline that expands */}
-        <div className="absolute bottom-0 left-0 h-[1px] bg-gray-200 w-full group-hover:bg-[#D84C3C]/30 transition-colors" />
-      </Link>
-    </div>
 
-  </div>
-  
-  {/* Optional: A very faint divider to anchor the grid below */}
-  <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
-</div>
+        {/* Optional: A very faint divider to anchor the grid below */}
+        <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
+      </div>
       <div className="relative p-10">
         {/* LEFT ARROW */}
         <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
@@ -526,41 +530,85 @@ export default function Home() {
 
       <div>
         {/* HEADER */}
-        <div className="text-center mb-10">
-          <span className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-            🍎 From Orchard to You
-          </span>
+        <div className="relative text-center mb-16 px-6">
+  {/* Decorative Element - Very subtle background "01" or leaf icon could go here */}
+  <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[120px] font-serif text-gray-100 opacity-50 pointer-events-none select-none">
+    Our Story
+  </div>
 
-          <h1 className="text-4xl font-bold mt-4 mb-3">
-            Why Range Of Himalayas?
-          </h1>
+  <div className="relative z-10 flex flex-col items-center gap-4">
+    {/* Refined Eyebrow */}
+    <div className="flex items-center gap-3">
+      <span className="h-[1px] w-6 bg-[#D84C3C]" />
+      <span className="text-[10px] uppercase tracking-[0.4em] text-[#D84C3C] font-black">
+        From Orchard to You
+      </span>
+      <span className="h-[1px] w-6 bg-[#D84C3C]" />
+    </div>
 
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-            Every apple is a reflection of our passion for purity, timeless
-            tradition, and uncompromising quality.
-          </p>
-        </div>
+    {/* Main Headline */}
+    <h2 className="text-4xl md:text-5xl font-serif text-gray-900 leading-tight">
+      Why <span className="italic font-light text-gray-500">Range Of</span> Himalayas?
+    </h2>
+
+    {/* Elegant Divider Dot */}
+    <div className="flex items-center justify-center gap-2 my-2">
+        <div className="w-1 h-1 rounded-full bg-gray-300" />
+        <div className="w-1.5 h-1.5 rounded-full bg-[#D84C3C]" />
+        <div className="w-1 h-1 rounded-full bg-gray-300" />
+    </div>
+
+    {/* Descriptive Text */}
+    <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
+      Every harvest is a reflection of our passion for <span className="text-gray-800 font-medium">purity</span>, 
+      timeless tradition, and uncompromising quality.
+    </p>
+  </div>
+</div>
         <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center"
-        >
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              variants={fadeUp}
-              whileHover={{ y: -6 }}
-              className="flex flex-col items-center bg-white shadow-sm rounded-xl p-6 transition"
-            >
-              <h3 className="font-semibold text-lg text-green-700">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 text-sm mt-2">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+  variants={stagger}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto"
+>
+  {features.map((feature, index) => (
+    <motion.div
+      key={index}
+      variants={fadeUp}
+      className="group relative flex flex-col items-center p-8 rounded-[2.5rem] bg-[#F9F7F4] border border-white transition-all duration-500 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(180,160,140,0.15)]"
+    >
+      {/* 1. Iconic Number or Accent Icon */}
+      <div className="mb-6 relative">
+        <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500">
+           {/* Replace this with your actual icon or a stylized number */}
+           <span className="text-[#D84C3C] font-serif italic text-xl">0{index + 1}</span>
+        </div>
+        {/* Subtle ring decoration */}
+        <div className="absolute inset-0 rounded-full border border-[#D84C3C]/10 scale-125 group-hover:scale-150 transition-transform duration-700" />
+      </div>
+
+      {/* 2. Text Content */}
+      <div className="text-center space-y-3">
+        <h3 className="font-serif text-xl text-gray-900 group-hover:text-[#D84C3C] transition-colors">
+          {feature.title}
+        </h3>
+        
+        {/* Subtle decorative line */}
+        <div className="w-8 h-[1px] bg-gray-200 mx-auto group-hover:w-12 group-hover:bg-[#D84C3C]/30 transition-all" />
+        
+        <p className="text-gray-500 text-sm font-light leading-relaxed">
+          {feature.desc}
+        </p>
+      </div>
+
+      {/* 3. Corner Accent (Optional) */}
+      <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+         <div className="w-1.5 h-1.5 rounded-full bg-[#D84C3C]/20" />
+      </div>
+    </motion.div>
+  ))}
+</motion.div>
       </div>
 
       <div className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl">
