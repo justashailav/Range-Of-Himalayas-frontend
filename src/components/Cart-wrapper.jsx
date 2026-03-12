@@ -143,141 +143,145 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
   return (
     <SheetContent
-      className="
-    h-screen
-    w-full sm:max-w-md
-    ml-auto
-    flex flex-col
-    bg-gray-100
-    overflow-hidden
-  "
-    >
-      {/* ================= DRAG INDICATOR ================= */}
-      <div className="sm:hidden flex justify-center py-2">
-        <div className="w-10 h-1 bg-gray-300 rounded-full" />
-      </div>
+  className="h-screen w-full sm:max-w-md ml-auto flex flex-col bg-[#FAF9F6] p-0 border-l border-stone-200 outline-none"
+>
+  {/* ================= HEADER ================= */}
+  <div className="px-6 py-6 bg-white border-b border-stone-100 flex items-center justify-between">
+    <div>
+      <h2 className="text-xl font-black text-stone-900 tracking-tighter uppercase">Your Basket</h2>
+      <p className="text-[10px] text-stone-400 font-bold tracking-[0.2em] uppercase mt-1">
+        {cartItems?.length + (boxes?.length || 0)} Items Selected
+      </p>
+    </div>
+    {/* Close button is handled by Sheet primitive, but you can style the header here */}
+  </div>
 
-      {/* ================= HEADER ================= */}
-      <SheetHeader className="px-4 py-3 bg-white border-b sticky top-0 z-20">
-        <SheetTitle className="text-base font-semibold text-gray-900">
-          Your Cart ({cartItems?.length || 0})
-        </SheetTitle>
-      </SheetHeader>
-
-      {/* ================= CART BODY ================= */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5 pb-[140px]">
-        {(cartItems || []).length > 0 ? (
-          cartItems.map((item) => (
+  {/* ================= CART BODY ================= */}
+  <div className="flex-1 overflow-y-auto no-scrollbar">
+    <div className="px-6 py-8 space-y-8">
+      
+      {/* STANDARD ITEMS */}
+      {(cartItems || []).length > 0 ? (
+        <div className="space-y-6">
+          {cartItems.map((item) => (
             <UserCartItemsContent
               key={`${item.productId}-${item.size}`}
               cartItem={item}
               mobile
             />
-          ))
-        ) : (
-          <p className="text-center text-gray-500 mt-20">Your cart is empty</p>
-        )}
-
-        {(boxes || []).length > 0 && (
-          <div>
-            <h4 className="text-xs font-semibold text-gray-600 mb-2">Boxes</h4>
-            <div className="space-y-3">
-              {boxes.map((boxItem) => (
-                <UserCartItemsContent
-                  key={`box-${boxItem.boxId}`}
-                  boxItem={boxItem}
-                  productList={productList}
-                  mobile
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* RECOMMENDATIONS */}
-        <div className="mt-6">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3 px-4">
-            You might also like
-          </h3>
-
-          <div
-            className="
-      flex gap-4 overflow-x-auto px-4 pb-3
-      snap-x snap-mandatory
-      no-scrollbar
-    "
+          ))}
+        </div>
+      ) : boxes?.length === 0 && (
+        <div className="text-center py-20">
+          <p className="text-stone-400 font-serif italic text-lg">Your basket is empty...</p>
+          <button 
+            onClick={() => setOpenCartSheet(false)}
+            className="mt-4 text-[#B23A2E] text-xs font-bold tracking-widest uppercase underline underline-offset-4"
           >
-            {(productList || []).map((item) => (
-              <div
-                key={item._id}
-                className="snap-start min-w-[180px] sm:min-w-[200px]"
-              >
-                <CartProducts
-                  product={item}
-                  handleAddToCart={handleAddToCart}
-                  compact
-                />
-              </div>
+            Start Shopping
+          </button>
+        </div>
+      )}
+
+      {/* CUSTOM BOXES */}
+      {(boxes || []).length > 0 && (
+        <div className="pt-6 border-t border-stone-100">
+          <h4 className="text-[10px] font-black text-[#B23A2E] tracking-[0.3em] uppercase mb-6">Custom Gift Boxes</h4>
+          <div className="space-y-6">
+            {boxes.map((boxItem) => (
+              <UserCartItemsContent
+                key={`box-${boxItem.boxId}`}
+                boxItem={boxItem}
+                productList={productList}
+                mobile
+              />
             ))}
           </div>
         </div>
-      </div>
+      )}
 
-      {/* ================= BOTTOM CHECKOUT BAR ================= */}
-      <div className="fixed sm:static bottom-0 left-0 right-0 bg-white border-t z-50">
-        <div className="px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+12px)]">
-          {/* COUPON */}
-          <div className="flex items-center gap-2 mb-3">
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              disabled={isCouponApplied}
-              placeholder="Coupon code"
-              className="flex-1 border rounded-lg px-3 py-2 text-sm"
-            />
-
-            <Button
-              onClick={handleApplyCoupon}
-              disabled={isCouponApplied || couponCode.trim() === ""}
-              className="px-4 py-2 text-sm rounded-lg bg-indigo-500"
-            >
-              {isCouponApplied ? "Applied" : "Apply"}
-            </Button>
-          </div>
-
-          {isCouponApplied && (
-            <div className="flex justify-between text-green-600 text-xs font-semibold mb-2">
-              <span>Discount</span>
-              <span>-₹{discount.toFixed(2)}</span>
+      {/* RECOMMENDATIONS - Refined Horizontal Scroll */}
+      <div className="mt-12 pt-12 border-t border-stone-100">
+        <h3 className="text-xs font-black text-stone-900 uppercase tracking-widest mb-6 px-2">
+          Himalayan Essentials
+        </h3>
+        <div className="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory no-scrollbar">
+          {(productList || []).slice(0, 5).map((item) => (
+            <div key={item._id} className="snap-start min-w-[160px] bg-white p-3 rounded-2xl border border-stone-50 shadow-sm">
+              <CartProducts
+                product={item}
+                handleAddToCart={handleAddToCart}
+                compact
+              />
             </div>
-          )}
-
-          {/* TOTAL + CHECKOUT */}
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-[11px] text-gray-500">Total</p>
-              <p className="text-lg font-bold text-gray-900">
-                ₹{finalAmount.toFixed(2)}
-              </p>
-            </div>
-
-            <Link
-              to="/checkout"
-              onClick={() => setOpenCartSheet(false)}
-              className={`flex-1 text-center py-3 rounded-full font-semibold text-white
-            bg-gradient-to-r from-indigo-500 to-purple-500
-            ${
-              cartItems?.length === 0 && boxes?.length === 0
-                ? "opacity-50 pointer-events-none"
-                : "active:scale-[0.98]"
-            }`}
-            >
-              Checkout
-            </Link>
-          </div>
+          ))}
         </div>
       </div>
-    </SheetContent>
+    </div>
+  </div>
+
+  {/* ================= BOTTOM CHECKOUT BAR ================= */}
+  <div className="bg-white border-t border-stone-100 p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+    
+    {/* COUPON SECTION - Clean & Minimal */}
+    <div className="relative flex items-center mb-6 group">
+      <input
+        type="text"
+        value={couponCode}
+        onChange={(e) => setCouponCode(e.target.value)}
+        disabled={isCouponApplied}
+        placeholder="ENTER PROMO CODE"
+        className="w-full bg-stone-50 border-none rounded-xl px-4 py-3 text-[11px] font-bold tracking-widest placeholder:text-stone-300 focus:ring-1 focus:ring-stone-200 transition-all uppercase"
+      />
+      <button
+        onClick={handleApplyCoupon}
+        disabled={isCouponApplied || couponCode.trim() === ""}
+        className={`absolute right-2 px-4 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all
+          ${isCouponApplied ? "text-green-600 bg-green-50" : "text-stone-900 bg-white shadow-sm hover:bg-stone-900 hover:text-white"}`}
+      >
+        {isCouponApplied ? "Applied" : "Apply"}
+      </button>
+    </div>
+
+    {/* PRICING LOGIC */}
+    <div className="space-y-3 mb-8">
+      <div className="flex justify-between text-xs font-medium text-stone-400 uppercase tracking-widest">
+        <span>Subtotal</span>
+        <span>₹{(finalAmount + discount).toFixed(2)}</span>
+      </div>
+      
+      {isCouponApplied && (
+        <div className="flex justify-between text-xs font-bold text-green-600 uppercase tracking-widest">
+          <span>Seasonal Discount</span>
+          <span>-₹{discount.toFixed(2)}</span>
+        </div>
+      )}
+      
+      <div className="flex justify-between items-end pt-2 border-t border-stone-50">
+        <div>
+          <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-1">Estimated Total</p>
+          <p className="text-2xl font-black text-stone-900 tracking-tighter">
+            ₹{finalAmount.toFixed(2)}
+          </p>
+        </div>
+        <p className="text-[9px] text-stone-300 font-medium italic mb-1">Taxes calculated at checkout</p>
+      </div>
+    </div>
+
+    {/* ACTION BUTTON */}
+    <Link
+      to="/checkout"
+      onClick={() => setOpenCartSheet(false)}
+      className={`group relative flex items-center justify-center w-full py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase overflow-hidden transition-all duration-500
+        ${cartItems?.length === 0 && boxes?.length === 0
+          ? "bg-stone-100 text-stone-300 pointer-events-none"
+          : "bg-stone-900 text-white hover:bg-[#B23A2E] hover:shadow-[0_20px_40px_rgba(178,58,46,0.3)] active:scale-95"
+        }`}
+    >
+      <span className="relative z-10">Proceed to Checkout</span>
+      <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+    </Link>
+  </div>
+</SheetContent>
   );
 }
