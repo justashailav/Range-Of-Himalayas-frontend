@@ -719,32 +719,82 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* Optimized Card Wrapper */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto px-4">
-  {/* Instagram Card */}
-  <motion.a
-    href="https://www.instagram.com/range.of.himalayas"
-    target="_blank"
-    whileHover={{ y: -8 }}
-    className="group relative overflow-hidden p-8 rounded-3xl bg-gradient-to-br from-white to-green-50 border border-slate-100 shadow-xl shadow-green-900/5 flex flex-col items-center text-center"
-  >
-    {/* Animated Background Element */}
-    <div className="absolute -right-4 -top-4 w-24 h-24 bg-pink-100/40 rounded-full blur-2xl group-hover:bg-pink-200/60 transition-colors" />
+      <section className="px-6 py-20 bg-[#fdfdfb]">
+  {/* Header Section */}
+  <div className="text-center mb-16">
+    <motion.span 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      className="text-green-600 font-bold uppercase tracking-[0.2em] text-xs mb-3 block"
+    >
+      Our Community
+    </motion.span>
     
-    <div className="relative w-20 h-20 flex items-center justify-center bg-white rounded-2xl shadow-sm mb-6 transform group-hover:rotate-6 transition-transform">
-      <FaInstagram className="text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-pink-600 to-purple-600" />
-    </div>
-
-    <h3 className="text-2xl font-bold text-slate-800">Instagram</h3>
-    <p className="text-green-600 font-medium mb-4">@range.of.himalayas</p>
+    <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+      Follow the Harvest
+    </h2>
     
-    <span className="px-6 py-2 bg-green-700 text-white rounded-full text-sm font-semibold tracking-wide group-hover:bg-green-800 transition-colors">
-      Follow our Story
-    </span>
-  </motion.a>
+    <div className="w-16 h-1 bg-green-500 mx-auto rounded-full mb-6" />
+    
+    <p className="text-gray-500 text-lg max-w-xl mx-auto leading-relaxed">
+      Step into our Himalayan orchards. Get the freshest updates on our 
+      <span className="text-green-800 font-medium"> organic harvests</span> and apple collections.
+    </p>
+  </div>
 
-  {/* Facebook Card (Repeat similar structure with blue accents) */}
-</div>
+  {/* Social Cards Grid */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+    
+    {/* Instagram Card */}
+    <motion.a
+      href="https://www.instagram.com/range.of.himalayas"
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ y: -8 }}
+      className="group relative flex flex-col items-center p-10 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(22,101,52,0.1)] transition-all duration-500"
+    >
+      <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
+        <FaInstagram className="text-8xl text-pink-600" />
+      </div>
+
+      <div className="w-20 h-20 flex items-center justify-center bg-gradient-to-br from-pink-50 to-orange-50 rounded-2xl mb-6 group-hover:rotate-6 transition-transform duration-300">
+        <FaInstagram className="text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-pink-600 to-purple-600" />
+      </div>
+
+      <h3 className="text-2xl font-bold text-slate-800 mb-1">Instagram</h3>
+      <p className="text-green-600 font-medium mb-6">@range.of.himalayas</p>
+      
+      <span className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-full text-sm font-semibold group-hover:bg-green-700 transition-colors">
+        View Gallery <span className="group-hover:translate-x-1 transition-transform">→</span>
+      </span>
+    </motion.a>
+
+    {/* Facebook Card */}
+    <motion.a
+      href="https://www.facebook.com/rangeofhimalayas"
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ y: -8 }}
+      className="group relative flex flex-col items-center p-10 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(22,101,52,0.1)] transition-all duration-500"
+    >
+      <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
+        <FaFacebook className="text-8xl text-blue-600" />
+      </div>
+
+      <div className="w-20 h-20 flex items-center justify-center bg-blue-50 rounded-2xl mb-6 group-hover:-rotate-6 transition-transform duration-300">
+        <FaFacebook className="text-4xl text-blue-600" />
+      </div>
+
+      <h3 className="text-2xl font-bold text-slate-800 mb-1">Facebook</h3>
+      <p className="text-green-600 font-medium mb-6">@rangeofhimalayas</p>
+      
+      <span className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-full text-sm font-semibold group-hover:bg-green-700 transition-colors">
+        Join Community <span className="group-hover:translate-x-1 transition-transform">→</span>
+      </span>
+    </motion.a>
+
+  </div>
+</section>
 
       <HomeBlog />
       <div className="px-6 py-12 text-center">
