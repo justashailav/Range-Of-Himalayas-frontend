@@ -5,6 +5,7 @@ import ourImage from "../assets/meandyug.png";
 import farmImage from "../assets/royal-3.jpg";
 import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
+import { Sun, Droplets, TreeDeciduous, Users, Heart, User, LogOut } from 'lucide-react';
 export default function OurStory() {
   return (
     <div className="bg-[#FFFDF7]">
