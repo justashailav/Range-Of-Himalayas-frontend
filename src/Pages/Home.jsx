@@ -314,72 +314,93 @@ export default function Home() {
         </Link>
       </motion.div>
       <div>
-       <div className="flex flex-col items-center mt-12 mb-8">
-  <motion.span 
-    variants={fadeUp}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    className="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold mb-2"
-  >
-    Pure & Organic
-  </motion.span>
-  
-  <motion.h1
-    variants={fadeUp}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    className="text-center font-extrabold text-4xl md:text-5xl text-[#D84C3C] tracking-tight"
-  >
-    Himalayan <span className="text-gray-800">Selections</span>
-  </motion.h1>
-  
-  <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
-</div>
+        <div className="flex flex-col items-center mt-12 mb-8">
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold mb-2"
+          >
+            Pure & Organic
+          </motion.span>
 
-       <motion.div
-  variants={stagger}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, margin: "-120px" }}
-  /* Increased gap and padding for a more 'boutique' feel */
-  className="grid gap-10 px-8 py-16 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3 items-stretch"
->
-  {productList && productList.length > 0 ? (
-    productList.slice(0, 3).map((item) => (
-      <motion.div
-        key={item._id}
-        variants={fadeUp}
-        /* Smoother, higher lift on hover */
-        whileHover={{ y: -12 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Custom cubic-bezier for a snappier feel
-        className="will-change-transform group"
-      >
-        <Link
-          to={`/product/${item._id}`}
-          onClick={() => handleGetProductDetails(item)}
-          /* Added a subtle border and brand-tinted shadow on hover */
-          className="block h-full transition-all duration-500 rounded-[2rem] border border-transparent hover:border-red-50 hover:shadow-[0_30px_60px_-15px_rgba(216,76,60,0.12)]"
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center font-extrabold text-4xl md:text-5xl text-[#D84C3C] tracking-tight"
+          >
+            Himalayan <span className="text-gray-800">Selections</span>
+          </motion.h1>
+
+          <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
+        </div>
+
+        <section className="bg-[#FCFBFA] py-20 relative overflow-hidden">
+  {/* Soft background glow to break the "flat" look */}
+  <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-50 rounded-full blur-[120px] opacity-60 pointer-events-none" />
+
+  <motion.div
+    variants={stagger}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: "-100px" }}
+    /* Increased gap and used 'items-start' for a more dynamic, staggered look if images differ in height */
+    className="max-w-7xl mx-auto grid gap-12 px-8 sm:grid-cols-2 lg:grid-cols-3"
+  >
+    {productList?.length > 0 ? (
+      productList.slice(0, 3).map((item, index) => (
+        <motion.div
+          key={item._id}
+          variants={fadeUp}
+          /* Added a slight stagger offset to the middle card for visual interest */
+          className={`will-change-transform group ${index === 1 ? 'lg:mt-8' : ''}`}
         >
-          {/* Card Wrapper for internal polish */}
-          <div className="relative overflow-hidden rounded-[2rem] h-full bg-white">
-            <TopSelections product={item} />
-            
-            {/* Subtle glass-morphism overlay that appears on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-red-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-          </div>
-        </Link>
-      </motion.div>
-    ))
-  ) : (
-    <div className="contents">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="h-[420px] rounded-[2rem] bg-gray-50 animate-pulse border border-gray-100" />
-      ))}
-    </div>
-  )}
-</motion.div>
+          <Link
+            to={`/product/${item._id}`}
+            onClick={() => handleGetProductDetails(item)}
+            className="relative block rounded-[2.5rem] bg-white p-3 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] hover:shadow-[0_40px_80px_-20px_rgba(216,76,60,0.15)]"
+          >
+            {/* Image Container with a "Frame" look */}
+            <div className="relative overflow-hidden rounded-[2rem] aspect-[4/5] bg-[#F3F3F3]">
+              <div className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-1000 ease-out">
+                <TopSelections product={item} />
+              </div>
+              
+              {/* Corner Tag: For that "Selection" feel */}
+              <div className="absolute top-5 left-5 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-sm">
+                <p className="text-[10px] font-bold tracking-widest text-gray-800 uppercase">Premium</p>
+              </div>
+            </div>
+
+            {/* Subtle "floating" price/info bar that lifts on hover */}
+            <div className="pt-6 pb-4 px-4">
+               {/* This assumes TopSelections doesn't already render text. 
+                   If it does, the CSS below will still enhance it. */}
+               <div className="flex justify-between items-end">
+                  <div className="space-y-1">
+                    <div className="h-px w-8 bg-red-200 group-hover:w-12 transition-all duration-500" />
+                    <p className="text-xs text-gray-400 uppercase tracking-tighter">Himalayan Origin</p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center group-hover:bg-[#D84C3C] group-hover:text-white transition-colors duration-300">
+                    <span className="text-lg">→</span>
+                  </div>
+               </div>
+            </div>
+          </Link>
+        </motion.div>
+      ))
+    ) : (
+      <div className="contents">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-[500px] rounded-[2.5rem] bg-white p-4 shadow-sm border border-gray-50 animate-pulse" />
+        ))}
+      </div>
+    )}
+  </motion.div>
+</section>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
