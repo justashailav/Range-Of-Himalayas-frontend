@@ -271,7 +271,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     <Link
       to="/checkout"
       onClick={() => setOpenCartSheet(false)}
-      className={`flex items-center justify-center w-full  rounded-xl font-black text-[11px] tracking-[0.2em] uppercase transition-all duration-300
+      className={`flex items-center justify-center w-full py-4 mb-4 rounded-xl font-black text-[11px] tracking-[0.2em] uppercase transition-all duration-300
         ${cartItems?.length === 0 && boxes?.length === 0
           ? "bg-stone-100 text-stone-300"
           : "bg-stone-900 text-white active:scale-95 shadow-lg shadow-stone-200"
