@@ -8,7 +8,9 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
-import { HiOutlineChevronDoubleDown } from "react-icons/hi";
+import { 
+  HiOutlineChevronDoubleDown 
+} from "react-icons/hi";
 import ShoppingProductTile from "./Product-tile";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
@@ -274,115 +276,105 @@ export default function Home() {
       </div>
 
       <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeIn}
-        className="relative w-full overflow-hidden group cursor-none md:cursor-default"
-      >
-        <Link to="/viewproducts">
-          {/* Cinematic Parallax Container */}
-          <div className="relative h-[80vh] md:h-screen overflow-hidden bg-slate-900">
-            <motion.img
-              /* Choosing a breathtaking high-altitude Himalayan peak/orchard vista */
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+  variants={fadeIn}
+  className="relative w-full overflow-hidden group cursor-default"
+>
+  <Link to="/viewproducts">
+    <div className="relative h-[85vh] md:h-screen overflow-hidden">
+      {/* 1. Background Image with subtle zoom scale-down on entry */}
+      <motion.img
+        src={bgImage}
+        alt="Range of Himalayas Banner"
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        className="w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-105"
+      />
 
-src="https://images.unsplash.com/photo-1611175140153-ba32e32d044e?q=80&w=2070&auto=format&fit=crop"
-              alt="Majestic Himalayan Range"
-              initial={{ scale: 1.2, filter: "blur(10px)" }}
-              animate={{ scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 2, ease: "easeOut" }}
-              className="w-full h-full object-cover opacity-80 transition-transform duration-[3000ms] group-hover:scale-110"
-            />
+      {/* 2. Sophisticated Lighting Overlays */}
+      {/* Vignette effect to draw eyes to the center */}
+      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
 
-            {/* Layered Gradient for Cinematic Depth */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+      {/* 3. Content: Centered Glass Card for better readability */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
+        
+        {/* Decorative Element: Floating Badge */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="px-6 py-2 mb-8 backdrop-blur-md bg-white/10 border border-white/20 rounded-full shadow-2xl"
+        >
+          <span className="text-white text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
+            Est. 2026 • Premium Organics
+          </span>
+        </motion.div>
 
-            {/* Centered Content with High-Fashion Typography */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-              {/* Animated Badge */}
-              <motion.div
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="flex items-center gap-2 px-5 py-2 mb-8 border border-white/20 backdrop-blur-xl bg-white/5 rounded-full shadow-2xl"
-              >
-                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                <span className="text-white text-[10px] font-black uppercase tracking-[0.4em]">
-                  Direct from 8,000ft
-                </span>
-              </motion.div>
+        {/* Hero Title with Text-Stroke/Gradient Mix */}
+        <div className="relative mb-6 text-center">
+          <motion.h1
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.9]"
+          >
+            Purely <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40">
+              Himalayan.
+            </span>
+          </motion.h1>
+        </div>
 
-              <motion.h1
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  delay: 0.7,
-                  duration: 0.8,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="text-6xl md:text-8xl lg:text-[10rem] font-black text-white leading-none tracking-tighter"
-              >
-                RANGE OF
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-t from-gray-500 via-white to-white">
-                  HIMALAYAS.
-                </span>
-              </motion.h1>
+        {/* Paragraph with improved spacing */}
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="mt-4 text-lg md:text-2xl text-slate-200 max-w-xl font-light leading-relaxed italic text-center"
+        >
+          Discover the soul of the mountains through 
+          <span className="block font-bold text-white not-italic mt-2 tracking-wide uppercase text-sm md:text-base">
+            Authentic Red Rice, Apricots & More.
+          </span>
+        </motion.p>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2 }}
-                className="mt-8 text-slate-300 text-lg md:text-2xl max-w-2xl font-light leading-relaxed tracking-wide"
-              >
-                Experience the{" "}
-                <span className="text-white italic font-medium">
-                  unfiltered purity
-                </span>{" "}
-                of Authentic Red Rice, Sundried Apricots, and Wild Honey.
-              </motion.p>
-
-              {/* Floating Action Button */}
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 1.5 }}
-                className="mt-12"
-              >
-                <button className="group/btn relative flex items-center gap-4 px-12 py-5 bg-white text-black rounded-full overflow-hidden transition-all duration-500 hover:bg-green-700 hover:text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:shadow-green-900/40">
-                  <span className="relative z-10 font-black uppercase tracking-widest text-xs">
-                    Explore the Harvest
-                  </span>
-                  <FaArrowRight className="relative z-10 group-hover/btn:translate-x-2 transition-transform duration-300" />
-
-                  {/* Hover Shine Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
-                </button>
-              </motion.div>
+        {/* 4. The Action Button: High Contrast */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-12"
+        >
+          <button className="group/btn relative px-12 py-5 bg-white text-black font-black rounded-full transition-all duration-500 hover:bg-green-600 hover:text-white hover:px-14 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+            <span className="relative z-10 uppercase tracking-[0.2em] text-xs">Start Your Journey</span>
+            <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover/btn:opacity-100 group-hover/btn:translate-x-2 transition-all duration-300">
+              <FaArrowRight />
             </div>
+          </button>
+        </motion.div>
+      </div>
 
-            {/* Modern Scroll Indicator */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white/40"
-            >
-              <span className="text-[10px] uppercase font-bold tracking-[0.3em]">
-                Scroll
-              </span>
-              <HiOutlineChevronDoubleDown className="text-xl" />
-            </motion.div>
+      {/* 5. Minimalist Scroll Indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+        <motion.div 
+          animate={{ y: [0, 12, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="text-white/60 text-2xl"
+        >
+          <HiOutlineChevronDoubleDown />
+        </motion.div>
+        <span className="text-white/30 text-[9px] font-bold uppercase tracking-[0.5em]">Explore</span>
+      </div>
 
-            {/* Bottom Corner Details (Luxury Touch) */}
-            <div className="absolute bottom-12 left-12 hidden lg:block border-l border-white/20 pl-4">
-              <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">
-                Purity • Tradition • Mindful
-              </p>
-            </div>
-          </div>
-        </Link>
-      </motion.div>
+      {/* Luxury Border (Optional: Frame the image) */}
+      <div className="absolute inset-8 border border-white/10 pointer-events-none hidden md:block" />
+    </div>
+  </Link>
+</motion.div>
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
           <motion.span
