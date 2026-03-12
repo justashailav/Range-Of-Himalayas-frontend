@@ -57,101 +57,98 @@ export default function CartProductCard({
   };
 
   return (
-    <div className="relative bg-white rounded-xl shadow-sm border border-gray-200 p-3 w-[180px] sm:w-[200px]">
-  {/* BADGE */}
-  {(totalStock === 0 || totalStock < 10 || (salePrice > 0 && salePrice < price)) && (
-    <div className="absolute top-2 left-2 z-10">
-      {totalStock === 0 ? (
-        <span className="bg-red-600 text-white px-2 py-0.5 text-xs rounded">
-          Out of Stock
-        </span>
-      ) : totalStock < 10 ? (
-        <span className="bg-orange-500 text-white px-2 py-0.5 text-xs rounded">
-          Only {totalStock} left
-        </span>
-      ) : (
-        <span className="bg-green-600 text-white px-2 py-0.5 text-xs rounded">
-          Sale
-        </span>
-      )}
-    </div>
-  )}
+    <div className="group relative bg-white rounded-[2rem] p-3 w-[180px] sm:w-[200px] border border-stone-100 shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all duration-500 overflow-hidden">
+  
+  {/* MINIMALIST BADGES */}
+  <div className="absolute top-4 left-4 z-20 flex flex-col gap-1.5">
+    {totalStock === 0 ? (
+      <span className="bg-stone-900/80 backdrop-blur-md text-white px-2 py-0.5 text-[9px] font-black uppercase tracking-widest rounded-full">
+        Sold Out
+      </span>
+    ) : totalStock < 10 ? (
+      <span className="bg-amber-500 text-white px-2 py-0.5 text-[9px] font-black uppercase tracking-widest rounded-full shadow-sm">
+        Only {totalStock} Left
+      </span>
+    ) : (salePrice > 0 && salePrice < price) && (
+      <span className="bg-[#B23A2E] text-white px-2 py-0.5 text-[9px] font-black uppercase tracking-widest rounded-full shadow-sm">
+        Special
+      </span>
+    )}
+  </div>
 
-  {/* IMAGE */}
-  <div className="w-full h-36 rounded-lg overflow-hidden bg-gray-50">
+  {/* IMAGE SECTION */}
+  <div className="relative w-full h-36 rounded-[1.4rem] overflow-hidden bg-stone-50">
     <img
       src={product?.image || "/default-image.png"}
       alt={product?.title}
-      className="w-full h-full object-cover"
+      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
     />
+    {/* Subtle gradient overlay on image */}
+    <div className="absolute inset-0 bg-gradient-to-t from-stone-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
   </div>
 
   {/* CONTENT */}
-  <div className="mt-3 flex flex-col">
-    <h2 className="text-sm font-semibold text-gray-800 leading-tight line-clamp-2">
+  <div className="mt-4 px-1 flex flex-col">
+    <h2 className="text-xs font-black text-stone-900 leading-tight tracking-tight h-8 line-clamp-2 uppercase">
       {product?.title}
     </h2>
 
-    {/* PRICE */}
-    <div className="flex gap-2 items-center mt-1">
-      <span
-        className={`text-sm font-semibold ${
-          salePrice > 0 ? "line-through text-gray-400" : "text-gray-900"
-        }`}
-      >
-        ₹{price.toFixed(2)}
+    {/* PRICE AREA */}
+    <div className="flex items-baseline gap-2 mt-2">
+      <span className="text-sm font-black text-stone-900 tracking-tighter">
+        ₹{(salePrice > 0 ? salePrice : price).toFixed(0)}
       </span>
       {salePrice > 0 && (
-        <span className="text-sm font-semibold text-red-600">
-          ₹{salePrice.toFixed(2)}
+        <span className="text-[10px] font-bold text-stone-300 line-through tracking-tighter">
+          ₹{price.toFixed(0)}
         </span>
       )}
     </div>
 
-    {/* VARIANTS */}
-    <div className="flex gap-2 mt-2">
+    {/* SELECTION AREA - Using subtle custom styling */}
+    <div className="grid grid-cols-2 gap-1.5 mt-3">
       {hasSize && (
-        <select
-          value={selectedSize}
-          onChange={(e) => {
-            const size = e.target.value;
-            setSelectedSize(size);
-            setSelectedWeight(getWeightsBySize(size)[0]);
-          }}
-          className="flex-1 border rounded px-2 py-1 text-xs"
-        >
-          {sizes.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            value={selectedSize}
+            onChange={(e) => {
+              const size = e.target.value;
+              setSelectedSize(size);
+              setSelectedWeight(getWeightsBySize(size)[0]);
+            }}
+            className="w-full appearance-none bg-stone-50 border border-stone-100 text-[10px] font-bold text-stone-600 px-2 py-1.5 rounded-lg outline-none cursor-pointer hover:bg-stone-100 transition-colors uppercase tracking-tighter"
+          >
+            {sizes.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
       )}
 
-      <select
-        value={selectedWeight}
-        onChange={(e) => setSelectedWeight(e.target.value)}
-        className="flex-1 border rounded px-2 py-1 text-xs"
-      >
-        {getWeightsBySize(selectedSize).map((w) => (
-          <option key={w} value={w}>
-            {w}
-          </option>
-        ))}
-      </select>
+      <div className={`${!hasSize ? 'col-span-2' : ''} relative`}>
+        <select
+          value={selectedWeight}
+          onChange={(e) => setSelectedWeight(e.target.value)}
+          className="w-full appearance-none bg-stone-50 border border-stone-100 text-[10px] font-bold text-stone-600 px-2 py-1.5 rounded-lg outline-none cursor-pointer hover:bg-stone-100 transition-colors uppercase tracking-tighter"
+        >
+          {getWeightsBySize(selectedSize).map((w) => (
+            <option key={w} value={w}>{w}</option>
+          ))}
+        </select>
+      </div>
     </div>
 
-    {/* ADD BUTTON */}
+    {/* ACTION BUTTON */}
     <button
       onClick={handleAddClick}
       disabled={totalStock === 0}
-      className={`mt-3 w-full text-sm font-semibold rounded-lg transition py-2 ${
-        totalStock === 0
-          ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-          : "bg-[#F08C7D] text-white hover:bg-white hover:text-[#F08C7D] border border-[#F08C7D]"
-      }`}
+      className={`mt-4 w-full h-10 flex items-center justify-center rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 shadow-sm
+        ${totalStock === 0
+          ? "bg-stone-100 text-stone-300 cursor-not-allowed"
+          : "bg-white border border-stone-200 text-stone-900 hover:bg-stone-900 hover:text-white hover:border-stone-900 active:scale-95"
+        }`}
     >
-      {totalStock === 0 ? "Out of Stock" : "+ Add"}
+      {totalStock === 0 ? "Empty" : "Add to Basket"}
     </button>
   </div>
 </div>
