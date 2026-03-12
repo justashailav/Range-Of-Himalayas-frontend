@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ourImage from "../assets/meandyug.png";
 import farmImage from "../assets/royal-3.jpg";
 import { Helmet } from "react-helmet";
-
+import { motion, AnimatePresence } from "framer-motion";
 export default function OurStory() {
   return (
     <div className="bg-[#FFFDF7]">
