@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { cancelOrder, getAllOrderDetails } from "@/store/slices/orderSlice";
+import { Receipt } from "lucide-react";
 
 export default function ShoppingOrderDetailsView() {
   const { state } = useLocation();
