@@ -7,8 +7,6 @@ import {
   FaFacebook,
   FaArrowLeft,
   FaArrowRight,
-  FaLeaf,           /* Great for organic branding */
-  FaMountain
 } from "react-icons/fa";
 import { 
   HiOutlineChevronDoubleDown 
@@ -282,83 +280,94 @@ export default function Home() {
   whileInView="visible"
   viewport={{ once: true }}
   variants={fadeIn}
-  className="relative w-full overflow-hidden group cursor-pointer"
+  className="relative w-full overflow-hidden group cursor-none md:cursor-default"
 >
   <Link to="/viewproducts">
     {/* Cinematic Parallax Container */}
-    <div className="relative h-[70vh] md:h-[85vh] lg:h-[90vh] overflow-hidden">
+    <div className="relative h-[80vh] md:h-screen overflow-hidden bg-slate-900">
       <motion.img
-        src={bgImage}
-        alt="Range of Himalayas Banner"
-        initial={{ scale: 1.15 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-        className="w-full h-full object-cover shadow-2xl transition-transform duration-[2000ms] group-hover:scale-105"
+        /* Choosing a breathtaking high-altitude Himalayan peak/orchard vista */
+        src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=2070&auto=format&fit=crop"
+        alt="Majestic Himalayan Range"
+        initial={{ scale: 1.2, filter: "blur(10px)" }}
+        animate={{ scale: 1, filter: "blur(0px)" }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        className="w-full h-full object-cover opacity-80 transition-transform duration-[3000ms] group-hover:scale-110"
       />
 
-      {/* Sophisticated Dual Gradient */}
-      {/* Top shadow for nav visibility, bottom for content contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
-      
-      {/* Subtle Himalayan Mist Overlay (Optional texture) */}
-      <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] pointer-events-none" />
+      {/* Layered Gradient for Cinematic Depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
 
-      {/* Centered Content for a Luxury Feel */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      {/* Centered Content with High-Fashion Typography */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
         
-        {/* Floating Label */}
-        <motion.span
-          initial={{ y: 20, opacity: 0 }}
+        {/* Animated Badge */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="px-4 py-1.5 mb-6 border border-white/30 backdrop-blur-md rounded-full text-white text-xs font-bold uppercase tracking-[0.3em]"
+          transition={{ delay: 0.5 }}
+          className="flex items-center gap-2 px-5 py-2 mb-8 border border-white/20 backdrop-blur-xl bg-white/5 rounded-full shadow-2xl"
         >
-          High Altitude Harvests
-        </motion.span>
+          <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          <span className="text-white text-[10px] font-black uppercase tracking-[0.4em]">
+            Direct from 8,000ft
+          </span>
+        </motion.div>
 
         <motion.h1
-          initial={{ y: 30, opacity: 0 }}
+          initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-none"
+          transition={{ delay: 0.7, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-6xl md:text-8xl lg:text-[10rem] font-black text-white leading-none tracking-tighter"
         >
-          Purely <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">Himalayan.</span>
+          RANGE OF<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-t from-gray-500 via-white to-white">HIMALAYAS.</span>
         </motion.h1>
 
         <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-6 text-lg md:text-2xl text-gray-100 max-w-2xl font-light italic"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="mt-8 text-slate-300 text-lg md:text-2xl max-w-2xl font-light leading-relaxed tracking-wide"
         >
-          Discover the soul of the mountains through 
-          <span className="font-semibold text-white"> Authentic Red Rice, Apricots & More.</span>
+          Experience the <span className="text-white italic font-medium">unfiltered purity</span> of 
+          Authentic Red Rice, Sundried Apricots, and Wild Honey.
         </motion.p>
 
-        {/* Premium Magnetic-style Button */}
+        {/* Floating Action Button */}
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-10"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="mt-12"
         >
-          <button className="relative group/btn overflow-hidden px-10 py-4 bg-white text-black font-black rounded-full transition-all duration-300 hover:pr-14 active:scale-95 shadow-[0_15px_30px_rgba(0,0,0,0.2)]">
-            <span className="relative z-10 uppercase tracking-widest text-sm">Shop the Collection</span>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all duration-300">
-              <FaArrowRight />
-            </div>
+          <button className="group/btn relative flex items-center gap-4 px-12 py-5 bg-white text-black rounded-full overflow-hidden transition-all duration-500 hover:bg-green-700 hover:text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:shadow-green-900/40">
+            <span className="relative z-10 font-black uppercase tracking-widest text-xs">
+              Explore the Harvest
+            </span>
+            <FaArrowRight className="relative z-10 group-hover/btn:translate-x-2 transition-transform duration-300" />
+            
+            {/* Hover Shine Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
           </button>
         </motion.div>
       </div>
 
-      {/* Scroll Indicator Icon */}
+      {/* Modern Scroll Indicator */}
       <motion.div 
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 text-2xl hidden md:block"
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white/40"
       >
-        <HiOutlineChevronDoubleDown />
+        <span className="text-[10px] uppercase font-bold tracking-[0.3em]">Scroll</span>
+        <HiOutlineChevronDoubleDown className="text-xl" />
       </motion.div>
+
+      {/* Bottom Corner Details (Luxury Touch) */}
+      <div className="absolute bottom-12 left-12 hidden lg:block border-l border-white/20 pl-4">
+        <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Purity • Tradition • Mindful</p>
+      </div>
     </div>
   </Link>
 </motion.div>
