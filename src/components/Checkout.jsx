@@ -200,70 +200,71 @@ useEffect(() => {
         <title>Checkout | Range of Himalayas</title>
       </Helmet>
 
-      {/* ===== CHECKOUT STEPS ===== */}
-      {/* ===== CHECKOUT STEPS ===== */}
-      <div className="max-w-3xl mx-auto mb-10 px-4">
-        <div className="flex items-center justify-between">
-          {/* STEP 1 */}
-          <div className="flex items-center w-full">
-            <div className="flex flex-col items-center">
-              <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold
-          ${
-            currentStep >= 1
-              ? "bg-green-600 text-white"
-              : "bg-gray-300 text-gray-600"
+      <div className="max-w-xl mx-auto mb-16 px-6">
+  <div className="relative flex items-center justify-between">
+    
+    {/* Background Progress Track */}
+    <div className="absolute top-[18px] left-0 w-full h-[1px] bg-stone-200 z-0" />
+    
+    {/* Animated Active Track */}
+    <div 
+      className="absolute top-[18px] left-0 h-[1px] bg-[#B23A2E] transition-all duration-500 ease-in-out z-0"
+      style={{ width: `${currentStep === 1 ? '0%' : currentStep === 2 ? '50%' : '100%'}` }}
+    />
+
+    {/* STEP 1: Address */}
+    <div className="relative z-10 flex flex-col items-center">
+      <div
+        className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
+          ${currentStep >= 1 
+            ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]" 
+            : "bg-white border-stone-200 text-stone-300"
           }`}
-              >
-                1
-              </div>
-              <span className="text-xs mt-2 font-medium">Address</span>
-            </div>
-
-            <div
-              className={`flex-1 h-[3px] mx-3 transition-all duration-300
-        ${currentStep >= 2 ? "bg-green-600" : "bg-gray-300"}`}
-            />
-          </div>
-
-          {/* STEP 2 */}
-          <div className="flex items-center w-full">
-            <div className="flex flex-col items-center">
-              <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold
-          ${
-            currentStep >= 2
-              ? "bg-green-600 text-white"
-              : "bg-gray-300 text-gray-600"
-          }`}
-              >
-                2
-              </div>
-              <span className="text-xs mt-2 font-medium">Review</span>
-            </div>
-
-            <div
-              className={`flex-1 h-[3px] mx-3 transition-all duration-300
-        ${currentStep >= 3 ? "bg-green-600" : "bg-gray-300"}`}
-            />
-          </div>
-
-          {/* STEP 3 */}
-          <div className="flex flex-col items-center">
-            <div
-              className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold
-        ${
-          currentStep >= 3
-            ? "bg-green-600 text-white"
-            : "bg-gray-300 text-gray-600"
-        }`}
-            >
-              3
-            </div>
-            <span className="text-xs mt-2 font-medium">Payment</span>
-          </div>
-        </div>
+      >
+        {currentStep > 1 ? <Check className="w-4 h-4" /> : "01"}
       </div>
+      <span className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
+        ${currentStep >= 1 ? "text-stone-900" : "text-stone-300"}`}>
+        Address
+      </span>
+    </div>
+
+    {/* STEP 2: Review */}
+    <div className="relative z-10 flex flex-col items-center">
+      <div
+        className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
+          ${currentStep >= 2 
+            ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]" 
+            : "bg-white border-stone-200 text-stone-300"
+          }`}
+      >
+        {currentStep > 2 ? <Check className="w-4 h-4" /> : "02"}
+      </div>
+      <span className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
+        ${currentStep >= 2 ? "text-stone-900" : "text-stone-300"}`}>
+        Review
+      </span>
+    </div>
+
+    {/* STEP 3: Payment */}
+    <div className="relative z-10 flex flex-col items-center">
+      <div
+        className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
+          ${currentStep >= 3 
+            ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]" 
+            : "bg-white border-stone-200 text-stone-300"
+          }`}
+      >
+        "03"
+      </div>
+      <span className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
+        ${currentStep >= 3 ? "text-stone-900" : "text-stone-300"}`}>
+        Payment
+      </span>
+    </div>
+
+  </div>
+</div>
 
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* ================= LEFT SECTION ================= */}
