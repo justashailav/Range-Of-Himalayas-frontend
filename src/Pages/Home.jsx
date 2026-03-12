@@ -273,46 +273,90 @@ export default function Home() {
       </div>
 
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        className="relative w-full overflow-hidden group"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+  variants={fadeIn}
+  className="relative w-full overflow-hidden group cursor-pointer"
+>
+  <Link to="/viewproducts">
+    {/* Cinematic Parallax Container */}
+    <div className="relative h-[70vh] md:h-[85vh] lg:h-[90vh] overflow-hidden">
+      <motion.img
+        src={bgImage}
+        alt="Range of Himalayas Banner"
+        initial={{ scale: 1.15 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="w-full h-full object-cover shadow-2xl transition-transform duration-[2000ms] group-hover:scale-105"
+      />
+
+      {/* Sophisticated Dual Gradient */}
+      {/* Top shadow for nav visibility, bottom for content contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
+      
+      {/* Subtle Himalayan Mist Overlay (Optional texture) */}
+      <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] pointer-events-none" />
+
+      {/* Centered Content for a Luxury Feel */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+        
+        {/* Floating Label */}
+        <motion.span
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="px-4 py-1.5 mb-6 border border-white/30 backdrop-blur-md rounded-full text-white text-xs font-bold uppercase tracking-[0.3em]"
+        >
+          High Altitude Harvests
+        </motion.span>
+
+        <motion.h1
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-none"
+        >
+          Purely <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">Himalayan.</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="mt-6 text-lg md:text-2xl text-gray-100 max-w-2xl font-light italic"
+        >
+          Discover the soul of the mountains through 
+          <span className="font-semibold text-white"> Authentic Red Rice, Apricots & More.</span>
+        </motion.p>
+
+        {/* Premium Magnetic-style Button */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-10"
+        >
+          <button className="relative group/btn overflow-hidden px-10 py-4 bg-white text-black font-black rounded-full transition-all duration-300 hover:pr-14 active:scale-95 shadow-[0_15px_30px_rgba(0,0,0,0.2)]">
+            <span className="relative z-10 uppercase tracking-widest text-sm">Shop the Collection</span>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all duration-300">
+              <FaArrowRight />
+            </div>
+          </button>
+        </motion.div>
+      </div>
+
+      {/* Scroll Indicator Icon */}
+      <motion.div 
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 text-2xl hidden md:block"
       >
-        <Link to="/viewproducts">
-          {/* Image with subtle zoom on hover */}
-          <motion.img
-            src={bgImage}
-            alt="Range of Himalayas Banner"
-            className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-2xl transition-transform duration-700 ease-in-out group-hover:scale-105"
-          />
-
-          {/* Overlay Gradient for readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-          {/* Text Content */}
-          <div className="absolute bottom-10 left-6 md:left-16 text-white">
-            <motion.h1
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-3xl md:text-5xl font-bold tracking-tight"
-            >
-              Purely Himalayan.
-            </motion.h1>
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mt-2 text-lg md:text-xl text-gray-200"
-            >
-              Authentic Red Rice, Apricots & More.
-            </motion.p>
-            <button className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors">
-              Shop Now
-            </button>
-          </div>
-        </Link>
+        <HiOutlineChevronDoubleDown />
       </motion.div>
+    </div>
+  </Link>
+</motion.div>
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
           <motion.span
@@ -837,130 +881,152 @@ export default function Home() {
 
       <HomeBlog />
       <section className="px-6 py-20 bg-[#fafaf9]">
-  <div className="max-w-6xl mx-auto text-center">
-    {/* Refined Badge */}
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 text-green-700 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm"
-    >
-      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-      Orchard Moments
-    </motion.div>
+        <div className="max-w-6xl mx-auto text-center">
+          {/* Refined Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 text-green-700 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm"
+          >
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            Orchard Moments
+          </motion.div>
 
-    {/* Hero Heading */}
-    <h2 className="text-5xl md:text-6xl font-black text-slate-900 mt-6 mb-4 tracking-tight">
-      From Orchard <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">to Table</span>
-    </h2>
+          {/* Hero Heading */}
+          <h2 className="text-5xl md:text-6xl font-black text-slate-900 mt-6 mb-4 tracking-tight">
+            From Orchard{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">
+              to Table
+            </span>
+          </h2>
 
-    <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed font-medium mb-12">
-      Witness the journey of our orchards through the seasons—a celebration of purity, tradition, and mindful farming.
-    </p>
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed font-medium mb-12">
+            Witness the journey of our orchards through the seasons—a
+            celebration of purity, tradition, and mindful farming.
+          </p>
 
-    {/* Elegant Category Navigation */}
-    <div className="flex flex-wrap justify-center gap-4 mb-12">
-      {categories.map((cat) => (
-        <button
-          key={cat}
-          onClick={() => {
-            setActiveCategory(cat);
-            setCurrentIndex(0);
-            setCurrentImageIndex(0);
-          }}
-          className={`relative px-8 py-3 rounded-2xl text-sm font-bold transition-all duration-500 overflow-hidden
-            ${activeCategory === cat 
-              ? "text-white shadow-[0_10px_25px_-5px_rgba(220,38,38,0.4)]" 
-              : "bg-white text-slate-600 border border-slate-200 hover:border-red-200 hover:text-red-600"
+          {/* Elegant Category Navigation */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setCurrentIndex(0);
+                  setCurrentImageIndex(0);
+                }}
+                className={`relative px-8 py-3 rounded-2xl text-sm font-bold transition-all duration-500 overflow-hidden
+            ${
+              activeCategory === cat
+                ? "text-white shadow-[0_10px_25px_-5px_rgba(220,38,38,0.4)]"
+                : "bg-white text-slate-600 border border-slate-200 hover:border-red-200 hover:text-red-600"
             }`}
-        >
-          {activeCategory === cat && (
-            <motion.div 
-              layoutId="activeTab" 
-              className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500" 
-            />
-          )}
-          <span className="relative z-10">{cat}</span>
-        </button>
-      ))}
-    </div>
-
-    {/* Main Gallery Display */}
-    {loading ? (
-      <GallerySkeleton />
-    ) : filteredItems.length > 0 ? (
-      <div className="relative group max-w-5xl mx-auto">
-        <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2.5rem] bg-slate-200 shadow-2xl">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={filteredItems[currentIndex]?.images[currentImageIndex]}
-              src={filteredItems[currentIndex]?.images[currentImageIndex]}
-              alt={filteredItems[currentIndex]?.title}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full h-full object-cover"
-            />
-          </AnimatePresence>
-
-          {/* Glass Content Overlay */}
-          <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="max-w-2xl text-left"
-            >
-              <span className="px-3 py-1 bg-red-600/20 backdrop-blur-md border border-red-500/30 text-red-100 rounded-lg text-xs font-bold uppercase tracking-tighter">
-                {filteredItems[currentIndex]?.category}
-              </span>
-              <h3 className="text-3xl md:text-4xl font-black text-white mt-4 mb-2 tracking-tight">
-                {filteredItems[currentIndex]?.title}
-              </h3>
-              <p className="text-gray-300 text-base md:text-lg leading-relaxed line-clamp-2 font-light">
-                {filteredItems[currentIndex]?.desc}
-              </p>
-            </motion.div>
+              >
+                {activeCategory === cat && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500"
+                  />
+                )}
+                <span className="relative z-10">{cat}</span>
+              </button>
+            ))}
           </div>
 
-          {/* Navigation Controls */}
-          <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button onClick={prevSlide} className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110">
-              <FaArrowLeft />
-            </button>
-            <button onClick={nextSlide} className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110">
-              <FaArrowRight />
-            </button>
-          </div>
-        </div>
+          {/* Main Gallery Display */}
+          {loading ? (
+            <GallerySkeleton />
+          ) : filteredItems.length > 0 ? (
+            <div className="relative group max-w-5xl mx-auto">
+              <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2.5rem] bg-slate-200 shadow-2xl">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={filteredItems[currentIndex]?.images[currentImageIndex]}
+                    src={filteredItems[currentIndex]?.images[currentImageIndex]}
+                    alt={filteredItems[currentIndex]?.title}
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full h-full object-cover"
+                  />
+                </AnimatePresence>
 
-        {/* Cinematic Thumbnails */}
-        <div className="flex justify-center gap-4 mt-10">
-          {filteredItems[currentIndex].images.map((img, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentImageIndex(index)}
-              className="relative group"
-            >
-              <div className={`w-28 h-20 rounded-2xl overflow-hidden border-4 transition-all duration-500 ${
-                index === currentImageIndex ? "border-red-600 scale-110 shadow-lg" : "border-transparent grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
-              }`}>
-                <img src={img} alt="thumb" className="w-full h-full object-cover" />
+                {/* Glass Content Overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="max-w-2xl text-left"
+                  >
+                    <span className="px-3 py-1 bg-red-600/20 backdrop-blur-md border border-red-500/30 text-red-100 rounded-lg text-xs font-bold uppercase tracking-tighter">
+                      {filteredItems[currentIndex]?.category}
+                    </span>
+                    <h3 className="text-3xl md:text-4xl font-black text-white mt-4 mb-2 tracking-tight">
+                      {filteredItems[currentIndex]?.title}
+                    </h3>
+                    <p className="text-gray-300 text-base md:text-lg leading-relaxed line-clamp-2 font-light">
+                      {filteredItems[currentIndex]?.desc}
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* Navigation Controls */}
+                <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button
+                    onClick={prevSlide}
+                    className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110"
+                  >
+                    <FaArrowLeft />
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110"
+                  >
+                    <FaArrowRight />
+                  </button>
+                </div>
               </div>
-              {index === currentImageIndex && (
-                <motion.div layoutId="thumbGlow" className="absolute inset-0 bg-red-600/20 blur-xl -z-10" />
-              )}
-            </button>
-          ))}
+
+              {/* Cinematic Thumbnails */}
+              <div className="flex justify-center gap-4 mt-10">
+                {filteredItems[currentIndex].images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className="relative group"
+                  >
+                    <div
+                      className={`w-28 h-20 rounded-2xl overflow-hidden border-4 transition-all duration-500 ${
+                        index === currentImageIndex
+                          ? "border-red-600 scale-110 shadow-lg"
+                          : "border-transparent grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt="thumb"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {index === currentImageIndex && (
+                      <motion.div
+                        layoutId="thumbGlow"
+                        className="absolute inset-0 bg-red-600/20 blur-xl -z-10"
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-slate-400">
+              No moments found in this category.
+            </div>
+          )}
         </div>
-      </div>
-    ) : (
-      <div className="py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-slate-400">
-        No moments found in this category.
-      </div>
-    )}
-  </div>
-</section>
+      </section>
 
       <section className="bg-gradient-to-b from-green-50 to-white py-16 px-6 sm:px-10">
         <CustomerReviews />
