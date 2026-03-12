@@ -20,6 +20,7 @@ import {
   Truck,
   Lock,
   Star,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function ShoppingCheckout() {
