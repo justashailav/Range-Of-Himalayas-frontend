@@ -342,12 +342,16 @@ export default function Home() {
   {/* Sophisticated Ambient Glows */}
   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_center,_#381d1a_0%,_transparent_70%)] opacity-30 pointer-events-none" />
   
+  <section className="bg-[#FAF9F6] py-24 relative overflow-hidden">
+  {/* Soft ambient glow */}
+  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_center,_#F0E5DE_0%,_transparent_75%)] opacity-60 pointer-events-none" />
+  
   <motion.div
     variants={stagger}
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true, margin: "-120px" }}
-    className="grid gap-10 px-6 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3"
+    className="grid gap-12 px-6 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3"
   >
     {productList?.slice(0, 3).map((item, index) => (
       <motion.div
@@ -358,55 +362,54 @@ export default function Home() {
         <Link
           to={`/product/${item._id}`}
           onClick={() => handleGetProductDetails(item)}
-          className="relative block h-full overflow-hidden rounded-[2.5rem] bg-[#141414] border border-white/[0.05] transition-all duration-700 hover:border-[#D84C3C]/30"
+          className="relative block h-full overflow-hidden rounded-[3rem] bg-[#F3F0EB] border border-white/50 transition-all duration-700 hover:shadow-[0_40px_90px_-30px_rgba(160,140,120,0.25)]"
         >
           {/* IMAGE SECTION */}
           <div className="relative aspect-[4/5] overflow-hidden">
-            <div className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-[1.5s] ease-out">
+            <div className="absolute inset-0 scale-100 group-hover:scale-105 transition-transform duration-[2s] ease-out">
               <TopSelections product={item} />
             </div>
 
-            {/* Price Tag: Glass-morphic floating style */}
-            <div className="absolute top-6 right-6 z-10">
-               <div className="bg-black/40 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full">
-                  <span className="text-white font-medium text-sm">${item.price}</span>
+            {/* Top-left "Selection" badge instead of Price */}
+            <div className="absolute top-6 left-6 z-10">
+               <div className="bg-white/60 backdrop-blur-md px-4 py-1 rounded-full border border-white/40 shadow-sm">
+                  <span className="text-[9px] text-gray-800 font-bold uppercase tracking-[0.3em]">Selection {index + 1}</span>
                </div>
             </div>
 
-            {/* Gradient blending - smoother transition */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent" />
+            {/* Seamless gradient blend */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#F3F0EB] via-transparent to-transparent opacity-80" />
           </div>
 
           {/* CONTENT SECTION */}
-          <div className="relative p-8 -mt-20"> {/* Slightly deeper overlap for more depth */}
-            {/* Glass Card for Text: This creates a "layered" boutique feel */}
-            <div className="bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/5 p-6 rounded-[1.8rem] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="h-[1px] w-5 bg-[#D84C3C]" />
-                  <span className="text-[9px] uppercase tracking-[0.4em] text-[#D84C3C] font-bold">
-                    Himalayan Origin
+          <div className="relative p-8 -mt-24"> 
+            {/* The Floating Info Card */}
+            <div className="bg-white/90 backdrop-blur-2xl border border-white p-7 rounded-[2.5rem] shadow-[0_15px_40px_rgba(0,0,0,0.03)] transition-all duration-500 group-hover:-translate-y-3">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-[1px] w-6 bg-[#D84C3C] origin-left group-hover:w-10 transition-all duration-500" />
+                  <span className="text-[10px] uppercase tracking-[0.4em] text-[#D84C3C] font-black">
+                    Pure Origin
                   </span>
                 </div>
 
-                <h3 className="text-2xl font-serif text-white leading-tight group-hover:text-[#D84C3C] transition-colors duration-300">
-                  {item.name}
-                </h3>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-serif text-gray-900 leading-tight group-hover:text-[#D84C3C] transition-colors duration-300">
+                    {item.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 font-light leading-relaxed line-clamp-2">
+                    {item.description || "Thoughtfully curated from the heart of the Himalayas for an unparalleled natural experience."}
+                  </p>
+                </div>
 
-                <p className="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">
-                  {item.description || "Authentic Himalayan harvest, naturally processed for peak nutrition."}
-                </p>
-
-                {/* Bottom Row */}
-                <div className="mt-4 flex items-center justify-between border-t border-white/[0.05] pt-4">
-                  <span className="text-[10px] text-white/40 uppercase tracking-widest group-hover:text-white transition-colors">
-                    View Product
+                {/* Bottom Row - Refined Interaction */}
+                <div className="mt-2 flex items-center justify-between">
+                  <span className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold group-hover:text-gray-900 transition-colors duration-300">
+                    Discover More
                   </span>
                   
-                  <div className="relative flex items-center justify-center w-8 h-8">
-                     {/* Animated arrow circle */}
-                     <div className="absolute inset-0 bg-[#D84C3C] rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
-                     <span className="relative z-10 text-white group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 group-hover:bg-[#D84C3C] transition-all duration-500 overflow-hidden">
+                     <span className="text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all duration-300">→</span>
                   </div>
                 </div>
               </div>
@@ -416,6 +419,7 @@ export default function Home() {
       </motion.div>
     ))}
   </motion.div>
+</section>
 </section>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
