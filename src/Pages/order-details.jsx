@@ -140,89 +140,103 @@ export default function ShoppingOrderDetailsView() {
         </div>
 
         {/* ================= ORDER SUMMARY ================= */}
-        <section className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-xl font-bold mb-6 border-b pb-3">
-            Order Summary
-          </h2>
+        <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.02)] relative overflow-hidden">
+  {/* BACKGROUND DECORATION */}
+  <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+    <Receipt textAnchor="middle" size={120} className="-rotate-12" />
+  </div>
 
-          <div className="grid sm:grid-cols-2 gap-5 text-sm">
-            {[
-              ["Order Date", orderDetails.orderDate?.split("T")[0]],
-              ["Payment Method", orderDetails.paymentMethod],
-              ["Payment Status", orderDetails.paymentStatus],
-              ["Total Amount", `₹${orderDetails.totalAmount}`],
-              ["Cancel Status", orderDetails.cancelStatus],
-              ["Refund Status", orderDetails.refundStatus],
-              ["Return Status", orderDetails.returnStatus || "none"],
-            ].map(([label, value]) => (
-              <div key={label} className="flex justify-between border-b pb-2">
-                <span className="text-gray-500">{label}</span>
-                <span className="font-medium text-gray-900">
-                  {value || "-"}
-                </span>
-              </div>
-            ))}
+  <div className="relative z-10">
+    <div className="flex items-center gap-4 mb-10">
+      <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em]">
+        Transaction Details
+      </h2>
+      <div className="h-px flex-1 bg-stone-100" />
+    </div>
 
-            {/* STATUS */}
-            <div className="flex justify-between items-center pt-2">
-              <span className="text-gray-500">Order Status</span>
-              <Badge
-                className={`px-3 py-1 rounded-full text-xs font-semibold
-            ${
-              orderDetails.orderStatus === "confirmed"
-                ? "bg-green-100 text-green-700"
-                : orderDetails.orderStatus === "packed"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : orderDetails.orderStatus === "delivered"
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-red-100 text-red-700"
-            }`}
-              >
-                {orderDetails.orderStatus}
-              </Badge>
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+      {[
+        ["Placement Date", orderDetails.orderDate?.split("T")[0]],
+        ["Payment Method", orderDetails.paymentMethod],
+        ["Settlement", orderDetails.paymentStatus],
+        ["Cancellation", orderDetails.cancelStatus],
+        ["Refund Issue", orderDetails.refundStatus],
+        ["Return Log", orderDetails.returnStatus || "None Recorded"],
+      ].map(([label, value]) => (
+        <div key={label} className="group flex justify-between items-end border-b border-stone-50 pb-3 hover:border-stone-200 transition-colors">
+          <span className="text-[9px] font-black text-stone-400 uppercase tracking-widest">
+            {label}
+          </span>
+          <span className="text-xs font-black text-stone-900 uppercase tracking-tighter transition-all group-hover:pr-1">
+            {value || "-"}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    {/* TOTAL & STATUS HIGHLIGHT */}
+    <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {/* FINAL PRICE CARD */}
+      <div className="p-6 rounded-[2rem] bg-stone-50 border border-stone-100">
+        <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">Total Transaction</p>
+        <div className="flex items-baseline gap-1">
+          <span className="text-sm font-bold text-stone-900">₹</span>
+          <span className="text-4xl font-black text-stone-900 tracking-tighter italic">
+            {orderDetails.totalAmount}
+          </span>
+        </div>
+      </div>
+
+      {/* COD BREAKDOWN (IF APPLICABLE) */}
+      {orderDetails.paymentMethod === "cod" ? (
+        <div className="p-6 rounded-[2rem] bg-[#B23A2E]/5 border border-[#B23A2E]/10 flex flex-col justify-center">
+          <div className="flex justify-between text-[10px] font-black uppercase mb-1">
+            <span className="text-stone-400">Advance Paid</span>
+            <span className="text-stone-900">₹{orderDetails.codAdvanceAmount || 200}</span>
           </div>
-
-          {/* COD INFO */}
-          {orderDetails.paymentMethod === "cod" && (
-            <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-              <p>
-                <span className="font-medium">Advance Paid:</span> ₹
-                {orderDetails.codAdvanceAmount || 200}
-              </p>
-              <p className="mt-1">
-                <span className="font-medium">Pay on Delivery:</span> ₹
-                {orderDetails.codRemainingAmount}
-              </p>
-            </div>
-          )}
-
-          {/* ACTIONS */}
-          <div className="mt-6 flex flex-wrap gap-3">
-            {isCancelable() && orderDetails.orderStatus !== "cancelled" && (
-              <button
-                onClick={handleCancelOrder}
-                disabled={loadingCancelOrder}
-                className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
-              >
-                {loadingCancelOrder ? "Cancelling..." : "Cancel Order"}
-              </button>
-            )}
-
-            {isReturnable() && (
-              <button
-                onClick={handleReturnFullOrder}
-                disabled={isFullOrderReturned}
-                className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
-              >
-                {isFullOrderReturned ? "Return Requested" : "Return Order"}
-              </button>
-            )}
+          <div className="flex justify-between text-[10px] font-black uppercase">
+            <span className="text-[#B23A2E]">Due at Delivery</span>
+            <span className="text-[#B23A2E] text-lg tracking-tighter font-black">₹{orderDetails.codRemainingAmount}</span>
           </div>
+        </div>
+      ) : (
+        <div className="p-6 rounded-[2rem] bg-stone-900 flex flex-col justify-center items-center text-center">
+           <p className="text-[9px] font-black text-stone-500 uppercase tracking-widest mb-2">Order Status</p>
+           <span className="text-xs font-black text-white uppercase tracking-[0.2em]">
+             {orderDetails.orderStatus}
+           </span>
+        </div>
+      )}
+    </div>
 
-          {successMsg && <p className="text-green-600 mt-2">{successMsg}</p>}
-          {errorMsg && <p className="text-red-600 mt-2">{errorMsg}</p>}
-        </section>
+    {/* ACTION BUTTONS */}
+    <div className="mt-10 flex flex-wrap items-center gap-6">
+      {isCancelable() && orderDetails.orderStatus !== "cancelled" && (
+        <button
+          onClick={handleCancelOrder}
+          disabled={loadingCancelOrder}
+          className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 hover:text-red-600 transition-colors flex items-center gap-2 group"
+        >
+          <div className="w-2 h-2 rounded-full bg-red-500 group-hover:animate-ping" />
+          {loadingCancelOrder ? "Processing..." : "Void Order"}
+        </button>
+      )}
+
+      {isReturnable() && (
+        <button
+          onClick={handleReturnFullOrder}
+          disabled={isFullOrderReturned}
+          className="px-8 py-3 rounded-full bg-stone-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#B23A2E] transition-all shadow-xl shadow-stone-200"
+        >
+          {isFullOrderReturned ? "Return Initiated" : "Request Return"}
+        </button>
+      )}
+      
+      {successMsg && <span className="text-[10px] font-bold text-green-600 uppercase italic">✓ {successMsg}</span>}
+      {errorMsg && <span className="text-[10px] font-bold text-red-600 uppercase italic">! {errorMsg}</span>}
+    </div>
+  </div>
+</section>
 
         {/* ================= ORDERED ITEMS ================= */}
         <section className="bg-white rounded-2xl shadow p-6">
