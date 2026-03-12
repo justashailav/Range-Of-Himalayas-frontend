@@ -143,76 +143,77 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
   return (
     <SheetContent
-  className="h-screen w-full sm:max-w-md ml-auto flex flex-col bg-[#FAF9F6] p-0 border-l border-stone-200 outline-none"
+  side="right"
+  className="h-full w-full sm:max-w-md flex flex-col bg-[#FCFAF7] p-0 border-none outline-none"
 >
-  {/* ================= HEADER ================= */}
-  <div className="px-6 py-6 bg-white border-b border-stone-100 flex items-center justify-between">
+  {/* ================= HEADER (Mobile Optimized) ================= */}
+  <div className="px-5 py-5 bg-white border-b border-stone-100 flex items-center justify-between sticky top-0 z-30">
     <div>
-      <h2 className="text-xl font-black text-stone-900 tracking-tighter uppercase">Your Basket</h2>
-      <p className="text-[10px] text-stone-400 font-bold tracking-[0.2em] uppercase mt-1">
-        {cartItems?.length + (boxes?.length || 0)} Items Selected
-      </p>
+      <h2 className="text-lg font-black text-stone-900 tracking-tight uppercase">Your Basket</h2>
+      <div className="flex items-center gap-2 mt-0.5">
+        <span className="w-1 h-1 rounded-full bg-[#B23A2E]" />
+        <p className="text-[10px] text-stone-400 font-bold tracking-widest uppercase">
+          {cartItems?.length + (boxes?.length || 0)} Items
+        </p>
+      </div>
     </div>
-    {/* Close button is handled by Sheet primitive, but you can style the header here */}
+    {/* Optional: Add a custom close button here if the default Sheet close is too small */}
   </div>
 
-  {/* ================= CART BODY ================= */}
-  <div className="flex-1 overflow-y-auto no-scrollbar">
-    <div className="px-6 py-8 space-y-8">
+  {/* ================= SCROLLABLE BODY ================= */}
+  <div className="flex-1 overflow-y-auto overflow-x-hidden no-scrollbar pb-32">
+    <div className="px-5 py-6 space-y-10">
       
-      {/* STANDARD ITEMS */}
-      {(cartItems || []).length > 0 ? (
-        <div className="space-y-6">
+      {/* ITEMS LIST */}
+      {(cartItems || []).length > 0 || (boxes || []).length > 0 ? (
+        <div className="space-y-8">
+          {/* Regular Products */}
           {cartItems.map((item) => (
-            <UserCartItemsContent
-              key={`${item.productId}-${item.size}`}
-              cartItem={item}
-              mobile
-            />
+            <div key={`${item.productId}-${item.size}`} className="animate-in fade-in slide-in-from-right-4 duration-300">
+               <UserCartItemsContent cartItem={item} mobile />
+            </div>
           ))}
+
+          {/* Custom Boxes */}
+          {(boxes || []).length > 0 && (
+            <div className="pt-8 border-t border-stone-200/60">
+              <h4 className="text-[10px] font-black text-[#B23A2E] tracking-[0.2em] uppercase mb-6 flex items-center gap-2">
+                Gift Boxes <span className="h-px flex-1 bg-stone-100" />
+              </h4>
+              {boxes.map((boxItem) => (
+                <UserCartItemsContent
+                  key={`box-${boxItem.boxId}`}
+                  boxItem={boxItem}
+                  productList={productList}
+                  mobile
+                />
+              ))}
+            </div>
+          )}
         </div>
-      ) : boxes?.length === 0 && (
-        <div className="text-center py-20">
-          <p className="text-stone-400 font-serif italic text-lg">Your basket is empty...</p>
-          <button 
-            onClick={() => setOpenCartSheet(false)}
-            className="mt-4 text-[#B23A2E] text-xs font-bold tracking-widest uppercase underline underline-offset-4"
-          >
-            Start Shopping
-          </button>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mb-4 text-2xl">🧺</div>
+          <p className="text-stone-400 font-serif italic">Your basket is waiting to be filled.</p>
+          <SheetClose asChild>
+            <button className="mt-4 text-[#B23A2E] text-[10px] font-bold tracking-[0.2em] uppercase border-b border-[#B23A2E] pb-0.5">
+              Explore Collection
+            </button>
+          </SheetClose>
         </div>
       )}
 
-      {/* CUSTOM BOXES */}
-      {(boxes || []).length > 0 && (
-        <div className="pt-6 border-t border-stone-100">
-          <h4 className="text-[10px] font-black text-[#B23A2E] tracking-[0.3em] uppercase mb-6">Custom Gift Boxes</h4>
-          <div className="space-y-6">
-            {boxes.map((boxItem) => (
-              <UserCartItemsContent
-                key={`box-${boxItem.boxId}`}
-                boxItem={boxItem}
-                productList={productList}
-                mobile
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* RECOMMENDATIONS - Refined Horizontal Scroll */}
-      <div className="mt-12 pt-12 border-t border-stone-100">
-        <h3 className="text-xs font-black text-stone-900 uppercase tracking-widest mb-6 px-2">
-          Himalayan Essentials
+      {/* MOBILE RECOMMENDATIONS (Compact & Swipable) */}
+      <div className="mt-12 pt-8 border-t border-stone-200/60">
+        <h3 className="text-[10px] font-black text-stone-900 uppercase tracking-widest mb-5">
+          Pairs well with
         </h3>
-        <div className="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory no-scrollbar">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-5 px-5">
           {(productList || []).slice(0, 5).map((item) => (
-            <div key={item._id} className="snap-start min-w-[160px] bg-white p-3 rounded-2xl border border-stone-50 shadow-sm">
-              <CartProducts
-                product={item}
-                handleAddToCart={handleAddToCart}
-                compact
-              />
+            <div key={item._id} className="snap-start min-w-[140px] max-w-[140px]">
+              <div className="bg-white p-2.5 rounded-2xl border border-stone-100 shadow-sm">
+                 <CartProducts product={item} handleAddToCart={handleAddToCart} compact />
+              </div>
             </div>
           ))}
         </div>
@@ -220,66 +221,63 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     </div>
   </div>
 
-  {/* ================= BOTTOM CHECKOUT BAR ================= */}
-  <div className="bg-white border-t border-stone-100 p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+  {/* ================= FIXED BOTTOM ACTION BAR (Native App Feel) ================= */}
+  <div className="mt-auto bg-white border-t border-stone-100 px-5 pt-5 pb-[env(safe-area-inset-bottom,20px)] shadow-[0_-10px_30px_rgba(0,0,0,0.04)]">
     
-    {/* COUPON SECTION - Clean & Minimal */}
-    <div className="relative flex items-center mb-6 group">
-      <input
-        type="text"
-        value={couponCode}
-        onChange={(e) => setCouponCode(e.target.value)}
-        disabled={isCouponApplied}
-        placeholder="ENTER PROMO CODE"
-        className="w-full bg-stone-50 border-none rounded-xl px-4 py-3 text-[11px] font-bold tracking-widest placeholder:text-stone-300 focus:ring-1 focus:ring-stone-200 transition-all uppercase"
-      />
-      <button
-        onClick={handleApplyCoupon}
-        disabled={isCouponApplied || couponCode.trim() === ""}
-        className={`absolute right-2 px-4 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all
-          ${isCouponApplied ? "text-green-600 bg-green-50" : "text-stone-900 bg-white shadow-sm hover:bg-stone-900 hover:text-white"}`}
-      >
-        {isCouponApplied ? "Applied" : "Apply"}
-      </button>
+    {/* PROMO SECTION */}
+    <div className="flex items-center gap-2 mb-5">
+      <div className="relative flex-1 group">
+        <input
+          type="text"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+          disabled={isCouponApplied}
+          placeholder="PROMO CODE"
+          className="w-full bg-stone-50 border-stone-100 rounded-xl px-4 py-3 text-[10px] font-bold tracking-widest focus:bg-white focus:ring-1 focus:ring-stone-200 transition-all uppercase"
+        />
+        {couponCode && !isCouponApplied && (
+          <button 
+            onClick={handleApplyCoupon}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-[#B23A2E] text-[10px] font-black px-3 py-1.5"
+          >
+            APPLY
+          </button>
+        )}
+      </div>
     </div>
 
-    {/* PRICING LOGIC */}
-    <div className="space-y-3 mb-8">
-      <div className="flex justify-between text-xs font-medium text-stone-400 uppercase tracking-widest">
-        <span>Subtotal</span>
-        <span>₹{(finalAmount + discount).toFixed(2)}</span>
-      </div>
-      
+    {/* PRICING TABLE */}
+    <div className="space-y-2 mb-6 px-1">
       {isCouponApplied && (
-        <div className="flex justify-between text-xs font-bold text-green-600 uppercase tracking-widest">
-          <span>Seasonal Discount</span>
-          <span>-₹{discount.toFixed(2)}</span>
+        <div className="flex justify-between text-[10px] font-bold text-green-600 uppercase tracking-tight">
+          <span>Seasonal Discount Applied</span>
+          <span>-₹{discount}</span>
         </div>
       )}
-      
-      <div className="flex justify-between items-end pt-2 border-t border-stone-50">
+      <div className="flex justify-between items-end">
         <div>
-          <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mb-1">Estimated Total</p>
-          <p className="text-2xl font-black text-stone-900 tracking-tighter">
+          <span className="text-[9px] text-stone-400 font-black uppercase tracking-widest">Total Amount</span>
+          <p className="text-2xl font-black text-stone-900 leading-none mt-1">
             ₹{finalAmount.toFixed(2)}
           </p>
         </div>
-        <p className="text-[9px] text-stone-300 font-medium italic mb-1">Taxes calculated at checkout</p>
+        <div className="text-right">
+           <p className="text-[9px] text-stone-300 font-medium italic">Incl. all mountain taxes</p>
+        </div>
       </div>
     </div>
 
-    {/* ACTION BUTTON */}
+    {/* CTA BUTTON */}
     <Link
       to="/checkout"
       onClick={() => setOpenCartSheet(false)}
-      className={`group relative flex items-center justify-center w-full py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase overflow-hidden transition-all duration-500
+      className={`flex items-center justify-center w-full py-4 rounded-xl font-black text-[11px] tracking-[0.2em] uppercase transition-all duration-300
         ${cartItems?.length === 0 && boxes?.length === 0
-          ? "bg-stone-100 text-stone-300 pointer-events-none"
-          : "bg-stone-900 text-white hover:bg-[#B23A2E] hover:shadow-[0_20px_40px_rgba(178,58,46,0.3)] active:scale-95"
+          ? "bg-stone-100 text-stone-300"
+          : "bg-stone-900 text-white active:scale-95 shadow-lg shadow-stone-200"
         }`}
     >
-      <span className="relative z-10">Proceed to Checkout</span>
-      <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+      Proceed to Checkout
     </Link>
   </div>
 </SheetContent>
