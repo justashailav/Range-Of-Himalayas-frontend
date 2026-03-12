@@ -8,7 +8,7 @@ import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 import { useNavigate } from "react-router-dom";
 import { resetCoupon } from "@/store/slices/couponSlice";
 import { Helmet } from "react-helmet";
-import { Check, Minus, Plus, Trash } from 'lucide-react';
+import { Check, Minus, Plus, Trash } from "lucide-react";
 
 export default function ShoppingCheckout() {
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
@@ -48,7 +48,7 @@ export default function ShoppingCheckout() {
       box?.items?.reduce((sum, item) => {
         const product = productList.find((p) => p._id === item.productId) || {};
         const sizePriceObj = (product.customBoxPrices || []).find(
-          (p) => p.size === item.size
+          (p) => p.size === item.size,
         );
         const price = sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0;
         return sum + price * (Number(item.quantity) || 1);
@@ -70,129 +70,121 @@ export default function ShoppingCheckout() {
   }, [cartItems, boxes, navigate, user]);
 
   async function handlePlaceOrder() {
-  if (cartItems.length === 0 && boxes.length === 0)
-    return toast.error("Your cart is empty.");
+    if (cartItems.length === 0 && boxes.length === 0)
+      return toast.error("Your cart is empty.");
 
-  if (!currentSelectedAddress)
-    return toast.error("Please select a delivery address.");
+    if (!currentSelectedAddress)
+      return toast.error("Please select a delivery address.");
 
-  if (!paymentMethod)
-    return toast.error("Please select payment method.");
+    if (!paymentMethod) return toast.error("Please select payment method.");
 
-  const orderData = {
-    userId: user?._id,
-    cartItems: cartItems.map((item) => ({
-      productId: item.productId,
-      title: item.title,
-      image: item.image,
-      price: item.salesPrice > 0 ? item.salesPrice : item.price,
-      quantity: item.quantity,
-      size: item.size,
-      weight: item.weight || item.productWeight,
-    })),
-    boxes,
-    addressInfo: {
-      addressId: currentSelectedAddress?._id,
-      address: currentSelectedAddress?.address,
-      city: currentSelectedAddress?.city,
-      pincode: currentSelectedAddress?.pincode,
-      phone: currentSelectedAddress?.phone,
-      notes: currentSelectedAddress?.notes,
-    },
-    paymentMethod,
-    totalAmount: payableAmount,
-    ...(code ? { code } : {}),
-  };
+    const orderData = {
+      userId: user?._id,
+      cartItems: cartItems.map((item) => ({
+        productId: item.productId,
+        title: item.title,
+        image: item.image,
+        price: item.salesPrice > 0 ? item.salesPrice : item.price,
+        quantity: item.quantity,
+        size: item.size,
+        weight: item.weight || item.productWeight,
+      })),
+      boxes,
+      addressInfo: {
+        addressId: currentSelectedAddress?._id,
+        address: currentSelectedAddress?.address,
+        city: currentSelectedAddress?.city,
+        pincode: currentSelectedAddress?.pincode,
+        phone: currentSelectedAddress?.phone,
+        notes: currentSelectedAddress?.notes,
+      },
+      paymentMethod,
+      totalAmount: payableAmount,
+      ...(code ? { code } : {}),
+    };
 
-  try {
-    setIsProcessing(true);
+    try {
+      setIsProcessing(true);
 
-    const response = await dispatch(
-      createNewOrder(orderData)
-    )
+      const response = await dispatch(createNewOrder(orderData));
 
-    // 🔥 Razorpay Flow
-    if (response.razorpayOrderId) {
+      // 🔥 Razorpay Flow
+      if (response.razorpayOrderId) {
+        if (!window.Razorpay) {
+          toast.error("Payment gateway failed to load. Refresh page.");
+          setIsProcessing(false);
+          return;
+        }
 
-      if (!window.Razorpay) {
-        toast.error("Payment gateway failed to load. Refresh page.");
-        setIsProcessing(false);
+        const options = {
+          key: response.key,
+          amount: response.amount,
+          currency: response.currency,
+          order_id: response.razorpayOrderId,
+          name: "Range of Himalayas",
+          description:
+            paymentMethod === "cod" ? "₹200 COD Advance" : "Secure Payment",
+
+          handler: async function (rzpResponse) {
+            try {
+              await dispatch(
+                capturePayment({
+                  orderId: response.orderId,
+                  razorpay_order_id: rzpResponse.razorpay_order_id,
+                  razorpay_payment_id: rzpResponse.razorpay_payment_id,
+                  razorpay_signature: rzpResponse.razorpay_signature,
+                }),
+              );
+
+              toast.success("Payment successful!");
+              navigate("/order-success");
+            } catch (err) {
+              toast.error("Payment verification failed");
+            }
+          },
+
+          prefill: {
+            name: user?.name,
+            email: user?.email,
+            contact: currentSelectedAddress?.phone,
+          },
+
+          theme: {
+            color: "#16a34a",
+          },
+        };
+
+        const rzp = new window.Razorpay(options);
+
+        rzp.on("payment.failed", function () {
+          toast.error("Payment failed. Please try again.");
+        });
+
+        rzp.open();
         return;
       }
 
-      const options = {
-        key: response.key,
-        amount: response.amount,
-        currency: response.currency,
-        order_id: response.razorpayOrderId,
-        name: "Range of Himalayas",
-        description:
-          paymentMethod === "cod"
-            ? "₹200 COD Advance"
-            : "Secure Payment",
-
-        handler: async function (rzpResponse) {
-          try {
-            await dispatch(
-              capturePayment({
-                orderId: response.orderId,
-                razorpay_order_id: rzpResponse.razorpay_order_id,
-                razorpay_payment_id: rzpResponse.razorpay_payment_id,
-                razorpay_signature: rzpResponse.razorpay_signature,
-              })
-            );
-
-            toast.success("Payment successful!");
-            navigate("/order-success");
-
-          } catch (err) {
-            toast.error("Payment verification failed");
-          }
-        },
-
-        prefill: {
-          name: user?.name,
-          email: user?.email,
-          contact: currentSelectedAddress?.phone,
-        },
-
-        theme: {
-          color: "#16a34a",
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-
-      rzp.on("payment.failed", function () {
-        toast.error("Payment failed. Please try again.");
-      });
-
-      rzp.open();
-      return;
+      toast.success(response.message || "Order placed successfully");
+      navigate("/order-success");
+    } catch (err) {
+      toast.error(err.message || "Order failed");
+    } finally {
+      setIsProcessing(false);
     }
-
-    toast.success(response.message || "Order placed successfully");
-    navigate("/order-success");
-
-  } catch (err) {
-    toast.error(err.message || "Order failed");
-  } finally {
-    setIsProcessing(false);
   }
-}
   // Step 2 → Address selected
-useEffect(() => {
-  if (currentSelectedAddress) {
-    setCurrentStep(2);
-  }
-}, [currentSelectedAddress]);
+  useEffect(() => {
+    if (currentSelectedAddress) {
+      setCurrentStep(2);
+    }
+  }, [currentSelectedAddress]);
 
-// Step 3 → Payment clicked
-useEffect(() => {
-  if (paymentMethod) {
-    setCurrentStep(3);
-  }
-}, [paymentMethod]);
+  // Step 3 → Payment clicked
+  useEffect(() => {
+    if (paymentMethod) {
+      setCurrentStep(3);
+    }
+  }, [paymentMethod]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -201,189 +193,207 @@ useEffect(() => {
       </Helmet>
 
       <div className="max-w-xl mx-auto mb-16 px-6">
-  <div className="relative flex items-center justify-between">
-    
-    {/* Background Progress Track */}
-    <div className="absolute top-[18px] left-0 w-full h-[1px] bg-stone-200 z-0" />
-    
-    {/* Animated Active Track */}
-    <div 
-      className="absolute top-[18px] left-0 h-[1px] bg-[#B23A2E] transition-all duration-500 ease-in-out z-0"
-      style={{ width: `${currentStep === 1 ? '0%' : currentStep === 2 ? '50%' : '100%'}` }}
-    />
+        <div className="relative flex items-center justify-between">
+          {/* Background Progress Track */}
+          <div className="absolute top-[18px] left-0 w-full h-[1px] bg-stone-200 z-0" />
 
-    {/* STEP 1: Address */}
-    <div className="relative z-10 flex flex-col items-center">
-      <div
-        className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
-          ${currentStep >= 1 
-            ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]" 
-            : "bg-white border-stone-200 text-stone-300"
+          {/* Animated Active Track */}
+          <div
+            className="absolute top-[18px] left-0 h-[1px] bg-[#B23A2E] transition-all duration-500 ease-in-out z-0"
+            style={{
+              width: `${currentStep === 1 ? "0%" : currentStep === 2 ? "50%" : "100%"}`,
+            }}
+          />
+
+          {/* STEP 1: Address */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div
+              className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
+          ${
+            currentStep >= 1
+              ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]"
+              : "bg-white border-stone-200 text-stone-300"
           }`}
-      >
-        {currentStep > 1 ? <Check className="w-4 h-4" /> : "01"}
-      </div>
-      <span className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
-        ${currentStep >= 1 ? "text-stone-900" : "text-stone-300"}`}>
-        Address
-      </span>
-    </div>
+            >
+              {currentStep > 1 ? <Check className="w-4 h-4" /> : "01"}
+            </div>
+            <span
+              className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
+        ${currentStep >= 1 ? "text-stone-900" : "text-stone-300"}`}
+            >
+              Address
+            </span>
+          </div>
 
-    {/* STEP 2: Review */}
-    <div className="relative z-10 flex flex-col items-center">
-      <div
-        className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
-          ${currentStep >= 2 
-            ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]" 
-            : "bg-white border-stone-200 text-stone-300"
+          {/* STEP 2: Review */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div
+              className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
+          ${
+            currentStep >= 2
+              ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]"
+              : "bg-white border-stone-200 text-stone-300"
           }`}
-      >
-        {currentStep > 2 ? <Check className="w-4 h-4" /> : "02"}
-      </div>
-      <span className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
-        ${currentStep >= 2 ? "text-stone-900" : "text-stone-300"}`}>
-        Review
-      </span>
-    </div>
+            >
+              {currentStep > 2 ? <Check className="w-4 h-4" /> : "02"}
+            </div>
+            <span
+              className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
+        ${currentStep >= 2 ? "text-stone-900" : "text-stone-300"}`}
+            >
+              Review
+            </span>
+          </div>
 
-    {/* STEP 3: Payment */}
-    <div className="relative z-10 flex flex-col items-center">
-      <div
-        className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
-          ${currentStep >= 3 
-            ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]" 
-            : "bg-white border-stone-200 text-stone-300"
+          {/* STEP 3: Payment */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div
+              className={`w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black transition-all duration-500 border
+          ${
+            currentStep >= 3
+              ? "bg-white border-[#B23A2E] text-[#B23A2E] shadow-[0_0_15px_rgba(178,58,46,0.2)]"
+              : "bg-white border-stone-200 text-stone-300"
           }`}
-      >
-        "03"
+            >
+              "03"
+            </div>
+            <span
+              className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
+        ${currentStep >= 3 ? "text-stone-900" : "text-stone-300"}`}
+            >
+              Payment
+            </span>
+          </div>
+        </div>
       </div>
-      <span className={`text-[10px] mt-3 font-black uppercase tracking-[0.2em] transition-colors duration-500
-        ${currentStep >= 3 ? "text-stone-900" : "text-stone-300"}`}>
-        Payment
-      </span>
-    </div>
-
-  </div>
-</div>
 
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* ================= LEFT SECTION ================= */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* ADDRESS */}
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
-              🏠 Delivery Address
-            </h2>
-            <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-4" />
-            <Address
-              selectedId={currentSelectedAddress}
-              setCurrentSelectedAddress={setCurrentSelectedAddress}
-            />
+        <div className="lg:col-span-2 space-y-10">
+  
+  {/* ADDRESS SECTION */}
+  <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+    <div className="flex items-center gap-4 mb-8">
+      <div className="w-10 h-10 rounded-full bg-stone-50 flex items-center justify-center border border-stone-100">
+        <MapPin className="w-5 h-5 text-stone-900" />
+      </div>
+      <div>
+        <h2 className="text-sm font-black text-stone-900 uppercase tracking-[0.2em]">Shipping Destination</h2>
+        <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">Where your harvest is headed</p>
+      </div>
+    </div>
+    
+    <div className="pl-2">
+      <Address
+        selectedId={currentSelectedAddress}
+        setCurrentSelectedAddress={setCurrentSelectedAddress}
+      />
+    </div>
+  </section>
+
+  {/* CART ITEMS SECTION */}
+  {cartItems.length > 0 && (
+    <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-10 h-10 rounded-full bg-stone-50 flex items-center justify-center border border-stone-100">
+          <ShoppingBag className="w-5 h-5 text-stone-900" />
+        </div>
+        <h2 className="text-sm font-black text-stone-900 uppercase tracking-[0.2em]">Review Basket</h2>
+      </div>
+
+      <div className="space-y-4 max-h-[450px] overflow-y-auto no-scrollbar pr-2">
+        {cartItems.map((item) => (
+          <div
+            key={`${item.productId}-${item.size || "default"}`}
+            className="group flex items-center justify-between border-b border-stone-50 pb-4 last:border-0"
+          >
+            <div className="flex gap-5">
+              <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-stone-50 border border-stone-100">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className="text-xs font-black text-stone-900 uppercase tracking-tight">{item.title}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  {item.size && (
+                    <span className="text-[9px] font-bold text-stone-400 uppercase bg-stone-50 px-2 py-0.5 rounded-md">
+                      {item.size}
+                    </span>
+                  )}
+                  <span className="text-[9px] font-bold text-stone-400 uppercase tracking-widest">
+                    Qty: {item.quantity}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-sm font-black text-stone-900 tracking-tighter">
+              ₹{((item.salesPrice > 0 ? item.salesPrice : item.price) * item.quantity).toFixed(0)}
+            </p>
           </div>
+        ))}
+      </div>
+    </section>
+  )}
 
-          {/* CART ITEMS */}
-          {cartItems.length > 0 && (
-            <div className="bg-white rounded-2xl shadow p-6">
-              <h2 className="text-xl font-bold mb-2">🛍️ Cart Items</h2>
-              <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-4" />
+  {/* CUSTOM BOXES SECTION */}
+  {boxes.length > 0 && (
+    <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-10 h-10 rounded-full bg-stone-50 flex items-center justify-center border border-stone-100">
+          <Box className="w-5 h-5 text-stone-900" />
+        </div>
+        <h2 className="text-sm font-black text-stone-900 uppercase tracking-[0.2em]">Curated Boxes</h2>
+      </div>
 
-              <div className="space-y-4 max-h-[320px] overflow-y-auto pr-2">
-                {cartItems.map((item) => (
-                  <div
-                    key={`${item.productId}-${item.size || "default"}`}
-                    className="flex items-center justify-between border rounded-xl p-4
-                transition-all duration-200 hover:shadow-md hover:scale-[1.01]"
-                  >
-                    <div className="flex gap-4">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-16 h-16 rounded-lg object-cover border"
-                      />
+      <div className="grid gap-6">
+        {boxes.map((box) => (
+          <div
+            key={box._id || box.boxId}
+            className="bg-stone-50/50 rounded-[2rem] border border-stone-100 p-6"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-[11px] font-black text-[#B23A2E] uppercase tracking-[0.3em]">
+                {box.boxName || "Custom Collection"}
+              </h3>
+              <div className="h-px flex-1 mx-4 bg-stone-200" />
+            </div>
+
+            <ul className="space-y-4">
+              {box.items.map((item, idx) => {
+                const product = productList.find((p) => p._id === item.productId) || {};
+                const sizePrice = (product.customBoxPrices || []).find((p) => p.size === item.size);
+                const price = sizePrice ? Number(sizePrice.pricePerPiece) : 0;
+
+                return (
+                  <li key={`${item.productId}-${idx}`} className="flex justify-between items-center">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl overflow-hidden bg-white border border-stone-100">
+                        <img src={product.image || "/placeholder.png"} className="w-full h-full object-cover" />
+                      </div>
                       <div>
-                        <p className="font-semibold">{item.title}</p>
-                        {item.size && (
-                          <p className="text-sm text-gray-500">
-                            Size: {item.size}
-                          </p>
-                        )}
-                        <p className="text-sm text-gray-500">
-                          Qty: {item.quantity}
+                        <p className="text-[10px] font-black text-stone-900 uppercase leading-tight">{product.title}</p>
+                        <p className="text-[9px] text-stone-400 font-bold uppercase tracking-tighter mt-0.5">
+                          {item.size} · {item.quantity} Units
                         </p>
                       </div>
                     </div>
-
-                    <p className="font-bold text-green-700">
-                      ₹
-                      {(
-                        (item.salesPrice > 0 ? item.salesPrice : item.price) *
-                        item.quantity
-                      ).toFixed(2)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* BOXES */}
-          {boxes.length > 0 && (
-            <div className="bg-white rounded-2xl shadow p-6">
-              <h2 className="text-xl font-bold mb-2">📦 Boxes</h2>
-              <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-4" />
-
-              <div className="space-y-4">
-                {boxes.map((box) => (
-                  <div
-                    key={box._id || box.boxId}
-                    className="border rounded-xl p-4 transition hover:shadow-sm"
-                  >
-                    <h3 className="font-semibold text-blue-700 mb-3">
-                      {box.boxName || "Custom Box"}
-                    </h3>
-
-                    <ul className="space-y-2">
-                      {box.items.map((item, idx) => {
-                        const product =
-                          productList.find((p) => p._id === item.productId) ||
-                          {};
-                        const sizePrice = (product.customBoxPrices || []).find(
-                          (p) => p.size === item.size
-                        );
-                        const price = sizePrice
-                          ? Number(sizePrice.pricePerPiece)
-                          : 0;
-
-                        return (
-                          <li
-                            key={`${item.productId}-${idx}`}
-                            className="flex justify-between items-center text-sm"
-                          >
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={product.image || "/placeholder.png"}
-                                className="w-10 h-10 rounded-md border"
-                              />
-                              <div>
-                                <p className="font-medium">{product.title}</p>
-                                <p className="text-gray-500">
-                                  {item.size} · Qty {item.quantity}
-                                </p>
-                              </div>
-                            </div>
-                            <span className="font-semibold text-green-700">
-                              ₹{(price * item.quantity).toFixed(2)}
-                            </span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+                    <span className="text-xs font-black text-stone-900 tracking-tighter">
+                      ₹{(price * item.quantity).toFixed(0)}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+</div>
 
         {/* ================= RIGHT SUMMARY ================= */}
         <div
@@ -488,8 +498,8 @@ useEffect(() => {
             {isProcessing
               ? "Processing..."
               : paymentMethod === "cod"
-              ? "Pay ₹200 & Place Order"
-              : "Pay Securely"}
+                ? "Pay ₹200 & Place Order"
+                : "Pay Securely"}
           </Button>
 
           <p className="text-xs text-gray-500 text-center mt-3">
