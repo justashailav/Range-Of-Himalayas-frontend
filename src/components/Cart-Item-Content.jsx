@@ -42,12 +42,12 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     if (index === -1) return;
 
     const productFromList = productList.find(
-      (p) => p._id.toString() === item.productId.toString()
+      (p) => p._id.toString() === item.productId.toString(),
     );
     if (!productFromList) return;
 
     const variant = productFromList.variants?.find(
-      (v) => (v.size || "") === normalizedSize && v.weight === item.weight
+      (v) => (v.size || "") === normalizedSize && v.weight === item.weight,
     );
 
     const totalStock = variant?.stock ?? 0;
@@ -72,7 +72,7 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
         quantity: newQuantity,
         size: normalizedSize,
         weight: item.weight,
-      })
+      }),
     );
   };
 
@@ -87,7 +87,7 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
         productId: item.productId,
         size: normalizedSize,
         weight: item.weight,
-      })
+      }),
     ).then((res) => {
       if (res?.success) {
         toast.success("Item removed from cart");
@@ -102,7 +102,7 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     const product = productList.find((p) => p._id === cartItem.productId) || {};
     const variant =
       product.variants?.find(
-        (v) => v.size === cartItem.size && v.weight === cartItem.weight
+        (v) => v.size === cartItem.size && v.weight === cartItem.weight,
       ) || {};
     const image = product?.image || cartItem?.image || "/placeholder.png";
     const title = product?.title || cartItem?.title || "Unnamed Product";
@@ -111,67 +111,76 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     const displayPrice = salePrice > 0 ? salePrice : price;
 
     return (
-      <div className="group relative flex items-start gap-4 p-4 bg-white rounded-[2rem] border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-xl hover:shadow-stone-200/40 transition-all duration-500">
+      <div className="group relative flex gap-5 p-5 bg-white rounded-[2.5rem] border border-stone-100 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500">
   
-  {/* Product Image - Fixed Aspect Ratio */}
-  <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-stone-50 border border-stone-100">
-    <img
-      src={image}
-      alt={title}
-      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-    />
+  {/* Left: Image with Decorative Frame */}
+  <div className="relative h-28 w-28 flex-shrink-0">
+    <div className="absolute inset-0 bg-stone-100 rounded-[1.8rem] rotate-3 group-hover:rotate-6 transition-transform duration-500" />
+    <div className="relative h-full w-full overflow-hidden rounded-[1.8rem] bg-stone-50 border border-white shadow-inner">
+      <img
+        src={image}
+        alt={title}
+        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+      />
+    </div>
   </div>
 
-  {/* Product Info */}
-  <div className="flex flex-1 flex-col h-full min-h-[96px]">
-    <div className="flex justify-between items-start">
-      <div>
+  {/* Right: Content Area */}
+  <div className="flex flex-1 flex-col py-1">
+    <div className="flex justify-between items-start gap-2">
+      <div className="space-y-1">
         <h3 className="text-sm font-black text-stone-900 leading-tight uppercase tracking-tight">
           {title}
         </h3>
-        <p className="text-[10px] text-stone-400 font-bold tracking-widest uppercase mt-1">
-          {cartItem.size && <span>{cartItem.size}  •  </span>}
-          <span>{cartItem.weight}</span>
-        </p>
+        {/* Detail Pill */}
+        <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-full bg-stone-50 border border-stone-100">
+          <span className="text-[9px] text-stone-500 font-bold uppercase tracking-widest">
+            {cartItem.size ? `${cartItem.size} • ${cartItem.weight}` : cartItem.weight}
+          </span>
+        </div>
       </div>
       
-      {/* Price - Top Right for better scanability */}
-      <p className="text-sm font-black text-stone-900 tracking-tighter">
-        ₹{(displayPrice * cartItem.quantity).toFixed(0)}
-      </p>
+      {/* Price with "Currency Symbol" styling */}
+      <div className="text-right">
+        <p className="text-xs font-bold text-stone-400 uppercase tracking-tighter mb-0.5">Price</p>
+        <p className="text-base font-black text-stone-900 tracking-tighter">
+          ₹{(displayPrice * cartItem.quantity).toFixed(0)}
+        </p>
+      </div>
     </div>
 
-    {/* Bottom Row: Controls & Delete */}
-    <div className="flex items-center justify-between mt-auto pt-4">
+    {/* Footer: Controls & Quick Actions */}
+    <div className="flex items-center justify-between mt-auto">
       
-      {/* Refined Quantity Controls */}
-      <div className="flex items-center bg-stone-50 rounded-full p-1 border border-stone-100">
+      {/* Quantity Selector - Minimalist Pill */}
+      <div className="flex items-center bg-stone-900 rounded-full p-1 shadow-md shadow-stone-200">
         <button
           onClick={() => handleUpdateQuantity(cartItem, "minus")}
           disabled={cartItem?.quantity === 1}
-          className="h-7 w-7 flex items-center justify-center rounded-full bg-white shadow-sm disabled:opacity-30 active:scale-90 transition-all"
+          className="h-6 w-6 flex items-center justify-center rounded-full text-white hover:bg-white/20 disabled:opacity-30 transition-colors"
         >
-          <Minus className="w-3 h-3 text-stone-600" />
+          <Minus className="w-3 h-3" />
         </button>
         
-        <span className="w-8 text-center text-xs font-black text-stone-900">
+        <span className="w-8 text-center text-[11px] font-black text-white">
           {cartItem?.quantity}
         </span>
         
         <button
           onClick={() => handleUpdateQuantity(cartItem, "plus")}
-          className="h-7 w-7 flex items-center justify-center rounded-full bg-white shadow-sm active:scale-90 transition-all"
+          className="h-6 w-6 flex items-center justify-center rounded-full text-white hover:bg-white/20 transition-colors"
         >
-          <Plus className="w-3 h-3 text-stone-600" />
+          <Plus className="w-3 h-3" />
         </button>
       </div>
 
-      {/* Delete - Minimalist Trash */}
-      <button 
+      {/* Remove Button - Text based looks more premium than just a trash can */}
+      <button
         onClick={() => handleCartItemDelete(cartItem)}
-        className="p-2 text-stone-300 hover:text-[#B23A2E] hover:bg-red-50 rounded-full transition-all duration-300"
+        className="text-[10px] font-black text-stone-300 uppercase tracking-widest hover:text-[#B23A2E] transition-colors flex items-center gap-1.5 px-2 py-1"
       >
-        <Trash size={16} />
+        <Trash size={12} className="mt-[-2px]" />
+        <span>Remove</span>
       </button>
     </div>
   </div>
@@ -185,7 +194,7 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     const totalPrice = items.reduce((sum, item) => {
       const product = productList.find((p) => p._id === item.productId) || {};
       const sizePriceObj = (product.customBoxPrices || []).find(
-        (p) => p.size === item.size
+        (p) => p.size === item.size,
       );
       const price = sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0;
       return sum + price * (Number(item.quantity) || 1);
@@ -215,7 +224,7 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
               const product =
                 productList.find((p) => p._id === item.productId) || {};
               const sizePriceObj = (product.customBoxPrices || []).find(
-                (p) => p.size === item.size
+                (p) => p.size === item.size,
               );
               const itemPrice = sizePriceObj
                 ? Number(sizePriceObj.pricePerPiece)
