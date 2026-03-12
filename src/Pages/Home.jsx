@@ -617,155 +617,134 @@ export default function Home() {
       </div>
 
       <div className="mt-16 sm:mt-24 px-6 max-w-7xl mx-auto">
-  <div className="relative group">
-    {/* 1. The Decorative Frame (Back layer) */}
-    <div className="absolute -inset-4 border border-[#E8DCD3] rounded-[3rem] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+        <div className="relative group">
+          {/* 1. The Decorative Frame (Back layer) */}
+          <div className="absolute -inset-4 border border-[#E8DCD3] rounded-[3rem] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
 
-    {/* 2. Main Image Container */}
-    <div className="relative overflow-hidden rounded-[2.5rem] bg-[#F3F0EB] shadow-[0_30px_60px_-15px_rgba(142,125,110,0.15)]">
-      <motion.div
-        initial={{ opacity: 0, scale: 1.1 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5, ease: [0.2, 1, 0.3, 1] }}
-        className="relative"
-      >
-        <img
-          src={foundersImage}
-          alt="Founders of Range of Himalayas"
-          className="w-full h-[400px] sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
-        />
+          {/* 2. Main Image Container */}
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#F3F0EB] shadow-[0_30px_60px_-15px_rgba(142,125,110,0.15)]">
+            <motion.div
+              initial={{ opacity: 0, scale: 1.1 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, ease: [0.2, 1, 0.3, 1] }}
+              className="relative"
+            >
+              <img
+                src={foundersImage}
+                alt="Founders of Range of Himalayas"
+                className="w-full h-[400px] sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
+              />
 
-        {/* 3. Sophisticated Overlays */}
-        {/* Subtle vignette to pop the subject */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 opacity-60" />
-        
-        {/* Soft light leak from the top left */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-      </motion.div>
+              {/* 3. Sophisticated Overlays */}
+              {/* Subtle vignette to pop the subject */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 opacity-60" />
 
-      {/* 4. Floating Caption Badge (Optional) */}
-      <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12">
-        <div className="bg-white/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/50 shadow-xl">
-           <p className="text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-1">Our Visionaries</p>
-           <h4 className="text-xl font-serif text-gray-900">Nurturing the Roots</h4>
+              {/* Soft light leak from the top left */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+            </motion.div>
+
+            {/* 4. Floating Caption Badge (Optional) */}
+            <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12">
+              <div className="bg-white/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/50 shadow-xl">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-1">
+                  Our Visionaries
+                </p>
+                <h4 className="text-xl font-serif text-gray-900">
+                  Nurturing the Roots
+                </h4>
+              </div>
+            </div>
+          </div>
+
+          {/* 5. Artistic Corner Stamp */}
+          <div className="absolute -bottom-6 -right-6 hidden md:block">
+            <div className="w-24 h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-4 text-center shadow-2xl rotate-12">
+              <span className="text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
+                Authentic <br /> Himalayan <br /> Harvest
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    {/* 5. Artistic Corner Stamp */}
-    <div className="absolute -bottom-6 -right-6 hidden md:block">
-      <div className="w-24 h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-4 text-center shadow-2xl rotate-12">
-        <span className="text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
-          Authentic <br /> Himalayan <br /> Harvest
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
       <div className="px-6 py-20 bg-[#FAF9F6]">
-  <div className="max-w-4xl mx-auto text-center relative">
+        <div className="max-w-4xl mx-auto text-center relative">
+          {/* 1. Subtle Background Element */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
+            <h1 className="text-[180px] font-serif select-none">Harvest</h1>
+          </div>
+
+          <div className="relative z-10 flex flex-col items-center">
+            {/* 2. Refined Branding Accent */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
+              <span className="text-[10px] uppercase tracking-[0.5em] text-[#D84C3C] font-black">
+                From Our Orchards
+              </span>
+              <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
+            </div>
+
+            {/* 3. The Headline: Bold yet Elegant */}
+            <h2 className="text-4xl md:text-6xl font-serif text-gray-900 leading-[1.1] mb-8">
+              Himalayan{" "}
+              <span className="italic font-light text-gray-500">Harvest</span>
+            </h2>
+
+            {/* 4. Elegant Vertical Divider */}
+            <div className="w-[1px] h-12 bg-gradient-to-b from-[#D84C3C] to-transparent mb-8" />
+
+            {/* 5. The Narrative Paragraph */}
+            <p className="text-gray-600 text-lg md:text-xl font-light leading-relaxed max-w-3xl mx-auto">
+              Discover how we nurture{" "}
+              <span className="text-gray-900 font-medium italic">
+                premium apples
+              </span>{" "}
+              with a blend of time-honored traditions and{" "}
+              <span className="text-gray-900 font-medium">
+                thoughtful modern practices
+              </span>
+              in the pristine foothills of the Himalayas.
+            </p>
+
+            {/* 6. Subtle Signature (Optional) */}
+            <div className="mt-10 flex items-center gap-3 opacity-60">
+              <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">
+                Est. 2024
+              </span>
+              <div className="w-1 h-1 rounded-full bg-gray-300" />
+              <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">
+                Himachal Pradesh
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Optimized Card Wrapper */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto px-4">
+  {/* Instagram Card */}
+  <motion.a
+    href="https://www.instagram.com/range.of.himalayas"
+    target="_blank"
+    whileHover={{ y: -8 }}
+    className="group relative overflow-hidden p-8 rounded-3xl bg-gradient-to-br from-white to-green-50 border border-slate-100 shadow-xl shadow-green-900/5 flex flex-col items-center text-center"
+  >
+    {/* Animated Background Element */}
+    <div className="absolute -right-4 -top-4 w-24 h-24 bg-pink-100/40 rounded-full blur-2xl group-hover:bg-pink-200/60 transition-colors" />
     
-    {/* 1. Subtle Background Element */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
-       <h1 className="text-[180px] font-serif select-none">Harvest</h1>
+    <div className="relative w-20 h-20 flex items-center justify-center bg-white rounded-2xl shadow-sm mb-6 transform group-hover:rotate-6 transition-transform">
+      <FaInstagram className="text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-pink-600 to-purple-600" />
     </div>
 
-    <div className="relative z-10 flex flex-col items-center">
-      
-      {/* 2. Refined Branding Accent */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
-        <span className="text-[10px] uppercase tracking-[0.5em] text-[#D84C3C] font-black">
-          From Our Orchards
-        </span>
-        <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
-      </div>
+    <h3 className="text-2xl font-bold text-slate-800">Instagram</h3>
+    <p className="text-green-600 font-medium mb-4">@range.of.himalayas</p>
+    
+    <span className="px-6 py-2 bg-green-700 text-white rounded-full text-sm font-semibold tracking-wide group-hover:bg-green-800 transition-colors">
+      Follow our Story
+    </span>
+  </motion.a>
 
-      {/* 3. The Headline: Bold yet Elegant */}
-      <h2 className="text-4xl md:text-6xl font-serif text-gray-900 leading-[1.1] mb-8">
-        Himalayan <span className="italic font-light text-gray-500">Harvest</span>
-      </h2>
-
-      {/* 4. Elegant Vertical Divider */}
-      <div className="w-[1px] h-12 bg-gradient-to-b from-[#D84C3C] to-transparent mb-8" />
-
-      {/* 5. The Narrative Paragraph */}
-      <p className="text-gray-600 text-lg md:text-xl font-light leading-relaxed max-w-3xl mx-auto">
-        Discover how we nurture <span className="text-gray-900 font-medium italic">premium apples</span> with a blend of 
-        time-honored traditions and <span className="text-gray-900 font-medium">thoughtful modern practices</span> 
-        in the pristine foothills of the Himalayas.
-      </p>
-
-      {/* 6. Subtle Signature (Optional) */}
-      <div className="mt-10 flex items-center gap-3 opacity-60">
-         <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">Est. 2024</span>
-         <div className="w-1 h-1 rounded-full bg-gray-300" />
-         <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">Himachal Pradesh</span>
-      </div>
-
-    </div>
-  </div>
+  {/* Facebook Card (Repeat similar structure with blue accents) */}
 </div>
-      <div className="px-6 py-12 bg-white">
-        {/* Heading */}
-        <div className="text-center mb-10">
-          <h2 className="text-4xl font-bold mb-2">Follow Us</h2>
-
-          <p className="text-gray-600 text-xl">
-            🌱 Get the freshest updates on our harvests and apple collections
-          </p>
-        </div>
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-          {/* Instagram */}
-          <motion.div
-            whileHover={{ y: -5, scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
-          >
-            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
-              <FaInstagram className="text-3xl text-pink-600" />
-            </div>
-
-            <h3 className="font-semibold text-lg">Instagram</h3>
-            <p className="text-gray-600">@range.of.himalayas</p>
-
-            <a
-              href="https://www.instagram.com/range.of.himalayas"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-700 font-medium mt-2 inline-block"
-            >
-              Follow →
-            </a>
-          </motion.div>
-
-          {/* Facebook */}
-          <motion.div
-            whileHover={{ y: -5, scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-            className="p-6 border border-green-200 rounded-xl text-center bg-white shadow-sm hover:shadow-md"
-          >
-            <div className="w-16 h-16 flex items-center justify-center bg-green-50 rounded-full mx-auto mb-4">
-              <FaFacebook className="text-3xl text-blue-600" />
-            </div>
-
-            <h3 className="font-semibold text-lg">Facebook</h3>
-            <p className="text-gray-600">@rangeofhimalayas</p>
-
-            <a
-              href="https://www.facebook.com/rangeofhimalayas"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-700 font-medium mt-2 inline-block"
-            >
-              Follow →
-            </a>
-          </motion.div>
-        </div>
-      </div>
 
       <HomeBlog />
       <div className="px-6 py-12 text-center">
