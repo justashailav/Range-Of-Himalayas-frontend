@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { cancelOrder, getAllOrderDetails } from "@/store/slices/orderSlice";
-import { Receipt } from "lucide-react";
+import { MapPin, Phone, Receipt } from "lucide-react";
 
 export default function ShoppingOrderDetailsView() {
   const { state } = useLocation();
@@ -317,23 +317,79 @@ export default function ShoppingOrderDetailsView() {
 </section>
 
         {/* ================= SHIPPING INFO ================= */}
-        <section className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-xl font-bold mb-4">Shipping Information</h2>
-          <div className="text-gray-700 space-y-1">
-            <p className="font-medium">{user.name}</p>
-            <p>{orderDetails.addressInfo.address}</p>
-            <p>
-              {orderDetails.addressInfo.city} –{" "}
-              {orderDetails.addressInfo.pincode}
-            </p>
-            <p>📞 {orderDetails.addressInfo.phone}</p>
-            {orderDetails.addressInfo.notes && (
-              <p className="text-sm text-gray-500">
-                Note: {orderDetails.addressInfo.notes}
-              </p>
-            )}
+        <section className="bg-stone-900 text-white rounded-[2.5rem] p-8 sm:p-10 shadow-2xl shadow-stone-200 relative overflow-hidden">
+  {/* DECORATIVE TOPOGRAPHY */}
+  <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
+    <Truck size={140} strokeWidth={1} className="rotate-12 translate-x-10 translate-y-10" />
+  </div>
+
+  <div className="relative z-10">
+    {/* SECTION HEADER */}
+    <div className="flex items-center gap-4 mb-8">
+      <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-500">
+        Delivery Destination
+      </h2>
+      <div className="h-[1px] flex-1 bg-stone-800" />
+    </div>
+
+    <div className="space-y-6">
+      {/* RECIPIENT NAME */}
+      <div>
+        <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Recipient</p>
+        <p className="text-2xl font-black tracking-tight italic text-stone-100 italic">
+          {user.name}
+        </p>
+      </div>
+
+      {/* ADDRESS BODY */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-1">
+          <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Street & Locality</p>
+          <p className="text-sm font-bold text-stone-300 leading-relaxed uppercase tracking-tight">
+            {orderDetails.addressInfo.address}
+          </p>
+          <p className="text-sm font-bold text-stone-300 uppercase tracking-tight">
+            {orderDetails.addressInfo.city} — {orderDetails.addressInfo.pincode}
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {/* CONTACT */}
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Contact Line</p>
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-stone-800 flex items-center justify-center">
+                <Phone size={10} className="text-stone-400" />
+              </div>
+              <p className="text-sm font-black tracking-widest text-stone-200">{orderDetails.addressInfo.phone}</p>
+            </div>
           </div>
-        </section>
+
+          {/* DELIVERY NOTES */}
+          {orderDetails.addressInfo.notes && (
+            <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+              <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Courier Notes</p>
+              <p className="text-xs italic text-stone-400 font-medium">
+                "{orderDetails.addressInfo.notes}"
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* FOOTER BADGE */}
+    <div className="mt-10 pt-6 border-t border-stone-800 flex justify-between items-center">
+      <div className="flex items-center gap-2">
+        <MapPin size={12} className="text-[#B23A2E]" />
+        <span className="text-[10px] font-black uppercase tracking-widest text-stone-500">Verified Address</span>
+      </div>
+      <div className="text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 bg-stone-800 rounded-full text-stone-400">
+        Himalayan Boutique Logistics
+      </div>
+    </div>
+  </div>
+</section>
       </div>
     </div>
   );
