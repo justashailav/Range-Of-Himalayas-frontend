@@ -71,306 +71,151 @@ export default function Navbar() {
   const wishListCount = wishListItems?.length || 0;
   return (
     <motion.nav 
-      variants={{
-        visible: { y: 0 },
-        hidden: { y: "-100%" },
-      }}
-      animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-      className={`fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-10 min-h-16 md:h-20 transition-all duration-300
-        ${
-          scrolled
-            ? "bg-[#F08C7D]/95 backdrop-blur-md shadow-md"
-            : "bg-[#F08C7D]"
-        }
-      `}
-    >
-      <div className="flex items-center justify-between w-full">
-        <div className="flex items-center justify-between w-full md:flex lg:hidden">
-          <Link to="/">
-            <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
-          </Link>
+  variants={{
+    visible: { y: 0, opacity: 1 },
+    hidden: { y: "-100%", opacity: 0 },
+  }}
+  animate={hidden ? "hidden" : "visible"}
+  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Smoother cubic-bezier
+  className={`fixed top-0 left-0 w-full z-50 px-6 lg:px-12 transition-all duration-500
+    ${
+      scrolled
+        ? "py-3 bg-white/80 backdrop-blur-lg shadow-sm border-b border-gray-100" 
+        : "py-5 bg-transparent"
+    }
+  `}
+>
+  <div className="flex items-center justify-between max-w-7xl mx-auto">
+    
+    {/* --- LOGO SECTION --- */}
+    <Link to="/" className="hover:scale-105 transition-transform duration-300">
+      <img 
+        src={logo} 
+        className={`transition-all duration-300 ${scrolled ? "w-24 md:w-28" : "w-28 md:w-36"}`} 
+        alt="Range of Himalayas" 
+      />
+    </Link>
 
-          <div className="flex items-center gap-4 sm:gap-4 mt-2">
-            <Sheet open={openCart} onOpenChange={setOpenCart}>
-            <div className="relative">
-               <Link to="/wishlist">
-                <Heart color="white" className="cursor-pointer text-2xl" />
-                {wishListCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {wishListCount}
-                  </span>
-                )}
-              </Link>
-            </div>
+    {/* --- DESKTOP NAVIGATION (LG+) --- */}
+    <div className={`hidden lg:flex items-center gap-8 font-bold tracking-widest text-[13px] transition-colors duration-300
+      ${scrolled ? "text-slate-800" : "text-white"}`}>
+      {['HOME', 'OUR STORY', 'CREATE BOX', 'BLOG', 'CONTACT US'].map((item) => (
+        <Link 
+          key={item} 
+          to={`/${item.toLowerCase().replace(' ', '-')}`}
+          className="relative group overflow-hidden"
+        >
+          {item === 'HOME' ? <Link to="/">HOME</Link> : item}
+          <span className={`absolute bottom-0 left-0 w-full h-[2px] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${scrolled ? "bg-[#F08C7D]" : "bg-white"}`} />
+        </Link>
+      ))}
+    </div>
 
-              <div className="relative">
-                <FaShoppingCart
-                  onClick={() => setOpenCart(true)}
-                  className="text-white text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
-                />
-                {totalCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {totalCount}
-                  </span>
-                )}
-              </div>
-              <SheetContent side="right" className="sm:max-w-md">
-                <UserCartWrapper
-                  cartItems={cartItems}
-                  setOpenCartSheet={setOpenCart}
-                />
-              </SheetContent>
-            </Sheet>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
-                  <AvatarImage
-                    src={
-                      user?.profile?.profilePhoto ||
-                      "https://github.com/shadcn.png"
-                    }
-                  />
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
-                <DropdownMenuGroup>
-                  {user ? (
-                    <>
-                      <Link to="/profile">
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          Profile
-                        </DropdownMenuItem>
-                      </Link>
-                      <Link to="/account">
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          Account
-                        </DropdownMenuItem>
-                      </Link>
-                      <div>
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <Button
-                            onClick={() => navigate("/order-tracking")}
-                            className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
-                          >
-                            Track your order
-                          </Button>
-                        </DropdownMenuItem>
-                      </div>
-                      <DropdownMenuItem
-                        className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
-                        onClick={handleLogout}
-                      >
-                        <LogOut className="w-4 h-4 text-muted-foreground" />
-                        Logout
-                      </DropdownMenuItem>
-                    </>
-                  ) : (
-                    <Link to="/login">
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                        <User className="w-4 h-4 text-muted-foreground" />
-                        Login
-                      </DropdownMenuItem>
-                    </Link>
-                  )}
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {isMenu ? (
-              <FaTimes
-                className="text-2xl sm:text-3xl text-white cursor-pointer hover:text-gray-200 transition"
-                onClick={toggleMenu}
-              />
-            ) : (
-              <GiHamburgerMenu
-                className="text-2xl sm:text-3xl text-white cursor-pointer hover:text-gray-200 transition"
-                onClick={toggleMenu}
-              />
-            )}
-          </div>
-        </div>
-        <div className="hidden lg:flex items-center justify-between w-full">
-          <Link to="/" className="flex-shrink-0 ">
-            <img src={logo} className="w-28 sm:w-32 lg:w-36" alt="Logo" />
-          </Link>
-          <div className="flex mb-2 gap-4 lg:gap-6 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
-            <Link to="/">HOME</Link>
-            <Link to="/about-us">OUR STORY</Link>
-            <Link to="/custombox">CREATE BOX</Link>
-            <Link to="/blog">BLOG</Link>
-            <Link to="/contact-us">CONTACT US</Link>
-          </div>
-          <div className="flex mb-2 items-center gap-3 lg:gap-6">
-            <div className="relative flex-1 min-w-[150px] max-w-[250px] ml-6">
-              <CiSearch
-                className="absolute right-3 top-2 text-white text-2xl cursor-pointer"
-                onClick={handleSearch}
-              />
-              <input
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="w-full pl-2 pr-10 py-2 rounded-md border-none placeholder-white text-white
-                           bg-white/20 backdrop-blur-sm"
-              />
-            </div>
-
-            {!user && (
-              <Link to="/login">
-                <button className="border-[#F08C7D] font-semibold bg-[#F08C7D] text-white py-1 md:py-2 px-3 md:px-4 rounded-lg hover:bg-[#FFECE8] hover:text-[#F08C7D] transition duration-500 text-sm md:text-base">
-                  LOGIN
-                </button>
-              </Link>
-            )}
-
-            <div className="relative">
-              <Link to="/wishlist">
-                <Heart color="white" className="cursor-pointer text-2xl" />
-                {wishListCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {wishListCount}
-                  </span>
-                )}
-              </Link>
-            </div>
-
-            <Sheet open={openCart} onOpenChange={setOpenCart}>
-              <div className="relative">
-                <FaShoppingCart
-                  onClick={() => setOpenCart(true)}
-                  className="text-white text-2xl cursor-pointer"
-                />
-                {totalCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {totalCount}
-                  </span>
-                )}
-              </div>
-              <SheetContent side="right" className="sm:max-w-md">
-                <UserCartWrapper
-                  cartItems={cartItems}
-                  setOpenCartSheet={setOpenCart}
-                />
-              </SheetContent>
-            </Sheet>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
-                  <AvatarImage
-                    src={
-                      user?.profile?.profilePhoto ||
-                      "https://github.com/shadcn.png"
-                    }
-                  />
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
-                <DropdownMenuGroup>
-                  {user ? (
-                    <>
-                      <Link to="/profile">
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          Profile
-                        </DropdownMenuItem>
-                      </Link>
-                      <Link to="/account">
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          Account
-                        </DropdownMenuItem>
-                      </Link>
-                      <div>
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <Button
-                            onClick={() => navigate("/order-tracking")}
-                            className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
-                          >
-                            Track your order
-                          </Button>
-                        </DropdownMenuItem>
-                      </div>
-
-                      <DropdownMenuItem
-                        className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
-                        onClick={handleLogout}
-                      >
-                        <LogOut className="w-4 h-4 text-muted-foreground" />
-                        Logout
-                      </DropdownMenuItem>
-                    </>
-                  ) : (
-                    <Link to="/login">
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                        <User className="w-4 h-4 text-muted-foreground" />
-                        Login
-                      </DropdownMenuItem>
-                    </Link>
-                  )}
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
+    {/* --- ACTION ICONS & SEARCH --- */}
+    <div className="flex items-center gap-4 md:gap-6">
+      
+      {/* Search Bar - Desktop */}
+      <div className="hidden md:relative md:block group">
+        <CiSearch className={`absolute left-3 top-1/2 -translate-y-1/2 text-2xl transition-colors ${scrolled ? "text-slate-500" : "text-white"}`} />
+        <input
+          placeholder="Search purity..."
+          className={`pl-10 pr-4 py-2 rounded-full border-none text-sm transition-all duration-300 w-40 focus:w-64
+            ${scrolled ? "bg-slate-100 text-slate-800" : "bg-white/20 backdrop-blur-md text-white placeholder-white/70"}`}
+        />
       </div>
-      {isMenu && (
-        <div className="fixed top-0 right-0 h-full w-64 sm:w-72 md:w-80 lg:hidden bg-[#F08C7D] shadow-lg p-6 flex flex-col gap-5 text-white z-50 transition-transform transform translate-x-0">
-          <div className="flex justify-end mb-2">
-            <FaTimes
-              className="text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
-              onClick={toggleMenu}
-            />
+
+      {/* Icons Section */}
+      <div className="flex items-center gap-3 sm:gap-5">
+        {/* Wishlist */}
+        <Link to="/wishlist" className="relative group">
+          <Heart className={`w-6 h-6 transition-colors ${scrolled ? "text-slate-700" : "text-white"}`} />
+          {wishListCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center animate-bounce">
+              {wishListCount}
+            </span>
+          )}
+        </Link>
+
+        {/* Cart */}
+        <Sheet open={openCart} onOpenChange={setOpenCart}>
+          <div className="relative cursor-pointer group" onClick={() => setOpenCart(true)}>
+            <FaShoppingCart className={`text-xl transition-colors ${scrolled ? "text-slate-700" : "text-white"}`} />
+            {totalCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#F08C7D] text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center">
+                {totalCount}
+              </span>
+            )}
           </div>
+          <SheetContent side="right" className="w-full sm:max-w-md border-l-0 shadow-2xl">
+            <UserCartWrapper cartItems={cartItems} setOpenCartSheet={setOpenCart} />
+          </SheetContent>
+        </Sheet>
 
-          <Link
-            to="/"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            HOME
-          </Link>
-          <Link
-            to="/about-us"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            OUR STORY
-          </Link>
-          <Link
-            to="/custombox"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            CREATE BOX
-          </Link>
+        {/* User Avatar */}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="outline-none focus:outline-none">
+            <Avatar className={`h-9 w-9 border-2 transition-colors ${scrolled ? "border-[#F08C7D]" : "border-white/50"}`}>
+              <AvatarImage src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"} />
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56 mt-4 rounded-2xl shadow-xl border-slate-100 p-2">
+            {user ? (
+              <>
+                <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-widest">My Account</div>
+                <Link to="/profile"><DropdownMenuItem className="cursor-pointer rounded-lg">Profile</DropdownMenuItem></Link>
+                <Link to="/order-tracking"><DropdownMenuItem className="cursor-pointer rounded-lg text-green-600 font-bold">Track Order</DropdownMenuItem></Link>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-red-500 cursor-pointer rounded-lg">Logout</DropdownMenuItem>
+              </>
+            ) : (
+              <Link to="/login"><DropdownMenuItem className="font-bold">Login / Register</DropdownMenuItem></Link>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-          <Link
-            to="/blog"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            BLOG
-          </Link>
-          <Link
-            to="/contact-us"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            CONTACT US
-          </Link>
-          {!user && (
-            <Link to="/login">
-              <button className="border-[#F08C7D] bg-[#FFECE8] text-[#F08C7D] py-2 px-4 rounded-md font-semibold mt-4 hover:bg-[#F08C7D] hover:text-white transition">
-                LOGIN
-              </button>
-            </Link>
+        {/* Mobile Toggle */}
+        <div className="lg:hidden ml-2" onClick={toggleMenu}>
+          {isMenu ? (
+            <FaTimes className={`text-2xl ${scrolled ? "text-slate-800" : "text-white"}`} />
+          ) : (
+            <GiHamburgerMenu className={`text-2xl ${scrolled ? "text-slate-800" : "text-white"}`} />
           )}
         </div>
-      )}
-    </motion.nav>
+      </div>
+    </div>
+  </div>
+
+  {/* --- MOBILE SIDEBAR OVERLAY --- */}
+  <AnimatePresence>
+    {isMenu && (
+      <motion.div 
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+        className="fixed top-0 right-0 h-screen w-[80%] max-w-xs bg-white shadow-[-20px_0_50px_rgba(0,0,0,0.1)] z-[60] flex flex-col p-8 lg:hidden"
+      >
+        <div className="flex justify-between items-center mb-12">
+          <img src={logo} className="w-24 filter brightness-0 opacity-80" alt="Logo" />
+          <FaTimes className="text-2xl text-slate-400" onClick={toggleMenu} />
+        </div>
+        <div className="flex flex-col gap-6 text-slate-800 font-black text-xl tracking-tight">
+          {['HOME', 'OUR STORY', 'CREATE BOX', 'BLOG', 'CONTACT US'].map((item) => (
+            <Link key={item} to={`/${item.toLowerCase().replace(' ', '-')}`} onClick={toggleMenu} className="hover:text-[#F08C7D] transition-colors uppercase">
+              {item}
+            </Link>
+          ))}
+        </div>
+        <div className="mt-auto pt-10 border-t border-slate-100">
+           {!user && (
+             <Link to="/login" onClick={toggleMenu}>
+               <button className="w-full bg-[#F08C7D] text-white py-4 rounded-2xl font-black tracking-widest">LOGIN</button>
+             </Link>
+           )}
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</motion.nav>
   );
 }
