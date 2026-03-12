@@ -51,64 +51,84 @@ export default function AddressCard({
   const isSelected = selectedId?._id === addressInfo?._id;
 
   return (
-    <Card
-      onClick={
-        setCurrentSelectedAddress
-          ? () => setCurrentSelectedAddress(addressInfo)
-          : null
-      }
-      className={`cursor-pointer transition-all rounded-xl border-2 p-1 ${
-        isSelected
-          ? "border-red-600 bg-red-50 shadow-lg"
-          : "border-gray-200 hover:shadow-md hover:border-gray-400"
-      }`}
-    >
-      <CardContent className="grid gap-3 p-5">
-        <div>
-          <Label className="text-xs uppercase text-gray-500">Address</Label>
-          <p className="text-sm text-gray-900">{addressInfo?.address}</p>
-        </div>
-        <div>
-          <Label className="text-xs uppercase text-gray-500">City</Label>
-          <p className="text-sm text-gray-900">{addressInfo?.city}</p>
-        </div>
-        <div>
-          <Label className="text-xs uppercase text-gray-500">Pincode</Label>
-          <p className="text-sm text-gray-900">{addressInfo?.pincode}</p>
-        </div>
-        <div>
-          <Label className="text-xs uppercase text-gray-500">Phone</Label>
-          <p className="text-sm text-gray-900">{addressInfo?.phone}</p>
-        </div>
-        <div>
-          <Label className="text-xs uppercase text-gray-500">Notes</Label>
-          <p className="text-sm text-gray-900">{addressInfo?.notes}</p>
-        </div>
-      </CardContent>
+    <div
+  onClick={setCurrentSelectedAddress ? () => setCurrentSelectedAddress(addressInfo) : null}
+  className={`group relative cursor-pointer transition-all duration-500 rounded-[2rem] border-2 p-6 overflow-hidden
+    ${isSelected
+      ? "border-stone-900 bg-stone-900 text-white shadow-2xl shadow-stone-200 scale-[1.02]"
+      : "border-stone-100 bg-white hover:border-stone-200 hover:shadow-xl hover:shadow-stone-100"
+    }`}
+>
+  {/* SELECTED BADGE */}
+  {isSelected && (
+    <div className="absolute top-4 right-4 animate-in fade-in zoom-in duration-300">
+      <div className="bg-white/10 backdrop-blur-md rounded-full p-1">
+        <Check className="w-4 h-4 text-white" />
+      </div>
+    </div>
+  )}
 
-      <CardFooter className="px-5 pb-5 pt-2 flex justify-end gap-3">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleEditAddress(addressInfo);
-          }}
-          className="hover:border-gray-600"
-        >
-          Edit
-        </Button>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleDeleteAddress(addressInfo);
-          }}
-        >
-          Delete
-        </Button>
-      </CardFooter>
-    </Card>
+  <div className="space-y-4">
+    {/* PRIMARY ADDRESS */}
+    <div className="space-y-1">
+      <span className={`text-[8px] font-black uppercase tracking-[0.2em] opacity-50 
+        ${isSelected ? "text-white" : "text-stone-400"}`}>
+        Destination
+      </span>
+      <p className="text-sm font-black leading-tight uppercase tracking-tight">
+        {addressInfo?.address}
+      </p>
+    </div>
+
+    {/* CITY & PIN */}
+    <div className="flex gap-6">
+      <div className="space-y-1">
+        <span className={`text-[8px] font-black uppercase tracking-[0.2em] opacity-50 
+          ${isSelected ? "text-white" : "text-stone-400"}`}>
+          Locality
+        </span>
+        <p className="text-xs font-bold uppercase">{addressInfo?.city}, {addressInfo?.pincode}</p>
+      </div>
+    </div>
+
+    {/* PHONE & NOTES */}
+    <div className="pt-2 flex flex-col gap-2 border-t border-stone-100/10">
+      <div className="flex items-center gap-2">
+        <Phone size={10} className={isSelected ? "text-white/50" : "text-stone-300"} />
+        <p className="text-[11px] font-bold tracking-tighter">{addressInfo?.phone}</p>
+      </div>
+      {addressInfo?.notes && (
+        <p className={`text-[10px] italic line-clamp-1 opacity-70
+          ${isSelected ? "text-white" : "text-stone-500"}`}>
+          "{addressInfo?.notes}"
+        </p>
+      )}
+    </div>
+  </div>
+
+  {/* ACTIONS - Revealed on hover or always visible if selected */}
+  <div className="mt-6 flex justify-start gap-4">
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        handleEditAddress(addressInfo);
+      }}
+      className={`text-[9px] font-black uppercase tracking-widest transition-colors
+        ${isSelected ? "text-white/60 hover:text-white" : "text-stone-400 hover:text-stone-900"}`}
+    >
+      Edit
+    </button>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        handleDeleteAddress(addressInfo);
+      }}
+      className={`text-[9px] font-black uppercase tracking-widest transition-colors
+        ${isSelected ? "text-red-400 hover:text-red-300" : "text-stone-300 hover:text-red-600"}`}
+    >
+      Remove
+    </button>
+  </div>
+</div>
   );
 }
