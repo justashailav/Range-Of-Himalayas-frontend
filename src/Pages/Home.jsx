@@ -314,85 +314,72 @@ export default function Home() {
         </Link>
       </motion.div>
       <div>
-        <div className="flex flex-col items-center mt-12 mb-8">
-          <motion.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold mb-2"
-          >
-            Pure & Organic
-          </motion.span>
-
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center font-extrabold text-4xl md:text-5xl text-[#D84C3C] tracking-tight"
-          >
-            Himalayan <span className="text-gray-800">Selections</span>
-          </motion.h1>
-
-          <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
-        </div>
-
-        <section className="relative bg-[#FAF9F6] py-16 overflow-hidden">
-  {/* Decorative Background Element: A subtle "peak" or mist effect */}
-  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 bg-gradient-to-b from-white to-transparent pointer-events-none opacity-50" />
-
-  <motion.div
-    variants={stagger}
+       <div className="flex flex-col items-center mt-12 mb-8">
+  <motion.span 
+    variants={fadeUp}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: true, amount: 0.1 }}
-    className="max-w-7xl mx-auto grid gap-10 px-6 sm:grid-cols-2 lg:grid-cols-3 items-stretch relative z-10"
+    viewport={{ once: true }}
+    className="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold mb-2"
   >
-    {productList?.length > 0 ? (
-      productList.slice(0, 3).map((item) => (
-        <motion.div
-          key={item._id}
-          variants={fadeUp}
-          whileHover={{ y: -12 }} 
-          className="group relative bg-white rounded-[2rem] p-4 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(216,76,60,0.15)] border border-transparent hover:border-orange-50"
-        >
-          <Link
-            to={`/product/${item._id}`}
-            onClick={() => handleGetProductDetails(item)}
-            className="flex flex-col h-full no-underline"
-          >
-            {/* Image Container with Zoom effect */}
-            <div className="relative overflow-hidden rounded-[1.5rem] aspect-[4/5] bg-gray-50">
-              <div className="absolute inset-0 group-hover:scale-110 transition-transform duration-700 ease-in-out">
-                 <TopSelections product={item} />
-              </div>
-              
-              {/* Subtle Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
+    Pure & Organic
+  </motion.span>
+  
+  <motion.h1
+    variants={fadeUp}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="text-center font-extrabold text-4xl md:text-5xl text-[#D84C3C] tracking-tight"
+  >
+    Himalayan <span className="text-gray-800">Selections</span>
+  </motion.h1>
+  
+  <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
+</div>
 
-            {/* Floating Discover Button */}
-            <div className="mt-6 flex items-center justify-between px-2">
-              <span className="text-xs uppercase tracking-widest text-gray-400 font-bold">Limited Harvest</span>
-              <div className="flex items-center gap-1 text-[#D84C3C] font-bold text-sm translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                DISCOVER <span className="text-lg">→</span>
-              </div>
-            </div>
-          </Link>
-        </motion.div>
-      ))
-    ) : (
-      <div className="contents">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="h-[450px] w-full rounded-[2rem] bg-white p-4 shadow-sm">
-            <div className="w-full h-full rounded-[1.5rem] bg-gray-100 animate-pulse" />
+       <motion.div
+  variants={stagger}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, margin: "-120px" }}
+  /* Increased gap and padding for a more 'boutique' feel */
+  className="grid gap-10 px-8 py-16 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3 items-stretch"
+>
+  {productList && productList.length > 0 ? (
+    productList.slice(0, 3).map((item) => (
+      <motion.div
+        key={item._id}
+        variants={fadeUp}
+        /* Smoother, higher lift on hover */
+        whileHover={{ y: -12 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Custom cubic-bezier for a snappier feel
+        className="will-change-transform group"
+      >
+        <Link
+          to={`/product/${item._id}`}
+          onClick={() => handleGetProductDetails(item)}
+          /* Added a subtle border and brand-tinted shadow on hover */
+          className="block h-full transition-all duration-500 rounded-[2rem] border border-transparent hover:border-red-50 hover:shadow-[0_30px_60px_-15px_rgba(216,76,60,0.12)]"
+        >
+          {/* Card Wrapper for internal polish */}
+          <div className="relative overflow-hidden rounded-[2rem] h-full bg-white">
+            <TopSelections product={item} />
+            
+            {/* Subtle glass-morphism overlay that appears on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-red-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           </div>
-        ))}
-      </div>
-    )}
-  </motion.div>
-</section>
+        </Link>
+      </motion.div>
+    ))
+  ) : (
+    <div className="contents">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="h-[420px] rounded-[2rem] bg-gray-50 animate-pulse border border-gray-100" />
+      ))}
+    </div>
+  )}
+</motion.div>
       </div>
       <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
         <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
