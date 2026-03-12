@@ -280,98 +280,78 @@ export default function Home() {
   whileInView="visible"
   viewport={{ once: true }}
   variants={fadeIn}
-  className="relative w-full overflow-hidden group cursor-default"
+  className="relative w-full h-[85vh] md:h-screen overflow-hidden group"
 >
   <Link to="/viewproducts">
-    <div className="relative h-[85vh] md:h-screen overflow-hidden">
-      {/* 1. Background Image with subtle zoom scale-down on entry */}
+    {/* 1. Background Image with Deep Overlay */}
+    <motion.div className="absolute inset-0 w-full h-full">
       <motion.img
         src={bgImage}
-        alt="Range of Himalayas Banner"
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 2, ease: "easeOut" }}
-        className="w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-105"
+        transition={{ duration: 2 }}
+        className="w-full h-full object-cover"
       />
+      {/* CRITICAL FIX: This dark overlay "mutes" the wood sign in the background 
+          so your white text can actually be read.
+      */}
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
+    </motion.div>
 
-      {/* 2. Sophisticated Lighting Overlays */}
-      {/* Vignette effect to draw eyes to the center */}
-      <div className="absolute inset-0 bg-black/30" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+      
+      {/* 2. Premium Badge */}
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="mb-6 px-4 py-1 border border-white/20 bg-white/5 backdrop-blur-xl rounded-full"
+      >
+        <span className="text-white text-[10px] font-bold uppercase tracking-[0.4em]">
+          Est. 2026 • Premium Organics
+        </span>
+      </motion.div>
 
-      {/* 3. Content: Centered Glass Card for better readability */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
-        
-        {/* Decorative Element: Floating Badge */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="px-6 py-2 mb-8 backdrop-blur-md bg-white/10 border border-white/20 rounded-full shadow-2xl"
-        >
-          <span className="text-white text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
-            Est. 2026 • Premium Organics
-          </span>
-        </motion.div>
+      {/* 3. The Headline: Using Shadow for Depth */}
+      <motion.h1
+        initial={{ y: 30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.7 }}
+        className="text-6xl md:text-8xl lg:text-9xl font-black text-white leading-[0.85] tracking-tighter drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"
+      >
+        PURELY<br />
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/50">
+          HIMALAYAN.
+        </span>
+      </motion.h1>
 
-        {/* Hero Title with Text-Stroke/Gradient Mix */}
-        <div className="relative mb-6 text-center">
-          <motion.h1
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.9]"
-          >
-            Purely <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40">
-              Himalayan.
-            </span>
-          </motion.h1>
-        </div>
+      {/* 4. Refined Subtext */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="mt-8 space-y-2"
+      >
+        <p className="text-slate-300 text-lg md:text-xl font-light italic">
+          Discover the soul of the mountains through
+        </p>
+        <p className="text-white font-black uppercase tracking-widest text-xs md:text-sm">
+          Red Rice • Apricots • Wild Honey
+        </p>
+      </motion.div>
 
-        {/* Paragraph with improved spacing */}
-        <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-4 text-lg md:text-2xl text-slate-200 max-w-xl font-light leading-relaxed italic text-center"
-        >
-          Discover the soul of the mountains through 
-          <span className="block font-bold text-white not-italic mt-2 tracking-wide uppercase text-sm md:text-base">
-            Authentic Red Rice, Apricots & More.
-          </span>
-        </motion.p>
-
-        {/* 4. The Action Button: High Contrast */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-12"
-        >
-          <button className="group/btn relative px-12 py-5 bg-white text-black font-black rounded-full transition-all duration-500 hover:bg-green-600 hover:text-white hover:px-14 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-            <span className="relative z-10 uppercase tracking-[0.2em] text-xs">Start Your Journey</span>
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover/btn:opacity-100 group-hover/btn:translate-x-2 transition-all duration-300">
-              <FaArrowRight />
-            </div>
-          </button>
-        </motion.div>
-      </div>
-
-      {/* 5. Minimalist Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-        <motion.div 
-          animate={{ y: [0, 12, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="text-white/60 text-2xl"
-        >
-          <HiOutlineChevronDoubleDown />
-        </motion.div>
-        <span className="text-white/30 text-[9px] font-bold uppercase tracking-[0.5em]">Explore</span>
-      </div>
-
-      {/* Luxury Border (Optional: Frame the image) */}
-      <div className="absolute inset-8 border border-white/10 pointer-events-none hidden md:block" />
+      {/* 5. Minimalist Button */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1.2 }}
+        className="mt-12"
+      >
+        <button className="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-green-600 hover:text-white transition-all duration-300 shadow-2xl uppercase text-xs tracking-widest">
+          Shop the Harvest
+        </button>
+      </motion.div>
     </div>
   </Link>
 </motion.div>
