@@ -338,56 +338,62 @@ export default function Home() {
           <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
         </div>
 
-        <section className="bg-[#FCFBFA] py-20 relative overflow-hidden">
-  {/* Soft background glow to break the "flat" look */}
-  <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-50 rounded-full blur-[120px] opacity-60 pointer-events-none" />
+        <section className="bg-[#FAF9F6] py-24 relative overflow-hidden">
+  {/* Elegant architectural lines for background interest */}
+  <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+    <div className="absolute top-0 left-1/4 w-px h-full bg-black" />
+    <div className="absolute top-0 left-3/4 w-px h-full bg-black" />
+  </div>
 
   <motion.div
     variants={stagger}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: true, margin: "-100px" }}
-    /* Increased gap and used 'items-start' for a more dynamic, staggered look if images differ in height */
-    className="max-w-7xl mx-auto grid gap-12 px-8 sm:grid-cols-2 lg:grid-cols-3"
+    viewport={{ once: true }}
+    className="max-w-6xl mx-auto grid gap-16 px-6 sm:grid-cols-2 lg:grid-cols-3"
   >
     {productList?.length > 0 ? (
       productList.slice(0, 3).map((item, index) => (
         <motion.div
           key={item._id}
           variants={fadeUp}
-          /* Added a slight stagger offset to the middle card for visual interest */
-          className={`will-change-transform group ${index === 1 ? 'lg:mt-8' : ''}`}
+          className="relative group cursor-pointer"
         >
           <Link
             to={`/product/${item._id}`}
             onClick={() => handleGetProductDetails(item)}
-            className="relative block rounded-[2.5rem] bg-white p-3 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] hover:shadow-[0_40px_80px_-20px_rgba(216,76,60,0.15)]"
+            className="block"
           >
-            {/* Image Container with a "Frame" look */}
-            <div className="relative overflow-hidden rounded-[2rem] aspect-[4/5] bg-[#F3F3F3]">
-              <div className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-1000 ease-out">
+            {/* The Image Wrapper: No card, just the product image with a soft shadow */}
+            <div className="relative aspect-[3/4] mb-8 overflow-hidden rounded-xl">
+              <div className="absolute inset-0 bg-gray-100 transition-transform duration-1000 group-hover:scale-105">
                 <TopSelections product={item} />
               </div>
               
-              {/* Corner Tag: For that "Selection" feel */}
-              <div className="absolute top-5 left-5 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-sm">
-                <p className="text-[10px] font-bold tracking-widest text-gray-800 uppercase">Premium</p>
+              {/* Subtle glass tag */}
+              <div className="absolute bottom-4 left-4 backdrop-blur-md bg-white/30 border border-white/20 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <span className="text-[10px] uppercase tracking-widest text-white font-medium">View Collection</span>
               </div>
             </div>
 
-            {/* Subtle "floating" price/info bar that lifts on hover */}
-            <div className="pt-6 pb-4 px-4">
-               {/* This assumes TopSelections doesn't already render text. 
-                   If it does, the CSS below will still enhance it. */}
-               <div className="flex justify-between items-end">
-                  <div className="space-y-1">
-                    <div className="h-px w-8 bg-red-200 group-hover:w-12 transition-all duration-500" />
-                    <p className="text-xs text-gray-400 uppercase tracking-tighter">Himalayan Origin</p>
-                  </div>
-                  <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center group-hover:bg-[#D84C3C] group-hover:text-white transition-colors duration-300">
-                    <span className="text-lg">→</span>
-                  </div>
-               </div>
+            {/* Content: Clean, center-aligned or offset typography */}
+            <div className="space-y-3 text-center transition-transform duration-500 group-hover:-translate-y-2">
+              <span className="text-[#D84C3C] text-[10px] font-bold uppercase tracking-[0.2em]">
+                Himalayan Series {index + 1}
+              </span>
+              
+              {/* Assumes TopSelections doesn't show the name, or replaces it with yours */}
+              <h3 className="text-xl font-light text-gray-900 italic serif">
+                {item.name || "Handpicked Selection"}
+              </h3>
+              
+              <div className="flex items-center justify-center gap-4 pt-2">
+                <div className="h-[1px] w-4 bg-gray-300 group-hover:w-8 group-hover:bg-[#D84C3C] transition-all duration-500" />
+                <p className="text-sm font-medium text-gray-600">
+                  ₹{item.price || "Price on Request"}
+                </p>
+                <div className="h-[1px] w-4 bg-gray-300 group-hover:w-8 group-hover:bg-[#D84C3C] transition-all duration-500" />
+              </div>
             </div>
           </Link>
         </motion.div>
@@ -395,7 +401,10 @@ export default function Home() {
     ) : (
       <div className="contents">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-[500px] rounded-[2.5rem] bg-white p-4 shadow-sm border border-gray-50 animate-pulse" />
+          <div key={i} className="space-y-4">
+             <div className="aspect-[3/4] w-full bg-gray-200 animate-pulse rounded-xl" />
+             <div className="h-4 w-1/2 mx-auto bg-gray-200 animate-pulse" />
+          </div>
         ))}
       </div>
     )}
