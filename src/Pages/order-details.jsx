@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { cancelOrder, getAllOrderDetails } from "@/store/slices/orderSlice";
-import { Phone } from "lucide-react";
 
 export default function ShoppingOrderDetailsView() {
   const { state } = useLocation();
@@ -86,139 +85,199 @@ export default function ShoppingOrderDetailsView() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50/50 p-4 sm:p-12 font-sans">
-  <div className="max-w-4xl mx-auto space-y-10">
-    
-    {/* HEADER: Minimalist & Clean */}
-    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-8">
-      <div>
-        <h1 className="text-xs font-black text-stone-400 uppercase tracking-[0.4em] mb-2">Order Manifest</h1>
-        <h2 className="text-3xl font-black text-stone-900 tracking-tighter italic">
-          #{orderDetails._id.slice(-8).toUpperCase()}
-        </h2>
-      </div>
-      <div className="text-sm sm:text-right">
-        <p className="text-stone-400 font-bold uppercase text-[10px] tracking-widest">Ordered On</p>
-        <p className="font-black text-stone-900">{orderDetails.orderDate?.split("T")[0]}</p>
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
+      <div className="max-w-5xl mx-auto space-y-8">
+        {/* ================= HEADER ================= */}
+        <div className="relative border-b border-stone-200 pb-10">
+  {/* TOP DECORATIVE ELEMENT */}
+  <div className="flex items-center gap-3 mb-6">
+    <div className="h-[1px] w-8 bg-stone-900" />
+    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-400">
+      Official Manifest
+    </span>
+  </div>
+
+  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div className="space-y-1">
+      <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-stone-900 leading-none">
+        Order <span className="text-stone-300 font-light italic">Details</span>
+      </h1>
+      <div className="flex items-center gap-2 pt-2">
+        <div className="px-2 py-0.5 bg-stone-100 rounded text-[9px] font-bold text-stone-500 uppercase tracking-widest">
+          ID
+        </div>
+        <p className="text-sm font-black tracking-widest text-stone-400 uppercase">
+          {orderDetails._id}
+        </p>
       </div>
     </div>
 
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-      
-      {/* LEFT COLUMN: Summary & Items */}
-      <div className="lg:col-span-2 space-y-10">
-        
-        {/* STATUS BAR */}
-        <div className="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm">
-          <div className="flex justify-between items-center mb-6">
-             <h3 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.2em]">Live Status</h3>
-             <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest
-                ${orderDetails.orderStatus === "confirmed" ? "bg-stone-900 text-white" : "bg-stone-100 text-stone-600"}`}>
-                {orderDetails.orderStatus}
-             </span>
-          </div>
-          
-          {/* Simple Timeline Track */}
-          <div className="relative h-1 bg-stone-100 rounded-full overflow-hidden">
-            <div 
-              className="absolute h-full bg-[#B23A2E] transition-all duration-1000"
-              style={{ width: orderDetails.orderStatus === 'delivered' ? '100%' : '40%' }}
-            />
-          </div>
-        </div>
+    {/* QUICK STATS - Adds professional weight */}
+    <div className="flex gap-10 md:text-right border-t md:border-t-0 md:border-l border-stone-100 pt-6 md:pt-0 md:pl-10">
+      <div>
+        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">Items Summary</p>
+        <p className="text-sm font-black text-stone-900 italic">
+          {orderDetails.cartItems.length} {orderDetails.cartItems.length === 1 ? 'Parcel' : 'Parcels'}
+        </p>
+      </div>
+      <div>
+        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">Status</p>
+        <p className="text-sm font-black text-green-700 uppercase tracking-tighter flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+          {orderDetails.orderStatus}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
-        {/* ITEMS SECTION */}
-        <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-sm">
-          <h3 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.2em] mb-8">Ordered Harvest</h3>
-          <div className="space-y-6">
+        {/* ================= ORDER SUMMARY ================= */}
+        <section className="bg-white rounded-2xl shadow p-6">
+          <h2 className="text-xl font-bold mb-6 border-b pb-3">
+            Order Summary
+          </h2>
+
+          <div className="grid sm:grid-cols-2 gap-5 text-sm">
+            {[
+              ["Order Date", orderDetails.orderDate?.split("T")[0]],
+              ["Payment Method", orderDetails.paymentMethod],
+              ["Payment Status", orderDetails.paymentStatus],
+              ["Total Amount", `₹${orderDetails.totalAmount}`],
+              ["Cancel Status", orderDetails.cancelStatus],
+              ["Refund Status", orderDetails.refundStatus],
+              ["Return Status", orderDetails.returnStatus || "none"],
+            ].map(([label, value]) => (
+              <div key={label} className="flex justify-between border-b pb-2">
+                <span className="text-gray-500">{label}</span>
+                <span className="font-medium text-gray-900">
+                  {value || "-"}
+                </span>
+              </div>
+            ))}
+
+            {/* STATUS */}
+            <div className="flex justify-between items-center pt-2">
+              <span className="text-gray-500">Order Status</span>
+              <Badge
+                className={`px-3 py-1 rounded-full text-xs font-semibold
+            ${
+              orderDetails.orderStatus === "confirmed"
+                ? "bg-green-100 text-green-700"
+                : orderDetails.orderStatus === "packed"
+                  ? "bg-yellow-100 text-yellow-700"
+                  : orderDetails.orderStatus === "delivered"
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-red-100 text-red-700"
+            }`}
+              >
+                {orderDetails.orderStatus}
+              </Badge>
+            </div>
+          </div>
+
+          {/* COD INFO */}
+          {orderDetails.paymentMethod === "cod" && (
+            <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+              <p>
+                <span className="font-medium">Advance Paid:</span> ₹
+                {orderDetails.codAdvanceAmount || 200}
+              </p>
+              <p className="mt-1">
+                <span className="font-medium">Pay on Delivery:</span> ₹
+                {orderDetails.codRemainingAmount}
+              </p>
+            </div>
+          )}
+
+          {/* ACTIONS */}
+          <div className="mt-6 flex flex-wrap gap-3">
+            {isCancelable() && orderDetails.orderStatus !== "cancelled" && (
+              <button
+                onClick={handleCancelOrder}
+                disabled={loadingCancelOrder}
+                className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
+              >
+                {loadingCancelOrder ? "Cancelling..." : "Cancel Order"}
+              </button>
+            )}
+
+            {isReturnable() && (
+              <button
+                onClick={handleReturnFullOrder}
+                disabled={isFullOrderReturned}
+                className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isFullOrderReturned ? "Return Requested" : "Return Order"}
+              </button>
+            )}
+          </div>
+
+          {successMsg && <p className="text-green-600 mt-2">{successMsg}</p>}
+          {errorMsg && <p className="text-red-600 mt-2">{errorMsg}</p>}
+        </section>
+
+        {/* ================= ORDERED ITEMS ================= */}
+        <section className="bg-white rounded-2xl shadow p-6">
+          <h2 className="text-xl font-bold mb-4 border-b pb-3">
+            Ordered Items
+          </h2>
+
+          <div className="space-y-4">
             {orderDetails.cartItems.map((item) => {
-              const product = productList.find((p) => p._id === item.productId) || {};
+              const product =
+                productList.find((p) => p._id === item.productId) || {};
+
               return (
-                <div key={item.productId} className="flex gap-6 items-center group">
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 flex-shrink-0">
-                    <img src={product.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                  </div>
+                <div
+                  key={item.productId}
+                  className="flex gap-4 p-4 border rounded-xl hover:shadow-md transition"
+                >
+                  <img
+                    src={product.image || "/placeholder.png"}
+                    className="w-24 h-24 rounded-lg object-cover border"
+                  />
+
                   <div className="flex-1">
-                    <p className="text-xs font-black text-stone-900 uppercase tracking-tight">{product.title}</p>
-                    <p className="text-[10px] text-stone-400 font-bold uppercase mt-1 tracking-tighter">
-                      {item.weight} · Qty {item.quantity} {item.size && ` · ${item.size}`}
+                    <p className="font-semibold text-gray-900">
+                      {product.title}
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Qty: {item.quantity}
+                      {item.size && ` · Size: ${item.size}`}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Weight: {item.weight}
                     </p>
                   </div>
-                  <p className="text-sm font-black text-stone-900 tracking-tighter">₹{item.price * item.quantity}</p>
+
+                  <p className="font-bold text-gray-900">
+                    ₹{item.price * item.quantity}
+                  </p>
                 </div>
               );
             })}
           </div>
         </section>
-      </div>
 
-      {/* RIGHT COLUMN: Details & Actions */}
-      <div className="space-y-8">
-        
-        {/* SHIPPING INFO */}
-        <section className="bg-stone-900 text-white rounded-[2.5rem] p-8 shadow-xl shadow-stone-200">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-6 text-stone-400">Shipping To</h3>
-          <div className="space-y-1 text-sm font-bold tracking-tight">
-            <p className="text-white">{user.name}</p>
-            <p className="text-stone-400 font-medium leading-relaxed">{orderDetails.addressInfo.address}</p>
-            <p className="text-stone-400 font-medium uppercase text-xs">{orderDetails.addressInfo.city} - {orderDetails.addressInfo.pincode}</p>
-            <div className="pt-4 flex items-center gap-2 text-stone-500 italic text-xs">
-              <Phone size={12} />
-              <span>{orderDetails.addressInfo.phone}</span>
-            </div>
-          </div>
-        </section>
-
-        {/* FINANCIAL SUMMARY */}
-        <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-sm">
-          <h3 className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em] mb-6">Payment Details</h3>
-          <div className="space-y-3">
-            <div className="flex justify-between text-[11px] font-bold uppercase text-stone-500">
-              <span>Method</span>
-              <span className="text-stone-900">{orderDetails.paymentMethod}</span>
-            </div>
-            <div className="flex justify-between text-[11px] font-bold uppercase text-stone-500">
-              <span>Status</span>
-              <span className="text-stone-900">{orderDetails.paymentStatus}</span>
-            </div>
-            
-            {orderDetails.paymentMethod === "cod" && (
-              <div className="mt-4 p-4 bg-stone-50 rounded-2xl border border-stone-100 space-y-2">
-                <div className="flex justify-between text-[10px] font-black uppercase">
-                  <span className="text-stone-400">Advance</span>
-                  <span className="text-stone-900">₹{orderDetails.codAdvanceAmount}</span>
-                </div>
-                <div className="flex justify-between text-[10px] font-black uppercase">
-                  <span className="text-stone-400">Balance</span>
-                  <span className="text-[#B23A2E]">₹{orderDetails.codRemainingAmount}</span>
-                </div>
-              </div>
-            )}
-
-            <div className="pt-4 border-t border-stone-50 flex justify-between items-end">
-               <span className="text-[10px] font-black uppercase text-stone-400 mb-1">Total Amount</span>
-               <span className="text-2xl font-black text-stone-900 tracking-tighter italic">₹{orderDetails.totalAmount}</span>
-            </div>
-          </div>
-
-          {/* ACTIONS BUTTONS */}
-          <div className="mt-8 space-y-3">
-            {isCancelable() && orderDetails.orderStatus !== "cancelled" && (
-              <button onClick={handleCancelOrder} className="w-full py-4 rounded-xl border border-stone-200 text-[10px] font-black uppercase tracking-widest hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all">
-                Cancel Order
-              </button>
-            )}
-            {isReturnable() && (
-              <button onClick={handleReturnFullOrder} className="w-full py-4 rounded-xl bg-stone-100 text-stone-600 text-[10px] font-black uppercase tracking-widest hover:bg-stone-200 transition-all">
-                Request Return
-              </button>
+        {/* ================= SHIPPING INFO ================= */}
+        <section className="bg-white rounded-2xl shadow p-6">
+          <h2 className="text-xl font-bold mb-4">Shipping Information</h2>
+          <div className="text-gray-700 space-y-1">
+            <p className="font-medium">{user.name}</p>
+            <p>{orderDetails.addressInfo.address}</p>
+            <p>
+              {orderDetails.addressInfo.city} –{" "}
+              {orderDetails.addressInfo.pincode}
+            </p>
+            <p>📞 {orderDetails.addressInfo.phone}</p>
+            {orderDetails.addressInfo.notes && (
+              <p className="text-sm text-gray-500">
+                Note: {orderDetails.addressInfo.notes}
+              </p>
             )}
           </div>
         </section>
       </div>
-
     </div>
-  </div>
-</div>
   );
 }
