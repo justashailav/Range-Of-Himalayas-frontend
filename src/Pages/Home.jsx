@@ -7,7 +7,12 @@ import {
   FaFacebook,
   FaArrowLeft,
   FaArrowRight,
+  FaLeaf,           /* Great for organic branding */
+  FaMountain
 } from "react-icons/fa";
+import { 
+  HiOutlineChevronDoubleDown 
+} from "react-icons/hi";
 import ShoppingProductTile from "./Product-tile";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
