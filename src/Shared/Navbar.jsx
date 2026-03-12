@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { resetAuthSlice } from "@/store/slices/authSlice";
 import { persistor } from "@/store/store";
 import { useScroll,motion,useMotionValueEvent } from "framer-motion";
-
+import { motion, AnimatePresence } from "framer-motion";
 export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
   const [openCart, setOpenCart] = useState(false);
