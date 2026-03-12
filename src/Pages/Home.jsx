@@ -531,115 +531,182 @@ export default function Home() {
       <div>
         {/* HEADER */}
         <div className="relative text-center mb-16 px-6">
-  {/* Decorative Element - Very subtle background "01" or leaf icon could go here */}
-  <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[120px] font-serif text-gray-100 opacity-50 pointer-events-none select-none">
-    Our Story
-  </div>
+          {/* Decorative Element - Very subtle background "01" or leaf icon could go here */}
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[120px] font-serif text-gray-100 opacity-50 pointer-events-none select-none">
+            Our Story
+          </div>
 
-  <div className="relative z-10 flex flex-col items-center gap-4">
-    {/* Refined Eyebrow */}
-    <div className="flex items-center gap-3">
-      <span className="h-[1px] w-6 bg-[#D84C3C]" />
-      <span className="text-[10px] uppercase tracking-[0.4em] text-[#D84C3C] font-black">
-        From Orchard to You
-      </span>
-      <span className="h-[1px] w-6 bg-[#D84C3C]" />
+          <div className="relative z-10 flex flex-col items-center gap-4">
+            {/* Refined Eyebrow */}
+            <div className="flex items-center gap-3">
+              <span className="h-[1px] w-6 bg-[#D84C3C]" />
+              <span className="text-[10px] uppercase tracking-[0.4em] text-[#D84C3C] font-black">
+                From Orchard to You
+              </span>
+              <span className="h-[1px] w-6 bg-[#D84C3C]" />
+            </div>
+
+            {/* Main Headline */}
+            <h2 className="text-4xl md:text-5xl font-serif text-gray-900 leading-tight">
+              Why{" "}
+              <span className="italic font-light text-gray-500">Range Of</span>{" "}
+              Himalayas?
+            </h2>
+
+            {/* Elegant Divider Dot */}
+            <div className="flex items-center justify-center gap-2 my-2">
+              <div className="w-1 h-1 rounded-full bg-gray-300" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#D84C3C]" />
+              <div className="w-1 h-1 rounded-full bg-gray-300" />
+            </div>
+
+            {/* Descriptive Text */}
+            <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
+              Every harvest is a reflection of our passion for{" "}
+              <span className="text-gray-800 font-medium">purity</span>,
+              timeless tradition, and uncompromising quality.
+            </p>
+          </div>
+        </div>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto"
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              variants={fadeUp}
+              className="group relative flex flex-col items-center p-8 rounded-[2.5rem] bg-[#F9F7F4] border border-white transition-all duration-500 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(180,160,140,0.15)]"
+            >
+              {/* 1. Iconic Number or Accent Icon */}
+              <div className="mb-6 relative">
+                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500">
+                  {/* Replace this with your actual icon or a stylized number */}
+                  <span className="text-[#D84C3C] font-serif italic text-xl">
+                    0{index + 1}
+                  </span>
+                </div>
+                {/* Subtle ring decoration */}
+                <div className="absolute inset-0 rounded-full border border-[#D84C3C]/10 scale-125 group-hover:scale-150 transition-transform duration-700" />
+              </div>
+
+              {/* 2. Text Content */}
+              <div className="text-center space-y-3">
+                <h3 className="font-serif text-xl text-gray-900 group-hover:text-[#D84C3C] transition-colors">
+                  {feature.title}
+                </h3>
+
+                {/* Subtle decorative line */}
+                <div className="w-8 h-[1px] bg-gray-200 mx-auto group-hover:w-12 group-hover:bg-[#D84C3C]/30 transition-all" />
+
+                <p className="text-gray-500 text-sm font-light leading-relaxed">
+                  {feature.desc}
+                </p>
+              </div>
+
+              {/* 3. Corner Accent (Optional) */}
+              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#D84C3C]/20" />
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="mt-16 sm:mt-24 px-6 max-w-7xl mx-auto">
+  <div className="relative group">
+    {/* 1. The Decorative Frame (Back layer) */}
+    <div className="absolute -inset-4 border border-[#E8DCD3] rounded-[3rem] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+
+    {/* 2. Main Image Container */}
+    <div className="relative overflow-hidden rounded-[2.5rem] bg-[#F3F0EB] shadow-[0_30px_60px_-15px_rgba(142,125,110,0.15)]">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.1 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: [0.2, 1, 0.3, 1] }}
+        className="relative"
+      >
+        <img
+          src={foundersImage}
+          alt="Founders of Range of Himalayas"
+          className="w-full h-[400px] sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
+        />
+
+        {/* 3. Sophisticated Overlays */}
+        {/* Subtle vignette to pop the subject */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 opacity-60" />
+        
+        {/* Soft light leak from the top left */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+      </motion.div>
+
+      {/* 4. Floating Caption Badge (Optional) */}
+      <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12">
+        <div className="bg-white/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/50 shadow-xl">
+           <p className="text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-1">Our Visionaries</p>
+           <h4 className="text-xl font-serif text-gray-900">Nurturing the Roots</h4>
+        </div>
+      </div>
     </div>
 
-    {/* Main Headline */}
-    <h2 className="text-4xl md:text-5xl font-serif text-gray-900 leading-tight">
-      Why <span className="italic font-light text-gray-500">Range Of</span> Himalayas?
-    </h2>
-
-    {/* Elegant Divider Dot */}
-    <div className="flex items-center justify-center gap-2 my-2">
-        <div className="w-1 h-1 rounded-full bg-gray-300" />
-        <div className="w-1.5 h-1.5 rounded-full bg-[#D84C3C]" />
-        <div className="w-1 h-1 rounded-full bg-gray-300" />
+    {/* 5. Artistic Corner Stamp */}
+    <div className="absolute -bottom-6 -right-6 hidden md:block">
+      <div className="w-24 h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-4 text-center shadow-2xl rotate-12">
+        <span className="text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
+          Authentic <br /> Himalayan <br /> Harvest
+        </span>
+      </div>
     </div>
-
-    {/* Descriptive Text */}
-    <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
-      Every harvest is a reflection of our passion for <span className="text-gray-800 font-medium">purity</span>, 
-      timeless tradition, and uncompromising quality.
-    </p>
   </div>
 </div>
-        <motion.div
-  variants={stagger}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
-  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto"
->
-  {features.map((feature, index) => (
-    <motion.div
-      key={index}
-      variants={fadeUp}
-      className="group relative flex flex-col items-center p-8 rounded-[2.5rem] bg-[#F9F7F4] border border-white transition-all duration-500 hover:bg-white hover:shadow-[0_30px_60px_-15px_rgba(180,160,140,0.15)]"
-    >
-      {/* 1. Iconic Number or Accent Icon */}
-      <div className="mb-6 relative">
-        <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500">
-           {/* Replace this with your actual icon or a stylized number */}
-           <span className="text-[#D84C3C] font-serif italic text-xl">0{index + 1}</span>
-        </div>
-        {/* Subtle ring decoration */}
-        <div className="absolute inset-0 rounded-full border border-[#D84C3C]/10 scale-125 group-hover:scale-150 transition-transform duration-700" />
+      <div className="px-6 py-20 bg-[#FAF9F6]">
+  <div className="max-w-4xl mx-auto text-center relative">
+    
+    {/* 1. Subtle Background Element */}
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
+       <h1 className="text-[180px] font-serif select-none">Harvest</h1>
+    </div>
+
+    <div className="relative z-10 flex flex-col items-center">
+      
+      {/* 2. Refined Branding Accent */}
+      <div className="flex items-center gap-4 mb-6">
+        <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
+        <span className="text-[10px] uppercase tracking-[0.5em] text-[#D84C3C] font-black">
+          From Our Orchards
+        </span>
+        <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
       </div>
 
-      {/* 2. Text Content */}
-      <div className="text-center space-y-3">
-        <h3 className="font-serif text-xl text-gray-900 group-hover:text-[#D84C3C] transition-colors">
-          {feature.title}
-        </h3>
-        
-        {/* Subtle decorative line */}
-        <div className="w-8 h-[1px] bg-gray-200 mx-auto group-hover:w-12 group-hover:bg-[#D84C3C]/30 transition-all" />
-        
-        <p className="text-gray-500 text-sm font-light leading-relaxed">
-          {feature.desc}
-        </p>
+      {/* 3. The Headline: Bold yet Elegant */}
+      <h2 className="text-4xl md:text-6xl font-serif text-gray-900 leading-[1.1] mb-8">
+        Himalayan <span className="italic font-light text-gray-500">Harvest</span>
+      </h2>
+
+      {/* 4. Elegant Vertical Divider */}
+      <div className="w-[1px] h-12 bg-gradient-to-b from-[#D84C3C] to-transparent mb-8" />
+
+      {/* 5. The Narrative Paragraph */}
+      <p className="text-gray-600 text-lg md:text-xl font-light leading-relaxed max-w-3xl mx-auto">
+        Discover how we nurture <span className="text-gray-900 font-medium italic">premium apples</span> with a blend of 
+        time-honored traditions and <span className="text-gray-900 font-medium">thoughtful modern practices</span> 
+        in the pristine foothills of the Himalayas.
+      </p>
+
+      {/* 6. Subtle Signature (Optional) */}
+      <div className="mt-10 flex items-center gap-3 opacity-60">
+         <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">Est. 2024</span>
+         <div className="w-1 h-1 rounded-full bg-gray-300" />
+         <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">Himachal Pradesh</span>
       </div>
 
-      {/* 3. Corner Accent (Optional) */}
-      <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-         <div className="w-1.5 h-1.5 rounded-full bg-[#D84C3C]/20" />
-      </div>
-    </motion.div>
-  ))}
-</motion.div>
-      </div>
-
-      <div className="mt-12 sm:mt-16 md:mt-18 overflow-hidden rounded-xl">
-        <motion.img
-          src={foundersImage}
-          alt="Founder"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="w-full h-64 sm:h-96 md:h-[500px] lg:h-[680px] object-cover shadow-lg rounded-xl"
-        />
-      </div>
-      <div className="px-6 py-12">
-        <div className="text-center mb-10">
-          {/* Badge */}
-          <span className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-            🍎 From Our Orchards
-          </span>
-
-          {/* Heading */}
-          <h1 className="text-4xl font-bold mt-4 mb-3">Himalayan Harvest</h1>
-
-          {/* Paragraph */}
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-            Discover how we nurture premium apples with a blend of time-honored
-            traditions and thoughtful modern practices in the pristine Himalayan
-            foothills.
-          </p>
-        </div>
-      </div>
+    </div>
+  </div>
+</div>
       <div className="px-6 py-12 bg-white">
         {/* Heading */}
         <div className="text-center mb-10">
