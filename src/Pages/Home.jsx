@@ -260,18 +260,31 @@ export default function Home() {
           content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
         />
       </Helmet>
-      <div className="overflow-hidden relative bg-red-600 py-2">
-        <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
-          <span>
-            🎁 Use code{" "}
-            <span className="text-yellow-400 font-bold">HIMALAYA10</span> to get
-            10% off! 🍎
-          </span>
-          <span>🌿 Free gift on orders above ₹2000 – Limited Time!</span>
-          <span>🚚 Fast delivery from our orchards directly to you!</span>
-        </div>
-      </div>
+     <div className="relative overflow-hidden bg-gradient-to-r from-red-700 via-red-600 to-red-700 py-3 shadow-md">
+  {/* Optional: Add a subtle overlay texture or shine */}
+  <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
 
+  <div className="animate-marquee whitespace-nowrap text-white font-medium text-sm md:text-base flex items-center gap-12">
+    <span className="flex items-center gap-2">
+      <span className="bg-white/20 px-2 py-0.5 rounded text-xs uppercase tracking-widest font-bold">Offer</span>
+      Use code <span className="text-yellow-300 font-extrabold tracking-tight">HIMALAYA10</span> for 10% off! 🍎
+    </span>
+    
+    <span className="flex items-center gap-2">
+      <span className="text-xl">🌿</span> Free gift on orders above <span className="font-bold">₹2000</span> — Limited Time!
+    </span>
+    
+    <span className="flex items-center gap-2">
+      <span className="text-xl">🚚</span> Direct from our orchards to your doorstep
+    </span>
+
+    {/* Duplicate for seamless looping if your CSS doesn't handle it */}
+    <span className="flex items-center gap-2">
+      <span className="bg-white/20 px-2 py-0.5 rounded text-xs uppercase tracking-widest font-bold">Offer</span>
+      Use code <span className="text-yellow-300 font-extrabold tracking-tight">HIMALAYA10</span> for 10% off! 🍎
+    </span>
+  </div>
+</div>
       <motion.div initial="hidden" animate="visible" variants={fadeIn}>
         <Link to="/viewproducts">
           <motion.img
