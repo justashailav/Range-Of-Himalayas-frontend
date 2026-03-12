@@ -272,57 +272,71 @@ export default function Home() {
         </div>
       </div>
 
-      <motion.div 
-  initial="hidden" 
-  animate="visible" 
-  variants={fadeIn} 
-  className="relative w-full overflow-hidden group"
->
-  <Link to="/viewproducts">
-    {/* Image with subtle zoom on hover */}
-    <motion.img
-      src={bgImage}
-      alt="Range of Himalayas Banner"
-      className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-2xl transition-transform duration-700 ease-in-out group-hover:scale-105"
-    />
-    
-    {/* Overlay Gradient for readability */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        className="relative w-full overflow-hidden group"
+      >
+        <Link to="/viewproducts">
+          {/* Image with subtle zoom on hover */}
+          <motion.img
+            src={bgImage}
+            alt="Range of Himalayas Banner"
+            className="w-full h-64 sm:h-96 md:h-[600px] lg:h-[750px] object-cover shadow-2xl transition-transform duration-700 ease-in-out group-hover:scale-105"
+          />
 
-    {/* Text Content */}
-    <div className="absolute bottom-10 left-6 md:left-16 text-white">
-      <motion.h1 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="text-3xl md:text-5xl font-bold tracking-tight"
-      >
-        Purely Himalayan.
-      </motion.h1>
-      <motion.p 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.7 }}
-        className="mt-2 text-lg md:text-xl text-gray-200"
-      >
-        Authentic Red Rice, Apricots & More.
-      </motion.p>
-      <button className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors">
-        Shop Now
-      </button>
-    </div>
-  </Link>
-</motion.div>
+          {/* Overlay Gradient for readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+          {/* Text Content */}
+          <div className="absolute bottom-10 left-6 md:left-16 text-white">
+            <motion.h1
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-3xl md:text-5xl font-bold tracking-tight"
+            >
+              Purely Himalayan.
+            </motion.h1>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="mt-2 text-lg md:text-xl text-gray-200"
+            >
+              Authentic Red Rice, Apricots & More.
+            </motion.p>
+            <button className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors">
+              Shop Now
+            </button>
+          </div>
+        </Link>
+      </motion.div>
       <div>
-        <motion.h1
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="text-center mt-8 font-bold text-3xl text-[#D84C3C]"
-        >
-          Himalayan Selections
-        </motion.h1>
+       <div className="flex flex-col items-center mt-12 mb-8">
+  <motion.span 
+    variants={fadeUp}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold mb-2"
+  >
+    Pure & Organic
+  </motion.span>
+  
+  <motion.h1
+    variants={fadeUp}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="text-center font-extrabold text-4xl md:text-5xl text-[#D84C3C] tracking-tight"
+  >
+    Himalayan <span className="text-gray-800">Selections</span>
+  </motion.h1>
+  
+  <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
+</div>
 
         <motion.div
           variants={stagger}
