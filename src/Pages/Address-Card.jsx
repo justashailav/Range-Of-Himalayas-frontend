@@ -40,6 +40,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Check, Phone } from "lucide-react";
 
 export default function AddressCard({
   addressInfo,
