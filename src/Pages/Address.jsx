@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
+import { MapPin } from "lucide-react";
 
 const initialAddressFormData = {
   address: "",
@@ -49,7 +50,7 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
             userId: user?._id,
             addressId: currentEditedId,
             formData,
-          })
+          }),
         ).then((data) => {
           if (data?.success) {
             dispatch(fetchAllAddress(user?._id));
@@ -62,7 +63,7 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
           addAddress({
             ...formData,
             userId: user?._id,
-          })
+          }),
         ).then((data) => {
           if (data?.success) {
             dispatch(fetchAllAddress(user?._id));
@@ -75,7 +76,7 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
   // Delete Address
   function handleDeleteAddress(getCurrentAddress) {
     dispatch(
-      deleteAddress({ userId: user?._id, addressId: getCurrentAddress._id })
+      deleteAddress({ userId: user?._id, addressId: getCurrentAddress._id }),
     ).then((data) => {
       if (data?.success) {
         dispatch(fetchAllAddress(user?._id));
@@ -111,9 +112,9 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
   }, [dispatch, user?._id]);
 
   return (
-    <Card className="shadow-lg border border-gray-200 rounded-lg">
-      {/* Address List */}
-      <div className="mb-6 p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div className="space-y-12">
+      {/* SAVED ADDRESSES GRID */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {addressList && addressList.length > 0 ? (
           addressList.map((singleAddressItem) => (
             <AddressCard
@@ -126,29 +127,39 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
             />
           ))
         ) : (
-          <p className="text-center text-gray-500 col-span-full mt-6 italic">
-            No addresses added yet.
-          </p>
+          <div className="col-span-full py-12 text-center bg-stone-50 rounded-[2rem] border border-dashed border-stone-200">
+            <MapPin className="w-8 h-8 text-stone-300 mx-auto mb-3" />
+            <p className="text-[10px] text-stone-400 font-black uppercase tracking-[0.2em]">
+              No saved destinations yet.
+            </p>
+          </div>
         )}
       </div>
 
-      {/* Add/Edit Form */}
-      <CardHeader className="border-t border-gray-200 px-6 py-5 bg-gray-50">
-        <CardTitle className="text-lg sm:text-2xl font-semibold tracking-wide text-gray-800">
-          {currentEditedId !== null ? "Edit Address" : "Add New Address"}
-        </CardTitle>
-      </CardHeader>
+      {/* ADD/EDIT FORM SECTION */}
+      <div className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)]">
+        <div className="mb-10 flex items-center gap-4">
+          <div className="h-px flex-1 bg-stone-100" />
+          <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.4em] whitespace-nowrap">
+            {currentEditedId !== null
+              ? "Modify Destination"
+              : "New Destination"}
+          </h2>
+          <div className="h-px flex-1 bg-stone-100" />
+        </div>
 
-      <CardContent>
-        <form onSubmit={handleManageAddress} className="space-y-4">
-          {/* Address */}
-          <div>
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
-              Address
-            </Label>
+        <form
+          onSubmit={handleManageAddress}
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6"
+        >
+          {/* Address - Full Width */}
+          <div className="md:col-span-2 space-y-2">
+            <label className="text-[9px] font-black text-stone-400 uppercase tracking-widest ml-1">
+              Street Address
+            </label>
             <Input
-              type="text"
-              placeholder="Enter your Address"
+              className="h-12 rounded-xl border-stone-100 bg-stone-50/50 focus:bg-white transition-all placeholder:text-stone-300"
+              placeholder="e.g. 123 Mountain View"
               value={formData.address}
               onChange={(e) =>
                 setFormData({ ...formData, address: e.target.value })
@@ -157,26 +168,28 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
           </div>
 
           {/* City */}
-          <div>
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
+          <div className="space-y-2">
+            <label className="text-[9px] font-black text-stone-400 uppercase tracking-widest ml-1">
               City
-            </Label>
+            </label>
             <Input
-              type="text"
-              placeholder="Enter your city"
+              className="h-12 rounded-xl border-stone-100 bg-stone-50/50 focus:bg-white transition-all placeholder:text-stone-300"
+              placeholder="Enter city"
               value={formData.city}
-              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, city: e.target.value })
+              }
             />
           </div>
 
           {/* Pincode */}
-          <div>
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
+          <div className="space-y-2">
+            <label className="text-[9px] font-black text-stone-400 uppercase tracking-widest ml-1">
               Pincode
-            </Label>
+            </label>
             <Input
-              type="text"
-              placeholder="Enter your pincode"
+              className="h-12 rounded-xl border-stone-100 bg-stone-50/50 focus:bg-white transition-all placeholder:text-stone-300"
+              placeholder="000 000"
               value={formData.pincode}
               onChange={(e) =>
                 setFormData({ ...formData, pincode: e.target.value })
@@ -185,13 +198,13 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
           </div>
 
           {/* Phone */}
-          <div>
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
-              Phone Number
-            </Label>
+          <div className="space-y-2">
+            <label className="text-[9px] font-black text-stone-400 uppercase tracking-widest ml-1">
+              Contact Number
+            </label>
             <Input
-              type="text"
-              placeholder="Enter your phone number"
+              className="h-12 rounded-xl border-stone-100 bg-stone-50/50 focus:bg-white transition-all placeholder:text-stone-300"
+              placeholder="+91"
               value={formData.phone}
               onChange={(e) =>
                 setFormData({ ...formData, phone: e.target.value })
@@ -200,29 +213,30 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
           </div>
 
           {/* Notes */}
-          <div>
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
-              Notes
-            </Label>
+          <div className="md:col-span-2 space-y-2">
+            <label className="text-[9px] font-black text-stone-400 uppercase tracking-widest ml-1">
+              Delivery Notes
+            </label>
             <textarea
-              className="w-full border border-gray-300 rounded-md p-3 mt-1 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
-              placeholder="Enter your notes"
+              className="w-full h-32 rounded-2xl border border-stone-100 bg-stone-50/50 p-4 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-100 transition-all resize-none placeholder:text-stone-300"
+              placeholder="Any special instructions for the courier..."
               value={formData.notes}
               onChange={(e) =>
                 setFormData({ ...formData, notes: e.target.value })
               }
-              rows={4}
             />
           </div>
 
-          <Button
-            type="submit"
-            className="mt-6 w-full rounded-md py-3 font-semibold shadow-lg"
-          >
-            {currentEditedId !== null ? "Update Address" : "Add Address"}
-          </Button>
+          <div className="md:col-span-2 pt-4">
+            <button
+              type="submit"
+              className="w-full bg-stone-900 text-white py-5 rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] hover:bg-[#B23A2E] transition-all duration-500 shadow-xl shadow-stone-100 active:scale-95"
+            >
+              {currentEditedId !== null ? "Save Changes" : "Confirm Address"}
+            </button>
+          </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
