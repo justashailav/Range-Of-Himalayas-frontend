@@ -748,188 +748,219 @@ export default function Home() {
 
         {/* Social Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto px-4 py-10">
-  {/* Instagram Card */}
-  <motion.a
-    href="https://www.instagram.com/range.of.himalayas"
-    target="_blank"
-    rel="noopener noreferrer"
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    whileHover={{ y: -12 }}
-    className="group relative block"
-  >
-    {/* Background Glow */}
-    <div className="absolute inset-0 bg-gradient-to-br from-pink-400/20 to-orange-400/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-    
-    <div className="relative overflow-hidden rounded-[3rem] bg-white/80 backdrop-blur-xl p-12 flex flex-col items-center text-center border border-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_48px_80px_-16px_rgba(236,72,153,0.2)] transition-all duration-500">
-      
-      {/* Ghost Icon Overlay */}
-      <div className="absolute top-[-20px] right-[-20px] opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
-        <FaInstagram className="text-[12rem] -rotate-12" />
-      </div>
+          {/* Instagram Card */}
+          <motion.a
+            href="https://www.instagram.com/range.of.himalayas"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -12 }}
+            className="group relative block"
+          >
+            {/* Background Glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-400/20 to-orange-400/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-      {/* Main Icon Wrapper */}
-      <div className="relative mb-8">
-        <div className="w-24 h-24 bg-white rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 ease-out">
-          <FaInstagram className="text-5xl text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-pink-600 to-purple-600" />
+            <div className="relative overflow-hidden rounded-[3rem] bg-white/80 backdrop-blur-xl p-12 flex flex-col items-center text-center border border-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_48px_80px_-16px_rgba(236,72,153,0.2)] transition-all duration-500">
+              {/* Ghost Icon Overlay */}
+              <div className="absolute top-[-20px] right-[-20px] opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
+                <FaInstagram className="text-[12rem] -rotate-12" />
+              </div>
+
+              {/* Main Icon Wrapper */}
+              <div className="relative mb-8">
+                <div className="w-24 h-24 bg-white rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 ease-out">
+                  <FaInstagram className="text-5xl text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-pink-600 to-purple-600" />
+                </div>
+              </div>
+
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight mb-1">
+                Instagram
+              </h3>
+              <p className="text-green-600 font-bold text-lg mb-8 tracking-wide italic">
+                @range.of.himalayas
+              </p>
+
+              {/* Adaptive Button */}
+              <div className="mt-auto flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl group-hover:bg-green-700 transition-all duration-300 shadow-xl shadow-slate-900/10 group-hover:shadow-green-900/20">
+                <span className="font-bold uppercase tracking-widest text-xs">
+                  Explore Gallery
+                </span>
+                <FaArrowRight className="group-hover:translate-x-2 transition-transform duration-300" />
+              </div>
+            </div>
+          </motion.a>
+
+          {/* Facebook Card */}
+          <motion.a
+            href="https://www.facebook.com/rangeofhimalayas"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -12 }}
+            transition={{ delay: 0.1 }}
+            className="group relative block"
+          >
+            {/* Background Glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-emerald-400/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+            <div className="relative overflow-hidden rounded-[3rem] bg-white/80 backdrop-blur-xl p-12 flex flex-col items-center text-center border border-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_48px_80px_-16px_rgba(37,99,235,0.2)] transition-all duration-500">
+              {/* Ghost Icon Overlay */}
+              <div className="absolute top-[-20px] right-[-20px] opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
+                <FaFacebook className="text-[12rem] -rotate-12" />
+              </div>
+
+              <div className="relative mb-8">
+                <div className="w-24 h-24 bg-white rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] flex items-center justify-center transform group-hover:-rotate-12 group-hover:scale-110 transition-transform duration-500 ease-out">
+                  <FaFacebook className="text-5xl text-blue-600" />
+                </div>
+              </div>
+
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight mb-1">
+                Facebook
+              </h3>
+              <p className="text-green-600 font-bold text-lg mb-8 tracking-wide italic">
+                @rangeofhimalayas
+              </p>
+
+              <div className="mt-auto flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl group-hover:bg-green-700 transition-all duration-300 shadow-xl shadow-slate-900/10 group-hover:shadow-green-900/20">
+                <span className="font-bold uppercase tracking-widest text-xs">
+                  Join Community
+                </span>
+                <FaArrowRight className="group-hover:translate-x-2 transition-transform duration-300" />
+              </div>
+            </div>
+          </motion.a>
         </div>
-      </div>
-
-      <h3 className="text-3xl font-black text-slate-900 tracking-tight mb-1">Instagram</h3>
-      <p className="text-green-600 font-bold text-lg mb-8 tracking-wide italic">@range.of.himalayas</p>
-      
-      {/* Adaptive Button */}
-      <div className="mt-auto flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl group-hover:bg-green-700 transition-all duration-300 shadow-xl shadow-slate-900/10 group-hover:shadow-green-900/20">
-        <span className="font-bold uppercase tracking-widest text-xs">Explore Gallery</span>
-        <FaArrowRight className="group-hover:translate-x-2 transition-transform duration-300" />
-      </div>
-    </div>
-  </motion.a>
-
-  {/* Facebook Card */}
-  <motion.a
-    href="https://www.facebook.com/rangeofhimalayas"
-    target="_blank"
-    rel="noopener noreferrer"
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    whileHover={{ y: -12 }}
-    transition={{ delay: 0.1 }}
-    className="group relative block"
-  >
-    {/* Background Glow */}
-    <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-emerald-400/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-    <div className="relative overflow-hidden rounded-[3rem] bg-white/80 backdrop-blur-xl p-12 flex flex-col items-center text-center border border-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_48px_80px_-16px_rgba(37,99,235,0.2)] transition-all duration-500">
-      
-      {/* Ghost Icon Overlay */}
-      <div className="absolute top-[-20px] right-[-20px] opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
-        <FaFacebook className="text-[12rem] -rotate-12" />
-      </div>
-
-      <div className="relative mb-8">
-        <div className="w-24 h-24 bg-white rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] flex items-center justify-center transform group-hover:-rotate-12 group-hover:scale-110 transition-transform duration-500 ease-out">
-          <FaFacebook className="text-5xl text-blue-600" />
-        </div>
-      </div>
-
-      <h3 className="text-3xl font-black text-slate-900 tracking-tight mb-1">Facebook</h3>
-      <p className="text-green-600 font-bold text-lg mb-8 tracking-wide italic">@rangeofhimalayas</p>
-      
-      <div className="mt-auto flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl group-hover:bg-green-700 transition-all duration-300 shadow-xl shadow-slate-900/10 group-hover:shadow-green-900/20">
-        <span className="font-bold uppercase tracking-widest text-xs">Join Community</span>
-        <FaArrowRight className="group-hover:translate-x-2 transition-transform duration-300" />
-      </div>
-    </div>
-  </motion.a>
-</div>
       </section>
 
       <HomeBlog />
-      <div className="px-6 py-12 text-center">
-        {/* Badge */}
-        <span className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-          🌿 Orchard Moments
-        </span>
+      <section className="px-6 py-20 bg-[#fafaf9]">
+  <div className="max-w-6xl mx-auto text-center">
+    {/* Refined Badge */}
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 text-green-700 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm"
+    >
+      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+      Orchard Moments
+    </motion.div>
 
-        {/* Heading */}
-        <h1 className="text-4xl font-bold mt-4 mb-3">
-          🍏 From Orchard to Table
-        </h1>
+    {/* Hero Heading */}
+    <h2 className="text-5xl md:text-6xl font-black text-slate-900 mt-6 mb-4 tracking-tight">
+      From Orchard <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">to Table</span>
+    </h2>
 
-        {/* Paragraph */}
-        <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-          Witness the journey of our orchards through the seasons — a
-          celebration of purity, tradition, and mindful farming at Range Of
-          Himalayas.
-        </p>
+    <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed font-medium mb-12">
+      Witness the journey of our orchards through the seasons—a celebration of purity, tradition, and mindful farming.
+    </p>
 
-        {/* Category Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-8">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setCurrentIndex(0);
-                setCurrentImageIndex(0);
-              }}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
-          ${
-            activeCategory === cat
-              ? "bg-gradient-to-r from-red-500 to-red-700 text-white shadow-lg scale-105"
-              : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:scale-105"
-          }`}
+    {/* Elegant Category Navigation */}
+    <div className="flex flex-wrap justify-center gap-4 mb-12">
+      {categories.map((cat) => (
+        <button
+          key={cat}
+          onClick={() => {
+            setActiveCategory(cat);
+            setCurrentIndex(0);
+            setCurrentImageIndex(0);
+          }}
+          className={`relative px-8 py-3 rounded-2xl text-sm font-bold transition-all duration-500 overflow-hidden
+            ${activeCategory === cat 
+              ? "text-white shadow-[0_10px_25px_-5px_rgba(220,38,38,0.4)]" 
+              : "bg-white text-slate-600 border border-slate-200 hover:border-red-200 hover:text-red-600"
+            }`}
+        >
+          {activeCategory === cat && (
+            <motion.div 
+              layoutId="activeTab" 
+              className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500" 
+            />
+          )}
+          <span className="relative z-10">{cat}</span>
+        </button>
+      ))}
+    </div>
+
+    {/* Main Gallery Display */}
+    {loading ? (
+      <GallerySkeleton />
+    ) : filteredItems.length > 0 ? (
+      <div className="relative group max-w-5xl mx-auto">
+        <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2.5rem] bg-slate-200 shadow-2xl">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={filteredItems[currentIndex]?.images[currentImageIndex]}
+              src={filteredItems[currentIndex]?.images[currentImageIndex]}
+              alt={filteredItems[currentIndex]?.title}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full h-full object-cover"
+            />
+          </AnimatePresence>
+
+          {/* Glass Content Overlay */}
+          <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="max-w-2xl text-left"
             >
-              {cat}
+              <span className="px-3 py-1 bg-red-600/20 backdrop-blur-md border border-red-500/30 text-red-100 rounded-lg text-xs font-bold uppercase tracking-tighter">
+                {filteredItems[currentIndex]?.category}
+              </span>
+              <h3 className="text-3xl md:text-4xl font-black text-white mt-4 mb-2 tracking-tight">
+                {filteredItems[currentIndex]?.title}
+              </h3>
+              <p className="text-gray-300 text-base md:text-lg leading-relaxed line-clamp-2 font-light">
+                {filteredItems[currentIndex]?.desc}
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Navigation Controls */}
+          <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button onClick={prevSlide} className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110">
+              <FaArrowLeft />
+            </button>
+            <button onClick={nextSlide} className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110">
+              <FaArrowRight />
+            </button>
+          </div>
+        </div>
+
+        {/* Cinematic Thumbnails */}
+        <div className="flex justify-center gap-4 mt-10">
+          {filteredItems[currentIndex].images.map((img, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImageIndex(index)}
+              className="relative group"
+            >
+              <div className={`w-28 h-20 rounded-2xl overflow-hidden border-4 transition-all duration-500 ${
+                index === currentImageIndex ? "border-red-600 scale-110 shadow-lg" : "border-transparent grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
+              }`}>
+                <img src={img} alt="thumb" className="w-full h-full object-cover" />
+              </div>
+              {index === currentImageIndex && (
+                <motion.div layoutId="thumbGlow" className="absolute inset-0 bg-red-600/20 blur-xl -z-10" />
+              )}
             </button>
           ))}
         </div>
-
-        {/* Gallery */}
-        {loading ? (
-          <GallerySkeleton />
-        ) : filteredItems.length > 0 ? (
-          <div className="relative max-w-3xl mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={filteredItems[currentIndex]?.images[currentImageIndex]}
-                src={filteredItems[currentIndex]?.images[currentImageIndex]}
-                alt={filteredItems[currentIndex]?.title}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="w-full h-full object-cover rounded-xl shadow-md"
-              />
-            </AnimatePresence>
-            <button
-              onClick={prevSlide}
-              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80 transition"
-            >
-              <FaArrowLeft />
-            </button>
-
-            <button
-              onClick={nextSlide}
-              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full shadow-md hover:bg-black/80 transition"
-            >
-              <FaArrowRight />
-            </button>
-            <div className="absolute bottom-6 left-4 bg-black/80 text-white p-4 rounded-lg text-left max-w-lg">
-              <span className="text-xs bg-red-600 px-2 py-0.5 rounded-md">
-                {filteredItems[currentIndex]?.category}
-              </span>
-              <h3 className="font-semibold text-xl mt-2">
-                {filteredItems[currentIndex]?.title}
-              </h3>
-              <p className="text-sm text-gray-200 mt-1">
-                {filteredItems[currentIndex]?.desc}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-gray-500">No images found</p>
-        )}
-        {filteredItems.length > 0 && (
-          <div className="flex justify-center gap-4 mt-6">
-            {filteredItems[currentIndex].images.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt="thumb"
-                onClick={() => setCurrentImageIndex(index)}
-                className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 transition
-            ${
-              index === currentImageIndex
-                ? "border-red-600"
-                : "border-transparent"
-            }`}
-              />
-            ))}
-          </div>
-        )}
       </div>
+    ) : (
+      <div className="py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-slate-400">
+        No moments found in this category.
+      </div>
+    )}
+  </div>
+</section>
 
       <section className="bg-gradient-to-b from-green-50 to-white py-16 px-6 sm:px-10">
         <CustomerReviews />
