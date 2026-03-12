@@ -338,72 +338,103 @@ export default function Home() {
           <div className="w-16 h-1 bg-[#D84C3C] mt-4 rounded-full" />
         </div>
 
-        <section className="bg-[#FAF9F6] py-24 relative overflow-hidden">
-  {/* Elegant architectural lines for background interest */}
-  <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-    <div className="absolute top-0 left-1/4 w-px h-full bg-black" />
-    <div className="absolute top-0 left-3/4 w-px h-full bg-black" />
-  </div>
+        <section className="bg-[#FCFBFA] py-24 relative overflow-hidden">
+  {/* Enhanced Background Accents */}
+  <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-red-50/50 rounded-full blur-[120px] pointer-events-none" />
+  <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-orange-50/30 rounded-full blur-[100px] pointer-events-none" />
 
   <motion.div
     variants={stagger}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: true }}
-    className="max-w-6xl mx-auto grid gap-16 px-6 sm:grid-cols-2 lg:grid-cols-3"
+    viewport={{ once: true, margin: "-100px" }}
+    className="max-w-7xl mx-auto grid gap-10 px-8 sm:grid-cols-2 lg:grid-cols-3 items-start"
   >
     {productList?.length > 0 ? (
       productList.slice(0, 3).map((item, index) => (
         <motion.div
           key={item._id}
           variants={fadeUp}
-          className="relative group cursor-pointer"
+          className={`will-change-transform group ${index === 1 ? "lg:mt-12" : ""}`}
         >
           <Link
             to={`/product/${item._id}`}
             onClick={() => handleGetProductDetails(item)}
-            className="block"
+            className="relative block rounded-[2.5rem] bg-white p-4 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] hover:shadow-[0_48px_100px_-20px_rgba(216,76,60,0.12)] border border-transparent hover:border-gray-100"
           >
-            {/* The Image Wrapper: No card, just the product image with a soft shadow */}
-            <div className="relative aspect-[3/4] mb-8 overflow-hidden rounded-xl">
-              <div className="absolute inset-0 bg-gray-100 transition-transform duration-1000 group-hover:scale-105">
+            {/* Image Container */}
+            <div className="relative overflow-hidden rounded-[2rem] aspect-[4/5] bg-[#F9F9F9]">
+              <div className="absolute inset-0 scale-100 group-hover:scale-105 transition-transform duration-[1.5s] ease-out">
                 <TopSelections product={item} />
+                {/* Subtle dark overlay for better text contrast if needed */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-700" />
               </div>
-              
-              {/* Subtle glass tag */}
-              <div className="absolute bottom-4 left-4 backdrop-blur-md bg-white/30 border border-white/20 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <span className="text-[10px] uppercase tracking-widest text-white font-medium">View Collection</span>
+
+              {/* Enhanced Corner Tag */}
+              <div className="absolute top-6 left-6 flex flex-col gap-2">
+                <div className="bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full shadow-sm border border-white/20">
+                  <p className="text-[9px] font-black tracking-[0.2em] text-gray-800 uppercase">
+                    {item.category || "Premium"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick Action Button - Appears on Hover */}
+              <div className="absolute bottom-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                 <div className="bg-white p-3 rounded-full shadow-xl text-gray-900">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" /></svg>
+                 </div>
               </div>
             </div>
 
-            {/* Content: Clean, center-aligned or offset typography */}
-            <div className="space-y-3 text-center transition-transform duration-500 group-hover:-translate-y-2">
-              <span className="text-[#D84C3C] text-[10px] font-bold uppercase tracking-[0.2em]">
-                Himalayan Series {index + 1}
-              </span>
+            {/* Content Area */}
+            <div className="pt-8 pb-4 px-2">
+              <div className="flex justify-between items-start gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="h-[1px] w-6 bg-[#D84C3C] group-hover:w-10 transition-all duration-500" />
+                    <p className="text-[10px] font-bold text-[#D84C3C] uppercase tracking-widest">
+                      Himalayan Origin
+                    </p>
+                  </div>
+                  
+                  <h3 className="text-xl font-serif text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
+                    {item.name || "Artisanal Product"}
+                  </h3>
+                  
+                  <p className="text-sm text-gray-500 line-clamp-1 font-light">
+                    {item.description || "Ethically sourced and handcrafted."}
+                  </p>
+                </div>
+
+                <div className="text-right">
+                   <p className="text-lg font-medium text-gray-900">
+                     ${item.price || "0.00"}
+                   </p>
+                </div>
+              </div>
               
-              {/* Assumes TopSelections doesn't show the name, or replaces it with yours */}
-              <h3 className="text-xl font-light text-gray-900 italic serif">
-                {item.name || "Handpicked Selection"}
-              </h3>
-              
-              <div className="flex items-center justify-center gap-4 pt-2">
-                <div className="h-[1px] w-4 bg-gray-300 group-hover:w-8 group-hover:bg-[#D84C3C] transition-all duration-500" />
-                <p className="text-sm font-medium text-gray-600">
-                  ₹{item.price || "Price on Request"}
-                </p>
-                <div className="h-[1px] w-4 bg-gray-300 group-hover:w-8 group-hover:bg-[#D84C3C] transition-all duration-500" />
+              {/* Bottom Decorative Element */}
+              <div className="mt-6 pt-4 border-t border-gray-50 flex justify-between items-center">
+                <span className="text-[10px] text-gray-400 font-medium uppercase tracking-tighter">View Details</span>
+                <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#D84C3C] group-hover:text-white transition-all duration-500 transform group-hover:rotate-45">
+                  <span className="text-sm">→</span>
+                </div>
               </div>
             </div>
           </Link>
         </motion.div>
       ))
     ) : (
+      /* Improved Skeleton State */
       <div className="contents">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="space-y-4">
-             <div className="aspect-[3/4] w-full bg-gray-200 animate-pulse rounded-xl" />
-             <div className="h-4 w-1/2 mx-auto bg-gray-200 animate-pulse" />
+          <div key={i} className="h-[550px] rounded-[2.5rem] bg-white p-4 shadow-sm border border-gray-100">
+            <div className="w-full h-[70%] bg-gray-100 rounded-[2rem] animate-pulse" />
+            <div className="mt-8 space-y-4">
+              <div className="h-4 w-1/3 bg-gray-100 rounded animate-pulse" />
+              <div className="h-6 w-2/3 bg-gray-100 rounded animate-pulse" />
+            </div>
           </div>
         ))}
       </div>
