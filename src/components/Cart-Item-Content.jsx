@@ -111,68 +111,71 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     const displayPrice = salePrice > 0 ? salePrice : price;
 
     return (
-      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b border-gray-300 p-3 sm:p-4 bg-white rounded-md shadow-sm hover:shadow-md transition duration-200">
-        {/* Product Image */}
-        <img
-          src={image}
-          alt={title}
-          className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-md object-cover border border-gray-200"
-        />
+      <div className="group relative flex items-start gap-4 p-4 bg-white rounded-[2rem] border border-stone-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-xl hover:shadow-stone-200/40 transition-all duration-500">
+  
+  {/* Product Image - Fixed Aspect Ratio */}
+  <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-stone-50 border border-stone-100">
+    <img
+      src={image}
+      alt={title}
+      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+    />
+  </div>
 
-        {/* Product Info */}
-        <div className="flex-1 flex flex-col justify-between w-full">
-          <div>
-            <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">
-              {title}
-            </h3>
-            <p className="text-xs text-gray-600">
-              {cartItem.size && (
-                <>
-                  Size: <span className="font-medium">{cartItem.size}</span> |
-                </>
-              )}
-              Weight: <span className="font-medium">{cartItem.weight}</span>
-            </p>
-          </div>
-
-          {/* Quantity Controls */}
-          <div className="flex items-center gap-3 mt-3">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full"
-              onClick={() => handleUpdateQuantity(cartItem, "minus")}
-              disabled={cartItem?.quantity === 1}
-            >
-              <Minus className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
-            </Button>
-            <span className="font-semibold text-sm sm:text-base text-gray-800">
-              {cartItem?.quantity}
-            </span>
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full"
-              onClick={() => handleUpdateQuantity(cartItem, "plus")}
-            >
-              <Plus className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Price + Delete */}
-        <div className="flex sm:flex-col items-center sm:items-end justify-between gap-2 w-full sm:w-auto mt-3 sm:mt-0">
-          <p className="text-base sm:text-lg font-bold text-gray-900">
-            ₹{(displayPrice * cartItem.quantity).toFixed(2)}
-          </p>
-          <Trash
-            onClick={() => handleCartItemDelete(cartItem)}
-            className="cursor-pointer text-red-500 hover:text-red-600 transition duration-200"
-            size={20}
-            title="Remove item"
-          />
-        </div>
+  {/* Product Info */}
+  <div className="flex flex-1 flex-col h-full min-h-[96px]">
+    <div className="flex justify-between items-start">
+      <div>
+        <h3 className="text-sm font-black text-stone-900 leading-tight uppercase tracking-tight">
+          {title}
+        </h3>
+        <p className="text-[10px] text-stone-400 font-bold tracking-widest uppercase mt-1">
+          {cartItem.size && <span>{cartItem.size}  •  </span>}
+          <span>{cartItem.weight}</span>
+        </p>
       </div>
+      
+      {/* Price - Top Right for better scanability */}
+      <p className="text-sm font-black text-stone-900 tracking-tighter">
+        ₹{(displayPrice * cartItem.quantity).toFixed(0)}
+      </p>
+    </div>
+
+    {/* Bottom Row: Controls & Delete */}
+    <div className="flex items-center justify-between mt-auto pt-4">
+      
+      {/* Refined Quantity Controls */}
+      <div className="flex items-center bg-stone-50 rounded-full p-1 border border-stone-100">
+        <button
+          onClick={() => handleUpdateQuantity(cartItem, "minus")}
+          disabled={cartItem?.quantity === 1}
+          className="h-7 w-7 flex items-center justify-center rounded-full bg-white shadow-sm disabled:opacity-30 active:scale-90 transition-all"
+        >
+          <Minus className="w-3 h-3 text-stone-600" />
+        </button>
+        
+        <span className="w-8 text-center text-xs font-black text-stone-900">
+          {cartItem?.quantity}
+        </span>
+        
+        <button
+          onClick={() => handleUpdateQuantity(cartItem, "plus")}
+          className="h-7 w-7 flex items-center justify-center rounded-full bg-white shadow-sm active:scale-90 transition-all"
+        >
+          <Plus className="w-3 h-3 text-stone-600" />
+        </button>
+      </div>
+
+      {/* Delete - Minimalist Trash */}
+      <button 
+        onClick={() => handleCartItemDelete(cartItem)}
+        className="p-2 text-stone-300 hover:text-[#B23A2E] hover:bg-red-50 rounded-full transition-all duration-300"
+      >
+        <Trash size={16} />
+      </button>
+    </div>
+  </div>
+</div>
     );
   }
 
