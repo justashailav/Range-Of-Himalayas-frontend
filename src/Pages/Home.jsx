@@ -8,9 +8,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
-import { 
-  HiOutlineChevronDoubleDown 
-} from "react-icons/hi";
+import { HiOutlineChevronDoubleDown } from "react-icons/hi";
 import ShoppingProductTile from "./Product-tile";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
@@ -279,79 +277,99 @@ export default function Home() {
   initial="hidden"
   whileInView="visible"
   viewport={{ once: true }}
-  variants={fadeIn}
-  className="relative w-full h-[85vh] md:h-screen overflow-hidden group"
+  className="relative w-full h-[90vh] md:h-screen overflow-hidden bg-stone-900"
 >
-  <Link to="/viewproducts">
-    {/* 1. Background Image with Deep Overlay */}
+  <Link to="/viewproducts" className="cursor-default">
+    {/* 1. THE CINEMATIC BACKDROP */}
     <motion.div className="absolute inset-0 w-full h-full">
       <motion.img
         src={bgImage}
-        initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 2 }}
+        initial={{ scale: 1.1, filter: "brightness(1) grayscale(20%)" }}
+        animate={{ scale: 1, filter: "brightness(0.7) grayscale(0%)" }}
+        transition={{ duration: 3, ease: "easeOut" }}
         className="w-full h-full object-cover"
       />
-      {/* CRITICAL FIX: This dark overlay "mutes" the wood sign in the background 
-          so your white text can actually be read.
-      */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
+      {/* Subtle Tonal Overlay - No more generic black gradients */}
+      <div className="absolute inset-0 bg-gradient-to-b from-stone-900/40 via-transparent to-stone-900/80" />
     </motion.div>
 
+    {/* 2. THE CONTENT LAYER */}
     <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
       
-      {/* 2. Premium Badge */}
+      {/* Archive Series Label */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="mb-6 px-4 py-1 border border-white/20 bg-white/5 backdrop-blur-xl rounded-full"
+        className="flex items-center gap-4 mb-8"
       >
-        <span className="text-white text-[10px] font-bold uppercase tracking-[0.4em]">
-          Est. 2026 • Premium Organics
+        <div className="h-[1px] w-8 bg-[#B23A2E]" />
+        <span className="text-white text-[10px] font-black uppercase tracking-[0.5em]">
+          Volume 01 • Harvest 2026
         </span>
+        <div className="h-[1px] w-8 bg-[#B23A2E]" />
       </motion.div>
 
-      {/* 3. The Headline: Using Shadow for Depth */}
-      <motion.h1
-        initial={{ y: 30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.7 }}
-        className="text-6xl md:text-8xl lg:text-9xl font-black text-white leading-[0.85] tracking-tighter drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"
-      >
-        PURELY<br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/50">
-          HIMALAYAN.
-        </span>
-      </motion.h1>
+      {/* The Headline: High-Contrast Editorial Style */}
+      <div className="overflow-hidden">
+        <motion.h1
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.7, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-7xl md:text-[10rem] lg:text-[13rem] font-black text-white leading-[0.8] tracking-[ -0.05em] uppercase"
+        >
+          Purely <br />
+          <span className="font-serif italic font-light lowercase tracking-normal text-stone-200">
+            Himalayan
+          </span>
+        </motion.h1>
+      </div>
 
-      {/* 4. Refined Subtext */}
+      {/* 3. DISPATCH LIST (Instead of Subtext) */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="mt-8 space-y-2"
+        transition={{ delay: 1.2 }}
+        className="mt-12 flex flex-wrap justify-center items-center gap-x-8 gap-y-4 max-w-xl border-t border-white/10 pt-8"
       >
-        <p className="text-slate-300 text-lg md:text-xl font-light italic">
-          Discover the soul of the mountains through
-        </p>
-        <p className="text-white font-black uppercase tracking-widest text-xs md:text-sm">
-          Red Rice • Apricots • Wild Honey
-        </p>
+        {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div className="w-1 h-1 rounded-full bg-[#B23A2E]" />
+            <span className="text-white text-[10px] font-black uppercase tracking-[0.3em] opacity-70">
+              {item}
+            </span>
+          </div>
+        ))}
       </motion.div>
 
-      {/* 5. Minimalist Button */}
+      {/* 4. THE BOUTIQUE CTA (No more rounded green buttons) */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="mt-12"
+        transition={{ delay: 1.5 }}
+        className="mt-16 group/btn"
       >
-        <button className="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-green-600 hover:text-white transition-all duration-300 shadow-2xl uppercase text-xs tracking-widest">
-          Shop the Harvest
+        <button className="relative px-12 py-5 overflow-hidden border border-white/20 backdrop-blur-md transition-all duration-500 group-hover/btn:border-[#B23A2E]">
+          {/* Animated Background Slide */}
+          <div className="absolute inset-0 bg-white translate-y-[101%] group-hover/btn:translate-y-0 transition-transform duration-500 ease-out" />
+          
+          <div className="relative flex items-center gap-4">
+            <span className="text-white text-[10px] font-black uppercase tracking-[0.4em] group-hover/btn:text-stone-900 transition-colors duration-500">
+              Enter The Orchard
+            </span>
+            <div className="w-8 h-[1px] bg-white group-hover/btn:bg-stone-900 transition-colors" />
+          </div>
         </button>
       </motion.div>
+
+    </div>
+
+    {/* 5. VERTICAL SCROLL INDICATOR */}
+    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+      <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40 vertical-text">
+        Scroll to Explore
+      </span>
+      <div className="h-12 w-[1px] bg-gradient-to-b from-white/40 to-transparent" />
     </div>
   </Link>
 </motion.div>
