@@ -87,9 +87,25 @@ export default function Navbar() {
     >
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
-          <Link to="/">
-            <img src={logo} className="w-24 sm:w-28 mt-1" alt="Logo" />
-          </Link>
+          <Link 
+  to="/" 
+  className="group relative flex items-center justify-center py-4 transition-all duration-500"
+>
+  {/* Subtle "Light" glow behind logo on hover */}
+  <div className="absolute inset-0 bg-stone-200/20 blur-2xl rounded-full scale-0 group-hover:scale-100 transition-transform duration-700" />
+  
+  <img 
+    src={logo} 
+    alt="Purely Himalayan Logo" 
+    className="relative z-10 w-24 sm:w-32 h-auto object-contain 
+               brightness-90 group-hover:brightness-110 
+               group-hover:scale-105 transition-all duration-700 
+               ease-[cubic-bezier(0.23,1,0.32,1)]" 
+  />
+  
+  {/* The "Signature" underline that only appears on hover */}
+  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-[#B23A2E] group-hover:w-8 transition-all duration-500" />
+</Link>
 
           <div className="flex items-center gap-4 sm:gap-4 mt-2">
             <Sheet open={openCart} onOpenChange={setOpenCart}>
