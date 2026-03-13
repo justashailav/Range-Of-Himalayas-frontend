@@ -271,36 +271,58 @@ export default function ProductsDetailsDialog() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="flex flex-col gap-4">
             <motion.div
-              className="relative overflow-hidden rounded-xl bg-white"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            >
-              <motion.img
-                key={mainImage}
-                src={mainImage}
-                alt={productDetails?.title}
-                onClick={() => setIsImageOpen(true)}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                onDragEnd={(e, info) => {
-                  if (info.offset.x < -80) {
-                    const i = allImages.indexOf(mainImage);
-                    setMainImage(allImages[(i + 1) % allImages.length]);
-                  }
-                  if (info.offset.x > 80) {
-                    const i = allImages.indexOf(mainImage);
-                    setMainImage(
-                      allImages[(i - 1 + allImages.length) % allImages.length],
-                    );
-                  }
-                }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="w-full h-full object-contain mx-auto rounded-lg cursor-zoom-in"
-              />
-            </motion.div>
+  initial={{ opacity: 0, scale: 0.98 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+  className="relative aspect-[4/5] overflow-hidden rounded-[3rem] bg-stone-50 border border-stone-100 group shadow-2xl shadow-stone-200/50"
+>
+  {/* Drag Indicator Overlay (Desktop only) */}
+  <div className="absolute inset-0 z-10 flex items-center justify-between px-6 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+    <div className="w-10 h-10 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-stone-400">
+      <ArrowLeft size={16} />
+    </div>
+    <div className="w-10 h-10 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-stone-400">
+      <ArrowRight size={16} />
+    </div>
+  </div>
+
+  <AnimatePresence mode="wait">
+    <motion.img
+      key={mainImage}
+      src={mainImage}
+      alt={productDetails?.title}
+      onClick={() => setIsImageOpen(true)}
+      
+      /* Smooth Drag Logic */
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={(e, info) => {
+        const i = allImages.indexOf(mainImage);
+        if (info.offset.x < -80) {
+          setMainImage(allImages[(i + 1) % allImages.length]);
+        } else if (info.offset.x > 80) {
+          setMainImage(allImages[(i - 1 + allImages.length) % allImages.length]);
+        }
+      }}
+
+      /* Entrance/Exit Transitions */
+      initial={{ opacity: 0, x: 20, scale: 1.05 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      exit={{ opacity: 0, x: -20, scale: 0.95 }}
+      transition={{ duration: 0.5, ease: "circOut" }}
+      
+      className="w-full h-full object-cover cursor-zoom-in group-active:cursor-grabbing select-none"
+    />
+  </AnimatePresence>
+
+  {/* Image Counter Badge */}
+  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-stone-900/10 backdrop-blur-lg rounded-full z-20">
+    <p className="text-[10px] font-black tracking-[0.3em] text-stone-900 uppercase">
+      {allImages.indexOf(mainImage) + 1} <span className="text-stone-400">/</span> {allImages.length}
+    </p>
+  </div>
+</motion.div>
             <AnimatePresence>
               {isImageOpen && (
                 <motion.div
@@ -699,20 +721,19 @@ export default function ProductsDetailsDialog() {
             </Button>
 
             <div className="mt-6 flex flex-col sm:flex-row gap-4 items-center">
-  
-  {/* ADD TO CART */}
-  <Button
-    onClick={() => {
-      setIsAddingToCart(true);
-      handleAddToCart(
-        productDetails._id,
-        selectedVariant.stock,
-        selectedVariant.size,
-        selectedVariant.weight,
-      );
-      setTimeout(() => setIsAddingToCart(false), 250);
-    }}
-    className="
+              {/* ADD TO CART */}
+              <Button
+                onClick={() => {
+                  setIsAddingToCart(true);
+                  handleAddToCart(
+                    productDetails._id,
+                    selectedVariant.stock,
+                    selectedVariant.size,
+                    selectedVariant.weight,
+                  );
+                  setTimeout(() => setIsAddingToCart(false), 250);
+                }}
+                className="
       w-full sm:w-auto
       bg-[#F08C7D] text-white
       px-12 py-4
@@ -723,23 +744,23 @@ export default function ProductsDetailsDialog() {
       active:scale-[0.98]
       transition
     "
-  >
-    Add to Cart
-  </Button>
+              >
+                Add to Cart
+              </Button>
 
-  {/* WISHLIST ICON */}
-  <button
-    disabled={!selectedVariant}
-    onClick={() => {
-      if (!selectedVariant) return;
-      handleAddToWishList(
-        productDetails._id,
-        selectedVariant.stock,
-        selectedVariant.size || "",
-        selectedVariant.weight,
-      );
-    }}
-    className="
+              {/* WISHLIST ICON */}
+              <button
+                disabled={!selectedVariant}
+                onClick={() => {
+                  if (!selectedVariant) return;
+                  handleAddToWishList(
+                    productDetails._id,
+                    selectedVariant.stock,
+                    selectedVariant.size || "",
+                    selectedVariant.weight,
+                  );
+                }}
+                className="
       h-14 w-14
       rounded-full
       border border-gray-300
@@ -751,11 +772,10 @@ export default function ProductsDetailsDialog() {
       transition
       disabled:opacity-50
     "
-  >
-    <Heart className="w-6 h-6" />
-  </button>
-</div>
-
+              >
+                <Heart className="w-6 h-6" />
+              </button>
+            </div>
           </div>
         </div>
         <div className="mt-10  mx-auto">
