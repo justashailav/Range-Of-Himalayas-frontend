@@ -235,111 +235,116 @@ export default function WishListItemContent() {
                 key={`${cartItem.productId}-${cartItem.size}-${weight}`}
                 className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group overflow-hidden"
               >
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-stone-100 border border-stone-100 transition-all duration-700 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] group-hover:-translate-y-2">
-  
-  {/* PRODUCT IMAGE */}
-  <img
-    src={image}
-    alt={title}
-    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[0.1] group-hover:grayscale-0"
-  />
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-stone-100 transition-all duration-700 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] group-hover:-translate-y-2">
+                  {/* PRODUCT IMAGE */}
+                  <img
+                    src={image}
+                    alt={title}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[0.1] group-hover:grayscale-0"
+                  />
 
-  {/* TOP ACTION BAR */}
-  <div className="absolute top-5 inset-x-5 flex justify-between items-start z-20">
-    {/* DISCOUNT BADGE */}
-    {discount > 0 ? (
-      <motion.span
-        initial={{ opacity: 0, x: -10 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-[#B23A2E] text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm"
-      >
-        {discount}% SAVINGS
-      </motion.span>
-    ) : <div />}
+                  {/* TOP ACTION BAR */}
+                  <div className="absolute top-5 inset-x-5 flex justify-between items-start z-20">
+                    {/* DISCOUNT BADGE */}
+                    {discount > 0 ? (
+                      <motion.span
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="bg-[#B23A2E] text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm"
+                      >
+                        {discount}% SAVINGS
+                      </motion.span>
+                    ) : (
+                      <div />
+                    )}
 
-    {/* DELETE BUTTON - Updated for Mobile Visibility */}
-    <motion.button
-      onClick={(e) => {
-        e.stopPropagation(); // Prevents accidental clicks on the card
-        handleCartItemDelete(cartItem);
-      }}
-      whileTap={{ scale: 0.9 }}
-      /* Change: opacity-100 on mobile (default), 
+                    {/* DELETE BUTTON - Updated for Mobile Visibility */}
+                    <motion.button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents accidental clicks on the card
+                        handleCartItemDelete(cartItem);
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      /* Change: opacity-100 on mobile (default), 
          opacity-0 on desktop (md:opacity-0),
          group-hover reveals it on desktop.
       */
-      className="w-10 h-10 flex items-center justify-center bg-white/90 backdrop-blur-md rounded-full text-stone-400 active:text-[#B23A2E] md:opacity-0 group-hover:opacity-100 transition-all duration-300 md:translate-y-2 group-hover:translate-y-0 shadow-md"
-      title="Remove from archive"
-    >
-      <Trash2 size={16} />
-    </motion.button>
-  </div>
+                      className="w-10 h-10 flex items-center justify-center bg-white/90 backdrop-blur-md rounded-full text-stone-400 active:text-[#B23A2E] md:opacity-0 group-hover:opacity-100 transition-all duration-300 md:translate-y-2 group-hover:translate-y-0 shadow-md"
+                      title="Remove from archive"
+                    >
+                      <Trash2 size={16} />
+                    </motion.button>
+                  </div>
 
-  {/* GRADIENT OVERLAY - Made slightly more visible on mobile to help the white button pop */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-</div>
+                  {/* GRADIENT OVERLAY - Made slightly more visible on mobile to help the white button pop */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
 
-               <div className="p-6 space-y-6">
-  {/* TITLE & PRICE SECTION */}
-  <div className="flex justify-between items-start gap-4">
-    <div className="flex-1">
-      <h3 className="text-xl font-black text-stone-900 tracking-tighter leading-[1.1] line-clamp-2 uppercase">
-        {title}
-      </h3>
-    </div>
-    <div className="text-right shrink-0">
-      {price !== salePrice ? (
-        <div className="flex flex-col items-end">
-          <span className="text-[10px] text-stone-300 line-through font-bold decoration-stone-300">
-            ₹{price}
-          </span>
-          <span className="text-2xl font-serif italic text-stone-900">
-            ₹{salePrice}
-          </span>
-        </div>
-      ) : (
-        <span className="text-2xl font-serif italic text-stone-900">
-          ₹{price}
-        </span>
-      )}
-    </div>
-  </div>
+                <div className="p-6 space-y-6">
+                  {/* TITLE & PRICE SECTION */}
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-black text-stone-900 tracking-tighter leading-[1.1] line-clamp-2 uppercase">
+                        {title}
+                      </h3>
+                    </div>
+                    <div className="text-right shrink-0">
+                      {price !== salePrice ? (
+                        <div className="flex flex-col items-end">
+                          <span className="text-[10px] text-stone-300 line-through font-bold decoration-stone-300">
+                            ₹{price}
+                          </span>
+                          <span className="text-2xl font-serif italic text-stone-900">
+                            ₹{salePrice}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-2xl font-serif italic text-stone-900">
+                          ₹{price}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-  {/* MINIMALIST ATTRIBUTE TAGS */}
-  <div className="flex flex-wrap gap-2">
-    {variant?.size && (
-      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
-        <span className="text-stone-300">Size:</span> {variant.size}
-      </div>
-    )}
-    {weight && (
-      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
-        <span className="text-stone-300">Net:</span> {weight}
-      </div>
-    )}
-  </div>
+                  {/* MINIMALIST ATTRIBUTE TAGS */}
+                  <div className="flex flex-wrap gap-2">
+                    {variant?.size && (
+                      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
+                        <span className="text-stone-300">Size:</span>{" "}
+                        {variant.size}
+                      </div>
+                    )}
+                    {weight && (
+                      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
+                        <span className="text-stone-300">Net:</span> {weight}
+                      </div>
+                    )}
+                  </div>
 
-  {/* PREMIUM ADD TO CART BUTTON */}
-  <button
-    onClick={() =>
-      handleAddToCart(
-        product?._id || cartItem.productId,
-        totalStock,
-        variant?.size,
-        weight,
-      )
-    }
-    className="w-full group/btn relative flex items-center justify-center gap-3 bg-stone-900 text-white py-4 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-[#B23A2E] hover:shadow-xl hover:shadow-stone-200 active:scale-[0.98]"
-  >
-    {/* Subtle Shine Effect */}
-    <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]" />
-    
-    <ShoppingCart size={16} className="transition-transform group-hover/btn:-rotate-12" />
-    <span className="text-[11px] font-black uppercase tracking-[0.2em]">
-      Move to Basket
-    </span>
-  </button>
-</div>
+                  {/* PREMIUM ADD TO CART BUTTON */}
+                  <button
+                    onClick={() =>
+                      handleAddToCart(
+                        product?._id || cartItem.productId,
+                        totalStock,
+                        variant?.size,
+                        weight,
+                      )
+                    }
+                    className="w-full group/btn relative flex items-center justify-center gap-3 bg-stone-900 text-white py-4 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-[#B23A2E] hover:shadow-xl hover:shadow-stone-200 active:scale-[0.98]"
+                  >
+                    {/* Subtle Shine Effect */}
+                    <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]" />
+
+                    <ShoppingCart
+                      size={16}
+                      className="transition-transform group-hover/btn:-rotate-12"
+                    />
+                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+                      Move to Basket
+                    </span>
+                  </button>
+                </div>
               </div>
             );
           })}
