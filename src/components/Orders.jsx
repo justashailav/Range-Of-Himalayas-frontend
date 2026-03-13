@@ -111,88 +111,112 @@ export default function ShoppingOrders() {
                 <CardContent className="p-6">
                   {/* TOP ROW */}
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 p-2">
-  {/* IDENTIFICATION BLOCK */}
-  <div className="space-y-1.5">
-    <div className="flex items-center gap-3">
-      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
-        Entry Ref.
-      </span>
-      <p className="font-mono text-[11px] tracking-tighter text-stone-800 bg-stone-100 px-2 py-0.5 rounded">
-        {order._id}
-      </p>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <Calendar size={12} className="text-stone-400" />
-      <p className="text-[11px] font-black uppercase tracking-widest text-stone-600">
-        {order.createdAt
-          ? new Date(order.createdAt).toLocaleDateString("en-IN", {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric'
-            })
-          : "Date pending"}
-      </p>
-    </div>
-  </div>
+                    {/* IDENTIFICATION BLOCK */}
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+                          Entry Ref.
+                        </span>
+                        <p className="font-mono text-[11px] tracking-tighter text-stone-800 bg-stone-100 px-2 py-0.5 rounded">
+                          {order._id}
+                        </p>
+                      </div>
 
-  {/* VALUE & STATUS BLOCK */}
-  <div className="flex items-center justify-between md:justify-end gap-8 border-t md:border-t-0 pt-4 md:pt-0 border-stone-100">
-    <div className="flex flex-col items-end">
-      <span className="text-[9px] font-black uppercase tracking-widest text-stone-400">Total Yield Value</span>
-      <p className="text-xl font-black text-stone-900 tracking-tighter">
-        ₹{order.totalAmount.toLocaleString('en-IN')}
-      </p>
-    </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar size={12} className="text-stone-400" />
+                        <p className="text-[11px] font-black uppercase tracking-widest text-stone-600">
+                          {order.createdAt
+                            ? new Date(order.createdAt).toLocaleDateString(
+                                "en-IN",
+                                {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                },
+                              )
+                            : "Date pending"}
+                        </p>
+                      </div>
+                    </div>
 
-    <div className="flex flex-col items-end gap-1.5">
-      <span className="text-[9px] font-black uppercase tracking-widest text-stone-400">Transit Status</span>
-      <Badge
-        className={`px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-[0.15em] border ${
-          order.orderStatus === 'delivered' 
-            ? "bg-stone-900 text-white border-stone-900" 
-            : "bg-white text-[#B23A2E] border-[#B23A2E]"
-        }`}
-      >
-        {order.orderStatus}
-      </Badge>
-    </div>
-  </div>
-</div>
+                    {/* VALUE & STATUS BLOCK */}
+                    <div className="flex items-center justify-between md:justify-end gap-8 border-t md:border-t-0 pt-4 md:pt-0 border-stone-100">
+                      <div className="flex flex-col items-end">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-stone-400">
+                          Total Yield Value
+                        </span>
+                        <p className="text-xl font-black text-stone-900 tracking-tighter">
+                          ₹{order.totalAmount.toLocaleString("en-IN")}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-col items-end gap-1.5">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-stone-400">
+                          Transit Status
+                        </span>
+                        <Badge
+                          className={`px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-[0.15em] border ${
+                            order.orderStatus === "delivered"
+                              ? "bg-stone-900 text-white border-stone-900"
+                              : "bg-white text-[#B23A2E] border-[#B23A2E]"
+                          }`}
+                        >
+                          {order.orderStatus}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* STATUS TIMELINE */}
                   {statusSteps.includes(order.orderStatus) && (
-                    <div className="mt-6">
-                      <div className="flex items-center justify-between">
-                        {statusSteps.map((step, idx) => (
-                          <div
-                            key={step}
-                            className="flex-1 flex flex-col items-center"
-                          >
-                            <div
-                              className={`w-3 h-3 rounded-full ${
-                                idx <= currentIndex
-                                  ? "bg-green-600"
-                                  : "bg-gray-300"
-                              }`}
-                            />
-                            {idx !== statusSteps.length - 1 && (
-                              <div
-                                className={`h-[2px] w-full ${
-                                  idx < currentIndex
-                                    ? "bg-green-600"
-                                    : "bg-gray-300"
-                                }`}
-                              />
-                            )}
-                            <span className="text-xs mt-2 text-gray-600 capitalize">
-                              {step}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+  <div className="mt-12 mb-6 px-2">
+    <div className="flex items-center">
+      {statusSteps.map((step, idx) => (
+        <div
+          key={step}
+          className="flex-1 relative flex flex-col items-center"
+        >
+          {/* THE TRACKING LINE */}
+          {idx !== statusSteps.length - 1 && (
+            <div
+              className={`absolute top-[6px] left-[50%] w-full h-[1px] transition-colors duration-1000 ${
+                idx < currentIndex ? "bg-stone-900" : "bg-stone-200"
+              }`}
+            />
+          )}
+
+          {/* THE NODE (POINT) */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div
+              className={`w-3 h-3 rounded-full border-2 transition-all duration-700 ${
+                idx <= currentIndex 
+                  ? "bg-stone-900 border-stone-900 shadow-[0_0_10px_rgba(0,0,0,0.1)]" 
+                  : "bg-white border-stone-200"
+              } ${idx === currentIndex ? "animate-pulse ring-4 ring-stone-900/10" : ""}`}
+            />
+            
+            {/* STEP LABEL */}
+            <div className="absolute top-6 flex flex-col items-center min-w-[80px]">
+              <span className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${
+                idx <= currentIndex ? "text-stone-900" : "text-stone-300"
+              }`}>
+                {step}
+              </span>
+              
+              {/* INDICATOR DOT FOR CURRENT STEP */}
+              {idx === currentIndex && (
+                <motion.div 
+                  layoutId="active-dot"
+                  className="w-1 h-1 bg-[#B23A2E] rounded-full mt-1" 
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
                   {/* ACTION */}
                   <div className="mt-6 flex justify-end">
