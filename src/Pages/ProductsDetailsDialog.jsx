@@ -492,394 +492,236 @@ export default function ProductsDetailsDialog() {
             )}
 
             {productDetails?.nutrition && (
-  <div className="mt-8 overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
-    {/* HEADER */}
-    <div className="px-8 py-8 border-b border-stone-800 flex items-center justify-between">
-      <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-[#B23A2E] flex items-center justify-center shadow-lg shadow-[#B23A2E]/20">
-          <Leaf size={18} className="text-white" />
-        </div>
-        <div>
-          <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">
-            Nutritional Values
-          </h3>
-          <p className="text-lg font-serif italic text-white leading-none mt-1">
-            Per 100g serving
-          </p>
-        </div>
-      </div>
-      <div className="hidden sm:block px-4 py-1 border border-stone-700 rounded-full text-[8px] font-black uppercase tracking-widest text-stone-500">
-        Lab Verified
-      </div>
-    </div>
+              <div className="mt-8 overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
+                {/* HEADER */}
+                <div className="px-8 py-8 border-b border-stone-800 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-[#B23A2E] flex items-center justify-center shadow-lg shadow-[#B23A2E]/20">
+                      <Leaf size={18} className="text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">
+                        Nutritional Values
+                      </h3>
+                      <p className="text-lg font-serif italic text-white leading-none mt-1">
+                        Per 100g serving
+                      </p>
+                    </div>
+                  </div>
+                  <div className="hidden sm:block px-4 py-1 border border-stone-700 rounded-full text-[8px] font-black uppercase tracking-widest text-stone-500">
+                    Lab Verified
+                  </div>
+                </div>
 
-    {/* NUTRITION GRID */}
-    <div className="px-8 py-6">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-        {Object.entries(productDetails.nutrition)
-          .filter(
-            ([key, value]) =>
-              !["_id", "__v"].includes(key) &&
-              value !== null &&
-              value !== undefined &&
-              value !== "",
-          )
-          .map(([key, value]) => (
-            <div key={key} className="space-y-1 group">
-              <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 group-hover:text-[#B23A2E] transition-colors">
-                {key.replace(/_/g, " ")}
-              </p>
-              <p className="text-2xl font-light tracking-tighter text-white">
-                {value}
-              </p>
-              {/* Subtle underline decoration */}
-              <div className="h-[1px] w-full bg-stone-800 group-hover:bg-stone-700 transition-colors" />
-            </div>
+                {/* NUTRITION GRID */}
+                <div className="px-8 py-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    {Object.entries(productDetails.nutrition)
+                      .filter(
+                        ([key, value]) =>
+                          !["_id", "__v"].includes(key) &&
+                          value !== null &&
+                          value !== undefined &&
+                          value !== "",
+                      )
+                      .map(([key, value]) => (
+                        <div key={key} className="space-y-1 group">
+                          <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 group-hover:text-[#B23A2E] transition-colors">
+                            {key.replace(/_/g, " ")}
+                          </p>
+                          <p className="text-2xl font-light tracking-tighter text-white">
+                            {value}
+                          </p>
+                          {/* Subtle underline decoration */}
+                          <div className="h-[1px] w-full bg-stone-800 group-hover:bg-stone-700 transition-colors" />
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                {/* FOOTER NOTE */}
+                <div className="px-8 py-4 bg-stone-800/50 flex items-center gap-2">
+                  <div className="w-1 h-1 bg-[#B23A2E] rounded-full animate-pulse" />
+                  <p className="text-[9px] font-medium text-stone-500 italic tracking-wider">
+                    Pure Himalayan produce. Values may vary with seasonal
+                    harvest.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col gap-10">
+  {/* LIVE SOCIAL PROOF */}
+  <motion.div
+    initial={{ opacity: 0, x: -10 }}
+    animate={{ opacity: 1, x: 0 }}
+    className="flex items-center gap-3 bg-stone-50 w-fit px-4 py-2 rounded-full border border-stone-100"
+  >
+    <div className="relative flex h-2 w-2">
+      <motion.span
+        animate={{ scale: [1, 2.5, 1], opacity: [0.5, 0, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        className="absolute inline-flex h-full w-full rounded-full bg-[#B23A2E]"
+      />
+      <span className="relative inline-flex h-2 w-2 rounded-full bg-[#B23A2E]" />
+    </div>
+    <p className="text-[10px] font-black uppercase tracking-widest text-stone-500">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={viewers}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -5 }}
+          className="text-stone-900"
+        >
+          {viewers}
+        </motion.span>
+      </AnimatePresence>{" "}
+      Collectors Viewing Now
+    </p>
+  </motion.div>
+
+  {/* BRAND & TITLE */}
+  <div className="space-y-2">
+    <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+      Range of Himalayas
+    </h4>
+    <h1 className="text-5xl font-black text-stone-900 tracking-tighter leading-none uppercase">
+      {productDetails?.title}
+    </h1>
+    <p className="text-stone-500 text-lg font-serif italic max-w-xl leading-relaxed mt-4">
+      {productDetails?.description}
+    </p>
+  </div>
+
+  {/* VARIANT SELECTION */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    {hasSize && (
+      <div className="space-y-2">
+        <label className="text-[10px] font-black uppercase tracking-widest text-stone-400">Dimension / Size</label>
+        <select
+          value={selectedSize}
+          onChange={(e) => {
+            const newSize = e.target.value;
+            setSelectedSize(newSize);
+            setSelectedWeight(getWeightsBySize(newSize)[0]);
+          }}
+          className="w-full bg-stone-50 border-none rounded-2xl p-4 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-stone-200 appearance-none cursor-pointer"
+        >
+          {sizes.map((size) => (
+            <option key={size} value={size}>{size}</option>
           ))}
+        </select>
       </div>
-    </div>
+    )}
 
-    {/* FOOTER NOTE */}
-    <div className="px-8 py-4 bg-stone-800/50 flex items-center gap-2">
-      <div className="w-1 h-1 bg-[#B23A2E] rounded-full animate-pulse" />
-      <p className="text-[9px] font-medium text-stone-500 italic tracking-wider">
-        Pure Himalayan produce. Values may vary with seasonal harvest.
-      </p>
+    <div className="space-y-2">
+      <label className="text-[10px] font-black uppercase tracking-widest text-stone-400">Net Weight</label>
+      <select
+        value={selectedWeight}
+        onChange={(e) => setSelectedWeight(e.target.value)}
+        className="w-full bg-stone-50 border-none rounded-2xl p-4 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-stone-200 appearance-none cursor-pointer"
+      >
+        {getWeightsBySize(selectedSize).map((weight) => {
+          const variant = getVariant(selectedSize, weight);
+          return (
+            <option key={weight} value={weight} disabled={variant.stock === 0}>
+              {weight} {variant.stock === 0 ? "— Vaulted" : ""}
+            </option>
+          );
+        })}
+      </select>
     </div>
   </div>
-)}
-          </div>
-          <div className="flex flex-col gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="flex items-center gap-2 mt-3"
-            >
-              {/* Live indicator */}
-              <div className="relative flex items-center justify-center">
-                {/* soft glow */}
-                <motion.span
-                  animate={{ scale: [1, 1.6, 1], opacity: [0.6, 0, 0.6] }}
-                  transition={{
-                    duration: 1.8,
-                    repeat: Infinity,
-                    ease: "easeOut",
-                  }}
-                  className="absolute inline-flex h-4 w-4 rounded-full bg-green-400"
-                />
-                {/* solid dot */}
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
-              </div>
 
-              {/* Animated number */}
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={viewers}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.25 }}
-                  className="text-green-600 font-semibold text-sm"
-                >
-                  {viewers}
-                </motion.span>
-              </AnimatePresence>
+  {/* PRICING & LOGISTICS */}
+  <div className="flex flex-wrap items-end gap-6 py-6 border-y border-stone-100">
+    <div className="flex flex-col">
+      {selectedVariant?.salesPrice > 0 ? (
+        <div className="flex items-baseline gap-3">
+          <span className="text-4xl font-black text-stone-900 italic font-serif">
+            ₹{selectedVariant.salesPrice.toFixed(2)}
+          </span>
+          <span className="text-sm text-stone-300 line-through font-bold">
+            ₹{selectedVariant.price.toFixed(2)}
+          </span>
+        </div>
+      ) : (
+        <span className="text-4xl font-black text-stone-900 italic font-serif">
+          ₹{selectedVariant?.price.toFixed(2)}
+        </span>
+      )}
+    </div>
 
-              <span className="text-gray-800 text-sm font-medium">
-                People are watching
-              </span>
-            </motion.div>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.15 },
-                },
-              }}
-            >
-              {/* Brand Name */}
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="font-semibold text-gray-700 tracking-wide"
-              >
-                RANGE OF HIMALAYAS
-              </motion.div>
+    <div className="flex items-center gap-3 ml-auto">
+      <div className={`h-2 w-2 rounded-full ${selectedVariant?.stock < 5 ? 'bg-orange-500' : 'bg-stone-900'}`} />
+      <p className="text-[10px] font-black uppercase tracking-widest text-stone-500">
+        {selectedVariant?.stock < 5 ? "Rare Supply" : `Stocked: ${selectedVariant?.stock}`}
+      </p>
+      <span className="bg-stone-100 text-stone-900 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">
+        Free Transit
+      </span>
+    </div>
+  </div>
 
-              {/* Product Title */}
-              <motion.h1
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-4xl font-bold text-gray-900 mt-2"
-              >
-                {productDetails?.title}
-              </motion.h1>
+  {/* PRIMARY ACTIONS */}
+  <div className="flex flex-col sm:flex-row gap-4">
+    <button
+      onClick={() => handleAddToCart(productDetails._id, selectedVariant.stock, selectedVariant.size, selectedVariant.weight)}
+      className="flex-1 bg-stone-900 text-white py-5 rounded-2xl font-black uppercase text-[11px] tracking-[0.2em] hover:bg-[#B23A2E] transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 active:scale-95"
+    >
+      Acquire to Basket
+    </button>
+    <button
+      onClick={() => handleAddToWishList(productDetails._id, selectedVariant.stock, selectedVariant.size || "", selectedVariant.weight)}
+      className="w-16 h-16 flex items-center justify-center rounded-2xl border border-stone-200 text-stone-400 hover:text-[#B23A2E] hover:border-[#B23A2E] transition-all"
+    >
+      <Heart size={20} fill={isInWishlist ? "currentColor" : "none"} />
+    </button>
+  </div>
 
-              {/* Description */}
-              <motion.p
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="text-gray-700 text-base leading-relaxed mt-4"
-              >
-                {productDetails?.description}
-              </motion.p>
-            </motion.div>
+  {/* REVIEW ARCHIVE FORM */}
+  <div className="mt-12 p-8 bg-stone-50 rounded-[2.5rem] border border-stone-100 space-y-6">
+    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">Share your Experience</h4>
+    
+    <div className="flex items-center gap-4">
+      <StarRatingComponent rating={rating} onChange={handleRatingChange} />
+      <span className="text-[10px] font-black text-stone-900 uppercase">
+        {rating > 0 ? `${rating} / 5 Score` : "Awaiting Rating"}
+      </span>
+    </div>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { staggerChildren: 0.15 },
-                },
-              }}
-              className="flex gap-4 flex-wrap"
-            >
-              {/* SIZE — ONLY IF EXISTS */}
-              {hasSize && (
-                <motion.div
-                  variants={{
-                    hidden: { opacity: 0, y: 10 },
-                    visible: { opacity: 1, y: 0 },
-                  }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="flex-1"
-                >
-                  <label className="block text-gray-800 font-medium mb-1">
-                    Select Size
-                  </label>
-                  <select
-                    value={selectedSize}
-                    onChange={(e) => {
-                      const newSize = e.target.value;
-                      setSelectedSize(newSize);
-                      setSelectedWeight(getWeightsBySize(newSize)[0]);
-                    }}
-                    className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#F08C7D]"
-                  >
-                    {sizes.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
-                  </select>
-                </motion.div>
-              )}
+    <textarea
+      value={reviewMsg}
+      onChange={(e) => setReviewMsg(e.target.value)}
+      placeholder="Describe the texture, aroma, and essence..."
+      className="w-full bg-white border-none rounded-2xl p-6 text-sm text-stone-900 focus:ring-2 focus:ring-stone-200 h-32 outline-none placeholder:text-stone-300"
+    />
 
-              {/* WEIGHT — ALWAYS REQUIRED */}
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                className="flex-1"
-              >
-                <label className="block text-gray-800 font-medium mb-1">
-                  Select Weight
-                </label>
-                <select
-                  value={selectedWeight}
-                  onChange={(e) => setSelectedWeight(e.target.value)}
-                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#F08C7D]"
-                >
-                  {getWeightsBySize(selectedSize).map((weight) => {
-                    const variant = getVariant(selectedSize, weight);
-                    return (
-                      <option
-                        key={weight}
-                        value={weight}
-                        disabled={variant.stock === 0}
-                      >
-                        {weight}
-                        {variant.salesPrice > 0 && " (Sale)"}
-                        {variant.stock === 0 && " (Out of Stock)"}
-                      </option>
-                    );
-                  })}
-                </select>
-              </motion.div>
-            </motion.div>
+    <div className="space-y-3">
+      <label className="text-[10px] font-black uppercase tracking-widest text-stone-400 block">Visual Proof (Optional)</label>
+      <input type="file" multiple accept="image/*" onChange={handleImageChange} className="hidden" id="review-upload" />
+      <label htmlFor="review-upload" className="inline-block px-6 py-3 bg-white border border-stone-200 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-stone-100 transition">
+        Upload Imagery
+      </label>
+      
+      {reviewImages.length > 0 && (
+        <div className="flex gap-2 mt-4">
+          {reviewImages.map((img, idx) => (
+            <img key={idx} src={URL.createObjectURL(img)} className="w-16 h-16 object-cover rounded-xl border border-stone-200 shadow-sm" alt="Preview" />
+          ))}
+        </div>
+      )}
+    </div>
 
-            {/* Price & Stock */}
-            <div className="flex items-center gap-4">
-              {selectedVariant?.salesPrice > 0 ? (
-                <>
-                  <p className="text-gray-500 text-xl line-through">
-                    ₹{selectedVariant.price.toFixed(2)}
-                  </p>
-                  <p className="text-3xl font-bold text-green-600">
-                    ₹{selectedVariant.salesPrice.toFixed(2)}
-                  </p>
-                  <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    SAVE{" "}
-                    {Math.round(
-                      100 -
-                        (selectedVariant.salesPrice / selectedVariant.price) *
-                          100,
-                    )}
-                    %
-                  </span>
-                </>
-              ) : (
-                <p className="text-3xl font-bold text-gray-900">
-                  ₹{selectedVariant?.price.toFixed(2)}
-                </p>
-              )}
-            </div>
-
-            <div className="flex items-center gap-10">
-              {selectedVariant?.stock > 0 ? (
-                <p
-                  className={`text-sm font-medium ${
-                    selectedVariant.stock < 5
-                      ? "text-red-600"
-                      : "text-green-600"
-                  }`}
-                >
-                  {selectedVariant.stock < 5
-                    ? "Low stock!"
-                    : `In stock: ${selectedVariant.stock}`}
-                </p>
-              ) : (
-                <p className="text-red-600 font-medium">Out of stock</p>
-              )}
-              <div className="mt-2 text-sm text-gray-700">
-                <p>
-                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full font-semibold">
-                    Free Shipping
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            {/* Review Section */}
-            <div className="flex flex-col items-start gap-2 mb-4">
-              <label className="font-semibold text-gray-700">Your Rating</label>
-              <div className="flex items-center gap-2">
-                <StarRatingComponent
-                  rating={rating}
-                  onChange={handleRatingChange}
-                />
-                <span className="text-sm text-gray-600">
-                  {rating > 0 ? `${rating} / 5` : "Select Rating"}
-                </span>
-              </div>
-            </div>
-            <textarea
-              value={reviewMsg}
-              onChange={(e) => setReviewMsg(e.target.value)}
-              placeholder="Write your review here..."
-              className="w-full border border-gray-300 rounded-md p-3 text-gray-800 focus:ring-2 focus:ring-[#F08C7D] focus:outline-none mb-4"
-              rows="5"
-            />
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-1">
-                Upload Images (optional)
-              </label>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageChange}
-                className="w-full border border-gray-300 rounded-md p-2 text-gray-600"
-              />
-              {reviewImages.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {reviewImages.map((img, idx) => (
-                    <img
-                      key={idx}
-                      src={URL.createObjectURL(img)}
-                      alt={`preview-${idx}`}
-                      className="w-20 h-20 object-cover rounded-md border"
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <Button
-              onClick={handleAddReview}
-              className="w-full bg-[#F08C7D] text-white py-3 font-semibold rounded-md hover:bg-[#e77b6c] transition"
-            >
-              Submit Review
-            </Button>
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-4 items-center">
-              {/* ADD TO CART */}
-              <Button
-                onClick={() => {
-                  setIsAddingToCart(true);
-                  handleAddToCart(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size,
-                    selectedVariant.weight,
-                  );
-                  setTimeout(() => setIsAddingToCart(false), 250);
-                }}
-                className="
-      w-full sm:w-auto
-      bg-[#F08C7D] text-white
-      px-12 py-4
-      text-base font-semibold
-      rounded-lg
-      shadow-md hover:shadow-lg
-      hover:bg-[#ee7f6e]
-      active:scale-[0.98]
-      transition
-    "
-              >
-                Add to Cart
-              </Button>
-
-              {/* WISHLIST ICON */}
-              <button
-                disabled={!selectedVariant}
-                onClick={() => {
-                  if (!selectedVariant) return;
-                  handleAddToWishList(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size || "",
-                    selectedVariant.weight,
-                  );
-                }}
-                className="
-      h-14 w-14
-      rounded-full
-      border border-gray-300
-      flex items-center justify-center
-      text-gray-600
-      hover:border-[#F08C7D]
-      hover:text-[#F08C7D]
-      hover:bg-[#F08C7D]/10
-      transition
-      disabled:opacity-50
-    "
-              >
-                <Heart className="w-6 h-6" />
-              </button>
-            </div>
-          </div>
+    <button
+      onClick={handleAddReview}
+      className="w-full border border-stone-900 text-stone-900 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-stone-900 hover:text-white transition-all"
+    >
+      Submit to Archive
+    </button>
+  </div>
+</div>
         </div>
         <div className="mt-10  mx-auto">
           <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
