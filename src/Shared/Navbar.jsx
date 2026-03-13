@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-himalayas.png";
 import UserCartWrapper from "@/components/Cart-wrapper";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import {
   DropdownMenu,
@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { resetAuthSlice } from "@/store/slices/authSlice";
 import { persistor } from "@/store/store";
 import { useScroll, motion, useMotionValueEvent } from "framer-motion";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+
 
 export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
@@ -232,46 +232,57 @@ export default function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
                 <DropdownMenuGroup>
-                  {user ? (
-                    <>
-                      <Link to="/profile">
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          Profile
-                        </DropdownMenuItem>
-                      </Link>
-                      <Link to="/account">
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          Account
-                        </DropdownMenuItem>
-                      </Link>
-                      <div>
-                        <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                          <Button
-                            onClick={() => navigate("/order-tracking")}
-                            className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
-                          >
-                            Track your order
-                          </Button>
-                        </DropdownMenuItem>
-                      </div>
-                      <DropdownMenuItem
-                        className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer"
-                        onClick={handleLogout}
-                      >
-                        <LogOut className="w-4 h-4 text-muted-foreground" />
-                        Logout
-                      </DropdownMenuItem>
-                    </>
-                  ) : (
-                    <Link to="/login">
-                      <DropdownMenuItem className="gap-2 hover:bg-gray-100 rounded-lg px-3 py-2 cursor-pointer">
-                        <User className="w-4 h-4 text-muted-foreground" />
-                        Login
-                      </DropdownMenuItem>
-                    </Link>
-                  )}
+                  <DropdownMenuContent className="w-56 bg-[#fdfcf7] border border-stone-200 rounded-none p-2 shadow-xl">
+  {user ? (
+    <>
+      {/* HEADER SECTION */}
+      <div className="px-3 py-4 border-b border-stone-100 mb-2">
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">Member</p>
+        <p className="font-serif italic text-stone-900 truncate">{user?.name || "Explorer"}</p>
+      </div>
+
+      {/* NAVIGATION LINKS */}
+      <Link to="/profile">
+        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-stone-100 focus:bg-stone-100 group">
+          <User className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors" strokeWidth={1.5} />
+          <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">The Profile</span>
+        </DropdownMenuItem>
+      </Link>
+
+      <Link to="/account">
+        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-stone-100 focus:bg-stone-100 group">
+          <Settings className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors" strokeWidth={1.5} />
+          <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">Account Settings</span>
+        </DropdownMenuItem>
+      </Link>
+
+      {/* TRACK ORDER: Refined as an editorial link rather than a heavy button */}
+      <DropdownMenuItem 
+        onClick={() => navigate("/order-tracking")}
+        className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-[#2d3a2d] hover:text-white focus:bg-[#2d3a2d] focus:text-white group border-t border-stone-100 mt-2"
+      >
+        <Package className="w-4 h-4 text-stone-400 group-hover:text-white transition-colors" strokeWidth={1.5} />
+        <span className="text-[10px] font-black uppercase tracking-[0.2em]">Track Current Harvest</span>
+      </DropdownMenuItem>
+
+      {/* LOGOUT */}
+      <DropdownMenuItem
+        onClick={handleLogout}
+        className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-red-50 group"
+      >
+        <LogOut className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors" strokeWidth={1.5} />
+        <span className="text-[11px] font-black uppercase tracking-widest text-stone-400 group-hover:text-[#B23A2E]">Exit Archive</span>
+      </DropdownMenuItem>
+    </>
+  ) : (
+    <Link to="/login">
+      <DropdownMenuItem className="flex items-center gap-3 px-3 py-4 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-800 transition-colors">
+        <User className="w-4 h-4 text-white/60" strokeWidth={1.5} />
+        <span className="text-[11px] font-black uppercase tracking-[0.4em]">Member Login</span>
+      </DropdownMenuItem>
+    </Link>
+  )}
+</DropdownMenuContent>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
