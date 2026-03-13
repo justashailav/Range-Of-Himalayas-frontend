@@ -396,26 +396,26 @@ export default function ProductsDetailsDialog() {
               )}
             </AnimatePresence>
 
-           {allImages.length > 1 && (
-  <div className="mt-8 relative">
-    {/* Subtle gradient edges to show there is more to scroll */}
-    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#FFFDF7] to-transparent z-10 pointer-events-none" />
-    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#FFFDF7] to-transparent z-10 pointer-events-none" />
+            {allImages.length > 1 && (
+              <div className="mt-8 relative">
+                {/* Subtle gradient edges to show there is more to scroll */}
+                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#FFFDF7] to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#FFFDF7] to-transparent z-10 pointer-events-none" />
 
-    <div className="flex gap-6 overflow-x-auto scrollbar-hide px-1 py-2">
-      {allImages.map((img, idx) => {
-        const isActive = mainImage === img;
+                <div className="flex gap-6 overflow-x-auto scrollbar-hide px-1 py-2">
+                  {allImages.map((img, idx) => {
+                    const isActive = mainImage === img;
 
-        return (
-          <div key={idx} className="relative flex-shrink-0 group">
-            <motion.img
-              src={img}
-              alt={`Archive view ${idx}`}
-              onMouseEnter={() => setMainImage(img)}
-              onClick={() => setMainImage(img)}
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.95 }}
-              className={`
+                    return (
+                      <div key={idx} className="relative flex-shrink-0 group">
+                        <motion.img
+                          src={img}
+                          alt={`Archive view ${idx}`}
+                          onMouseEnter={() => setMainImage(img)}
+                          onClick={() => setMainImage(img)}
+                          whileHover={{ y: -4 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={`
                 w-20 aspect-[4/5] object-cover rounded-2xl cursor-pointer
                 transition-all duration-500 ease-out
                 ${
@@ -424,56 +424,68 @@ export default function ProductsDetailsDialog() {
                     : "grayscale-[0.4] opacity-60 hover:grayscale-0 hover:opacity-100 border border-stone-100"
                 }
               `}
-            />
-            
-            {/* Active Indicator Dot */}
-            {isActive && (
-              <motion.div 
-                layoutId="activeThumb"
-                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full"
-              />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  </div>
-)}
+                        />
 
-            {productDetails?.details && (
-              <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
-                {/* HEADER (STATIC) */}
-                <div className="px-6 py-4 font-semibold text-lg flex items-center gap-2">
-                  <span className="text-xl">🍎</span>
-                  Product Information
-                </div>
-
-                {/* CONTENT (ALWAYS VISIBLE) */}
-                <div className="px-6 pb-6">
-                  {Object.entries(productDetails.details)
-                    .filter(
-                      ([key, value]) =>
-                        !["_id", "__v"].includes(key) &&
-                        value !== null &&
-                        value !== undefined &&
-                        value !== "",
-                    )
-                    .map(([key, value]) => (
-                      <div
-                        key={key}
-                        className="flex justify-between items-center py-2 border-b last:border-b-0"
-                      >
-                        <span className="font-medium text-gray-700 capitalize">
-                          {key.replace(/_/g, " ")}
-                        </span>
-                        <span className="font-semibold text-gray-900">
-                          {value}
-                        </span>
+                        {/* Active Indicator Dot */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeThumb"
+                            className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full"
+                          />
+                        )}
                       </div>
-                    ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
+
+            {productDetails?.details && (
+  <div className="mt-12 overflow-hidden rounded-[2rem] bg-stone-50/50 border border-stone-100 shadow-sm">
+    {/* HEADER */}
+    <div className="px-8 py-6 border-b border-stone-100 bg-white/50 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-stone-900 flex items-center justify-center">
+          <ClipboardList size={14} className="text-white" />
+        </div>
+        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-900">
+          Harvest Specifications
+        </h3>
+      </div>
+      <span className="text-[10px] font-serif italic text-stone-400">Ver. 2026.04</span>
+    </div>
+
+    {/* DATA GRID */}
+    <div className="px-8 py-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+        {Object.entries(productDetails.details)
+          .filter(
+            ([key, value]) =>
+              !["_id", "__v"].includes(key) &&
+              value !== null &&
+              value !== undefined &&
+              value !== "",
+          )
+          .map(([key, value]) => (
+            <div
+              key={key}
+              className="flex justify-between items-baseline py-4 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-0"
+            >
+              <span className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+                {key.replace(/_/g, " ")}
+              </span>
+              <span className="text-sm font-serif italic text-stone-900 text-right">
+                {value}
+              </span>
+            </div>
+          ))}
+      </div>
+    </div>
+    
+    {/* FOOTER DECORATION */}
+    <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#B23A2E]/20 to-transparent" />
+  </div>
+)}
 
             {productDetails?.nutrition && (
               <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
