@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Heart, Plus } from "lucide-react";
 export default function Viewallproducts() {
   const { productList } = useSelector((state) => state.products);
   const { cartItems } = useSelector((state) => state.cart);
