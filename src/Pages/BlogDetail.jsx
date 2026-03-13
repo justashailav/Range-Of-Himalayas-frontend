@@ -25,7 +25,7 @@ import {
   FaTelegram,
   FaTwitter,
 } from "react-icons/fa";
-
+import {AnimatePresence } from "framer-motion";
 export default function BlogDetail() {
   const { slug } = useParams();
   const dispatch = useDispatch();
