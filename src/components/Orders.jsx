@@ -40,29 +40,28 @@ export default function ShoppingOrders() {
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 py-8">
       <div className="max-w-6xl mx-auto space-y-8">
-
         {/* HEADER */}
         <div className="pb-8 border-b border-stone-100">
-  <div className="flex flex-col gap-2">
-    {/* Minimalist Subtitle */}
-    <div className="flex items-center gap-2">
-      <span className="h-[1px] w-4 bg-[#B23A2E]" />
-      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-        Personal Archive
-      </p>
-    </div>
+          <div className="flex flex-col gap-2">
+            {/* Minimalist Subtitle */}
+            <div className="flex items-center gap-2">
+              <span className="h-[1px] w-4 bg-[#B23A2E]" />
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+                Personal Archive
+              </p>
+            </div>
 
-    {/* Main Headline */}
-    <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
-      My Acquisitions
-    </h1>
+            {/* Main Headline */}
+            <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
+              My Acquisitions
+            </h1>
 
-    {/* Contextual Description */}
-    <p className="text-sm font-serif italic text-stone-500 mt-1">
-      A record of your seasonal harvests and real-time transit status.
-    </p>
-  </div>
-</div>
+            {/* Contextual Description */}
+            <p className="text-sm font-serif italic text-stone-500 mt-1">
+              A record of your seasonal harvests and real-time transit status.
+            </p>
+          </div>
+        </div>
 
         {error && (
           <div className="bg-red-50 border border-red-200 p-4 rounded-xl text-red-600">
@@ -72,16 +71,32 @@ export default function ShoppingOrders() {
 
         {/* EMPTY STATE */}
         {orderList?.length === 0 && (
-          <div className="bg-white rounded-2xl shadow p-10 text-center">
-            <p className="text-xl font-semibold text-gray-800">
-              No orders yet
-            </p>
-            <p className="text-gray-500 mt-2">
-              Start shopping fresh Himalayan produce 🌿
-            </p>
+          <div className="mt-12 py-24 px-10 text-center bg-stone-50 rounded-[3rem] border border-dashed border-stone-200">
+            <div className="flex flex-col items-center gap-6">
+              {/* Minimalist Icon/Graphic placeholder */}
+              <div className="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm border border-stone-100">
+                <span className="text-2xl">🏔️</span>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-xl font-black text-stone-900 uppercase tracking-tighter">
+                  The Ledger is Silent
+                </h3>
+                <p className="text-stone-500 font-serif italic text-lg max-w-sm mx-auto">
+                  No harvests have been reserved yet. Your journey into the
+                  Himalayan valleys begins at the source.
+                </p>
+              </div>
+
+              <a
+                href="/viewproducts"
+                className="mt-4 px-10 py-4 bg-stone-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full hover:bg-[#B23A2E] transition-all duration-500 shadow-lg"
+              >
+                Discover the Harvest
+              </a>
+            </div>
           </div>
         )}
-
         {/* ORDERS */}
         <div className="space-y-6">
           {orderList?.map((order) => {
@@ -93,37 +108,56 @@ export default function ShoppingOrders() {
                 className="rounded-2xl border shadow-sm hover:shadow-md transition"
               >
                 <CardContent className="p-6">
-
                   {/* TOP ROW */}
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                      <p className="text-xs text-gray-500">
-                        Order ID
-                      </p>
-                      <p className="font-medium text-gray-800 truncate max-w-xs">
-                        {order._id}
-                      </p>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {order.createdAt
-  ? new Date(order.createdAt).toLocaleDateString("en-IN")
-  : "Date unavailable"}
-                      </p>
-                    </div>
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 p-2">
+  {/* IDENTIFICATION BLOCK */}
+  <div className="space-y-1.5">
+    <div className="flex items-center gap-3">
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+        Entry Ref.
+      </span>
+      <p className="font-mono text-[11px] tracking-tighter text-stone-800 bg-stone-100 px-2 py-0.5 rounded">
+        {order._id}
+      </p>
+    </div>
+    
+    <div className="flex items-center gap-2">
+      <Calendar size={12} className="text-stone-400" />
+      <p className="text-[11px] font-black uppercase tracking-widest text-stone-600">
+        {order.createdAt
+          ? new Date(order.createdAt).toLocaleDateString("en-IN", {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric'
+            })
+          : "Date pending"}
+      </p>
+    </div>
+  </div>
 
-                    <div className="flex items-center gap-4">
-                      <p className="text-lg font-extrabold text-green-700">
-                        ₹{order.totalAmount}
-                      </p>
-                      <Badge
-                        className={`px-4 py-1 rounded-full text-sm font-semibold ${
-                          statusStyles[order.orderStatus] ||
-                          "bg-gray-100 text-gray-700"
-                        }`}
-                      >
-                        {order.orderStatus}
-                      </Badge>
-                    </div>
-                  </div>
+  {/* VALUE & STATUS BLOCK */}
+  <div className="flex items-center justify-between md:justify-end gap-8 border-t md:border-t-0 pt-4 md:pt-0 border-stone-100">
+    <div className="flex flex-col items-end">
+      <span className="text-[9px] font-black uppercase tracking-widest text-stone-400">Total Yield Value</span>
+      <p className="text-xl font-black text-stone-900 tracking-tighter">
+        ₹{order.totalAmount.toLocaleString('en-IN')}
+      </p>
+    </div>
+
+    <div className="flex flex-col items-end gap-1.5">
+      <span className="text-[9px] font-black uppercase tracking-widest text-stone-400">Transit Status</span>
+      <Badge
+        className={`px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-[0.15em] border ${
+          order.orderStatus === 'delivered' 
+            ? "bg-stone-900 text-white border-stone-900" 
+            : "bg-white text-[#B23A2E] border-[#B23A2E]"
+        }`}
+      >
+        {order.orderStatus}
+      </Badge>
+    </div>
+  </div>
+</div>
 
                   {/* STATUS TIMELINE */}
                   {statusSteps.includes(order.orderStatus) && (
@@ -173,7 +207,6 @@ export default function ShoppingOrders() {
                       View Order Details
                     </Button>
                   </div>
-
                 </CardContent>
               </Card>
             );
