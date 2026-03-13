@@ -595,62 +595,62 @@ export default function ProductsDetailsDialog() {
               </div>
             </motion.div>
             <motion.div
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, margin: "-100px" }}
-  variants={{
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  }}
-  className="space-y-4"
->
-  {/* Brand Name - Minimalist & Spaced */}
-  <motion.div
-    variants={{
-      hidden: { opacity: 0, x: -10 },
-      visible: { opacity: 1, x: 0 },
-    }}
-    className="flex items-center gap-3"
-  >
-    <span className="h-[1px] w-8 bg-[#B23A2E]" />
-    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
-      Range of Himalayas
-    </span>
-  </motion.div>
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+                },
+              }}
+              className="space-y-4"
+            >
+              {/* Brand Name - Minimalist & Spaced */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -10 },
+                  visible: { opacity: 1, x: 0 },
+                }}
+                className="flex items-center gap-3"
+              >
+                <span className="h-[1px] w-8 bg-[#B23A2E]" />
+                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+                  Range of Himalayas
+                </span>
+              </motion.div>
 
-  {/* Product Title - Massive & Bold */}
-  <motion.h1
-    variants={{
-      hidden: { opacity: 0, y: 30 },
-      visible: { opacity: 1, y: 0 },
-    }}
-    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-    className="text-5xl md:text-6xl font-black text-stone-900 leading-[0.9] tracking-tighter uppercase"
-  >
-    {productDetails?.title}
-  </motion.h1>
+              {/* Product Title - Massive & Bold */}
+              <motion.h1
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="text-5xl md:text-6xl font-black text-stone-900 leading-[0.9] tracking-tighter uppercase"
+              >
+                {productDetails?.title}
+              </motion.h1>
 
-  {/* Description - Elegant & Atmospheric */}
-  <motion.div
-    variants={{
-      hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0 },
-    }}
-    className="relative pl-6 border-l border-stone-100"
-  >
-    <p className="text-stone-600 text-lg font-serif italic leading-relaxed max-w-xl">
-      {productDetails?.description}
-    </p>
-    
-    {/* Decorative Origin Note */}
-    <span className="absolute -left-1 top-0 text-[8px] font-black text-stone-300 uppercase [writing-mode:vertical-lr] rotate-180">
-      Authentic Origin
-    </span>
-  </motion.div>
-</motion.div>
+              {/* Description - Elegant & Atmospheric */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                className="relative pl-6 border-l border-stone-100"
+              >
+                <p className="text-stone-600 text-lg font-serif italic leading-relaxed max-w-xl">
+                  {productDetails?.description}
+                </p>
+
+                {/* Decorative Origin Note */}
+                <span className="absolute -left-1 top-0 text-[8px] font-black text-stone-300 uppercase [writing-mode:vertical-lr] rotate-180">
+                  Authentic Origin
+                </span>
+              </motion.div>
+            </motion.div>
 
             <motion.div
               initial="hidden"
@@ -661,74 +661,85 @@ export default function ProductsDetailsDialog() {
                 visible: {
                   opacity: 1,
                   y: 0,
-                  transition: { staggerChildren: 0.15 },
+                  transition: { staggerChildren: 0.1 },
                 },
               }}
-              className="flex gap-4 flex-wrap"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
             >
-              {/* SIZE — ONLY IF EXISTS */}
+              {/* SIZE SELECTION */}
               {hasSize && (
                 <motion.div
                   variants={{
                     hidden: { opacity: 0, y: 10 },
                     visible: { opacity: 1, y: 0 },
                   }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="flex-1"
+                  className="space-y-2"
                 >
-                  <label className="block text-gray-800 font-medium mb-1">
-                    Select Size
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 block ml-1">
+                    Dimensional Scale
                   </label>
-                  <select
-                    value={selectedSize}
-                    onChange={(e) => {
-                      const newSize = e.target.value;
-                      setSelectedSize(newSize);
-                      setSelectedWeight(getWeightsBySize(newSize)[0]);
-                    }}
-                    className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#F08C7D]"
-                  >
-                    {sizes.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative group">
+                    <select
+                      value={selectedSize}
+                      onChange={(e) => {
+                        const newSize = e.target.value;
+                        setSelectedSize(newSize);
+                        setSelectedWeight(getWeightsBySize(newSize)[0]);
+                      }}
+                      className="w-full bg-stone-50 border border-stone-100 rounded-2xl p-4 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-stone-200 outline-none appearance-none cursor-pointer transition-all hover:bg-stone-100/50"
+                    >
+                      {sizes.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none group-hover:text-stone-600 transition-colors"
+                      size={16}
+                    />
+                  </div>
                 </motion.div>
               )}
 
-              {/* WEIGHT — ALWAYS REQUIRED */}
+              {/* WEIGHT SELECTION */}
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 10 },
                   visible: { opacity: 1, y: 0 },
                 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                className="flex-1"
+                className="space-y-2"
               >
-                <label className="block text-gray-800 font-medium mb-1">
-                  Select Weight
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 block ml-1">
+                  Harvest Weight
                 </label>
-                <select
-                  value={selectedWeight}
-                  onChange={(e) => setSelectedWeight(e.target.value)}
-                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#F08C7D]"
-                >
-                  {getWeightsBySize(selectedSize).map((weight) => {
-                    const variant = getVariant(selectedSize, weight);
-                    return (
-                      <option
-                        key={weight}
-                        value={weight}
-                        disabled={variant.stock === 0}
-                      >
-                        {weight}
-                        {variant.salesPrice > 0 && " (Sale)"}
-                        {variant.stock === 0 && " (Out of Stock)"}
-                      </option>
-                    );
-                  })}
-                </select>
+                <div className="relative group">
+                  <select
+                    value={selectedWeight}
+                    onChange={(e) => setSelectedWeight(e.target.value)}
+                    className="w-full bg-stone-50 border border-stone-100 rounded-2xl p-4 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-stone-200 outline-none appearance-none cursor-pointer transition-all hover:bg-stone-100/50"
+                  >
+                    {getWeightsBySize(selectedSize).map((weight) => {
+                      const variant = getVariant(selectedSize, weight);
+                      return (
+                        <option
+                          key={weight}
+                          value={weight}
+                          disabled={variant.stock === 0}
+                          className="py-2"
+                        >
+                          {weight}{" "}
+                          {variant.salesPrice > 0 ? "— Special Offer" : ""}{" "}
+                          {variant.stock === 0 ? "(Vaulted)" : ""}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <ChevronDown
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none group-hover:text-stone-600 transition-colors"
+                    size={16}
+                  />
+                </div>
               </motion.div>
             </motion.div>
 
