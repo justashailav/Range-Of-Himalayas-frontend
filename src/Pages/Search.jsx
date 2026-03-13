@@ -14,6 +14,7 @@ import {
 import ShoppingProductTile from "./Product-tile";
 import { Input } from "@/components/ui/input";
 import { Helmet } from "react-helmet";
+import { Search } from "lucide-react";
 
 function SearchProducts() {
   const [keyword, setKeyword] = useState("");
