@@ -999,19 +999,19 @@ export default function ProductsDetailsDialog() {
             </div>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-5 items-center">
-  {/* PRIMARY CTA: ACQUIRE TO BASKET */}
-  <button
-    onClick={() => {
-      setIsAddingToCart(true);
-      handleAddToCart(
-        productDetails._id,
-        selectedVariant.stock,
-        selectedVariant.size,
-        selectedVariant.weight,
-      );
-      setTimeout(() => setIsAddingToCart(false), 250);
-    }}
-    className="
+              {/* PRIMARY CTA: ACQUIRE TO BASKET */}
+              <button
+                onClick={() => {
+                  setIsAddingToCart(true);
+                  handleAddToCart(
+                    productDetails._id,
+                    selectedVariant.stock,
+                    selectedVariant.size,
+                    selectedVariant.weight,
+                  );
+                  setTimeout(() => setIsAddingToCart(false), 250);
+                }}
+                className="
       relative overflow-hidden
       w-full sm:flex-1
       bg-stone-900 text-white
@@ -1024,34 +1024,40 @@ export default function ProductsDetailsDialog() {
       transition-all duration-500
       flex items-center justify-center
     "
-  >
-    <span className={isAddingToCart ? "opacity-0" : "opacity-100 transition-opacity"}>
-      Acquire to Basket
-    </span>
-    
-    {/* Minimalist Loading Overlay */}
-    {isAddingToCart && (
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-1 w-12 bg-white/20 rounded-full overflow-hidden">
-          <div className="h-full bg-white w-1/2 animate-shimmer" />
-        </div>
-      </div>
-    )}
-  </button>
+              >
+                <span
+                  className={
+                    isAddingToCart
+                      ? "opacity-0"
+                      : "opacity-100 transition-opacity"
+                  }
+                >
+                  Acquire to Basket
+                </span>
 
-  {/* SECONDARY CTA: WISHLIST ICON */}
-  <button
-    disabled={!selectedVariant}
-    onClick={() => {
-      if (!selectedVariant) return;
-      handleAddToWishList(
-        productDetails._id,
-        selectedVariant.stock,
-        selectedVariant.size || "",
-        selectedVariant.weight,
-      );
-    }}
-    className="
+                {/* Minimalist Loading Overlay */}
+                {isAddingToCart && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="h-1 w-12 bg-white/20 rounded-full overflow-hidden">
+                      <div className="h-full bg-white w-1/2 animate-shimmer" />
+                    </div>
+                  </div>
+                )}
+              </button>
+
+              {/* SECONDARY CTA: WISHLIST ICON */}
+              <button
+                disabled={!selectedVariant}
+                onClick={() => {
+                  if (!selectedVariant) return;
+                  handleAddToWishList(
+                    productDetails._id,
+                    selectedVariant.stock,
+                    selectedVariant.size || "",
+                    selectedVariant.weight,
+                  );
+                }}
+                className="
       h-16 w-16
       rounded-2xl
       border border-stone-200
@@ -1064,115 +1070,157 @@ export default function ProductsDetailsDialog() {
       disabled:opacity-30
       group
     "
-  >
-    <Heart className="w-6 h-6 transition-transform duration-300 group-hover:scale-110 group-active:scale-90" />
-  </button>
-</div>
+              >
+                <Heart className="w-6 h-6 transition-transform duration-300 group-hover:scale-110 group-active:scale-90" />
+              </button>
+            </div>
           </div>
         </div>
-        <div className="mt-10  mx-auto">
-          <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
-            Customer Reviews
-          </h2>
+        <div className="mt-20 max-w-4xl mx-auto px-4">
+  {/* SECTION HEADER */}
+  <div className="text-center mb-16 space-y-2">
+    <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+      The Archive
+    </h4>
+    <h2 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
+      Collector Testimonials
+    </h2>
+    <div className="h-[1px] w-12 bg-stone-200 mx-auto mt-4" />
+  </div>
 
-          {reviews.length === 0 ? (
-            <p className="text-center text-gray-500">
-              No reviews yet. Be the first to review!
-            </p>
-          ) : (
-            <div className="flex flex-col gap-6">
-              {reviews.map((r, i) => (
-                <div
-                  key={i}
-                  className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6"
-                >
-                  {/* Header */}
-                  <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-semibold text-gray-900 text-lg">
-                      {productDetails?.title}
-                    </h3>
-                    <span className="text-green-600 text-xs font-medium bg-green-100 px-2 py-1 rounded-full">
-                      Verified
-                    </span>
-                  </div>
-
-                  {/* Stars */}
-                  <div className="flex items-center mb-2">
-                    {[...Array(r.reviewValue)].map((_, i) => (
-                      <span key={i} className="text-yellow-400 text-lg">
-                        ★
-                      </span>
-                    ))}
-                    {[...Array(5 - r.reviewValue)].map((_, i) => (
-                      <span key={i} className="text-gray-300 text-lg">
-                        ★
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Review message */}
-                  <p className="text-gray-700 text-sm italic mb-4">
-                    "{r.reviewMessage}"
-                  </p>
-
-                  {/* Review image */}
-                  {r.reviewImages?.length > 0 && (
-                    <img
-                      src={`http://localhost:3000/${r.reviewImages[0].replace(
-                        "\\",
-                        "/",
-                      )}`}
-                      alt="review"
-                      className="w-full h-56 object-cover rounded-xl shadow mb-4"
-                    />
-                  )}
-
-                  {/* User info */}
-                  <div className="flex items-center gap-4 border-t pt-3">
-                    <div className="bg-blue-500 text-white font-semibold rounded-full w-12 h-12 flex items-center justify-center text-xl">
-                      {r.userName.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">{r.userName}</p>
-                      <p className="text-xs text-gray-500">
-                        {dayjs(r.createdAt).fromNow()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+  {reviews.length === 0 ? (
+    <div className="py-20 text-center bg-stone-50 rounded-[3rem] border border-dashed border-stone-200">
+      <p className="text-stone-400 font-serif italic text-lg">
+        The archive is currently empty. Be the first to document your experience.
+      </p>
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 gap-12">
+      {reviews.map((r, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative group pb-12 border-b border-stone-100 last:border-0"
+        >
+          {/* HEADER: USER & RATING */}
+          <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
+            <div className="flex items-center gap-4">
+              {/* Profile Initial - Elegant Stone Circle */}
+              <div className="w-12 h-12 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-900 font-black text-sm">
+                {r.userName.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <h3 className="text-[11px] font-black uppercase tracking-widest text-stone-900">
+                  {r.userName}
+                </h3>
+                <p className="text-[10px] text-stone-400 uppercase tracking-tight">
+                  {dayjs(r.createdAt).fromNow()}
+                </p>
+              </div>
             </div>
-          )}
-        </div>
 
-        <div className="p-10">
-          <h2 className="text-3xl font-semibold mb-6 text-center">
-            Explore More from Range of Himalayas
-          </h2>
-          <Swiper
-            modules={[Navigation]}
-            navigation={{
-              prevEl: ".swiper-button-prev-custom",
-              nextEl: ".swiper-button-next-custom",
-            }}
-            spaceBetween={20}
-            slidesPerView={1}
-            breakpoints={{
-              768: { slidesPerView: 2 },
-              1280: { slidesPerView: 3 },
-            }}
-          >
-            {productList.map((item) => (
-              <SwiperSlide key={item._id}>
-                <ShoppingProductTile
-                  product={item}
-                  handleAddToCart={handleAddToCart}
-                  handleAddToWishList={handleAddToWishList}
+            <div className="flex flex-col items-end gap-2">
+              <div className="flex gap-0.5">
+                {[...Array(5)].map((_, starIdx) => (
+                  <Star 
+                    key={starIdx}
+                    size={12} 
+                    fill={starIdx < r.reviewValue ? "#B23A2E" : "none"} 
+                    className={starIdx < r.reviewValue ? "text-[#B23A2E]" : "text-stone-200"}
+                  />
+                ))}
+              </div>
+              <span className="text-[8px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-2 py-1 rounded-md border border-[#B23A2E]/10">
+                Verified Acquisition
+              </span>
+            </div>
+          </div>
+
+          {/* CONTENT: TEXT & IMAGES */}
+          <div className="space-y-6 pl-0 md:pl-16">
+            <p className="text-xl font-serif italic text-stone-800 leading-relaxed italic">
+              "{r.reviewMessage}"
+            </p>
+
+            {r.reviewImages?.length > 0 && (
+              <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl max-w-2xl">
+                <img
+                  src={`http://localhost:3000/${r.reviewImages[0].replace("\\", "/")}`}
+                  alt="review imagery"
+                  className="w-full h-80 object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
                 />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  )}
+</div>
+
+        <div className="py-24 bg-stone-50/50">
+  <div className="max-w-[1400px] mx-auto px-6 relative">
+    
+    {/* SECTION HEADER */}
+    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div className="space-y-2">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+          Extend the Journey
+        </h4>
+        <h2 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
+          Further Discoveries
+        </h2>
+      </div>
+
+      {/* CUSTOM NAVIGATION BUTTONS */}
+      <div className="flex gap-3">
+        <button className="swiper-button-prev-custom w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:border-stone-900 hover:text-stone-900 transition-all duration-300 bg-white shadow-sm">
+          <ChevronLeft size={20} strokeWidth={1.5} />
+        </button>
+        <button className="swiper-button-next-custom w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:border-stone-900 hover:text-stone-900 transition-all duration-300 bg-white shadow-sm">
+          <ChevronRight size={20} strokeWidth={1.5} />
+        </button>
+      </div>
+    </div>
+
+    {/* SWIPER CAROUSEL */}
+    <Swiper
+      modules={[Navigation]}
+      navigation={{
+        prevEl: ".swiper-button-prev-custom",
+        nextEl: ".swiper-button-next-custom",
+      }}
+      spaceBetween={32}
+      slidesPerView={1}
+      grabCursor={true}
+      breakpoints={{
+        640: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+        1440: { slidesPerView: 4 },
+      }}
+      className="pb-12"
+    >
+      {productList.map((item) => (
+        <SwiperSlide key={item._id} className="h-full">
+          <div className="bg-white rounded-[2rem] p-2 shadow-sm border border-stone-100/50 hover:shadow-xl transition-shadow duration-500">
+            <ShoppingProductTile
+              product={item}
+              handleAddToCart={handleAddToCart}
+              handleAddToWishList={handleAddToWishList}
+            />
+          </div>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+    
+    {/* BOTTOM DECORATION */}
+    <div className="mt-12 flex justify-center">
+      <div className="h-[1px] w-24 bg-stone-200" />
+    </div>
+  </div>
+</div>
       </div>
     </div>
   );
