@@ -198,102 +198,120 @@ export default function OrderTracking() {
         )}
 
         {order && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="space-y-8"
-          >
-            <div className="bg-white/60 border border-[#ffd4d4] p-4 md:p-5 rounded-2xl shadow-sm text-sm md:text-base">
-              <p className="font-semibold text-gray-800 mb-1">
-                Order ID:{" "}
-                <span className="font-mono text-[#E57373]">{order._id}</span>
-              </p>
-              <p className="text-gray-800 mb-1">
-                <strong>Status:</strong>{" "}
-                <span className="text-[#E57373] font-semibold capitalize">
-                  {order.orderStatus || "Pending"}
-                </span>
-              </p>
-              <p className="text-gray-700">
-                <strong>Date:</strong>{" "}
-                {new Date(order.createdAt).toLocaleDateString()} |{" "}
-                <strong>Total:</strong> ₹{order.totalAmount}
-              </p>
-            </div>
-            <div className="relative mt-8 md:mt-10 px-2 md:px-0">
-              <div className="absolute top-[22px] left-[7%] w-[86%] h-[4px] bg-gray-200 rounded-full -z-10" />
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="space-y-12"
+  >
+    {/* SUMMARY CARD: THE SHIPPING LABEL */}
+    <div className="bg-stone-50 border border-stone-200 p-6 md:p-8 rounded-[2rem] relative overflow-hidden">
+      {/* Decorative Corner Accent */}
+      <div className="absolute top-0 right-0 w-16 h-16 bg-stone-100 flex items-center justify-center rounded-bl-[2rem] border-l border-b border-stone-200">
+         <Package size={20} className="text-stone-400" />
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 items-start">
+        <div className="space-y-1">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
+            Logistics Ref.
+          </p>
+          <p className="font-mono text-sm font-bold text-stone-900 bg-white inline-block px-3 py-1 rounded-lg border border-stone-100">
+            {order._id}
+          </p>
+        </div>
+        
+        <div className="space-y-1 md:text-right">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
+            Current Status
+          </p>
+          <p className="text-[#B23A2E] font-black uppercase tracking-widest text-sm">
+            {order.orderStatus || "Processing Archive"}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-8 pt-6 border-t border-stone-200/60 flex flex-wrap gap-x-12 gap-y-4">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">Dispatch Date</p>
+          <p className="text-sm font-bold text-stone-800">{new Date(order.createdAt).toLocaleDateString('en-IN')}</p>
+        </div>
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">Market Value</p>
+          <p className="text-sm font-bold text-stone-800">₹{order.totalAmount.toLocaleString()}</p>
+        </div>
+      </div>
+    </div>
+
+    {/* THE TIMELINE STEPPER */}
+    <div className="relative pt-4 px-4">
+      {/* Background Track */}
+      <div className="absolute top-[24px] left-[5%] w-[90%] h-[1px] bg-stone-200 -z-10" />
+      
+      {/* Progress Track */}
+      <motion.div
+        className="absolute top-[24px] left-[5%] h-[1px] bg-stone-900 -z-10"
+        initial={{ width: 0 }}
+        animate={{
+          width: `${(currentIndex / (ORDER_STAGES.length - 1)) * 90}%`,
+        }}
+        transition={{ duration: 1, ease: "circOut" }}
+      />
+
+      <div className="flex justify-between items-start relative z-10">
+        {ORDER_STAGES.map((stage, index) => {
+          const Icon = stage.icon;
+          const completed = index <= currentIndex;
+          const active = index === currentIndex;
+          const historyItem = order.statusHistory?.find(
+            (s) => s.status.toLowerCase() === stage.key.toLowerCase(),
+          );
+
+          return (
+            <div key={stage.key} className="flex flex-col items-center w-1/5 group">
               <motion.div
-                className="absolute top-[22px] left-[7%] h-[4px] bg-gradient-to-r from-[#E57373] to-[#ffb6b6] rounded-full -z-10"
-                initial={{ width: 0 }}
-                animate={{
-                  width: `${(currentIndex / (ORDER_STAGES.length - 1)) * 86}%`,
-                }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              />
+                className={`w-12 h-12 flex items-center justify-center rounded-full border transition-all duration-700 ${
+                  completed
+                    ? "bg-stone-900 border-stone-900 text-white shadow-xl"
+                    : "bg-white border-stone-200 text-stone-300"
+                } ${active ? "ring-8 ring-stone-900/5 scale-110" : ""}`}
+              >
+                {completed ? <Check size={18} strokeWidth={3} /> : <Icon size={18} strokeWidth={1.5} />}
+              </motion.div>
 
-              <div className="flex flex-wrap sm:flex-nowrap justify-between items-center relative z-10">
-                {ORDER_STAGES.map((stage, index) => {
-                  const Icon = stage.icon;
-                  const completed = index <= currentIndex;
-                  const active = index === currentIndex;
-                  const historyItem = order.statusHistory?.find(
-                    (s) => s.status.toLowerCase() === stage.key.toLowerCase(),
-                  );
-
-                  return (
-                    <div
-                      key={stage.key}
-                      className="flex flex-col items-center w-1/5 sm:w-auto mb-4 sm:mb-0 group"
-                    >
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className={`w-12 h-12 flex items-center justify-center rounded-full border-4 transition-all duration-300 ${
-                          completed
-                            ? "bg-[#E57373] border-[#E57373] text-white shadow-lg"
-                            : "bg-white border-gray-300 text-gray-400"
-                        } ${active ? "ring-4 ring-rose-200 ring-offset-2" : ""}`}
-                      >
-                        {completed ? (
-                          <CheckCircle className="w-6 h-6" />
-                        ) : (
-                          <Icon className="w-6 h-6" />
-                        )}
-                      </motion.div>
-
-                      <p
-                        className={`mt-2 md:mt-3 text-xs md:text-sm font-semibold text-center ${completed ? "text-[#E57373]" : "text-gray-500"}`}
-                      >
-                        {stage.label}
-                      </p>
-
-                      {historyItem && (
-                        <div className="mt-1 text-center text-[10px] md:text-xs text-gray-400 leading-tight">
-                          <p>{formatTimestamp(historyItem.updatedAt).date}</p>
-                          <p>{formatTimestamp(historyItem.updatedAt).time}</p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+              <div className="mt-4 text-center">
+                <p className={`text-[9px] font-black uppercase tracking-widest ${completed ? "text-stone-900" : "text-stone-300"}`}>
+                  {stage.label}
+                </p>
+                
+                {historyItem && (
+                  <div className="mt-2 text-[8px] font-bold text-stone-400 uppercase tracking-tight leading-none">
+                    <p>{new Date(historyItem.updatedAt).toLocaleDateString('en-IN', {day:'2-digit', month:'short'})}</p>
+                    <p className="mt-1 opacity-60 font-medium">{new Date(historyItem.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                  </div>
+                )}
               </div>
             </div>
+          );
+        })}
+      </div>
+    </div>
 
-            {/* Message */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className={`mt-4 md:mt-6 text-center py-3 rounded-xl font-medium border text-sm md:text-base ${
-                order.orderStatus === "delivered"
-                  ? "bg-green-50 text-green-700 border-green-200"
-                  : "bg-yellow-50 text-yellow-700 border-yellow-200"
-              }`}
-            >
-              {order.orderStatus === "delivered"
-                ? "🎉 Your order has been delivered successfully!"
-                : "🚚 Your order is on the way — stay tuned for updates!"}
-            </motion.div>
-          </motion.div>
-        )}
+    {/* FINAL MESSAGE BANNER */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={`mt-12 py-5 px-8 rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] text-center border ${
+        order.orderStatus === "delivered"
+          ? "bg-stone-900 text-white border-stone-900"
+          : "bg-stone-50 text-stone-600 border-stone-200"
+      }`}
+    >
+      {order.orderStatus === "delivered"
+        ? "✓ Consignment Successfully Delivered"
+        : "◌ Transit in Progress — Anticipate Arrival"}
+    </motion.div>
+  </motion.div>
+)}
       </motion.div>
     </div>
   );
