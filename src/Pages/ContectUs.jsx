@@ -111,102 +111,113 @@ export default function ContactUs() {
 </motion.div>
 
       {/* CONTACT INFO SECTION */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        className="bg-[#F08C7D] p-8 sm:p-20 rounded-b-3xl"
-      >
-        <motion.header
-          variants={fadeIn}
-          custom={0.05}
-          className="max-w-4xl mx-auto text-center mb-10"
-        >
-          <h1 className="text-4xl font-bold text-white mb-4">
-            Contact Information
-          </h1>
-          <p className="text-white text-lg max-w-3xl mx-auto">
-            We’d love to hear about your experience with Range of Himalayas.
-            Please feel free to get in touch with any comments, suggestions, or
-            questions — we’re always here to help and improve your journey with
-            us.
-          </p>
-        </motion.header>
+     <motion.section
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+  variants={fadeUp}
+  className="bg-stone-50 p-8 sm:p-24 rounded-b-[3rem]"
+>
+  <motion.header
+    variants={fadeIn}
+    custom={0.05}
+    className="max-w-4xl mx-auto text-center mb-16 space-y-4"
+  >
+    <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+      Direct Channel
+    </h4>
+    <h1 className="text-4xl md:text-5xl font-black text-stone-900 uppercase tracking-tighter">
+      Lodge an Inquiry
+    </h1>
+    <p className="text-stone-500 font-serif italic text-lg max-w-2xl mx-auto leading-relaxed">
+      Whether you seek guidance on our seasonal harvests or wish to share your experience, 
+      our Himalayan team is attentive to every word.
+    </p>
+  </motion.header>
 
-        {/* FORM */}
-        <motion.form
-          variants={scaleIn}
-          custom={0.1}
-          className="max-w-4xl mx-auto p-6 sm:p-10 bg-white rounded-2xl shadow-lg"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex flex-col sm:flex-row gap-6">
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Name"
-              required
-              aria-label="Name"
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F08C7D] transition"
-            />
-
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              required
-              aria-label="Email"
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F08C7D] transition"
-            />
-          </div>
-
+  {/* FORM: THE STATIONERY CARD */}
+  <motion.form
+    variants={scaleIn}
+    custom={0.1}
+    className="max-w-3xl mx-auto p-8 sm:p-16 bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-stone-100"
+    onSubmit={handleSubmit}
+  >
+    <div className="space-y-8">
+      {/* ROW 1: Name & Email */}
+      <div className="flex flex-col sm:flex-row gap-8">
+        <div className="flex-1 space-y-2">
+          <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Full Name</label>
           <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
+            type="text"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
-            placeholder="Phone Number"
+            placeholder="John Doe"
             required
-            aria-label="Phone Number"
-            className="w-full mt-6 px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F08C7D] transition"
+            className="w-full bg-stone-50/50 px-6 py-4 rounded-2xl border border-stone-100 placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-200 transition-all font-medium text-stone-900"
           />
+        </div>
 
-          <textarea
-            name="comment"
-            value={formData.comment}
+        <div className="flex-1 space-y-2">
+          <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Email Address</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
             onChange={handleChange}
-            placeholder="Comment"
-            rows={6}
+            placeholder="email@example.com"
             required
-            aria-label="Comment"
-            className="w-full mt-6 px-4 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#F08C7D] transition resize-none"
+            className="w-full bg-stone-50/50 px-6 py-4 rounded-2xl border border-stone-100 placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-200 transition-all font-medium text-stone-900"
           />
+        </div>
+      </div>
 
-          {message && (
-            <p className="text-green-600 mt-3 text-center font-medium">
-              {message}
-            </p>
-          )}
-          {error && (
-            <p className="text-red-600 mt-3 text-center font-medium">{error}</p>
-          )}
+      {/* ROW 2: Phone */}
+      <div className="space-y-2">
+        <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Contact Number</label>
+        <input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder="+91 00000 00000"
+          required
+          className="w-full bg-stone-50/50 px-6 py-4 rounded-2xl border border-stone-100 placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-200 transition-all font-medium text-stone-900"
+        />
+      </div>
 
-          <motion.button
-            type="submit"
-            disabled={isLoading}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-8 w-full py-3 font-semibold rounded-lg bg-[#F08C7D] text-white hover:bg-[#e36c5d] focus:ring-4 focus:ring-[#F08C7D]/60 transition disabled:opacity-70"
-          >
-            {isLoading ? "Sending..." : "SEND MESSAGE"}
-          </motion.button>
-        </motion.form>
-      </motion.section>
+      {/* ROW 3: Comment */}
+      <div className="space-y-2">
+        <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1">Message / Suggestion</label>
+        <textarea
+          name="comment"
+          value={formData.comment}
+          onChange={handleChange}
+          placeholder="How may we assist you?"
+          rows={5}
+          required
+          className="w-full bg-stone-50/50 px-6 py-4 rounded-2xl border border-stone-100 placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-200 transition-all font-medium text-stone-900 resize-none shadow-inner"
+        />
+      </div>
+    </div>
+
+    {/* FEEDBACK MESSAGES */}
+    <div className="mt-4">
+      {message && <p className="text-green-600 text-[11px] font-black uppercase tracking-widest text-center animate-pulse">{message}</p>}
+      {error && <p className="text-[#B23A2E] text-[11px] font-black uppercase tracking-widest text-center">{error}</p>}
+    </div>
+
+    {/* SUBMIT BUTTON */}
+    <motion.button
+      type="submit"
+      disabled={isLoading}
+      whileTap={{ scale: 0.98 }}
+      className="mt-10 w-full py-5 bg-stone-900 text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-[#B23A2E] transition-all duration-500 shadow-xl disabled:opacity-50"
+    >
+      {isLoading ? "Dispatching..." : "Send Correspondence"}
+    </motion.button>
+  </motion.form>
+</motion.section>
 
       {/* LOGO + TAGLINE */}
       <motion.section
