@@ -21,7 +21,7 @@ import { searchProducts } from "@/store/slices/searchSlice";
 import { Button } from "@/components/ui/button";
 import { resetAuthSlice } from "@/store/slices/authSlice";
 import { persistor } from "@/store/store";
-import { useScroll,motion,useMotionValueEvent } from "framer-motion";
+import { useScroll, motion, useMotionValueEvent } from "framer-motion";
 
 export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
@@ -32,7 +32,7 @@ export default function Navbar() {
   const { wishListItems } = useSelector((state) => state.wishList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -41,9 +41,9 @@ export default function Navbar() {
     const previous = scrollY.getPrevious();
 
     if (latest > previous && latest > 80) {
-      setHidden(true); 
+      setHidden(true);
     } else {
-      setHidden(false); 
+      setHidden(false);
     }
 
     setScrolled(latest > 20);
@@ -70,7 +70,7 @@ export default function Navbar() {
   const totalCount = cartCount + boxCount;
   const wishListCount = wishListItems?.length || 0;
   return (
-    <motion.nav 
+    <motion.nav
       variants={{
         visible: { y: 0 },
         hidden: { y: "-100%" },
@@ -87,38 +87,58 @@ export default function Navbar() {
     >
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-between w-full md:flex lg:hidden">
-          <Link 
-  to="/" 
-  className="group relative flex items-center justify-center py-4 transition-all duration-500"
->
-  {/* Subtle "Light" glow behind logo on hover */}
-  <div className="absolute inset-0 bg-stone-200/20 blur-2xl rounded-full scale-0 group-hover:scale-100 transition-transform duration-700" />
-  
-  <img 
-    src={logo} 
-    alt="Purely Himalayan Logo" 
-    className="relative z-10 w-24 sm:w-32 h-auto object-contain 
+          <Link
+            to="/"
+            className="group relative flex items-center justify-center py-4 transition-all duration-500"
+          >
+            {/* Subtle "Light" glow behind logo on hover */}
+            <div className="absolute inset-0 bg-stone-200/20 blur-2xl rounded-full scale-0 group-hover:scale-100 transition-transform duration-700" />
+
+            <img
+              src={logo}
+              alt="Purely Himalayan Logo"
+              className="relative z-10 w-24 sm:w-32 h-auto object-contain 
                brightness-90 group-hover:brightness-110 
                group-hover:scale-105 transition-all duration-700 
-               ease-[cubic-bezier(0.23,1,0.32,1)]" 
-  />
-  
-  {/* The "Signature" underline that only appears on hover */}
-  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-[#B23A2E] group-hover:w-8 transition-all duration-500" />
-</Link>
+               ease-[cubic-bezier(0.23,1,0.32,1)]"
+            />
+
+            {/* The "Signature" underline that only appears on hover */}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-[#B23A2E] group-hover:w-8 transition-all duration-500" />
+          </Link>
 
           <div className="flex items-center gap-4 sm:gap-4 mt-2">
             <Sheet open={openCart} onOpenChange={setOpenCart}>
-            <div className="relative">
-               <Link to="/wishlist">
-                <Heart color="white" className="cursor-pointer text-2xl" />
-                {wishListCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {wishListCount}
-                  </span>
-                )}
-              </Link>
-            </div>
+              <div className="relative group">
+  <Link to="/wishlist" className="flex items-center gap-2">
+    {/* 1. THE ICON: Thin stroke for a delicate, artisanal feel */}
+    <div className="relative p-2 transition-transform duration-500 group-hover:scale-110">
+      <Heart 
+        strokeWidth={1.5} 
+        className="w-5 h-5 text-white transition-colors duration-500 group-hover:text-[#B23A2E]" 
+      />
+      
+      {/* 2. THE NOTIFICATION: Minimalist & Flat */}
+      {wishListCount > 0 && (
+        <motion.span 
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
+        >
+          {wishListCount}
+        </motion.span>
+      )}
+    </div>
+
+    {/* 3. OPTIONAL LABEL: Only shows on larger screens for that "Journal" feel */}
+    <span className="hidden lg:block text-[9px] font-black uppercase tracking-[0.3em] text-white/60 group-hover:text-white transition-colors duration-500">
+      Saved Records
+    </span>
+  </Link>
+
+  {/* 4. UNDERLINE ACCENT: A thin red line that grows on hover */}
+  <div className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
+</div>
 
               <div className="relative">
                 <FaShoppingCart
