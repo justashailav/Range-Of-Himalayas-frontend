@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import StarRatingComponent from "./Star-Review";
 import { useDispatch, useSelector } from "react-redux";
