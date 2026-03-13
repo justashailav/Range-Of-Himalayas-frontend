@@ -5,7 +5,7 @@ import { getAllOrdersByUserId } from "@/store/slices/orderSlice";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-import { Calendar } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 const statusSteps = ["confirmed", "packed", "shipping", "delivered"];
 
@@ -225,19 +225,37 @@ export default function ShoppingOrders() {
                   )}
 
                   {/* ACTION */}
-                  <div className="mt-6 flex justify-end">
-                    <Button
-                      onClick={() =>
-                        navigate(`/order-details/${order._id}`, {
-                          state: { orderDetails: order },
-                        })
-                      }
-                      className="rounded-xl px-6 bg-gradient-to-r from-blue-600 to-indigo-600
-                      hover:from-blue-700 hover:to-indigo-700 text-white shadow-md"
-                    >
-                      View Order Details
-                    </Button>
-                  </div>
+                  <div className="mt-8 flex justify-end">
+  <button
+    onClick={() =>
+      navigate(`/order-details/${order._id}`, {
+        state: { orderDetails: order },
+      })
+    }
+    className="
+      group
+      flex items-center gap-3
+      px-8 py-3
+      bg-white border border-stone-200
+      text-stone-900 text-[10px] font-black uppercase tracking-[0.3em]
+      rounded-2xl
+      hover:bg-stone-900 hover:text-white hover:border-stone-900
+      hover:shadow-[0_10px_20px_rgba(0,0,0,0.1)]
+      active:scale-[0.98]
+      transition-all duration-500
+    "
+  >
+    <span>Inspect Manifest</span>
+    <motion.span
+      className="inline-block"
+      initial={{ x: 0 }}
+      whileHover={{ x: 5 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+    >
+      <ArrowRight size={14} strokeWidth={3} />
+    </motion.span>
+  </button>
+</div>
                 </CardContent>
               </Card>
             );
