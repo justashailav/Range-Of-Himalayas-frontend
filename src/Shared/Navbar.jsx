@@ -395,46 +395,65 @@ export default function Navbar() {
           </nav>
           <div className="flex mb-2 items-center gap-3 lg:gap-6">
             <div className="relative group flex items-center min-w-[160px] max-w-[240px] ml-6 h-full">
-  {/* The Search Input */}
-  <input
-    placeholder="SEARCH HARVEST..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    onKeyDown={handleKeyDown}
-    className="w-full pl-4 pr-10 py-1.5 rounded-full 
+              {/* The Search Input */}
+              <input
+                placeholder="SEARCH HARVEST..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-full pl-4 pr-10 py-1.5 rounded-full 
                bg-white/10 backdrop-blur-md border border-white/10
                text-[10px] tracking-[0.2em] text-white placeholder-white/40
                focus:outline-none focus:bg-white/20 focus:border-white/30 
                transition-all duration-700 ease-in-out"
-  />
-  
-  {/* The Icon: Centered perfectly using top-1/2 and translate */}
-  <CiSearch
-    className="absolute right-3 top-1/2 -translate-y-1/2 text-white text-xl 
+              />
+
+              {/* The Icon: Centered perfectly using top-1/2 and translate */}
+              <CiSearch
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white text-xl 
                cursor-pointer opacity-60 group-hover:opacity-100 
                transition-opacity duration-500"
-    onClick={handleSearch}
-  />
-</div>
-
-            {!user && (
-              <Link to="/login">
-                <button className="border-[#F08C7D] font-semibold bg-[#F08C7D] text-white py-1 md:py-2 px-3 md:px-4 rounded-lg hover:bg-[#FFECE8] hover:text-[#F08C7D] transition duration-500 text-sm md:text-base">
-                  LOGIN
-                </button>
-              </Link>
-            )}
-
-            <div className="relative">
-              <Link to="/wishlist">
-                <Heart color="white" className="cursor-pointer text-2xl" />
-                {wishListCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {wishListCount}
-                  </span>
-                )}
-              </Link>
+                onClick={handleSearch}
+              />
             </div>
+
+           {!user && (
+  <Link to="/login" className="flex items-center h-full">
+    <button className="relative group px-5 py-1.5 border border-white/30 rounded-none overflow-hidden transition-all duration-500 hover:border-white">
+      {/* 1. THE TEXT: Ultra-refined and wide-tracked */}
+      <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-white transition-colors duration-500">
+        Login
+      </span>
+
+      {/* 2. THE HOVER SLIDE: A subtle "ink" fill effect */}
+      <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out" />
+      
+      {/* 3. TEXT SWAP ON HOVER: Black text when the white background slides up */}
+      <span className="absolute inset-0 z-20 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.4em] text-[#2d3a2d] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        Login
+      </span>
+    </button>
+  </Link>
+)}
+            <div className="relative flex items-center h-full ml-4 lg:ml-6">
+  <Link to="/wishlist" className="group relative p-2 outline-none">
+    {/* 1. THE ICON: Thin stroke and consistent height */}
+    <Heart 
+      strokeWidth={1.5} 
+      className="w-5 h-5 text-white transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]" 
+    />
+    
+    {/* 2. THE BADGE: Smaller, centered, and matching the Harvest Red dot */}
+    {wishListCount > 0 && (
+      <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900 transition-transform duration-500 group-hover:scale-125">
+        {wishListCount}
+      </span>
+    )}
+
+    {/* 3. SUBTLE UNDERGLOW: Makes the white icon pop against the orchard background */}
+    <div className="absolute inset-0 bg-white/5 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+  </Link>
+</div>
 
             <Sheet open={openCart} onOpenChange={setOpenCart}>
               <div className="relative">
