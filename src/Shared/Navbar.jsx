@@ -7,7 +7,7 @@ import logo from "../assets/logo-himalayas.png";
 import UserCartWrapper from "@/components/Cart-wrapper";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import {AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
