@@ -62,18 +62,34 @@ export default function HomeBlog() {
   return (
     <div className="bg-[#FFF8E1] min-h-screen relative">
       <div className="max-w-6xl mx-auto px-4 py-16 relative">
-        <div className="text-center mb-12">
-          <span className="px-4 py-1 bg-pink-100 text-pink-700 rounded-full text-sm font-medium">
-            📰 Our Stories
-          </span>
-          <h2 className="text-4xl mt-4 font-extrabold text-[#3B2F2F] mb-3">
-            From Our Himalayan Journal
-          </h2>
-          <p className="text-[#5C4033] max-w-2xl mx-auto leading-relaxed">
-            Discover stories, tips, and insights fresh from the Himalayas —
-            crafted to inspire a healthy, natural lifestyle.
-          </p>
-        </div>
+        <div className="text-center mb-16 md:mb-20 space-y-6">
+  {/* MINIMALIST BADGE */}
+  <div className="flex flex-col items-center gap-3">
+    <div className="h-8 w-[1px] bg-stone-300" /> {/* Vertical line for editorial feel */}
+    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+      The Field Notes
+    </span>
+  </div>
+
+  {/* MAIN HEADLINE */}
+  <h2 className="text-4xl md:text-6xl font-black text-stone-900 uppercase tracking-tighter leading-none">
+    Himalayan <br className="hidden md:block" /> 
+    <span className="font-serif italic font-light lowercase tracking-normal">Journal</span>
+  </h2>
+
+  {/* REFINED DESCRIPTION */}
+  <p className="text-stone-500 font-serif italic text-lg max-w-2xl mx-auto leading-relaxed border-t border-stone-100 pt-6">
+    "A collection of seasonal observations, orchard wisdom, and natural insights 
+    harvested from the heart of the Himachal valleys."
+  </p>
+  
+  {/* DECORATIVE ELEMENT */}
+  <div className="flex justify-center items-center gap-4 pt-2">
+    <div className="h-[1px] w-4 bg-stone-200" />
+    <div className="w-1 h-1 bg-stone-400 rotate-45" />
+    <div className="h-[1px] w-4 bg-stone-200" />
+  </div>
+</div>
 
         {/* Swiper Controls */}
         <button
