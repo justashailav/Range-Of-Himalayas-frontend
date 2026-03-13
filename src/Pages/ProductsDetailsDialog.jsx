@@ -845,80 +845,117 @@ export default function ProductsDetailsDialog() {
 
             {/* Review Section */}
             <div className="flex flex-col items-start gap-4 py-6 border-t border-stone-100 mt-8">
-  {/* LABEL */}
-  <div className="space-y-1">
-    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 block">
-      Product Evaluation
-    </label>
-    <p className="text-xl font-serif italic text-stone-900 leading-none">
-      How would you rate this harvest?
-    </p>
-  </div>
+              {/* LABEL */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 block">
+                  Product Evaluation
+                </label>
+                <p className="text-xl font-serif italic text-stone-900 leading-none">
+                  How would you rate this harvest?
+                </p>
+              </div>
 
-  {/* RATING INTERFACE */}
-  <div className="flex items-center gap-6 bg-stone-50 px-6 py-4 rounded-2xl border border-stone-100 w-full sm:w-auto transition-all hover:bg-stone-100/50">
-    <div className="scale-110 origin-left">
-      <StarRatingComponent
-        rating={rating}
-        onChange={handleRatingChange}
-      />
-    </div>
-    
-    {/* VERTICAL DIVIDER */}
-    <div className="h-6 w-[1px] bg-stone-200" />
-
-    <span className="text-[11px] font-black uppercase tracking-widest text-stone-900 min-w-[100px]">
-      {rating > 0 ? (
-        <motion.span
-          initial={{ opacity: 0, x: -5 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
-          {rating} / 5 Score
-        </motion.span>
-      ) : (
-        <span className="text-stone-400">Select Grade</span>
-      )}
-    </span>
-  </div>
-</div>
-            <textarea
-              value={reviewMsg}
-              onChange={(e) => setReviewMsg(e.target.value)}
-              placeholder="Write your review here..."
-              className="w-full border border-gray-300 rounded-md p-3 text-gray-800 focus:ring-2 focus:ring-[#F08C7D] focus:outline-none mb-4"
-              rows="5"
-            />
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-1">
-                Upload Images (optional)
-              </label>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageChange}
-                className="w-full border border-gray-300 rounded-md p-2 text-gray-600"
-              />
-              {reviewImages.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {reviewImages.map((img, idx) => (
-                    <img
-                      key={idx}
-                      src={URL.createObjectURL(img)}
-                      alt={`preview-${idx}`}
-                      className="w-20 h-20 object-cover rounded-md border"
-                    />
-                  ))}
+              {/* RATING INTERFACE */}
+              <div className="flex items-center gap-6 bg-stone-50 px-6 py-4 rounded-2xl border border-stone-100 w-full sm:w-auto transition-all hover:bg-stone-100/50">
+                <div className="scale-110 origin-left">
+                  <StarRatingComponent
+                    rating={rating}
+                    onChange={handleRatingChange}
+                  />
                 </div>
-              )}
-            </div>
 
-            <Button
-              onClick={handleAddReview}
-              className="w-full bg-[#F08C7D] text-white py-3 font-semibold rounded-md hover:bg-[#e77b6c] transition"
-            >
-              Submit Review
-            </Button>
+                {/* VERTICAL DIVIDER */}
+                <div className="h-6 w-[1px] bg-stone-200" />
+
+                <span className="text-[11px] font-black uppercase tracking-widest text-stone-900 min-w-[100px]">
+                  {rating > 0 ? (
+                    <motion.span
+                      initial={{ opacity: 0, x: -5 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      {rating} / 5 Score
+                    </motion.span>
+                  ) : (
+                    <span className="text-stone-400">Select Grade</span>
+                  )}
+                </span>
+              </div>
+            </div>
+            <div className="space-y-6 mt-6">
+  {/* REVIEW TEXTAREA */}
+  <div className="space-y-2">
+    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 block ml-1">
+      Written Testimony
+    </label>
+    <textarea
+      value={reviewMsg}
+      onChange={(e) => setReviewMsg(e.target.value)}
+      placeholder="Describe the texture, aroma, and essence of this harvest..."
+      className="w-full bg-stone-50 border border-stone-100 rounded-[2rem] p-6 text-sm text-stone-900 focus:ring-2 focus:ring-stone-200 outline-none placeholder:text-stone-300 shadow-inner min-h-[160px] transition-all"
+      rows="5"
+    />
+  </div>
+
+  {/* IMAGE UPLOAD SECTION */}
+  <div className="bg-stone-50 rounded-[2rem] p-6 border border-stone-100">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="space-y-1">
+        <label className="text-[10px] font-black uppercase tracking-widest text-stone-900 block">
+          Visual Evidence
+        </label>
+        <p className="text-[10px] text-stone-400 uppercase tracking-wider">Optional Imagery (JPG, PNG)</p>
+      </div>
+
+      <div className="relative">
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleImageChange}
+          className="hidden"
+          id="archive-upload"
+        />
+        <label
+          htmlFor="archive-upload"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-stone-200 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-stone-600 cursor-pointer hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all duration-300 shadow-sm"
+        >
+          <Camera size={14} />
+          Attach Photos
+        </label>
+      </div>
+    </div>
+
+    {/* IMAGE PREVIEW GRID */}
+    {reviewImages.length > 0 && (
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-stone-200/50"
+      >
+        {reviewImages.map((img, idx) => (
+          <div key={idx} className="relative group">
+            <img
+              src={URL.createObjectURL(img)}
+              alt={`preview-${idx}`}
+              className="w-20 h-20 object-cover rounded-2xl border-2 border-white shadow-md grayscale-[0.5] hover:grayscale-0 transition-all duration-500"
+            />
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity flex items-center justify-center pointer-events-none">
+              <span className="text-[8px] text-white font-black uppercase tracking-tighter">Preview</span>
+            </div>
+          </div>
+        ))}
+      </motion.div>
+    )}
+  </div>
+
+  {/* SUBMIT ACTION */}
+  <Button
+    onClick={handleAddReview}
+    className="w-full bg-stone-900 text-white py-6 font-black uppercase text-[11px] tracking-[0.3em] rounded-[1.5rem] hover:bg-[#B23A2E] transition-all duration-500 shadow-xl hover:-translate-y-1 active:scale-[0.98]"
+  >
+    Submit to the Archive
+  </Button>
+</div>
 
             <div className="mt-6 flex flex-col sm:flex-row gap-4 items-center">
               {/* ADD TO CART */}
