@@ -357,44 +357,42 @@ export default function Navbar() {
           </div>
         </div>
         <div className="hidden lg:flex items-center justify-between w-full">
-          <div className="flex items-center justify-between w-full px-10">
-            {/* 1. THE LOGO: Pure white and centered vertically */}
-            <Link
-              to="/"
-              className="flex-shrink-0 transition-transform duration-700 hover:scale-105"
-            >
-              <img
-                src={logo}
-                className="w-32 sm:w-36 lg:w-44 brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
-                alt="Purely Himalayan Logo"
-              />
-            </Link>
+          <Link 
+  to="/" 
+  className="flex-shrink-0 flex items-center h-full transition-all duration-700 ease-in-out hover:scale-105"
+>
+  {/* 'h-full' and 'flex items-center' on the Link ensure 
+    the logo is centered relative to the navbar's height.
+  */}
+  <img 
+    src={logo} 
+    className="w-28 sm:w-32 lg:w-40 brightness-0 invert opacity-90 hover:opacity-100 transition-opacity" 
+    alt="Range of Himalayas" 
+  />
+</Link>
+          <nav className="flex items-center justify-center gap-6 lg:gap-10 flex-1 h-full px-4">
+  {[
+    { name: "Home", path: "/" },
+    { name: "Our Story", path: "/about-us" },
+    { name: "Create Box", path: "/custombox" },
+    { name: "Journal", path: "/blog" },
+    { name: "Contact", path: "/contact-us" },
+  ].map((link) => (
+    <Link
+      key={link.name}
+      to={link.path}
+      className="relative group flex items-center h-full"
+    >
+      {/* The Text: Optimized for the Editorial look */}
+      <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.4em] text-white/70 group-hover:text-white transition-all duration-500 whitespace-nowrap">
+        {link.name}
+      </span>
 
-            {/* 2. THE NAV LINKS: Wide tracking and Harvest Dot indicator */}
-            <nav className="hidden md:flex items-center justify-center gap-10 lg:gap-16 flex-1">
-              {[
-                { name: "Home", path: "/" },
-                { name: "Our Story", path: "/about-us" },
-                { name: "Create Box", path: "/custombox" },
-                { name: "Journal", path: "/blog" },
-                { name: "Contact", path: "/contact-us" },
-              ].map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="relative group py-2"
-                >
-                  {/* Updated Typography: Smaller, wider tracking, more delicate opacity */}
-                  <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/60 group-hover:text-white transition-all duration-500">
-                    {link.name}
-                  </span>
-
-                  {/* The Indicator: Replacing the line with the 'Harvest Dot' to match your hero icons */}
-                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out" />
-                </Link>
-              ))}
-            </nav>
-          </div>
+      {/* The Harvest Dot: Centered below the text */}
+      <span className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out" />
+    </Link>
+  ))}
+</nav>
           <div className="flex mb-2 items-center gap-3 lg:gap-6">
             <div className="relative flex-1 min-w-[150px] max-w-[250px] ml-6">
               <CiSearch
