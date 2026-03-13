@@ -883,80 +883,116 @@ export default function ProductsDetailsDialog() {
               </div>
             </div>
             <div className="space-y-6 mt-6">
-  {/* REVIEW TEXTAREA */}
-  <div className="space-y-2">
-    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 block ml-1">
-      Written Testimony
-    </label>
-    <textarea
-      value={reviewMsg}
-      onChange={(e) => setReviewMsg(e.target.value)}
-      placeholder="Describe the texture, aroma, and essence of this harvest..."
-      className="w-full bg-stone-50 border border-stone-100 rounded-[2rem] p-6 text-sm text-stone-900 focus:ring-2 focus:ring-stone-200 outline-none placeholder:text-stone-300 shadow-inner min-h-[160px] transition-all"
-      rows="5"
-    />
-  </div>
+              {/* REVIEW TEXTAREA */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 block ml-1">
+                  Written Testimony
+                </label>
+                <textarea
+                  value={reviewMsg}
+                  onChange={(e) => setReviewMsg(e.target.value)}
+                  placeholder="Describe the texture, aroma, and essence of this harvest..."
+                  className="w-full bg-stone-50 border border-stone-100 rounded-[2rem] p-6 text-sm text-stone-900 focus:ring-2 focus:ring-stone-200 outline-none placeholder:text-stone-300 shadow-inner min-h-[160px] transition-all"
+                  rows="5"
+                />
+              </div>
 
-  {/* IMAGE UPLOAD SECTION */}
-  <div className="bg-stone-50 rounded-[2rem] p-6 border border-stone-100">
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <div className="space-y-1">
-        <label className="text-[10px] font-black uppercase tracking-widest text-stone-900 block">
-          Visual Evidence
-        </label>
-        <p className="text-[10px] text-stone-400 uppercase tracking-wider">Optional Imagery (JPG, PNG)</p>
-      </div>
+              {/* IMAGE UPLOAD SECTION */}
+              <div className="bg-stone-50 rounded-[2rem] p-6 border border-stone-100">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-stone-900 block">
+                      Visual Evidence
+                    </label>
+                    <p className="text-[10px] text-stone-400 uppercase tracking-wider">
+                      Optional Imagery (JPG, PNG)
+                    </p>
+                  </div>
 
-      <div className="relative">
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleImageChange}
-          className="hidden"
-          id="archive-upload"
-        />
-        <label
-          htmlFor="archive-upload"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-stone-200 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-stone-600 cursor-pointer hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all duration-300 shadow-sm"
-        >
-          <Camera size={14} />
-          Attach Photos
-        </label>
-      </div>
-    </div>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      id="archive-upload"
+                    />
+                    <label
+                      htmlFor="archive-upload"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-stone-200 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-stone-600 cursor-pointer hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all duration-300 shadow-sm"
+                    >
+                      <Camera size={14} />
+                      Attach Photos
+                    </label>
+                  </div>
+                </div>
 
-    {/* IMAGE PREVIEW GRID */}
-    {reviewImages.length > 0 && (
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-wrap gap-3 mt-6 pt-6 border-t border-stone-200/50"
-      >
-        {reviewImages.map((img, idx) => (
-          <div key={idx} className="relative group">
-            <img
-              src={URL.createObjectURL(img)}
-              alt={`preview-${idx}`}
-              className="w-20 h-20 object-cover rounded-2xl border-2 border-white shadow-md grayscale-[0.5] hover:grayscale-0 transition-all duration-500"
-            />
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity flex items-center justify-center pointer-events-none">
-              <span className="text-[8px] text-white font-black uppercase tracking-tighter">Preview</span>
-            </div>
-          </div>
-        ))}
-      </motion.div>
-    )}
-  </div>
-
-  {/* SUBMIT ACTION */}
-  <Button
-    onClick={handleAddReview}
-    className="w-full bg-stone-900 text-white py-6 font-black uppercase text-[11px] tracking-[0.3em] rounded-[1.5rem] hover:bg-[#B23A2E] transition-all duration-500 shadow-xl hover:-translate-y-1 active:scale-[0.98]"
+                {/* IMAGE PREVIEW GRID */}
+                {reviewImages.length > 0 && (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="mt-8 pt-6 border-t border-stone-100"
   >
-    Submit to the Archive
-  </Button>
-</div>
+    <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-4 ml-1">
+      Selected Imagery ({reviewImages.length})
+    </p>
+    
+    <div className="flex flex-wrap gap-4">
+      <AnimatePresence>
+        {reviewImages.map((img, idx) => (
+          <motion.div
+            key={idx} // If names aren't unique, consider using the file object itself or a unique ID
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+            transition={{ delay: idx * 0.05 }}
+            className="relative group"
+          >
+            {/* The Image Chip */}
+            <div className="relative w-24 h-24 overflow-hidden rounded-2xl border-2 border-white shadow-sm transition-transform duration-500 group-hover:scale-105">
+              <img
+                src={URL.createObjectURL(img)}
+                alt={`preview-${idx}`}
+                className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all duration-700"
+              />
+              
+              {/* Refined Overlay */}
+              <div className="absolute inset-0 bg-stone-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span className="text-[8px] text-white font-black uppercase tracking-[0.2em] translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  View
+                </span>
+              </div>
+            </div>
+
+            {/* Remove Action */}
+            <button
+              onClick={() => {
+                const newImages = [...reviewImages];
+                newImages.splice(idx, 1);
+                setReviewImages(newImages);
+              }}
+              className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center text-stone-400 hover:text-[#B23A2E] hover:scale-110 transition-all opacity-0 group-hover:opacity-100 border border-stone-50"
+            >
+              <X size={12} strokeWidth={3} />
+            </button>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  </motion.div>
+)}
+              </div>
+
+              {/* SUBMIT ACTION */}
+              <Button
+                onClick={handleAddReview}
+                className="w-full bg-stone-900 text-white py-6 font-black uppercase text-[11px] tracking-[0.3em] rounded-[1.5rem] hover:bg-[#B23A2E] transition-all duration-500 shadow-xl hover:-translate-y-1 active:scale-[0.98]"
+              >
+                Submit to the Archive
+              </Button>
+            </div>
 
             <div className="mt-6 flex flex-col sm:flex-row gap-4 items-center">
               {/* ADD TO CART */}
