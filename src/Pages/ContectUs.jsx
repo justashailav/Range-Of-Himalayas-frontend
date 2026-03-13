@@ -59,31 +59,56 @@ export default function ContactUs() {
     <div>
       {/* HERO */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="relative h-72 sm:h-96"
-      >
-        <Helmet>
-          <title>Contact us - Range Of Himalayas</title>
-          <meta
-            name="description"
-            content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
-          />
-        </Helmet>
+  initial="hidden"
+  animate="visible"
+  variants={fadeUp}
+  className="relative h-[60vh] min-h-[400px] overflow-hidden bg-stone-900"
+>
+  <Helmet>
+    <title>Correspondence — Range Of Himalayas</title>
+    <meta
+      name="description"
+      content="Reach out to the source. Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
+    />
+  </Helmet>
 
-        <div className="absolute inset-0 bg-black/60"></div>
+  {/* Background Texture/Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-stone-900"></div>
+  
+  {/* Optional: Add a subtle mountain peak silhouette or texture here */}
+  <div className="absolute inset-0 opacity-20 mix-blend-overlay bg-[url('your-texture-url.jpg')] bg-cover bg-center" />
 
-        <motion.div
-          variants={fadeIn}
-          custom={0.1}
-          className="absolute inset-0 flex items-center justify-center px-4"
-        >
-          <h1 className="text-white text-4xl sm:text-5xl font-extrabold text-center">
-            We're here to help!
-          </h1>
-        </motion.div>
-      </motion.div>
+  <motion.div
+    variants={fadeIn}
+    custom={0.2}
+    className="absolute inset-0 flex flex-col items-center justify-center px-4 space-y-6"
+  >
+    {/* Minimalist Subtitle */}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+      className="flex items-center gap-3"
+    >
+      <span className="h-[1px] w-6 bg-[#B23A2E]" />
+      <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+        Direct Correspondence
+      </span>
+      <span className="h-[1px] w-6 bg-[#B23A2E]" />
+    </motion.div>
+
+    {/* Main Headline */}
+    <h1 className="text-white text-5xl sm:text-7xl font-black text-center uppercase tracking-tighter leading-[0.85] max-w-4xl">
+      How May We <br /> 
+      <span className="font-serif italic font-light lowercase tracking-normal">assist</span> your discovery?
+    </h1>
+
+    {/* Breadcrumb or Fine Print */}
+    <p className="text-stone-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-8">
+      Himalayan Headquarters — Global Transit
+    </p>
+  </motion.div>
+</motion.div>
 
       {/* CONTACT INFO SECTION */}
       <motion.section
