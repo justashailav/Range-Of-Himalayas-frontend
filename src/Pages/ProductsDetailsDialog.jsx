@@ -745,31 +745,37 @@ export default function ProductsDetailsDialog() {
             </motion.div>
 
             {/* Price & Stock */}
-            <div className="flex items-center gap-4">
-              {selectedVariant?.salesPrice > 0 ? (
-                <>
-                  <p className="text-gray-500 text-xl line-through">
-                    ₹{selectedVariant.price.toFixed(2)}
-                  </p>
-                  <p className="text-3xl font-bold text-green-600">
-                    ₹{selectedVariant.salesPrice.toFixed(2)}
-                  </p>
-                  <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    SAVE{" "}
-                    {Math.round(
-                      100 -
-                        (selectedVariant.salesPrice / selectedVariant.price) *
-                          100,
-                    )}
-                    %
-                  </span>
-                </>
-              ) : (
-                <p className="text-3xl font-bold text-gray-900">
-                  ₹{selectedVariant?.price.toFixed(2)}
-                </p>
-              )}
-            </div>
+            <div className="flex flex-col gap-1 py-4">
+  <div className="flex items-baseline gap-4">
+    {selectedVariant?.salesPrice > 0 ? (
+      <>
+        {/* Main Sale Price */}
+        <p className="text-4xl font-black text-stone-900 tracking-tighter">
+          ₹{selectedVariant.salesPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+        </p>
+        
+        {/* Original Price */}
+        <p className="text-lg font-medium text-stone-300 line-through decoration-stone-300">
+          ₹{selectedVariant.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+        </p>
+
+        {/* Minimalist Savings Tag */}
+        <span className="text-[10px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-1 rounded-full border border-[#B23A2E]/20">
+          {Math.round(100 - (selectedVariant.salesPrice / selectedVariant.price) * 100)}% Rare Discovery
+        </span>
+      </>
+    ) : (
+      <p className="text-4xl font-black text-stone-900 tracking-tighter">
+        ₹{selectedVariant?.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+      </p>
+    )}
+  </div>
+  
+  {/* Subtext for Tax/Logistics */}
+  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">
+    Inclusive of all botanical duties & taxes
+  </p>
+</div>
 
             <div className="flex items-center gap-10">
               {selectedVariant?.stock > 0 ? (
