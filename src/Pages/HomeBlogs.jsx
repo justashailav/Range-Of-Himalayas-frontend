@@ -63,47 +63,64 @@ export default function HomeBlog() {
     <div className="bg-[#FFF8E1] min-h-screen relative">
       <div className="max-w-6xl mx-auto px-4 py-16 relative">
         <div className="text-center mb-16 md:mb-20 space-y-6">
-  {/* MINIMALIST BADGE */}
-  <div className="flex flex-col items-center gap-3">
-    <div className="h-8 w-[1px] bg-stone-300" /> {/* Vertical line for editorial feel */}
-    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
-      The Field Notes
-    </span>
-  </div>
+          {/* MINIMALIST BADGE */}
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-[1px] bg-stone-300" />{" "}
+            {/* Vertical line for editorial feel */}
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+              The Field Notes
+            </span>
+          </div>
 
-  {/* MAIN HEADLINE */}
-  <h2 className="text-4xl md:text-6xl font-black text-stone-900 uppercase tracking-tighter leading-none">
-    Himalayan <br className="hidden md:block" /> 
-    <span className="font-serif italic font-light lowercase tracking-normal">Journal</span>
-  </h2>
+          {/* MAIN HEADLINE */}
+          <h2 className="text-4xl md:text-6xl font-black text-stone-900 uppercase tracking-tighter leading-none">
+            Himalayan <br className="hidden md:block" />
+            <span className="font-serif italic font-light lowercase tracking-normal">
+              Journal
+            </span>
+          </h2>
 
-  {/* REFINED DESCRIPTION */}
-  <p className="text-stone-500 font-serif italic text-lg max-w-2xl mx-auto leading-relaxed border-t border-stone-100 pt-6">
-    "A collection of seasonal observations, orchard wisdom, and natural insights 
-    harvested from the heart of the Himachal valleys."
-  </p>
-  
-  {/* DECORATIVE ELEMENT */}
-  <div className="flex justify-center items-center gap-4 pt-2">
-    <div className="h-[1px] w-4 bg-stone-200" />
-    <div className="w-1 h-1 bg-stone-400 rotate-45" />
-    <div className="h-[1px] w-4 bg-stone-200" />
-  </div>
-</div>
+          {/* REFINED DESCRIPTION */}
+          <p className="text-stone-500 font-serif italic text-lg max-w-2xl mx-auto leading-relaxed border-t border-stone-100 pt-6">
+            "A collection of seasonal observations, orchard wisdom, and natural
+            insights harvested from the heart of the Himachal valleys."
+          </p>
+
+          {/* DECORATIVE ELEMENT */}
+          <div className="flex justify-center items-center gap-4 pt-2">
+            <div className="h-[1px] w-4 bg-stone-200" />
+            <div className="w-1 h-1 bg-stone-400 rotate-45" />
+            <div className="h-[1px] w-4 bg-stone-200" />
+          </div>
+        </div>
 
         {/* Swiper Controls */}
+        {/* PREVIOUS BUTTON */}
         <button
-          className="swiper-button-prev-blog absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
+          className="swiper-button-prev-blog absolute top-1/2 -left-4 lg:-left-12 z-20 -translate-y-1/2 
+             bg-white/80 backdrop-blur-sm text-stone-900 
+             border border-stone-200 rounded-full 
+             w-14 h-14 flex items-center justify-center 
+             shadow-[0_8px_30px_rgb(0,0,0,0.04)] 
+             hover:bg-stone-900 hover:text-white hover:border-stone-900
+             transition-all duration-500 group"
           aria-label="Previous Slide"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-6 h-6 stroke-[1.5px] group-hover:-translate-x-0.5 transition-transform" />
         </button>
 
+        {/* NEXT BUTTON */}
         <button
-          className="swiper-button-next-blog absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200"
+          className="swiper-button-next-blog absolute top-1/2 -right-4 lg:-right-12 z-20 -translate-y-1/2 
+             bg-white/80 backdrop-blur-sm text-stone-900 
+             border border-stone-200 rounded-full 
+             w-14 h-14 flex items-center justify-center 
+             shadow-[0_8px_30px_rgb(0,0,0,0.04)] 
+             hover:bg-stone-900 hover:text-white hover:border-stone-900
+             transition-all duration-500 group"
           aria-label="Next Slide"
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-6 h-6 stroke-[1.5px] group-hover:translate-x-0.5 transition-transform" />
         </button>
 
         {/* Swiper Component */}
@@ -145,19 +162,45 @@ export default function HomeBlog() {
                     className="relative bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl overflow-hidden transition-all duration-300 cursor-pointer"
                   >
                     {b.coverImage && (
-                      <div className="relative w-full h-56 overflow-hidden">
-                        <img
-                          src={b.coverImage}
-                          alt={b.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                        {b.category && (
-                          <span className="absolute top-4 left-4 bg-pink-600/80 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
-                            {b.category}
-                          </span>
-                        )}
-                      </div>
-                    )}
+  <div className="relative w-full h-72 overflow-hidden bg-stone-100">
+    {/* THE IMAGE: Subtle desaturation that "wakes up" on hover */}
+    <img
+      src={b.coverImage}
+      alt={b.title}
+      className="
+        w-full h-full object-cover 
+        transition-all duration-[1.5s] ease-out
+        grayscale-[20%] group-hover:grayscale-0 
+        group-hover:scale-110
+      "
+    />
+    
+    {/* THE VIGNETTE: Adds a soft "film" depth to the corners */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-700" />
+
+    {/* THE CATEGORY: The "Archive Tag" */}
+    {b.category && (
+      <div className="absolute top-6 left-6 flex flex-col items-start gap-1">
+        <span className="
+          bg-stone-900/90 backdrop-blur-md 
+          text-white text-[9px] font-black uppercase tracking-[0.25em] 
+          px-4 py-1.5 rounded-sm shadow-xl
+        ">
+          {b.category}
+        </span>
+        {/* Decorative corner mark to make it look like a physical tag */}
+        <div className="w-[1px] h-3 bg-white/50 ml-2" />
+      </div>
+    )}
+
+    {/* DATE STAMP: Mimicking a film negative or printed date */}
+    <div className="absolute bottom-6 left-6 text-white/90">
+       <p className="text-[10px] font-mono tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+         EXT. HIMALAYAS // 2026
+       </p>
+    </div>
+  </div>
+)}
 
                     <div className="p-6 flex flex-col justify-between h-[260px]">
                       <div>
@@ -209,65 +252,65 @@ export default function HomeBlog() {
 
                           {/* 🔗 Share */}
                           <div className="relative" ref={shareRef}>
-                              <button
-                                onClick={(e) => handleShareClick(e, b._id)}
-                                className="flex items-center gap-1 hover:text-green-700 transition"
-                              >
-                                <Share2 size={16} />
-                                <span className="text-xs">Share</span>
-                              </button>
+                            <button
+                              onClick={(e) => handleShareClick(e, b._id)}
+                              className="flex items-center gap-1 hover:text-green-700 transition"
+                            >
+                              <Share2 size={16} />
+                              <span className="text-xs">Share</span>
+                            </button>
 
-                              <AnimatePresence>
-                                {openShareId === b._id && (
-                                  <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: 10 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
-                                  >
-                                    {[
-                                      {
-                                        href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-                                        icon: <FaFacebook />,
-                                        bg: "bg-blue-600",
-                                      },
-                                      {
-                                        href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
-                                        icon: <FaTwitter />,
-                                        bg: "bg-sky-500",
-                                      },
-                                      {
-                                        href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
-                                        icon: <FaPinterest />,
-                                        bg: "bg-red-600",
-                                      },
-                                      {
-                                        href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-                                        icon: <FaLinkedin />,
-                                        bg: "bg-blue-700",
-                                      },
-                                      {
-                                        href: `https://t.me/share/url?url=${encodedUrl}`,
-                                        icon: <FaTelegramPlane />,
-                                        bg: "bg-sky-600",
-                                      },
-                                    ].map((btn, i) => (
-                                      <a
-                                        key={i}
-                                        href={btn.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
-                                        className={`${btn.bg} text-white w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-transform`}
-                                      >
-                                        {btn.icon}
-                                      </a>
-                                    ))}
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
+                            <AnimatePresence>
+                              {openShareId === b._id && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: 10 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
+                                >
+                                  {[
+                                    {
+                                      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+                                      icon: <FaFacebook />,
+                                      bg: "bg-blue-600",
+                                    },
+                                    {
+                                      href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
+                                      icon: <FaTwitter />,
+                                      bg: "bg-sky-500",
+                                    },
+                                    {
+                                      href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
+                                      icon: <FaPinterest />,
+                                      bg: "bg-red-600",
+                                    },
+                                    {
+                                      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+                                      icon: <FaLinkedin />,
+                                      bg: "bg-blue-700",
+                                    },
+                                    {
+                                      href: `https://t.me/share/url?url=${encodedUrl}`,
+                                      icon: <FaTelegramPlane />,
+                                      bg: "bg-sky-600",
+                                    },
+                                  ].map((btn, i) => (
+                                    <a
+                                      key={i}
+                                      href={btn.href}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className={`${btn.bg} text-white w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-transform`}
+                                    >
+                                      {btn.icon}
+                                    </a>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
                         </div>
 
                         <span className="text-pink-600 text-sm font-medium hover:underline">
