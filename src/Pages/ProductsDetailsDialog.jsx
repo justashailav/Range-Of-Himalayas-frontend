@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
+  ClipboardList,
   Heart,
 } from "lucide-react";
 import { useState, useEffect } from "react";
