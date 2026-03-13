@@ -14,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const { loading, error, isAuthencated, user } = useSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
 
   const handleLogin = (e) => {
@@ -59,46 +59,45 @@ export default function Login() {
   return (
     <div>
       <div className="flex flex-col justify-center md:flex-row h-screen bg-[#FFECE8]">
-      <Helmet>
-        <title>Login - Range Of Himalayas </title>
-        <meta
-          name="description"
-          content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
-        />
-      </Helmet>
+        <Helmet>
+          <title>Login - Range Of Himalayas </title>
+          <meta
+            name="description"
+            content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
+          />
+        </Helmet>
         {/* Left Side: Login Form */}
-        <div className="w-full md:w-1/2 flex items-center justify-center bg-stone-50 p-12 relative overflow-hidden">
-  {/* Subtle Background Detail: A faint watermark or texture */}
-  <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-    <span className="text-8xl font-black uppercase tracking-tighter">Login</span>
+       {/* --- LEFT SIDE: THE PARCHMENT FORM --- */}
+<div className="w-full md:w-1/2 flex items-center justify-center bg-[#fdfcf7] p-12 relative overflow-hidden">
+  {/* Subtlest hint of a paper texture watermark */}
+  <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none select-none">
+    <span className="text-[12rem] font-black uppercase tracking-tighter">Login</span>
   </div>
 
   <div className="max-w-sm w-full relative z-10">
-    {/* 1. EDITORIAL HEADER */}
     <div className="text-center mb-16 space-y-4">
       <div className="flex justify-center items-center gap-3 mb-6">
-        <div className="h-[1px] w-8 bg-[#B23A2E]" />
-        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">
+        <div className="h-[1px] w-8 bg-[#2d3a2d]" /> {/* Forest Green accent */}
+        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#2d3a2d]/60">
           Member Access
         </span>
-        <div className="h-[1px] w-8 bg-[#B23A2E]" />
+        <div className="h-[1px] w-8 bg-[#2d3a2d]" />
       </div>
-      
-      <h1 className="text-5xl font-black text-stone-900 leading-none tracking-tighter uppercase">
+
+      <h1 className="text-5xl font-black text-[#1a241a] leading-none tracking-tighter uppercase">
         Return to <br />
-        <span className="font-serif italic font-light lowercase tracking-normal text-stone-700">
+        <span className="font-serif italic font-light lowercase tracking-normal text-[#B23A2E]">
           The Orchard
         </span>
       </h1>
-      <p className="text-stone-500 font-serif italic text-sm pt-2">
+      <p className="text-[#4a5a4a] font-serif italic text-sm pt-2">
         "Enter your credentials to access your harvest records."
       </p>
     </div>
 
-    {/* 2. ARCHIVE-STYLE FORM */}
     <form onSubmit={handleLogin} className="space-y-8">
       <div className="relative group">
-        <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 mb-2 block transition-colors group-focus-within:text-[#B23A2E]">
+        <label className="text-[9px] font-black uppercase tracking-widest text-[#4a5a4a]/60 mb-2 block transition-colors group-focus-within:text-[#B23A2E]">
           Email Address
         </label>
         <input
@@ -106,19 +105,19 @@ export default function Login() {
           placeholder="name@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-transparent border-b border-stone-200 py-3 text-stone-900 placeholder-stone-300 focus:outline-none focus:border-[#B23A2E] transition-all duration-500 font-serif"
+          className="w-full bg-transparent border-b border-[#2d3a2d]/10 py-3 text-[#1a241a] placeholder-[#1a241a]/20 focus:outline-none focus:border-[#B23A2E] transition-all duration-500 font-serif"
           required
         />
       </div>
 
       <div className="relative group">
         <div className="flex justify-between items-end mb-2">
-          <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 transition-colors group-focus-within:text-[#B23A2E]">
+          <label className="text-[9px] font-black uppercase tracking-widest text-[#4a5a4a]/60 transition-colors group-focus-within:text-[#B23A2E]">
             Secret Key / Password
           </label>
           <Link
             to="/password/forgot"
-            className="text-[9px] font-black uppercase tracking-widest text-stone-400 hover:text-[#B23A2E] transition-colors"
+            className="text-[9px] font-black uppercase tracking-widest text-[#4a5a4a]/40 hover:text-[#B23A2E] transition-colors"
           >
             Forgot?
           </Link>
@@ -128,33 +127,29 @@ export default function Login() {
           placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full bg-transparent border-b border-stone-200 py-3 text-stone-900 placeholder-stone-300 focus:outline-none focus:border-[#B23A2E] transition-all duration-500"
+          className="w-full bg-transparent border-b border-[#2d3a2d]/10 py-3 text-[#1a241a] placeholder-[#1a241a]/20 focus:outline-none focus:border-[#B23A2E] transition-all duration-500"
           required
         />
       </div>
 
-      {/* 3. PREMIUM ACTION */}
       <div className="pt-6 space-y-6">
         <button
           type="submit"
           disabled={loading}
-          className="w-full group relative overflow-hidden bg-stone-900 text-white py-5 px-8 transition-all duration-700"
+          className="w-full group relative overflow-hidden bg-[#2d3a2d] text-white py-5 px-8 transition-all duration-700 shadow-xl shadow-[#2d3a2d]/10"
         >
-          {/* Hover Slide Effect */}
           <div className="absolute inset-0 bg-[#B23A2E] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
-          
           <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.5em]">
             {loading ? "Verifying..." : "Authenticate"}
           </span>
         </button>
 
-        {/* 4. SECONDARY LINK */}
-        <div className="text-center pt-4 border-t border-stone-100">
-          <p className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+        <div className="text-center pt-4 border-t border-[#2d3a2d]/5">
+          <p className="text-[10px] font-black uppercase tracking-widest text-[#4a5a4a]/60">
             New to the harvest?{" "}
             <Link
               to="/register"
-              className="text-stone-900 hover:text-[#B23A2E] underline underline-offset-4 transition-colors"
+              className="text-[#2d3a2d] hover:text-[#B23A2E] underline underline-offset-4 transition-colors"
             >
               Request Access
             </Link>
@@ -164,72 +159,65 @@ export default function Login() {
     </form>
   </div>
 </div>
-        <div className="hidden w-full md:w-1/2 bg-stone-900 md:flex flex-col items-center justify-center p-12 relative overflow-hidden">
+
+{/* --- RIGHT SIDE: THE FOREST COVER --- */}
+<div className="hidden w-full md:w-1/2 bg-[#2d3a2d] md:flex flex-col items-center justify-center p-12 relative overflow-hidden">
+  {/* Abstract Nature Texture Overlay */}
+  <div className="absolute inset-0 opacity-[0.07] pointer-events-none mix-blend-overlay"
+       style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/natural-paper.png')` }} />
   
-  {/* --- 1. THE ARCHIVAL BACKGROUND --- */}
-  {/* Subtle texture overlay to make the black feel like high-end paper */}
-  <div className="absolute inset-0 opacity-20 pointer-events-none grayscale contrast-125" 
-       style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/p6.png')` }} />
-  
-  {/* Decorative "Mountain" line art in the background */}
-  <div className="absolute bottom-[-10%] left-[-10%] opacity-10">
-     <div className="w-96 h-96 border-[1px] border-white rounded-full" />
-  </div>
+  {/* The "Sunlight" effect (radial gradient to break the flat green) */}
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.05)_0%,_transparent_60%)]" />
 
   <div className="relative z-10 flex flex-col items-center max-w-xs">
-    
-    {/* --- 2. THE LOGO AS A SEAL --- */}
-    <motion.div 
+    <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 1 }}
       className="mb-12 relative"
     >
-      {/* Decorative ring around logo */}
-      <div className="absolute -inset-4 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]" />
-      <img src={logo} alt="logo" className="h-32 w-auto brightness-0 invert opacity-90" />
+      <div className="absolute -inset-6 border border-white/5 rounded-full animate-[spin_30s_linear_infinite]" />
+      <img
+        src={logo}
+        alt="logo"
+        className="h-32 w-auto brightness-0 invert opacity-80"
+      />
     </motion.div>
 
-    {/* --- 3. EDITORIAL TEXT --- */}
     <div className="text-center space-y-6 mb-12">
       <h2 className="text-white text-3xl font-black uppercase tracking-tighter leading-none">
         The Harvest <br />
-        <span className="font-serif italic font-light lowercase tracking-normal text-stone-400">
+        <span className="font-serif italic font-light lowercase tracking-normal text-[#fdfcf7]/60">
           awaits you.
         </span>
       </h2>
-      
+
       <div className="flex justify-center items-center gap-2">
         <div className="h-[1px] w-4 bg-[#B23A2E]" />
-        <p className="text-stone-400 text-[10px] font-black uppercase tracking-[0.3em]">
+        <p className="text-[#fdfcf7]/40 text-[10px] font-black uppercase tracking-[0.3em]">
           Join the Registry
         </p>
         <div className="h-[1px] w-4 bg-[#B23A2E]" />
       </div>
 
-      <p className="text-stone-500 font-serif italic text-sm leading-relaxed px-4">
+      <p className="text-[#fdfcf7]/40 font-serif italic text-sm leading-relaxed px-4">
         "Become a part of our seasonal journey and gain early access to limited mountain yields."
       </p>
     </div>
 
-    {/* --- 4. THE BOUTIQUE BUTTON --- */}
     <Link
       to="/register"
-      className="group relative px-12 py-4 overflow-hidden border border-white/20 transition-all duration-500 hover:border-white"
+      className="group relative px-12 py-4 overflow-hidden border border-[#fdfcf7]/20 transition-all duration-500 hover:border-[#fdfcf7]"
     >
-      {/* Hover fill animation */}
-      <div className="absolute inset-0 bg-white translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-      
-      <span className="relative z-10 text-white group-hover:text-stone-900 text-[10px] font-black uppercase tracking-[0.4em] transition-colors duration-500">
+      <div className="absolute inset-0 bg-[#fdfcf7] translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+      <span className="relative z-10 text-white group-hover:text-[#2d3a2d] text-[10px] font-black uppercase tracking-[0.4em] transition-colors duration-500">
         Create Account
       </span>
     </Link>
-    
   </div>
 
-  {/* --- 5. BOTTOM BRANDING --- */}
   <div className="absolute bottom-10">
-    <span className="text-[8px] font-mono text-white/20 uppercase tracking-[1em]">
+    <span className="text-[8px] font-mono text-white/10 uppercase tracking-[1em]">
       Himalayan Origins © 2026
     </span>
   </div>
