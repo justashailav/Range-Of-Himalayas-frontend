@@ -6,7 +6,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { Calendar } from "lucide-react";
-
+import { motion, AnimatePresence } from "framer-motion";
 const statusSteps = ["confirmed", "packed", "shipping", "delivered"];
 
 const statusStyles = {
@@ -169,54 +169,60 @@ export default function ShoppingOrders() {
 
                   {/* STATUS TIMELINE */}
                   {statusSteps.includes(order.orderStatus) && (
-  <div className="mt-12 mb-6 px-2">
-    <div className="flex items-center">
-      {statusSteps.map((step, idx) => (
-        <div
-          key={step}
-          className="flex-1 relative flex flex-col items-center"
-        >
-          {/* THE TRACKING LINE */}
-          {idx !== statusSteps.length - 1 && (
-            <div
-              className={`absolute top-[6px] left-[50%] w-full h-[1px] transition-colors duration-1000 ${
-                idx < currentIndex ? "bg-stone-900" : "bg-stone-200"
-              }`}
-            />
-          )}
+                    <div className="mt-12 mb-6 px-2">
+                      <div className="flex items-center">
+                        {statusSteps.map((step, idx) => (
+                          <div
+                            key={step}
+                            className="flex-1 relative flex flex-col items-center"
+                          >
+                            {/* THE TRACKING LINE */}
+                            {idx !== statusSteps.length - 1 && (
+                              <div
+                                className={`absolute top-[6px] left-[50%] w-full h-[1px] transition-colors duration-1000 ${
+                                  idx < currentIndex
+                                    ? "bg-stone-900"
+                                    : "bg-stone-200"
+                                }`}
+                              />
+                            )}
 
-          {/* THE NODE (POINT) */}
-          <div className="relative z-10 flex flex-col items-center">
-            <div
-              className={`w-3 h-3 rounded-full border-2 transition-all duration-700 ${
-                idx <= currentIndex 
-                  ? "bg-stone-900 border-stone-900 shadow-[0_0_10px_rgba(0,0,0,0.1)]" 
-                  : "bg-white border-stone-200"
-              } ${idx === currentIndex ? "animate-pulse ring-4 ring-stone-900/10" : ""}`}
-            />
-            
-            {/* STEP LABEL */}
-            <div className="absolute top-6 flex flex-col items-center min-w-[80px]">
-              <span className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${
-                idx <= currentIndex ? "text-stone-900" : "text-stone-300"
-              }`}>
-                {step}
-              </span>
-              
-              {/* INDICATOR DOT FOR CURRENT STEP */}
-              {idx === currentIndex && (
-                <motion.div 
-                  layoutId="active-dot"
-                  className="w-1 h-1 bg-[#B23A2E] rounded-full mt-1" 
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+                            {/* THE NODE (POINT) */}
+                            <div className="relative z-10 flex flex-col items-center">
+                              <div
+                                className={`w-3 h-3 rounded-full border-2 transition-all duration-700 ${
+                                  idx <= currentIndex
+                                    ? "bg-stone-900 border-stone-900 shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+                                    : "bg-white border-stone-200"
+                                } ${idx === currentIndex ? "animate-pulse ring-4 ring-stone-900/10" : ""}`}
+                              />
+
+                              {/* STEP LABEL */}
+                              <div className="absolute top-6 flex flex-col items-center min-w-[80px]">
+                                <span
+                                  className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${
+                                    idx <= currentIndex
+                                      ? "text-stone-900"
+                                      : "text-stone-300"
+                                  }`}
+                                >
+                                  {step}
+                                </span>
+
+                                {/* INDICATOR DOT FOR CURRENT STEP */}
+                                {idx === currentIndex && (
+                                  <motion.div
+                                    layoutId="active-dot"
+                                    className="w-1 h-1 bg-[#B23A2E] rounded-full mt-1"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* ACTION */}
                   <div className="mt-6 flex justify-end">
