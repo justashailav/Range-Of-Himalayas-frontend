@@ -279,65 +279,67 @@ export default function WishListItemContent() {
   <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 </div>
 
-                <div className="p-5 space-y-4">
-                  <h3 className="text-2xl font-semibold text-gray-900 leading-tight line-clamp-2">
-                    {title}
-                  </h3>
+               <div className="p-6 space-y-6">
+  {/* TITLE & PRICE SECTION */}
+  <div className="flex justify-between items-start gap-4">
+    <div className="flex-1">
+      <h3 className="text-xl font-black text-stone-900 tracking-tighter leading-[1.1] line-clamp-2 uppercase">
+        {title}
+      </h3>
+    </div>
+    <div className="text-right shrink-0">
+      {price !== salePrice ? (
+        <div className="flex flex-col items-end">
+          <span className="text-[10px] text-stone-300 line-through font-bold decoration-stone-300">
+            ₹{price}
+          </span>
+          <span className="text-2xl font-serif italic text-stone-900">
+            ₹{salePrice}
+          </span>
+        </div>
+      ) : (
+        <span className="text-2xl font-serif italic text-stone-900">
+          ₹{price}
+        </span>
+      )}
+    </div>
+  </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    {variant?.size && (
-                      <span className="px-3 py-1 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-full shadow-sm hover:shadow-md transition-all duration-200 cursor-default">
-                        <span className="font-semibold text-gray-700">
-                          Size:
-                        </span>{" "}
-                        {variant.size}
-                      </span>
-                    )}
-                    {weight && (
-                      <span className="px-3 py-1 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-full shadow-sm hover:shadow-md transition-all duration-200 cursor-default">
-                        <span className="font-semibold text-gray-700">
-                          Weight:
-                        </span>{" "}
-                        {weight}
-                      </span>
-                    )}
-                  </div>
+  {/* MINIMALIST ATTRIBUTE TAGS */}
+  <div className="flex flex-wrap gap-2">
+    {variant?.size && (
+      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
+        <span className="text-stone-300">Size:</span> {variant.size}
+      </div>
+    )}
+    {weight && (
+      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
+        <span className="text-stone-300">Net:</span> {weight}
+      </div>
+    )}
+  </div>
 
-                  <div className="mt-4 flex items-end gap-2">
-                    {price !== salePrice ? (
-                      <>
-                        <span className="text-sm text-gray-400 line-through">
-                          ₹{price}
-                        </span>
-                        <span className="text-2xl font-semibold text-[#16A34A]">
-                          ₹{salePrice}
-                        </span>
-                        <span className="text-xs font-bold text-[#15803D] bg-[#DCFCE7] px-2 py-0.5 rounded-full shadow-sm">
-                          {Math.round(((price - salePrice) / price) * 100)}% OFF
-                        </span>
-                      </>
-                    ) : (
-                      <span className="text-2xl font-semibold text-gray-900">
-                        ₹{price}
-                      </span>
-                    )}
-                  </div>
-
-                  <Button
-                    onClick={() =>
-                      handleAddToCart(
-                        product?._id || cartItem.productId,
-                        totalStock,
-                        variant?.size,
-                        weight,
-                      )
-                    }
-                    className="w-full flex items-center justify-center gap-2 bg-[#F08C7D] text-white font-semibold py-3 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:bg-[#f39b8d] active:scale-95 transition-all duration-300"
-                  >
-                    <ShoppingCart className="w-4 h-4" />
-                    <span>Add to Cart</span>
-                  </Button>
-                </div>
+  {/* PREMIUM ADD TO CART BUTTON */}
+  <button
+    onClick={() =>
+      handleAddToCart(
+        product?._id || cartItem.productId,
+        totalStock,
+        variant?.size,
+        weight,
+      )
+    }
+    className="w-full group/btn relative flex items-center justify-center gap-3 bg-stone-900 text-white py-4 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-[#B23A2E] hover:shadow-xl hover:shadow-stone-200 active:scale-[0.98]"
+  >
+    {/* Subtle Shine Effect */}
+    <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]" />
+    
+    <ShoppingCart size={16} className="transition-transform group-hover/btn:-rotate-12" />
+    <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+      Move to Basket
+    </span>
+  </button>
+</div>
               </div>
             );
           })}
