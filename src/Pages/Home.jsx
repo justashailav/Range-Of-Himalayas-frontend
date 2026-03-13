@@ -246,12 +246,30 @@ export default function Home() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
   if (loading && !galleryItems?.length) {
-    return (
-      <div className="min-h-screen bg-[#FFF8E1] flex items-center justify-center">
-        <HimalayanLoader text="Waking up the Himalayas…" />
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      // Updated bg to match your 'Account Ledger' and 'Cart' background
+      className="min-h-screen bg-[#fdfcf7] flex flex-col items-center justify-center"
+    >
+      {/* Using the updated text prop to keep that 
+          editorial/storytelling voice consistent 
+      */}
+      <HimalayanLoader text="Sourcing the finest harvest…" />
+      
+      {/* Optional: Minimalist footer mark to ground 
+          the screen during long load times 
+      */}
+      <div className="absolute bottom-12 overflow-hidden">
+        <span className="text-[8px] font-black uppercase tracking-[0.8em] text-stone-300">
+          EST. 2026
+        </span>
       </div>
-    );
-  }
+    </motion.div>
+  );
+}
   return (
     <div className="bg-[#FFF8E1] overflow-x-hidden">
       <Helmet>
