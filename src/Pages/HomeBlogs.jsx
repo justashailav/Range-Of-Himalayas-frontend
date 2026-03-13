@@ -25,6 +25,7 @@ import {
   FaPinterest,
   FaTelegramPlane,
   FaTwitter,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 export default function HomeBlog() {
