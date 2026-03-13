@@ -292,43 +292,47 @@ export default function ProductsDetailsDialog() {
                 </div>
               </div>
 
-              <AnimatePresence mode="popLayout" initial={false} custom={mainImage}>
-  <motion.img
-    key={mainImage}
-    src={mainImage}
-    alt={productDetails?.title}
-    onClick={() => setIsImageOpen(true)}
-    
-    // --- ADVANCED DRAG LOGIC ---
-    drag="x"
-    dragConstraints={{ left: 0, right: 0 }}
-    dragElastic={0.6} // More "rubbery" feel for premium UX
-    onDragEnd={(e, info) => {
-      const i = allImages.indexOf(mainImage);
-      const swipeThreshold = 50;
-      if (info.offset.x < -swipeThreshold) {
-        setMainImage(allImages[(i + 1) % allImages.length]);
-      } else if (info.offset.x > swipeThreshold) {
-        setMainImage(allImages[(i - 1 + allImages.length) % allImages.length]);
-      }
-    }}
-
-    // --- DIRECTIONAL ANIMATION ---
-    // We use a slight slide + scale to mimic a physical gallery card
-    initial={{ opacity: 0, x: 100, scale: 0.9 }}
-    animate={{ opacity: 1, x: 0, scale: 1 }}
-    exit={{ opacity: 0, x: -100, scale: 0.9 }}
-    
-    // Spring physics make it feel significantly more expensive than "ease"
-    transition={{
-      x: { type: "spring", stiffness: 300, damping: 30 },
-      opacity: { duration: 0.3 },
-      scale: { duration: 0.4 }
-    }}
-    
-    className="w-full h-full object-cover cursor-zoom-in group-active:cursor-grabbing select-none"
-  />
-</AnimatePresence>
+              <AnimatePresence
+                mode="popLayout"
+                initial={false}
+                custom={mainImage}
+              >
+                <motion.img
+                  key={mainImage}
+                  src={mainImage}
+                  alt={productDetails?.title}
+                  onClick={() => setIsImageOpen(true)}
+                  // --- ADVANCED DRAG LOGIC ---
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.6} // More "rubbery" feel for premium UX
+                  onDragEnd={(e, info) => {
+                    const i = allImages.indexOf(mainImage);
+                    const swipeThreshold = 50;
+                    if (info.offset.x < -swipeThreshold) {
+                      setMainImage(allImages[(i + 1) % allImages.length]);
+                    } else if (info.offset.x > swipeThreshold) {
+                      setMainImage(
+                        allImages[
+                          (i - 1 + allImages.length) % allImages.length
+                        ],
+                      );
+                    }
+                  }}
+                  // --- DIRECTIONAL ANIMATION ---
+                  // We use a slight slide + scale to mimic a physical gallery card
+                  initial={{ opacity: 0, x: 100, scale: 0.9 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -100, scale: 0.9 }}
+                  // Spring physics make it feel significantly more expensive than "ease"
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.3 },
+                    scale: { duration: 0.4 },
+                  }}
+                  className="w-full h-full object-cover cursor-zoom-in group-active:cursor-grabbing select-none"
+                />
+              </AnimatePresence>
 
               {/* Image Counter Badge */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-stone-900/10 backdrop-blur-lg rounded-full z-20">
@@ -338,27 +342,59 @@ export default function ProductsDetailsDialog() {
                 </p>
               </div>
             </motion.div>
-            <AnimatePresence>
-              {isImageOpen && (
-                <motion.div
-                  className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={() => setIsImageOpen(false)}
-                >
-                  <motion.img
-                    src={mainImage}
-                    initial={{ scale: 0.92, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.92, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="max-w-[90vw] max-h-[90vh] object-contain"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+           <AnimatePresence>
+  {isImageOpen && (
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-950/95 backdrop-blur-xl cursor-zoom-out"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={() => setIsImageOpen(false)}
+    >
+      {/* --- MINIMALIST CLOSE UI --- */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute top-10 right-10 flex items-center gap-4 z-[110]"
+      >
+        <span className="text-[10px] font-black text-stone-500 uppercase tracking-[0.4em] hidden md:block">
+          Close Archive
+        </span>
+        <div className="w-12 h-12 flex items-center justify-center bg-white/10 rounded-full border border-white/10 hover:bg-white/20 transition-colors">
+          <X className="text-white" size={20} />
+        </div>
+      </motion.div>
+
+      {/* --- PRODUCT IMAGE --- */}
+      <motion.img
+        src={mainImage}
+        alt="Product Zoom"
+        initial={{ scale: 0.8, opacity: 0, rotateY: 10 }}
+        animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+        exit={{ scale: 0.8, opacity: 0, rotateY: -10 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 260, 
+          damping: 25,
+          opacity: { duration: 0.4 }
+        }}
+        className="max-w-[95vw] max-h-[85vh] object-contain rounded-lg shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      {/* --- BOTANICAL FOOTER --- */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center"
+      >
+        <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.5em]">
+          {productDetails?.title}
+        </p>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
 
             {allImages.length > 1 && (
               <div className="mt-4">
