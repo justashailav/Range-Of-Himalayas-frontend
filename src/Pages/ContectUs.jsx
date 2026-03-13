@@ -240,92 +240,54 @@ export default function ContactUs() {
 
       {/* LOGO + TAGLINE */}
       <motion.section
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
-  variants={fadeUp}
-  className="bg-stone-900 flex flex-col sm:flex-row justify-around items-center p-12 sm:p-20 text-center space-y-8 sm:space-y-0 relative overflow-hidden"
->
-  {/* Subtle Background Texture Overlay */}
-  <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
-
-  {/* LOGO - Scaled for elegance */}
-  <motion.div
-    variants={scaleIn}
-    className="relative z-10"
-  >
-    <img
-      src={logo}
-      alt="Range of Himalayas Logo"
-      className="w-40 sm:w-56 brightness-0 invert opacity-90" 
-    />
-  </motion.div>
-
-  {/* DIVIDER (Desktop only) */}
-  <div className="hidden sm:block h-16 w-[1px] bg-stone-700 mx-10" />
-
-  {/* THE PROMISE */}
-  <motion.div
-    variants={fadeIn}
-    custom={0.2}
-    className="relative z-10 space-y-4"
-  >
-    <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-      Direct from Source
-    </h4>
-    <p className="text-stone-200 text-xl sm:text-2xl font-serif italic max-w-sm leading-relaxed">
-      "Pure organic produce, harvested from the <span className="text-white border-b border-stone-700">primordial heart</span> of the Himalayas."
-    </p>
-    
-    <div className="flex justify-center sm:justify-start gap-2 pt-2">
-      <div className="h-1 w-1 bg-[#B23A2E] rounded-full" />
-      <div className="h-1 w-1 bg-stone-600 rounded-full" />
-      <div className="h-1 w-1 bg-stone-600 rounded-full" />
-    </div>
-  </motion.div>
-</motion.section>
-
-      {/* PRELAUNCH CTA */}
-      <motion.section
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeUp}
-        custom={0}
-        className="px-6 py-14 bg-gradient-to-br from-[#FFF5EC] to-[#FFE8D6] text-center shadow-inner"
+        className="bg-stone-900 flex flex-col sm:flex-row justify-around items-center p-12 sm:p-20 text-center space-y-8 sm:space-y-0 relative overflow-hidden"
       >
-        <motion.h2
-          variants={fadeIn}
-          custom={0.02}
-          className="text-3xl sm:text-4xl font-bold text-[#d97706] mb-3"
-        >
-          🍎 Prelaunch Is Live!
-        </motion.h2>
+        {/* Subtle Background Texture Overlay */}
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
 
-        <motion.p
-          variants={fadeIn}
-          custom={0.08}
-          className="text-gray-700 text-lg max-w-2xl mx-auto mb-8"
-        >
-          Our fresh Himalayan apples and seasonal produce are launching soon.
-          Join our prelaunch list to get early access, member-only pricing, and
-          updates straight from our orchards.
-        </motion.p>
+        {/* LOGO - Scaled for elegance */}
+        <motion.div variants={scaleIn} className="relative z-10">
+          <img
+            src={logo}
+            alt="Range of Himalayas Logo"
+            className="w-40 sm:w-56 brightness-0 invert opacity-90"
+          />
+        </motion.div>
 
-        <motion.a
-          href="https://forms.gle/5M73wYV9Je6SJtow9"
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* DIVIDER (Desktop only) */}
+        <div className="hidden sm:block h-16 w-[1px] bg-stone-700 mx-10" />
+
+        {/* THE PROMISE */}
+        <motion.div
+          variants={fadeIn}
+          custom={0.2}
+          className="relative z-10 space-y-4"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-[#d97706] text-white px-10 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-[#b76104] transition"
-          >
-            Join Prelaunch Waitlist 🚀
-          </motion.button>
-        </motion.a>
+          <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+            Direct from Source
+          </h4>
+          <p className="text-stone-200 text-xl sm:text-2xl font-serif italic max-w-sm leading-relaxed">
+            "Pure organic produce, harvested from the{" "}
+            <span className="text-white border-b border-stone-700">
+              primordial heart
+            </span>{" "}
+            of the Himalayas."
+          </p>
+
+          <div className="flex justify-center sm:justify-start gap-2 pt-2">
+            <div className="h-1 w-1 bg-[#B23A2E] rounded-full" />
+            <div className="h-1 w-1 bg-stone-600 rounded-full" />
+            <div className="h-1 w-1 bg-stone-600 rounded-full" />
+          </div>
+        </motion.div>
       </motion.section>
+
+      {/* PRELAUNCH CTA */}
+      
 
       <Footer />
     </div>
