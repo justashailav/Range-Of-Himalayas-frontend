@@ -92,56 +92,104 @@ export default function BlogDetail() {
 
       {/* Header Image */}
       {blog?.coverImage && (
-        <motion.div
-          className="relative w-full h-[60vh] overflow-hidden rounded-b-3xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7 }}
-        >
-          <motion.img
-            src={blog.coverImage}
-            alt={blog.title}
-            className="w-full h-full object-cover brightness-75"
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1.1, ease: "easeOut" }}
-          />
+  <motion.div
+    className="relative w-full h-[75vh] overflow-hidden rounded-b-[4rem] bg-stone-900 shadow-2xl"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+  >
+    {/* PARALLAX IMAGE EFFECT */}
+    <motion.img
+      src={blog.coverImage}
+      alt={blog.title}
+      className="w-full h-full object-cover opacity-70"
+      initial={{ scale: 1.15, filter: "blur(10px)" }}
+      animate={{ scale: 1, filter: "blur(0px)" }}
+      transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+    />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+    {/* VIGNETTE & OVERLAY */}
+    <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-900/20 to-transparent" />
 
-          <motion.div
-            className="absolute bottom-10 left-6 md:left-20 text-white"
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0.2}
+    {/* HERO CONTENT */}
+    <div className="absolute inset-0 flex flex-col justify-end pb-16 px-6 md:px-20 lg:px-32">
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={0.3}
+        className="max-w-4xl"
+      >
+        {/* REFINED CATEGORY TAG */}
+        {blog.category && (
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full mb-6"
           >
-            {blog.category && (
-              <span className="bg-pink-500/80 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
-                {blog.category}
-              </span>
-            )}
-
-            <h1 className="text-3xl md:text-5xl font-bold mt-3 mb-2 drop-shadow-md">
-              {blog.title}
-            </h1>
-
-            <div className="flex items-center gap-4 text-sm opacity-90 mt-4">
-              <span className="flex items-center gap-1">
-                <User size={16} /> {blog.author || "Team Range Of Himalayas"}
-              </span>
-              <span className="flex items-center gap-1">
-                <Calendar size={16} />
-                {new Date(blog.createdAt).toLocaleDateString("en-IN", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </span>
-            </div>
+            <div className="w-1.5 h-1.5 rounded-full bg-[#B23A2E] animate-pulse" />
+            <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">
+              {blog.category}
+            </span>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+
+        {/* HERO TITLE: Editorial Style */}
+        <h1 className="text-4xl md:text-7xl font-black text-white tracking-tighter leading-[0.9] drop-shadow-2xl">
+          {blog.title.split(' ').slice(0, -1).join(' ')}{' '}
+          <span className="font-light italic text-stone-400">
+            {blog.title.split(' ').slice(-1)}
+          </span>
+        </h1>
+
+        {/* META DATA: Minimalist Footer */}
+        <div className="flex flex-wrap items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-stone-400 mt-8 pt-8 border-t border-white/10">
+          <div className="flex items-center gap-2 group cursor-help">
+            <div className="p-2 rounded-full bg-white/5 group-hover:bg-[#B23A2E] transition-colors">
+              <User size={14} className="text-white" />
+            </div>
+            <span className="text-stone-200">{blog.author || "Range Of Himalayas"}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="p-2 rounded-full bg-white/5">
+              <Calendar size={14} className="text-white" />
+            </div>
+            <span className="text-stone-200">
+              {new Date(blog.createdAt).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+
+          {/* ESTIMATED READ TIME: Extra Polish */}
+          <div className="hidden sm:flex items-center gap-2">
+            <div className="p-2 rounded-full bg-white/5">
+              <Clock size={14} className="text-white" />
+            </div>
+            <span className="text-stone-200">6 Min Read</span>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+
+    {/* SCROLL INDICATOR */}
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.2 }}
+      className="absolute bottom-6 right-10 hidden lg:block"
+    >
+      <div className="flex flex-col items-center gap-4">
+        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white/30 rotate-90 translate-y-8">Scroll</span>
+        <div className="w-px h-16 bg-gradient-to-b from-white/50 to-transparent" />
+      </div>
+    </motion.div>
+  </motion.div>
+)}
 
       {/* Main Blog Content */}
       <motion.div
