@@ -42,14 +42,27 @@ export default function ShoppingOrders() {
       <div className="max-w-6xl mx-auto space-y-8">
 
         {/* HEADER */}
-        <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">
-            My Orders
-          </h1>
-          <p className="text-gray-500 mt-1">
-            Track your purchases and delivery status
-          </p>
-        </div>
+        <div className="pb-8 border-b border-stone-100">
+  <div className="flex flex-col gap-2">
+    {/* Minimalist Subtitle */}
+    <div className="flex items-center gap-2">
+      <span className="h-[1px] w-4 bg-[#B23A2E]" />
+      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+        Personal Archive
+      </p>
+    </div>
+
+    {/* Main Headline */}
+    <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
+      My Acquisitions
+    </h1>
+
+    {/* Contextual Description */}
+    <p className="text-sm font-serif italic text-stone-500 mt-1">
+      A record of your seasonal harvests and real-time transit status.
+    </p>
+  </div>
+</div>
 
         {error && (
           <div className="bg-red-50 border border-red-200 p-4 rounded-xl text-red-600">
