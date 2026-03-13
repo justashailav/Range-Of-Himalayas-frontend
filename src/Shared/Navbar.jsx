@@ -316,50 +316,84 @@ export default function Navbar() {
             </DropdownMenu>
 
             <button
-  onClick={toggleMenu}
-  className="relative z-[100] p-2 flex items-center justify-center transition-all duration-300 active:scale-90"
-  aria-label="Toggle Menu"
->
-  <div className="flex flex-col items-end gap-1.5 group">
-    {/* Top Line */}
-    <span 
-      className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
-        isMenu ? "w-8 -rotate-45 translate-y-[8px]" : "w-8 group-hover:w-5"
-      }`} 
-    />
-    
-    {/* Middle Line (Fades out when menu is open) */}
-    <span 
-      className={`h-[1.5px] bg-white transition-all duration-500 ${
-        isMenu ? "opacity-0 w-0" : "w-5 group-hover:w-8"
-      }`} 
-    />
-    
-    {/* Bottom Line */}
-    <span 
-      className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
-        isMenu ? "w-8 rotate-45 -translate-y-[8px]" : "w-8 group-hover:w-6"
-      }`} 
-    />
-  </div>
+              onClick={toggleMenu}
+              className="relative z-[100] p-2 flex items-center justify-center transition-all duration-300 active:scale-90"
+              aria-label="Toggle Menu"
+            >
+              <div className="flex flex-col items-end gap-1.5 group">
+                {/* Top Line */}
+                <span
+                  className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
+                    isMenu
+                      ? "w-8 -rotate-45 translate-y-[8px]"
+                      : "w-8 group-hover:w-5"
+                  }`}
+                />
 
-  {/* Optional Label (Hidden on smallest screens) */}
-  <span className={`ml-3 hidden sm:block text-[9px] font-black uppercase tracking-[0.4em] text-white transition-opacity duration-300 ${isMenu ? "opacity-0" : "opacity-60"}`}>
-    Menu
-  </span>
-</button>
+                {/* Middle Line (Fades out when menu is open) */}
+                <span
+                  className={`h-[1.5px] bg-white transition-all duration-500 ${
+                    isMenu ? "opacity-0 w-0" : "w-5 group-hover:w-8"
+                  }`}
+                />
+
+                {/* Bottom Line */}
+                <span
+                  className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
+                    isMenu
+                      ? "w-8 rotate-45 -translate-y-[8px]"
+                      : "w-8 group-hover:w-6"
+                  }`}
+                />
+              </div>
+
+              {/* Optional Label (Hidden on smallest screens) */}
+              <span
+                className={`ml-3 hidden sm:block text-[9px] font-black uppercase tracking-[0.4em] text-white transition-opacity duration-300 ${isMenu ? "opacity-0" : "opacity-60"}`}
+              >
+                Menu
+              </span>
+            </button>
           </div>
         </div>
         <div className="hidden lg:flex items-center justify-between w-full">
-          <Link to="/" className="flex-shrink-0 ">
-            <img src={logo} className="w-28 sm:w-32 lg:w-36" alt="Logo" />
-          </Link>
-          <div className="flex mb-2 gap-4 lg:gap-6 text-white font-bold text-base lg:text-lg flex-1 justify-center whitespace-nowrap">
-            <Link to="/">HOME</Link>
-            <Link to="/about-us">OUR STORY</Link>
-            <Link to="/custombox">CREATE BOX</Link>
-            <Link to="/blog">BLOG</Link>
-            <Link to="/contact-us">CONTACT US</Link>
+          <div className="flex items-center justify-between w-full px-8 py-4">
+            {/* 1. THE LOGO: Anchored with breathing room */}
+            <Link
+              to="/"
+              className="flex-shrink-0 transition-transform duration-500 hover:scale-105"
+            >
+              <img
+                src={logo}
+                className="w-28 sm:w-32 lg:w-40 brightness-0 invert"
+                alt="Purely Himalayan Logo"
+              />
+            </Link>
+
+            {/* 2. THE NAV LINKS: Spaced for clarity and elegance */}
+            <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-12 flex-1">
+              {[
+                { name: "Home", path: "/" },
+                { name: "Our Story", path: "/about-us" },
+                { name: "Create Box", path: "/custombox" },
+                { name: "Journal", path: "/blog" }, // Renamed Blog to Journal for brand feel
+                { name: "Contact", path: "/contact-us" },
+              ].map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="relative group py-2"
+                >
+                  {/* The Text: Small, black-weight caps with high tracking */}
+                  <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white/80 group-hover:text-white transition-colors duration-500">
+                    {link.name}
+                  </span>
+
+                  {/* The Indicator: A tiny dot or thin line */}
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[1.5px] bg-[#B23A2E] group-hover:w-full transition-all duration-500 ease-out" />
+                </Link>
+              ))}
+            </nav>
           </div>
           <div className="flex mb-2 items-center gap-3 lg:gap-6">
             <div className="relative flex-1 min-w-[150px] max-w-[250px] ml-6">
