@@ -143,218 +143,140 @@ export default function HomeBlog() {
           className="pb-12"
         >
           {blogs?.map((b) => {
-            const shareUrl = b.slug
-              ? `${window.location.origin}/blog/${b.slug}`
-              : window.location.origin;
-            const encodedUrl = encodeURIComponent(shareUrl);
-            return (
-              <SwiperSlide key={b._id}>
-                <a
-                  href={`/blog/${b.slug}`}
-                  onClick={() =>
-                    window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
-                  }
-                  className="block"
-                >
+  const shareUrl = b.slug
+    ? `${window.location.origin}/blog/${b.slug}`
+    : window.location.origin;
+  const encodedUrl = encodeURIComponent(shareUrl);
+
+  return (
+    <SwiperSlide key={b._id}>
+      <motion.div
+        whileHover={{ y: -8 }}
+        transition={{ type: "spring", stiffness: 100 }}
+        className="group relative bg-white border border-stone-100 rounded-[2.5rem] shadow-sm hover:shadow-2xl overflow-hidden transition-all duration-500 flex flex-col h-full"
+      >
+        {/* --- 1. VISUAL ZONE --- */}
+        <a href={`/blog/${b.slug}`} className="relative h-72 overflow-hidden bg-stone-100 block">
+          {b.coverImage && (
+            <>
+              <img
+                src={b.coverImage}
+                alt={b.title}
+                className="w-full h-full object-cover transition-all duration-[1.5s] ease-out grayscale-[20%] group-hover:grayscale-0 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-700" />
+            </>
+          )}
+
+          {/* Archive Tag */}
+          {b.category && (
+            <div className="absolute top-6 left-6">
+              <span className="bg-stone-900/90 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-[0.25em] px-4 py-1.5 rounded-sm">
+                {b.category}
+              </span>
+            </div>
+          )}
+
+          {/* Reference Stamp */}
+          <div className="absolute bottom-6 left-6 text-white/90">
+            <p className="text-[9px] font-mono tracking-[0.4em] translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              REF: {b._id.slice(-6).toUpperCase()} // 2026
+            </p>
+          </div>
+        </a>
+
+        {/* --- 2. NARRATIVE ZONE --- */}
+        <div className="p-8 flex-grow space-y-5">
+          {/* Metadata Dispatch */}
+          <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 gap-4">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" />
+              <span>{new Date(b.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span>
+            </div>
+            <div className="w-[1px] h-3 bg-stone-200" />
+            <span className="italic font-serif lowercase tracking-normal text-stone-500">by {b.author || "Archive Admin"}</span>
+          </div>
+
+          {/* Headline */}
+          <h3 className="text-xl font-black text-stone-900 leading-tight group-hover:text-[#B23A2E] transition-colors duration-500 uppercase tracking-tighter line-clamp-2">
+            <a href={`/blog/${b.slug}`}>{b.title}</a>
+          </h3>
+
+          {/* Excerpt */}
+          <p className="text-sm text-stone-500 font-serif italic leading-relaxed line-clamp-3">
+            {b.metaDescription || b.content?.replace(/<[^>]+>/g, "").slice(0, 140) + "..."}
+          </p>
+
+          {/* CTA Link */}
+          <a href={`/blog/${b.slug}`} className="group/link inline-flex items-center gap-3 pt-2">
+            <div className="relative w-8 h-[1px] bg-stone-200 overflow-hidden transition-all duration-500 group-hover/link:w-12 group-hover/link:bg-[#B23A2E]">
+              <motion.div 
+                className="absolute inset-0 bg-[#B23A2E]"
+                animate={{ x: ["-100%", "100%"] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400 group-hover/link:text-stone-900 transition-colors">
+              Explore Entry
+            </span>
+          </a>
+        </div>
+
+        {/* --- 3. INTERACTION ZONE (Engagement Bar) --- */}
+        <div className="px-8 pb-8">
+          <div className="pt-6 border-t border-stone-100 flex items-center gap-6">
+            {/* Appreciate */}
+            <button onClick={(e) => handleLike(e, b._id)} className="group/btn flex items-center gap-1.5">
+              <Heart
+                size={16}
+                strokeWidth={b.isLiked ? 0 : 2}
+                fill={b.isLiked ? "#B23A2E" : "none"}
+                className={`transition-all duration-300 group-hover/btn:scale-125 ${b.isLiked ? "text-[#B23A2E]" : "text-stone-300 group-hover/btn:text-stone-900"}`}
+              />
+              <span className="text-[10px] font-black text-stone-400 group-hover/btn:text-stone-900">{b.likesCount || 0}</span>
+            </button>
+
+            {/* Notes */}
+            <div className="flex items-center gap-1.5 text-stone-300">
+              <MessageSquare size={16} strokeWidth={2} />
+              <span className="text-[10px] font-black">{b.comments?.length || 0}</span>
+            </div>
+
+            {/* Share Menu */}
+            <div className="relative ml-auto" ref={shareRef}>
+              <button onClick={(e) => handleShareClick(e, b._id)} className="flex items-center gap-2 group/circ">
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400 group-hover/circ:text-[#B23A2E] transition-colors">Circulate</span>
+                <Share2 size={14} className="text-stone-300 group-hover/circ:text-[#B23A2E] group-hover/circ:rotate-12 transition-all" />
+              </button>
+
+              <AnimatePresence>
+                {openShareId === b._id && (
                   <motion.div
-                    whileHover={{ y: -6 }}
-                    transition={{ type: "spring", stiffness: 120 }}
-                    className="relative bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl overflow-hidden transition-all duration-300 cursor-pointer"
+                    initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                    className="absolute bottom-12 right-0 bg-stone-900 text-white rounded-2xl p-3 shadow-2xl flex gap-3 z-50 border border-white/10"
                   >
-                    {b.coverImage && (
-                      <div className="relative w-full h-72 overflow-hidden bg-stone-100">
-                        {/* THE IMAGE: Subtle desaturation that "wakes up" on hover */}
-                        <img
-                          src={b.coverImage}
-                          alt={b.title}
-                          className="
-        w-full h-full object-cover 
-        transition-all duration-[1.5s] ease-out
-        grayscale-[20%] group-hover:grayscale-0 
-        group-hover:scale-110
-      "
-                        />
-
-                        {/* THE VIGNETTE: Adds a soft "film" depth to the corners */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-700" />
-
-                        {/* THE CATEGORY: The "Archive Tag" */}
-                        {b.category && (
-                          <div className="absolute top-6 left-6 flex flex-col items-start gap-1">
-                            <span
-                              className="
-          bg-stone-900/90 backdrop-blur-md 
-          text-white text-[9px] font-black uppercase tracking-[0.25em] 
-          px-4 py-1.5 rounded-sm shadow-xl
-        "
-                            >
-                              {b.category}
-                            </span>
-                            {/* Decorative corner mark to make it look like a physical tag */}
-                            <div className="w-[1px] h-3 bg-white/50 ml-2" />
-                          </div>
-                        )}
-
-                        {/* DATE STAMP: Mimicking a film negative or printed date */}
-                        <div className="absolute bottom-6 left-6 text-white/90">
-                          <p className="text-[10px] font-mono tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            EXT. HIMALAYAS // 2026
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="p-6 flex flex-col justify-between h-[260px]">
-                      <div className="p-8 space-y-4">
-                        {/* METADATA: THE DISPATCH LOG */}
-                        <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 gap-6">
-                          <div className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" />{" "}
-                            {/* Signature red dot */}
-                            <span>
-                              {new Date(b.createdAt).toLocaleDateString(
-                                "en-IN",
-                                {
-                                  day: "2-digit",
-                                  month: "short",
-                                  year: "numeric",
-                                },
-                              )}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-3 h-[1px] bg-stone-300" />
-                            <span className="italic font-serif lowercase tracking-normal text-stone-500">
-                              By {b.author || "Archive Admin"}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* TITLE: THE HEADLINE */}
-                        <h3 className="text-xl font-black text-stone-900 leading-tight group-hover:text-[#B23A2E] transition-colors duration-500 uppercase tracking-tighter">
-                          {b.title}
-                        </h3>
-
-                        {/* EXCERPT: THE PREVIEW */}
-                        <p className="text-sm text-stone-500 font-serif italic leading-relaxed line-clamp-3">
-                          {b.metaDescription ||
-                            b.content?.replace(/<[^>]+>/g, "").slice(0, 150) +
-                              "..."}
-                        </p>
-
-                        {/* DECORATIVE FOOTER: THE "READ MORE" ANCHOR */}
-                        <div className="pt-2 flex items-center gap-2">
-                          <div className="h-[1px] w-8 bg-stone-100 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
-                          <span className="text-[9px] font-black uppercase tracking-widest text-stone-400 group-hover:text-stone-900 transition-colors duration-500">
-                            Open Entry
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between text-gray-500 text-xs border-t border-gray-100 pt-3 relative">
-                        <div className="flex items-center gap-6 pt-4 border-t border-stone-100">
-  {/* ❤️ APPRECIATE */}
-  <button
-    onClick={(e) => handleLike(e, b._id)}
-    className="group flex items-center gap-1.5 transition-colors"
-  >
-    <Heart
-      size={16}
-      strokeWidth={b.isLiked ? 0 : 2}
-      fill={b.isLiked ? "#B23A2E" : "none"}
-      className={`transition-transform duration-300 group-hover:scale-125 ${
-        b.isLiked ? "text-[#B23A2E]" : "text-stone-400 group-hover:text-stone-900"
-      }`}
-    />
-    <span className={`text-[10px] font-black tracking-widest ${
-      b.isLiked ? "text-stone-900" : "text-stone-400"
-    }`}>
-      {b.likesCount || 0}
-    </span>
-  </button>
-
-  {/* 💬 NOTES */}
-  <div className="flex items-center gap-1.5 text-stone-400">
-    <MessageSquare size={16} strokeWidth={2} className="group-hover:text-stone-900 transition-colors" />
-    <span className="text-[10px] font-black tracking-widest">
-      {b.comments?.length || 0}
-    </span>
-  </div>
-
-  {/* 🔗 CIRCULATE (Share) */}
-  <div className="relative ml-auto" ref={shareRef}>
-    <button
-      onClick={(e) => handleShareClick(e, b._id)}
-      className="flex items-center gap-2 group"
-    >
-      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400 group-hover:text-[#B23A2E] transition-colors">
-        Circulate
-      </span>
-      <Share2 size={14} className="text-stone-400 group-hover:text-[#B23A2E] transition-transform group-hover:rotate-12" />
-    </button>
-
-    <AnimatePresence>
-      {openShareId === b._id && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="absolute bottom-12 right-0 bg-stone-900 text-white rounded-2xl p-3 shadow-2xl flex gap-3 z-50 border border-white/10"
-        >
-          {[
-            { href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, icon: <FaFacebook /> },
-            { href: `https://twitter.com/intent/tweet?url=${encodedUrl}`, icon: <FaTwitter /> },
-            { href: `https://whatsapp.com/send?text=${encodedUrl}`, icon: <FaWhatsapp /> },
-            { href: `https://t.me/share/url?url=${encodedUrl}`, icon: <FaTelegramPlane /> },
-          ].map((btn, i) => (
-            <a
-              key={i}
-              href={btn.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/10 hover:bg-[#B23A2E] hover:text-white transition-all duration-300"
-            >
-              {btn.icon}
-            </a>
-          ))}
-          {/* Arrow pointing down to the button */}
-          <div className="absolute -bottom-1 right-4 w-2 h-2 bg-stone-900 rotate-45 border-r border-b border-white/10" />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-</div>
-
-                        <div className="group/link inline-flex items-center gap-3 cursor-pointer">
-  {/* The Expanding Line */}
-  <div className="relative w-8 h-[1px] bg-stone-200 overflow-hidden transition-all duration-500 group-hover/link:w-12 group-hover/link:bg-[#B23A2E]">
-    <motion.div 
-      className="absolute inset-0 bg-[#B23A2E]"
-      initial={{ x: "-100%" }}
-      whileHover={{ x: "100%" }}
-      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-    />
-  </div>
-
-  {/* The Text */}
-  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400 group-hover/link:text-stone-900 transition-colors duration-500">
-    Explore Entry
-  </span>
-
-  {/* The Subtle Chevron */}
-  <ChevronRight 
-    size={10} 
-    className="text-stone-300 transform transition-all duration-500 group-hover/link:translate-x-1 group-hover/link:text-[#B23A2E]" 
-  />
-</div>
-                      </div>
-                    </div>
+                    {[
+                      { icon: <FaFacebook />, href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}` },
+                      { icon: <FaTwitter />, href: `https://twitter.com/intent/tweet?url=${encodedUrl}` },
+                      { icon: <FaWhatsapp />, href: `https://whatsapp.com/send?text=${encodedUrl}` }
+                    ].map((social, i) => (
+                      <a key={i} href={social.href} target="_blank" className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/10 hover:bg-[#B23A2E] transition-all">
+                        {social.icon}
+                      </a>
+                    ))}
+                    <div className="absolute -bottom-1 right-4 w-2 h-2 bg-stone-900 rotate-45" />
                   </motion.div>
-                </a>
-              </SwiperSlide>
-            );
-          })}
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </SwiperSlide>
+  );
+})}
         </Swiper>
       </div>
     </div>
