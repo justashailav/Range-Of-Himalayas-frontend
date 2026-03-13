@@ -552,96 +552,105 @@ export default function ProductsDetailsDialog() {
           </div>
           <div className="flex flex-col gap-6">
             <motion.div
-  initial={{ opacity: 0, x: -10 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-  className="flex items-center gap-3 bg-stone-50 w-fit px-4 py-2 rounded-full border border-stone-100/60 shadow-sm"
->
-  {/* Live indicator - Earthy Tone */}
-  <div className="relative flex items-center justify-center">
-    <motion.span
-      animate={{ 
-        scale: [1, 2.2, 1], 
-        opacity: [0.4, 0, 0.4] 
-      }}
-      transition={{
-        duration: 2.5,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-      className="absolute inline-flex h-3 w-3 rounded-full bg-[#B23A2E]"
-    />
-    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#B23A2E]" />
-  </div>
-
-  {/* Text & Counter */}
-  <div className="flex items-center gap-1.5">
-    <AnimatePresence mode="wait">
-      <motion.span
-        key={viewers}
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -4 }}
-        transition={{ duration: 0.3, ease: "circOut" }}
-        className="text-[11px] font-black text-stone-900 tabular-nums"
-      >
-        {viewers}
-      </motion.span>
-    </AnimatePresence>
-    
-    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-stone-500">
-      Collectors Browsing the Archive
-    </span>
-  </div>
-</motion.div>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.15 },
-                },
-              }}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-3 bg-stone-50 w-fit px-4 py-2 rounded-full border border-stone-100/60 shadow-sm"
             >
-              {/* Brand Name */}
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="font-semibold text-gray-700 tracking-wide"
-              >
-                RANGE OF HIMALAYAS
-              </motion.div>
+              {/* Live indicator - Earthy Tone */}
+              <div className="relative flex items-center justify-center">
+                <motion.span
+                  animate={{
+                    scale: [1, 2.2, 1],
+                    opacity: [0.4, 0, 0.4],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inline-flex h-3 w-3 rounded-full bg-[#B23A2E]"
+                />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#B23A2E]" />
+              </div>
 
-              {/* Product Title */}
-              <motion.h1
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-4xl font-bold text-gray-900 mt-2"
-              >
-                {productDetails?.title}
-              </motion.h1>
+              {/* Text & Counter */}
+              <div className="flex items-center gap-1.5">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={viewers}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.3, ease: "circOut" }}
+                    className="text-[11px] font-black text-stone-900 tabular-nums"
+                  >
+                    {viewers}
+                  </motion.span>
+                </AnimatePresence>
 
-              {/* Description */}
-              <motion.p
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="text-gray-700 text-base leading-relaxed mt-4"
-              >
-                {productDetails?.description}
-              </motion.p>
+                <span className="text-[10px] font-black uppercase tracking-[0.15em] text-stone-500">
+                  Collectors Browsing the Archive
+                </span>
+              </div>
             </motion.div>
+            <motion.div
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, margin: "-100px" }}
+  variants={{
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
+  }}
+  className="space-y-4"
+>
+  {/* Brand Name - Minimalist & Spaced */}
+  <motion.div
+    variants={{
+      hidden: { opacity: 0, x: -10 },
+      visible: { opacity: 1, x: 0 },
+    }}
+    className="flex items-center gap-3"
+  >
+    <span className="h-[1px] w-8 bg-[#B23A2E]" />
+    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+      Range of Himalayas
+    </span>
+  </motion.div>
+
+  {/* Product Title - Massive & Bold */}
+  <motion.h1
+    variants={{
+      hidden: { opacity: 0, y: 30 },
+      visible: { opacity: 1, y: 0 },
+    }}
+    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    className="text-5xl md:text-6xl font-black text-stone-900 leading-[0.9] tracking-tighter uppercase"
+  >
+    {productDetails?.title}
+  </motion.h1>
+
+  {/* Description - Elegant & Atmospheric */}
+  <motion.div
+    variants={{
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 },
+    }}
+    className="relative pl-6 border-l border-stone-100"
+  >
+    <p className="text-stone-600 text-lg font-serif italic leading-relaxed max-w-xl">
+      {productDetails?.description}
+    </p>
+    
+    {/* Decorative Origin Note */}
+    <span className="absolute -left-1 top-0 text-[8px] font-black text-stone-300 uppercase [writing-mode:vertical-lr] rotate-180">
+      Authentic Origin
+    </span>
+  </motion.div>
+</motion.div>
 
             <motion.div
               initial="hidden"
