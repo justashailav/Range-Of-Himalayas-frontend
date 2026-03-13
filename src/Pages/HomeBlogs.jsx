@@ -162,72 +162,89 @@ export default function HomeBlog() {
                     className="relative bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl overflow-hidden transition-all duration-300 cursor-pointer"
                   >
                     {b.coverImage && (
-  <div className="relative w-full h-72 overflow-hidden bg-stone-100">
-    {/* THE IMAGE: Subtle desaturation that "wakes up" on hover */}
-    <img
-      src={b.coverImage}
-      alt={b.title}
-      className="
+                      <div className="relative w-full h-72 overflow-hidden bg-stone-100">
+                        {/* THE IMAGE: Subtle desaturation that "wakes up" on hover */}
+                        <img
+                          src={b.coverImage}
+                          alt={b.title}
+                          className="
         w-full h-full object-cover 
         transition-all duration-[1.5s] ease-out
         grayscale-[20%] group-hover:grayscale-0 
         group-hover:scale-110
       "
-    />
-    
-    {/* THE VIGNETTE: Adds a soft "film" depth to the corners */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-700" />
+                        />
 
-    {/* THE CATEGORY: The "Archive Tag" */}
-    {b.category && (
-      <div className="absolute top-6 left-6 flex flex-col items-start gap-1">
-        <span className="
+                        {/* THE VIGNETTE: Adds a soft "film" depth to the corners */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-700" />
+
+                        {/* THE CATEGORY: The "Archive Tag" */}
+                        {b.category && (
+                          <div className="absolute top-6 left-6 flex flex-col items-start gap-1">
+                            <span
+                              className="
           bg-stone-900/90 backdrop-blur-md 
           text-white text-[9px] font-black uppercase tracking-[0.25em] 
           px-4 py-1.5 rounded-sm shadow-xl
-        ">
-          {b.category}
-        </span>
-        {/* Decorative corner mark to make it look like a physical tag */}
-        <div className="w-[1px] h-3 bg-white/50 ml-2" />
-      </div>
-    )}
+        "
+                            >
+                              {b.category}
+                            </span>
+                            {/* Decorative corner mark to make it look like a physical tag */}
+                            <div className="w-[1px] h-3 bg-white/50 ml-2" />
+                          </div>
+                        )}
 
-    {/* DATE STAMP: Mimicking a film negative or printed date */}
-    <div className="absolute bottom-6 left-6 text-white/90">
-       <p className="text-[10px] font-mono tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-         EXT. HIMALAYAS // 2026
-       </p>
-    </div>
-  </div>
-)}
+                        {/* DATE STAMP: Mimicking a film negative or printed date */}
+                        <div className="absolute bottom-6 left-6 text-white/90">
+                          <p className="text-[10px] font-mono tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            EXT. HIMALAYAS // 2026
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
                     <div className="p-6 flex flex-col justify-between h-[260px]">
-                      <div>
-                        <div className="flex items-center text-gray-400 text-xs gap-3 mb-2">
-                          <div className="flex items-center gap-1">
-                            <Calendar size={14} />
-                            {new Date(b.createdAt).toLocaleDateString("en-IN", {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <User size={14} /> {b.author || "Admin"}
-                          </div>
-                        </div>
+                      <div className="p-8 space-y-4">
+  {/* METADATA: THE DISPATCH LOG */}
+  <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 gap-6">
+    <div className="flex items-center gap-2">
+      <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" /> {/* Signature red dot */}
+      <span>
+        {new Date(b.createdAt).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })}
+      </span>
+    </div>
+    <div className="flex items-center gap-2">
+      <div className="w-3 h-[1px] bg-stone-300" />
+      <span className="italic font-serif lowercase tracking-normal text-stone-500">
+        By {b.author || "Archive Admin"}
+      </span>
+    </div>
+  </div>
 
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-snug hover:text-pink-600 transition-colors duration-300">
-                          {b.title}
-                        </h3>
+  {/* TITLE: THE HEADLINE */}
+  <h3 className="text-xl font-black text-stone-900 leading-tight group-hover:text-[#B23A2E] transition-colors duration-500 uppercase tracking-tighter">
+    {b.title}
+  </h3>
 
-                        <p className="text-sm text-gray-600 line-clamp-3 mb-3">
-                          {b.metaDescription ||
-                            b.content?.replace(/<[^>]+>/g, "").slice(0, 150) +
-                              "..."}
-                        </p>
-                      </div>
+  {/* EXCERPT: THE PREVIEW */}
+  <p className="text-sm text-stone-500 font-serif italic leading-relaxed line-clamp-3">
+    {b.metaDescription ||
+      b.content?.replace(/<[^>]+>/g, "").slice(0, 150) + "..."}
+  </p>
+
+  {/* DECORATIVE FOOTER: THE "READ MORE" ANCHOR */}
+  <div className="pt-2 flex items-center gap-2">
+    <div className="h-[1px] w-8 bg-stone-100 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
+    <span className="text-[9px] font-black uppercase tracking-widest text-stone-400 group-hover:text-stone-900 transition-colors duration-500">
+      Open Entry
+    </span>
+  </div>
+</div>
 
                       <div className="flex items-center justify-between text-gray-500 text-xs border-t border-gray-100 pt-3 relative">
                         <div className="flex items-center gap-4">
