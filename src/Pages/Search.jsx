@@ -100,78 +100,89 @@ function SearchProducts() {
   );
 
   return (
-    <div className="bg-[#FFF8E1] container mx-auto md:px-6 px-4 py-8 min-h-screen">
-      <Helmet>
-        <title>
-          {keyword
-            ? `Search results for "${keyword}" | Range Of Himalayas`
-            : "Search Products | Range Of Himalayas"}
-        </title>
-        <meta
-          name="description"
-          content={
-            keyword
-              ? `Find premium apples, kiwis "${keyword}" from Range Of Himalayas.`
-              : "Discover fresh Himalayan apples, kiwis, — naturally grown and handpicked from the mountains."
-          }
-        />
-      </Helmet>
-      <div className="flex justify-center mb-8">
-        <div className="w-full max-w-xl relative">
-          <Input
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            placeholder="🔍 Search for products..."
-            className="py-4 pl-5 pr-14 rounded-full shadow-md border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-            autoComplete="off"
-          />
-        </div>
-      </div>
+    <div className="bg-[#fdfcf7] container mx-auto md:px-12 px-6 py-16 min-h-screen">
+  <Helmet>
+    <title>
+      {keyword
+        ? `Inquiry: "${keyword}" | Range Of Himalayas`
+        : "The Archive | Range Of Himalayas"}
+    </title>
+  </Helmet>
 
-      {/* Search Results */}
-      {keyword.trim().length > 3 && (
-        <>
-          {isLoading ? (
-            <div className="text-center text-indigo-600 font-semibold py-6">
-              Searching products...
-            </div>
-          ) : !searchResults.length ? (
-            <div className="text-center mt-10">
-              <h1 className="text-3xl font-semibold text-gray-700">
-                No results found
-              </h1>
-              <p className="text-gray-500 mt-2">
-                Try searching with different keywords
-              </p>
-            </div>
-          ) : (
-            <h2 className="text-xl font-semibold text-gray-700 mb-6 text-center">
-              Showing results for{" "}
-              <span className="text-indigo-600">&quot;{keyword}&quot;</span>
-            </h2>
-          )}
-        </>
-      )}
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {searchResults.map((item) => (
-          <motion.div
-            key={item._id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ShoppingProductTile
-              product={item}
-              handleAddToCart={handleAddToCart}
-              handleAddToWishList={handleAddToWishList}
-              handleGetProductDetails={handleGetProductDetails}
-            />
-          </motion.div>
-        ))}
+  {/* SEARCH HEADER */}
+  <div className="flex flex-col items-center justify-center mb-20">
+    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E] mb-4">
+      Discovery
+    </span>
+    <div className="w-full max-w-2xl relative">
+      <Input
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="Search the harvest (e.g. Kinnaur Apples)"
+        className="w-full bg-transparent border-t-0 border-x-0 border-b border-stone-300 rounded-none py-6 px-0 text-xl font-serif italic text-stone-800 placeholder:text-stone-300 focus:border-[#B23A2E] focus:ring-0 outline-none transition-all duration-700"
+        autoComplete="off"
+      />
+      <div className="absolute right-0 top-1/2 -translate-y-1/2">
+        <Search className="w-5 h-5 text-stone-300" strokeWidth={1} />
       </div>
     </div>
+  </div>
+
+  {/* SEARCH STATUS ARCHIVE */}
+  {keyword.trim().length > 3 && (
+    <div className="mb-12">
+      {isLoading ? (
+        <div className="flex flex-col items-center py-12">
+          <HimalayanLoader text="Sifting through the orchards..." />
+        </div>
+      ) : !searchResults.length ? (
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }}
+          className="text-center py-20 border border-dashed border-stone-200"
+        >
+          <h1 className="text-2xl font-serif italic text-stone-400">
+            "No results found for {keyword}"
+          </h1>
+          <p className="text-[10px] font-black uppercase tracking-widest text-stone-300 mt-4">
+            Try searching for varieties, seasons, or locations
+          </p>
+        </motion.div>
+      ) : (
+        <div className="flex items-center gap-4 mb-10 overflow-hidden">
+          <div className="h-[1px] flex-grow bg-stone-200" />
+          <h2 className="text-[11px] font-black uppercase tracking-[0.3em] text-stone-400 whitespace-nowrap">
+            Found in Archive: <span className="text-[#B23A2E]">{keyword}</span>
+          </h2>
+          <div className="h-[1px] flex-grow bg-stone-200" />
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* PRODUCTS GRID */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16">
+    {searchResults.map((item, index) => (
+      <motion.div
+        key={item._id}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.8, 
+          delay: index * 0.05,
+          ease: [0.21, 1, 0.36, 1] 
+        }}
+      >
+        <ShoppingProductTile
+          product={item}
+          handleAddToCart={handleAddToCart}
+          handleAddToWishList={handleAddToWishList}
+          handleGetProductDetails={handleGetProductDetails}
+        />
+      </motion.div>
+    ))}
+  </div>
+</div>
   );
 }
 
