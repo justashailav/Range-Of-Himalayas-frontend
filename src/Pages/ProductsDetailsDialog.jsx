@@ -8,6 +8,7 @@ import {
   ClipboardList,
   Heart,
   Leaf,
+  Truck,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import StarRatingComponent from "./Star-Review";
@@ -746,61 +747,94 @@ export default function ProductsDetailsDialog() {
 
             {/* Price & Stock */}
             <div className="flex flex-col gap-1 py-4">
-  <div className="flex items-baseline gap-4">
-    {selectedVariant?.salesPrice > 0 ? (
-      <>
-        {/* Main Sale Price */}
-        <p className="text-4xl font-black text-stone-900 tracking-tighter">
-          ₹{selectedVariant.salesPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-        </p>
-        
-        {/* Original Price */}
-        <p className="text-lg font-medium text-stone-300 line-through decoration-stone-300">
-          ₹{selectedVariant.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-        </p>
+              <div className="flex items-baseline gap-4">
+                {selectedVariant?.salesPrice > 0 ? (
+                  <>
+                    {/* Main Sale Price */}
+                    <p className="text-4xl font-black text-stone-900 tracking-tighter">
+                      ₹
+                      {selectedVariant.salesPrice.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                      })}
+                    </p>
 
-        {/* Minimalist Savings Tag */}
-        <span className="text-[10px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-1 rounded-full border border-[#B23A2E]/20">
-          {Math.round(100 - (selectedVariant.salesPrice / selectedVariant.price) * 100)}% Rare Discovery
-        </span>
+                    {/* Original Price */}
+                    <p className="text-lg font-medium text-stone-300 line-through decoration-stone-300">
+                      ₹
+                      {selectedVariant.price.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                      })}
+                    </p>
+
+                    {/* Minimalist Savings Tag */}
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-1 rounded-full border border-[#B23A2E]/20">
+                      {Math.round(
+                        100 -
+                          (selectedVariant.salesPrice / selectedVariant.price) *
+                            100,
+                      )}
+                      % Rare Discovery
+                    </span>
+                  </>
+                ) : (
+                  <p className="text-4xl font-black text-stone-900 tracking-tighter">
+                    ₹
+                    {selectedVariant?.price.toLocaleString("en-IN", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </p>
+                )}
+              </div>
+
+              {/* Subtext for Tax/Logistics */}
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">
+                Inclusive of all botanical duties & taxes
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+  {/* STOCK STATUS */}
+  <div className="flex items-center gap-2.5">
+    {selectedVariant?.stock > 0 ? (
+      <>
+        {/* Dynamic Status Dot */}
+        <div className={`h-1.5 w-1.5 rounded-full ${
+          selectedVariant.stock < 5 
+            ? "bg-[#B23A2E] animate-pulse" 
+            : "bg-stone-400"
+        }`} />
+        
+        <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${
+          selectedVariant.stock < 5 ? "text-[#B23A2E]" : "text-stone-500"
+        }`}>
+          {selectedVariant.stock < 5 
+            ? "Critical Reserve — Low Stock" 
+            : `Available Yield: ${selectedVariant.stock}`}
+        </p>
       </>
     ) : (
-      <p className="text-4xl font-black text-stone-900 tracking-tighter">
-        ₹{selectedVariant?.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-      </p>
+      <>
+        <div className="h-1.5 w-1.5 rounded-full bg-stone-300" />
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+          Currently Vaulted
+        </p>
+      </>
     )}
   </div>
-  
-  {/* Subtext for Tax/Logistics */}
-  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">
-    Inclusive of all botanical duties & taxes
-  </p>
-</div>
 
-            <div className="flex items-center gap-10">
-              {selectedVariant?.stock > 0 ? (
-                <p
-                  className={`text-sm font-medium ${
-                    selectedVariant.stock < 5
-                      ? "text-red-600"
-                      : "text-green-600"
-                  }`}
-                >
-                  {selectedVariant.stock < 5
-                    ? "Low stock!"
-                    : `In stock: ${selectedVariant.stock}`}
-                </p>
-              ) : (
-                <p className="text-red-600 font-medium">Out of stock</p>
-              )}
-              <div className="mt-2 text-sm text-gray-700">
-                <p>
-                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full font-semibold">
-                    Free Shipping
-                  </span>
-                </p>
-              </div>
-            </div>
+  {/* SHIPPING PROMISE */}
+  <div className="flex items-center gap-3">
+    <div className="h-4 w-[1px] bg-stone-200 hidden sm:block" /> {/* Divider */}
+    <div className="flex items-center gap-2">
+      <div className="p-1 rounded-full bg-stone-100">
+        <Truck size={12} className="text-stone-600" />
+      </div>
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-600">
+        Complimentary Transit
+      </span>
+    </div>
+  </div>
+</div>
 
             {/* Review Section */}
             <div className="flex flex-col items-start gap-2 mb-4">
