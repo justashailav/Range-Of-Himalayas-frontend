@@ -110,47 +110,84 @@ export default function Navbar() {
           <div className="flex items-center gap-4 sm:gap-4 mt-2">
             <Sheet open={openCart} onOpenChange={setOpenCart}>
               <div className="relative group">
-  <Link to="/wishlist" className="flex items-center gap-2">
-    {/* 1. THE ICON: Thin stroke for a delicate, artisanal feel */}
-    <div className="relative p-2 transition-transform duration-500 group-hover:scale-110">
-      <Heart 
-        strokeWidth={1.5} 
-        className="w-5 h-5 text-white transition-colors duration-500 group-hover:text-[#B23A2E]" 
-      />
+                <Link to="/wishlist" className="flex items-center gap-2">
+                  {/* 1. THE ICON: Thin stroke for a delicate, artisanal feel */}
+                  <div className="relative p-2 transition-transform duration-500 group-hover:scale-110">
+                    <Heart
+                      strokeWidth={1.5}
+                      className="w-5 h-5 text-white transition-colors duration-500 group-hover:text-[#B23A2E]"
+                    />
+
+                    {/* 2. THE NOTIFICATION: Minimalist & Flat */}
+                    {wishListCount > 0 && (
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
+                      >
+                        {wishListCount}
+                      </motion.span>
+                    )}
+                  </div>
+
+                  {/* 3. OPTIONAL LABEL: Only shows on larger screens for that "Journal" feel */}
+                  <span className="hidden lg:block text-[9px] font-black uppercase tracking-[0.3em] text-white/60 group-hover:text-white transition-colors duration-500">
+                    Saved Records
+                  </span>
+                </Link>
+
+                {/* 4. UNDERLINE ACCENT: A thin red line that grows on hover */}
+                <div className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
+              </div>
+
+              <div className="relative group">
+  <div 
+    onClick={() => setOpenCart(true)}
+    className="flex items-center gap-2 cursor-pointer"
+  >
+    {/* 1. THE ICON: Switching to a sleeker 'ShoppingBag' for an artisanal boutique feel */}
+    <div className="relative p-2 transition-transform duration-500 group-hover:-translate-y-1">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="white" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        className="transition-colors duration-500 group-hover:text-[#B23A2E]"
+      >
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
       
-      {/* 2. THE NOTIFICATION: Minimalist & Flat */}
-      {wishListCount > 0 && (
+      {/* 2. THE COUNT: Refined and balanced */}
+      {totalCount > 0 && (
         <motion.span 
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
         >
-          {wishListCount}
+          {totalCount}
         </motion.span>
       )}
     </div>
 
-    {/* 3. OPTIONAL LABEL: Only shows on larger screens for that "Journal" feel */}
-    <span className="hidden lg:block text-[9px] font-black uppercase tracking-[0.3em] text-white/60 group-hover:text-white transition-colors duration-500">
-      Saved Records
-    </span>
-  </Link>
+    {/* 3. EDITORIAL LABEL: Adds to the Journal/Catalog aesthetic */}
+    <div className="hidden xl:flex flex-col items-start leading-none">
+      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white group-hover:text-[#B23A2E] transition-colors duration-500">
+        Provisions
+      </span>
+      <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest mt-1">
+        Your Selection
+      </span>
+    </div>
+  </div>
 
-  {/* 4. UNDERLINE ACCENT: A thin red line that grows on hover */}
-  <div className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
+  {/* 4. INTERACTION LINE */}
+  <div className="absolute -bottom-1 right-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
 </div>
-
-              <div className="relative">
-                <FaShoppingCart
-                  onClick={() => setOpenCart(true)}
-                  className="text-white text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
-                />
-                {totalCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {totalCount}
-                  </span>
-                )}
-              </div>
               <SheetContent side="right" className="sm:max-w-md">
                 <UserCartWrapper
                   cartItems={cartItems}
