@@ -417,62 +417,88 @@ export default function Navbar() {
               />
             </div>
 
-           {!user && (
-  <Link to="/login" className="flex items-center h-full">
-    <button className="relative group px-5 py-1.5 border border-white/30 rounded-none overflow-hidden transition-all duration-500 hover:border-white">
-      {/* 1. THE TEXT: Ultra-refined and wide-tracked */}
-      <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-white transition-colors duration-500">
-        Login
-      </span>
+            {!user && (
+              <Link to="/login" className="flex items-center h-full">
+                <button className="relative group px-5 py-1.5 border border-white/30 rounded-none overflow-hidden transition-all duration-500 hover:border-white">
+                  {/* 1. THE TEXT: Ultra-refined and wide-tracked */}
+                  <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-white transition-colors duration-500">
+                    Login
+                  </span>
 
-      {/* 2. THE HOVER SLIDE: A subtle "ink" fill effect */}
-      <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out" />
-      
-      {/* 3. TEXT SWAP ON HOVER: Black text when the white background slides up */}
-      <span className="absolute inset-0 z-20 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.4em] text-[#2d3a2d] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        Login
-      </span>
-    </button>
-  </Link>
-)}
+                  {/* 2. THE HOVER SLIDE: A subtle "ink" fill effect */}
+                  <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out" />
+
+                  {/* 3. TEXT SWAP ON HOVER: Black text when the white background slides up */}
+                  <span className="absolute inset-0 z-20 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.4em] text-[#2d3a2d] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    Login
+                  </span>
+                </button>
+              </Link>
+            )}
             <div className="relative flex items-center h-full ml-4 lg:ml-6">
-  <Link to="/wishlist" className="group relative p-2 outline-none">
-    {/* 1. THE ICON: Thin stroke and consistent height */}
-    <Heart 
-      strokeWidth={1.5} 
-      className="w-5 h-5 text-white transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]" 
-    />
-    
-    {/* 2. THE BADGE: Smaller, centered, and matching the Harvest Red dot */}
-    {wishListCount > 0 && (
-      <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900 transition-transform duration-500 group-hover:scale-125">
-        {wishListCount}
-      </span>
-    )}
-
-    {/* 3. SUBTLE UNDERGLOW: Makes the white icon pop against the orchard background */}
-    <div className="absolute inset-0 bg-white/5 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-  </Link>
-</div>
-
-            <Sheet open={openCart} onOpenChange={setOpenCart}>
-              <div className="relative">
-                <FaShoppingCart
-                  onClick={() => setOpenCart(true)}
-                  className="text-white text-2xl cursor-pointer"
+              <Link to="/wishlist" className="group relative p-2 outline-none">
+                {/* 1. THE ICON: Thin stroke and consistent height */}
+                <Heart
+                  strokeWidth={1.5}
+                  className="w-5 h-5 text-white transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]"
                 />
-                {totalCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
-                    {totalCount}
+
+                {/* 2. THE BADGE: Smaller, centered, and matching the Harvest Red dot */}
+                {wishListCount > 0 && (
+                  <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900 transition-transform duration-500 group-hover:scale-125">
+                    {wishListCount}
                   </span>
                 )}
-              </div>
-              <SheetContent side="right" className="sm:max-w-md">
-                <UserCartWrapper
-                  cartItems={cartItems}
-                  setOpenCartSheet={setOpenCart}
-                />
-              </SheetContent>
+
+                {/* 3. SUBTLE UNDERGLOW: Makes the white icon pop against the orchard background */}
+                <div className="absolute inset-0 bg-white/5 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              </Link>
+            </div>
+
+            <Sheet open={openCart} onOpenChange={setOpenCart}>
+              <div className="relative flex items-center h-full">
+  <Sheet open={openCart} onOpenChange={setOpenCart}>
+    <div 
+      className="group relative p-2 cursor-pointer outline-none"
+      onClick={() => setOpenCart(true)}
+    >
+      {/* 1. THE ICON: Switching to a sleeker bag/basket icon for a boutique feel */}
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="20" 
+        height="20" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="white" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        className="transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]"
+      >
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      
+      {/* 2. THE BADGE: Using the Harvest Red + Ring for depth */}
+      {totalCount > 0 && (
+        <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900 transition-transform duration-500 group-hover:scale-125">
+          {totalCount}
+        </span>
+      )}
+    </div>
+
+    {/* 3. THE SHEET: Styled for the 'Archive' feel */}
+    <SheetContent 
+      side="right" 
+      className="sm:max-w-md bg-[#fdfcf7] border-l border-stone-200 p-0 shadow-2xl"
+    >
+      {/* UserCartWrapper will handle the internal styling */}
+      <UserCartWrapper
+        cartItems={cartItems}
+        setOpenCartSheet={setOpenCart}
+      />
+    </SheetContent>
+  </Sheet>
+</div>
             </Sheet>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
