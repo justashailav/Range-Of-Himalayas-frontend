@@ -342,90 +342,103 @@ export default function ProductsDetailsDialog() {
                 </p>
               </div>
             </motion.div>
-           <AnimatePresence>
-  {isImageOpen && (
-    <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-950/95 backdrop-blur-xl cursor-zoom-out"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={() => setIsImageOpen(false)}
-    >
-      {/* --- MINIMALIST CLOSE UI --- */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="absolute top-10 right-10 flex items-center gap-4 z-[110]"
-      >
-        <span className="text-[10px] font-black text-stone-500 uppercase tracking-[0.4em] hidden md:block">
-          Close Archive
-        </span>
-        <div className="w-12 h-12 flex items-center justify-center bg-white/10 rounded-full border border-white/10 hover:bg-white/20 transition-colors">
-          <X className="text-white" size={20} />
-        </div>
-      </motion.div>
+            <AnimatePresence>
+              {isImageOpen && (
+                <motion.div
+                  className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-950/95 backdrop-blur-xl cursor-zoom-out"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setIsImageOpen(false)}
+                >
+                  {/* --- MINIMALIST CLOSE UI --- */}
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute top-10 right-10 flex items-center gap-4 z-[110]"
+                  >
+                    <span className="text-[10px] font-black text-stone-500 uppercase tracking-[0.4em] hidden md:block">
+                      Close Archive
+                    </span>
+                    <div className="w-12 h-12 flex items-center justify-center bg-white/10 rounded-full border border-white/10 hover:bg-white/20 transition-colors">
+                      <X className="text-white" size={20} />
+                    </div>
+                  </motion.div>
 
-      {/* --- PRODUCT IMAGE --- */}
-      <motion.img
-        src={mainImage}
-        alt="Product Zoom"
-        initial={{ scale: 0.8, opacity: 0, rotateY: 10 }}
-        animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-        exit={{ scale: 0.8, opacity: 0, rotateY: -10 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 260, 
-          damping: 25,
-          opacity: { duration: 0.4 }
-        }}
-        className="max-w-[95vw] max-h-[85vh] object-contain rounded-lg shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
-        onClick={(e) => e.stopPropagation()}
-      />
+                  {/* --- PRODUCT IMAGE --- */}
+                  <motion.img
+                    src={mainImage}
+                    alt="Product Zoom"
+                    initial={{ scale: 0.8, opacity: 0, rotateY: 10 }}
+                    animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+                    exit={{ scale: 0.8, opacity: 0, rotateY: -10 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 25,
+                      opacity: { duration: 0.4 },
+                    }}
+                    className="max-w-[95vw] max-h-[85vh] object-contain rounded-lg shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
+                    onClick={(e) => e.stopPropagation()}
+                  />
 
-      {/* --- BOTANICAL FOOTER --- */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center"
-      >
-        <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.5em]">
-          {productDetails?.title}
-        </p>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
+                  {/* --- BOTANICAL FOOTER --- */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center"
+                  >
+                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.5em]">
+                      {productDetails?.title}
+                    </p>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            {allImages.length > 1 && (
-              <div className="mt-4">
-                <div className="flex gap-4 overflow-x-auto scrollbar-hide px-1">
-                  {allImages.map((img, idx) => {
-                    const isActive = mainImage === img;
+           {allImages.length > 1 && (
+  <div className="mt-8 relative">
+    {/* Subtle gradient edges to show there is more to scroll */}
+    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#FFFDF7] to-transparent z-10 pointer-events-none" />
+    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#FFFDF7] to-transparent z-10 pointer-events-none" />
 
-                    return (
-                      <motion.img
-                        key={idx}
-                        src={img}
-                        alt={`Variant ${idx}`}
-                        onMouseEnter={() => setMainImage(img)}
-                        onClick={() => setMainImage(img)}
-                        whileHover={{ scale: 1.06 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`
-              w-24 h-24 object-cover rounded-xl cursor-pointer
-              transition-all duration-200
-              ${
-                isActive
-                  ? "ring-2 ring-[#F08C7D]/60 shadow-lg"
-                  : "shadow-sm hover:shadow-md"
-              }
-            `}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
+    <div className="flex gap-6 overflow-x-auto scrollbar-hide px-1 py-2">
+      {allImages.map((img, idx) => {
+        const isActive = mainImage === img;
+
+        return (
+          <div key={idx} className="relative flex-shrink-0 group">
+            <motion.img
+              src={img}
+              alt={`Archive view ${idx}`}
+              onMouseEnter={() => setMainImage(img)}
+              onClick={() => setMainImage(img)}
+              whileHover={{ y: -4 }}
+              whileTap={{ scale: 0.95 }}
+              className={`
+                w-20 aspect-[4/5] object-cover rounded-2xl cursor-pointer
+                transition-all duration-500 ease-out
+                ${
+                  isActive
+                    ? "shadow-2xl shadow-stone-200 border-2 border-stone-900 scale-105"
+                    : "grayscale-[0.4] opacity-60 hover:grayscale-0 hover:opacity-100 border border-stone-100"
+                }
+              `}
+            />
+            
+            {/* Active Indicator Dot */}
+            {isActive && (
+              <motion.div 
+                layoutId="activeThumb"
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full"
+              />
             )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+)}
 
             {productDetails?.details && (
               <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
