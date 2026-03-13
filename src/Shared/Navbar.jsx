@@ -141,53 +141,55 @@ export default function Navbar() {
               </div>
 
               <div className="relative group">
-  <div 
-    onClick={() => setOpenCart(true)}
-    className="flex items-center gap-2 cursor-pointer"
-  >
-    {/* 1. THE ICON: Switching to a sleeker 'ShoppingBag' for an artisanal boutique feel */}
-    <div className="relative p-2 transition-transform duration-500 group-hover:-translate-y-1">
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="24" 
-        height="24" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="white" 
-        strokeWidth="1.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className="transition-colors duration-500 group-hover:text-[#B23A2E]"
-      >
-        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
-      </svg>
-      
-      {/* 2. THE COUNT: Refined and balanced */}
-      {totalCount > 0 && (
-        <motion.span 
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
-        >
-          {totalCount}
-        </motion.span>
-      )}
-    </div>
+                <div
+                  onClick={() => setOpenCart(true)}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  {/* 1. THE ICON: Switching to a sleeker 'ShoppingBag' for an artisanal boutique feel */}
+                  <div className="relative p-2 transition-transform duration-500 group-hover:-translate-y-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transition-colors duration-500 group-hover:text-[#B23A2E]"
+                    >
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                      <path d="M3 6h18" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
 
-    {/* 3. EDITORIAL LABEL: Adds to the Journal/Catalog aesthetic */}
-    <div className="hidden xl:flex flex-col items-start leading-none">
-      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white group-hover:text-[#B23A2E] transition-colors duration-500">
-        Provisions
-      </span>
-      <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest mt-1">
-        Your Selection
-      </span>
-    </div>
-  </div>
+                    {/* 2. THE COUNT: Refined and balanced */}
+                    {totalCount > 0 && (
+                      <motion.span
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
+                      >
+                        {totalCount}
+                      </motion.span>
+                    )}
+                  </div>
 
-  {/* 4. INTERACTION LINE */}
-  <div className="absolute -bottom-1 right-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
-</div>
+                  {/* 3. EDITORIAL LABEL: Adds to the Journal/Catalog aesthetic */}
+                  <div className="hidden xl:flex flex-col items-start leading-none">
+                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white group-hover:text-[#B23A2E] transition-colors duration-500">
+                      Provisions
+                    </span>
+                    <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest mt-1">
+                      Your Selection
+                    </span>
+                  </div>
+                </div>
+
+                {/* 4. INTERACTION LINE */}
+                <div className="absolute -bottom-1 right-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
+              </div>
               <SheetContent side="right" className="sm:max-w-md">
                 <UserCartWrapper
                   cartItems={cartItems}
@@ -197,15 +199,33 @@ export default function Navbar() {
             </Sheet>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
-                  <AvatarImage
-                    src={
-                      user?.profile?.profilePhoto ||
-                      "https://github.com/shadcn.png"
-                    }
-                  />
-                </Avatar>
-              </DropdownMenuTrigger>
+  <div className="relative group cursor-pointer outline-none">
+    {/* 1. DECORATIVE OUTER RING (The "Seal") */}
+    <div className="absolute -inset-1 border border-white/10 rounded-full group-hover:border-[#B23A2E]/50 transition-colors duration-500" />
+    
+    {/* 2. THE AVATAR CONTAINER */}
+    <Avatar className="h-9 w-9 sm:h-10 sm:w-10 ring-2 ring-stone-900 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-2xl">
+      <AvatarImage
+        src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
+        className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
+      />
+      {/* 3. CUSTOM FALLBACK (Initials in Journal Font) */}
+      <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] font-serif italic text-xs">
+        {user?.name?.charAt(0) || "A"}
+      </AvatarFallback>
+    </Avatar>
+
+    {/* 4. STATUS INDICATOR (Minimalist dot) */}
+    <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-stone-900 rounded-full shadow-sm" />
+    
+    {/* 5. HOVER LABEL (Optional, for that "Catalog" feel) */}
+    <div className="absolute top-full mt-4 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+      <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white whitespace-nowrap bg-stone-900 px-3 py-1 rounded-sm">
+        Account Ledger
+      </span>
+    </div>
+  </div>
+</DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
                 <DropdownMenuGroup>
                   {user ? (
