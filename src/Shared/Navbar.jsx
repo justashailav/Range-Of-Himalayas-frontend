@@ -15,7 +15,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowRight, Heart, LogOut, Package, Settings, User } from "lucide-react";
+import {
+  ArrowRight,
+  Heart,
+  LogOut,
+  Package,
+  Settings,
+  User,
+} from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { searchProducts } from "@/store/slices/searchSlice";
 import { Button } from "@/components/ui/button";
@@ -504,140 +511,175 @@ export default function Navbar() {
             </Sheet>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-  <div className="flex items-center justify-center h-full ml-2">
-    <div className="relative group cursor-pointer outline-none">
-      {/* 1. DECORATIVE OUTER RING: Mimics a wax seal or frame */}
-      <div className="absolute -inset-1 border border-white/5 rounded-full group-hover:border-[#B23A2E]/40 transition-colors duration-700" />
-      
-      {/* 2. THE AVATAR: Perfectly centered */}
-      <Avatar className="h-8 w-8 lg:h-9 lg:w-9 ring-2 ring-stone-900 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-2xl">
-        <AvatarImage
-          src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
-          className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
-        />
-        {/* Fallback for when no image exists, using your brand colors */}
-        <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-serif italic">
-          {user?.name?.charAt(0) || "PH"}
-        </AvatarFallback>
-      </Avatar>
+                <div className="flex items-center justify-center h-full ml-2">
+                  <div className="relative group cursor-pointer outline-none">
+                    {/* 1. DECORATIVE OUTER RING: Mimics a wax seal or frame */}
+                    <div className="absolute -inset-1 border border-white/5 rounded-full group-hover:border-[#B23A2E]/40 transition-colors duration-700" />
 
-      {/* 3. STATUS INDICATOR: A tiny red dot to match your hero icons */}
-      <span className="absolute bottom-0 right-0 h-2 w-2 bg-[#B23A2E] border border-stone-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
-    </div>
-  </div>
-</DropdownMenuTrigger>
+                    {/* 2. THE AVATAR: Perfectly centered */}
+                    <Avatar className="h-8 w-8 lg:h-9 lg:w-9 ring-2 ring-stone-900 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-2xl">
+                      <AvatarImage
+                        src={
+                          user?.profile?.profilePhoto ||
+                          "https://github.com/shadcn.png"
+                        }
+                        className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
+                      />
+                      {/* Fallback for when no image exists, using your brand colors */}
+                      <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-serif italic">
+                        {user?.name?.charAt(0) || "PH"}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    {/* 3. STATUS INDICATOR: A tiny red dot to match your hero icons */}
+                    <span className="absolute bottom-0 right-0 h-2 w-2 bg-[#B23A2E] border border-stone-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
+                  </div>
+                </div>
+              </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
                 <DropdownMenuGroup className="p-2 space-y-1">
-  {user ? (
-    <>
-      {/* 1. SECTION LABEL */}
-      <div className="px-3 py-2 mb-1">
-        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">The Explorer</p>
-        <p className="text-[11px] font-serif italic text-stone-800 truncate">{user?.name || "Member"}</p>
-      </div>
+                  {user ? (
+                    <>
+                      {/* 1. SECTION LABEL */}
+                      <div className="px-3 py-2 mb-1">
+                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
+                          The Explorer
+                        </p>
+                        <p className="text-[11px] font-serif italic text-stone-800 truncate">
+                          {user?.name || "Member"}
+                        </p>
+                      </div>
 
-      {/* 2. NAVIGATION LINKS */}
-      <Link to="/profile">
-        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 cursor-pointer outline-none transition-colors rounded-none hover:bg-stone-100 focus:bg-stone-100 group">
-          <User className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#B23A2E] transition-colors" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-stone-700">Profile Archive</span>
-        </DropdownMenuItem>
-      </Link>
+                      {/* 2. NAVIGATION LINKS */}
+                      <Link to="/profile">
+                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 cursor-pointer outline-none transition-colors rounded-none hover:bg-stone-100 focus:bg-stone-100 group">
+                          <User className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#B23A2E] transition-colors" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-stone-700">
+                            Profile Archive
+                          </span>
+                        </DropdownMenuItem>
+                      </Link>
 
-      <Link to="/account">
-        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 cursor-pointer outline-none transition-colors rounded-none hover:bg-stone-100 focus:bg-stone-100 group">
-          <Settings className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#B23A2E] transition-colors" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-stone-700">Account Settings</span>
-        </DropdownMenuItem>
-      </Link>
+                      <Link to="/account">
+                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-2.5 cursor-pointer outline-none transition-colors rounded-none hover:bg-stone-100 focus:bg-stone-100 group">
+                          <Settings className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#B23A2E] transition-colors" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-stone-700">
+                            Account Settings
+                          </span>
+                        </DropdownMenuItem>
+                      </Link>
 
-      {/* 3. TRACK ORDER: Re-styled as an editorial link instead of a heavy button */}
-      <DropdownMenuItem
-        onClick={() => navigate("/order-tracking")}
-        className="flex items-center justify-between px-3 py-3 mt-2 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-800 transition-all rounded-sm"
-      >
-        <span className="text-[9px] font-black uppercase tracking-[0.2em]">Track Your Harvest</span>
-        <ArrowRight className="w-3 h-3 opacity-50" />
-      </DropdownMenuItem>
+                      {/* 3. TRACK ORDER: Re-styled as an editorial link instead of a heavy button */}
+                      <DropdownMenuItem
+                        onClick={() => navigate("/order-tracking")}
+                        className="flex items-center justify-between px-3 py-3 mt-2 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-800 transition-all rounded-sm"
+                      >
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em]">
+                          Track Your Harvest
+                        </span>
+                        <ArrowRight className="w-3 h-3 opacity-50" />
+                      </DropdownMenuItem>
 
-      <div className="h-[1px] bg-stone-100 my-2 mx-2" />
+                      <div className="h-[1px] bg-stone-100 my-2 mx-2" />
 
-      {/* 4. LOGOUT */}
-      <DropdownMenuItem
-        onClick={handleLogout}
-        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer outline-none group hover:bg-red-50 rounded-none"
-      >
-        <LogOut className="w-3.5 h-3.5 text-stone-300 group-hover:text-[#B23A2E] transition-colors" />
-        <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-[#B23A2E]">Exit Ledger</span>
-      </DropdownMenuItem>
-    </>
-  ) : (
-    <Link to="/login">
-      <DropdownMenuItem className="flex items-center justify-center gap-3 px-3 py-4 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-900 transition-colors">
-        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Member Login</span>
-      </DropdownMenuItem>
-    </Link>
-  )}
-</DropdownMenuGroup>
+                      {/* 4. LOGOUT */}
+                      <DropdownMenuItem
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer outline-none group hover:bg-red-50 rounded-none"
+                      >
+                        <LogOut className="w-3.5 h-3.5 text-stone-300 group-hover:text-[#B23A2E] transition-colors" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-[#B23A2E]">
+                          Exit Ledger
+                        </span>
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <Link to="/login">
+                      <DropdownMenuItem className="flex items-center justify-center gap-3 px-3 py-4 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-900 transition-colors">
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">
+                          Member Login
+                        </span>
+                      </DropdownMenuItem>
+                    </Link>
+                  )}
+                </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       </div>
       {isMenu && (
-        <div className="fixed top-0 right-0 h-full w-64 sm:w-72 md:w-80 lg:hidden bg-[#F08C7D] shadow-lg p-6 flex flex-col gap-5 text-white z-50 transition-transform transform translate-x-0">
-          <div className="flex justify-end mb-2">
-            <FaTimes
-              className="text-2xl sm:text-3xl cursor-pointer hover:text-gray-200 transition"
-              onClick={toggleMenu}
-            />
-          </div>
+  <div className="fixed inset-0 z-[100] lg:hidden">
+    {/* 1. BLUR OVERLAY: Dims the orchard background when menu is open */}
+    <div 
+      className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm" 
+      onClick={toggleMenu} 
+    />
 
-          <Link
-            to="/"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            HOME
-          </Link>
-          <Link
-            to="/about-us"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            OUR STORY
-          </Link>
-          <Link
-            to="/custombox"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
-          >
-            CREATE BOX
-          </Link>
+    {/* 2. THE SIDEBAR: Deep Forest Green with sharp editorial lines */}
+    <div className="absolute top-0 right-0 h-full w-[280px] sm:w-[320px] bg-[#1a241a] shadow-2xl p-8 flex flex-col transition-all duration-500 ease-in-out">
+      
+      {/* HEADER: Close button with label */}
+      <div className="flex justify-between items-center mb-12">
+        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">Navigation</span>
+        <button onClick={toggleMenu} className="group p-2">
+          <FaTimes className="text-xl text-white/60 group-hover:text-[#B23A2E] group-hover:rotate-90 transition-all duration-500" />
+        </button>
+      </div>
 
+      {/* 3. NAVIGATION LINKS: Elegant and Spaced */}
+      <nav className="flex flex-col gap-8">
+        {[
+          { name: "Home", path: "/" },
+          { name: "Our Story", path: "/about-us" },
+          { name: "Create Box", path: "/custombox" },
+          { name: "Journal", path: "/blog" },
+          { name: "Contact", path: "/contact-us" },
+        ].map((link, index) => (
           <Link
-            to="/blog"
-            className="hover:text-gray-200 text-base sm:text-lg"
+            key={link.name}
+            to={link.path}
             onClick={toggleMenu}
+            className="group flex flex-col gap-1"
           >
-            BLOG
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] font-black uppercase tracking-[0.5em] text-white/80 group-hover:text-white transition-colors">
+                {link.name}
+              </span>
+              <span className="text-[10px] font-serif italic text-white/20 group-hover:text-[#B23A2E] transition-colors">
+                0{index + 1}
+              </span>
+            </div>
+            {/* Fine line separator below each link */}
+            <div className="h-[1px] w-full bg-white/5 group-hover:bg-[#B23A2E]/40 transition-colors duration-500" />
           </Link>
-          <Link
-            to="/contact-us"
-            className="hover:text-gray-200 text-base sm:text-lg"
-            onClick={toggleMenu}
+        ))}
+      </nav>
+
+      {/* 4. FOOTER: Member Login / Logout */}
+      <div className="mt-auto pt-10">
+        {!user ? (
+          <Link to="/login" onClick={toggleMenu}>
+            <button className="w-full border border-white/20 py-4 text-[11px] font-black uppercase tracking-[0.4em] text-white hover:bg-white hover:text-[#1a241a] transition-all duration-500">
+              Member Login
+            </button>
+          </Link>
+        ) : (
+          <button 
+            onClick={() => { handleLogout(); toggleMenu(); }}
+            className="w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors"
           >
-            CONTACT US
-          </Link>
-          {!user && (
-            <Link to="/login">
-              <button className="border-[#F08C7D] bg-[#FFECE8] text-[#F08C7D] py-2 px-4 rounded-md font-semibold mt-4 hover:bg-[#F08C7D] hover:text-white transition">
-                LOGIN
-              </button>
-            </Link>
-          )}
-        </div>
-      )}
+            Exit Archive
+          </button>
+        )}
+        
+        <p className="text-center mt-8 text-[9px] font-black uppercase tracking-[0.5em] text-white/20">
+          Purely Himalayan © 2026
+        </p>
+      </div>
+    </div>
+  </div>
+)}
     </motion.nav>
   );
 }
