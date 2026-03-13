@@ -21,6 +21,7 @@ import {
   LogOut,
   Package,
   Settings,
+  ShoppingBag,
   User,
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
