@@ -279,99 +279,88 @@ export default function Home() {
   viewport={{ once: true }}
   className="relative w-full h-[90vh] md:h-screen overflow-hidden bg-stone-900"
 >
-  <Link to="/viewproducts" className="cursor-default">
-    {/* 1. THE CINEMATIC BACKDROP */}
-    <motion.div className="absolute inset-0 w-full h-full">
-      <motion.img
-        src={bgImage}
-        initial={{ scale: 1.1, filter: "brightness(1) grayscale(20%)" }}
-        animate={{ scale: 1, filter: "brightness(0.7) grayscale(0%)" }}
-        transition={{ duration: 3, ease: "easeOut" }}
-        className="w-full h-full object-cover"
-      />
-      {/* Subtle Tonal Overlay - No more generic black gradients */}
-      <div className="absolute inset-0 bg-gradient-to-b from-stone-900/40 via-transparent to-stone-900/80" />
+  {/* 1. THE CINEMATIC BACKDROP */}
+  <div className="absolute inset-0 w-full h-full">
+    <motion.img
+      src={bgImage}
+      initial={{ scale: 1.1 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 3, ease: "easeOut" }}
+      className="w-full h-full object-cover opacity-80" // Slightly lowered opacity to let stone-900 peek through
+    />
+    
+    {/* Sophisticated Radial Overlay: Darks the center sign area specifically */}
+    <div className="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-stone-900/20 to-stone-900/80" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(28,25,23,0.6)_100%)]" />
+    
+    {/* The Journal Border: A very thin white line 2rem from the edge */}
+    <div className="absolute inset-8 border border-white/10 pointer-events-none" />
+  </div>
+
+  <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+    
+    {/* Label with signature Red Dot */}
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5 }}
+      className="flex items-center gap-3 mb-10"
+    >
+      <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" />
+      <span className="text-white/80 text-[10px] font-black uppercase tracking-[0.5em]">
+        Volume 01 • Harvest 2026
+      </span>
     </motion.div>
 
-    {/* 2. THE CONTENT LAYER */}
-    <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+    {/* The Headline: PURELY (Sans) + himalayan (Serif) */}
+    <div className="flex flex-col items-center">
+      <motion.h1
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.8 }}
+        style={{ mixBlendMode: 'overlay' }} // This makes the white text interact with the wood texture below
+        className="text-[18vw] md:text-[12rem] font-black text-white leading-[0.7] tracking-[-0.05em] uppercase"
+      >
+        Purely
+      </motion.h1>
       
-      {/* Archive Series Label */}
-      <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="flex items-center gap-4 mb-8"
+      <motion.h1
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.9, duration: 1 }}
+        className="text-[14vw] md:text-[9rem] font-serif italic font-light text-stone-200 leading-[0.7] -mt-4 md:-mt-8"
       >
-        <div className="h-[1px] w-8 bg-[#B23A2E]" />
-        <span className="text-white text-[10px] font-black uppercase tracking-[0.5em]">
-          Volume 01 • Harvest 2026
-        </span>
-        <div className="h-[1px] w-8 bg-[#B23A2E]" />
-      </motion.div>
+        himalayan
+      </motion.h1>
+    </div>
 
-      {/* The Headline: High-Contrast Editorial Style */}
-      <div className="overflow-hidden">
-        <motion.h1
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.7, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-7xl md:text-[10rem] lg:text-[13rem] font-black text-white leading-[0.8] tracking-[ -0.05em] uppercase"
-        >
-          Purely <br />
-          <span className="font-serif italic font-light lowercase tracking-normal text-stone-200">
-            Himalayan
+    {/* Product Inventory Dispatch */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.2 }}
+      className="mt-16 flex items-center gap-6 md:gap-12"
+    >
+      {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
+        <div key={i} className="flex items-center gap-3">
+          <span className="text-white/40 text-[9px] font-mono tracking-widest">{i + 1}.</span>
+          <span className="text-white/90 text-[10px] font-black uppercase tracking-[0.3em]">
+            {item}
           </span>
-        </motion.h1>
-      </div>
+        </div>
+      ))}
+    </motion.div>
 
-      {/* 3. DISPATCH LIST (Instead of Subtext) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="mt-12 flex flex-wrap justify-center items-center gap-x-8 gap-y-4 max-w-xl border-t border-white/10 pt-8"
-      >
-        {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
-          <div key={i} className="flex items-center gap-3">
-            <div className="w-1 h-1 rounded-full bg-[#B23A2E]" />
-            <span className="text-white text-[10px] font-black uppercase tracking-[0.3em] opacity-70">
-              {item}
-            </span>
-          </div>
-        ))}
-      </motion.div>
-
-      {/* 4. THE BOUTIQUE CTA (No more rounded green buttons) */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="mt-16 group/btn"
-      >
-        <button className="relative px-12 py-5 overflow-hidden border border-white/20 backdrop-blur-md transition-all duration-500 group-hover/btn:border-[#B23A2E]">
-          {/* Animated Background Slide */}
-          <div className="absolute inset-0 bg-white translate-y-[101%] group-hover/btn:translate-y-0 transition-transform duration-500 ease-out" />
-          
-          <div className="relative flex items-center gap-4">
-            <span className="text-white text-[10px] font-black uppercase tracking-[0.4em] group-hover/btn:text-stone-900 transition-colors duration-500">
-              Enter The Orchard
-            </span>
-            <div className="w-8 h-[1px] bg-white group-hover/btn:bg-stone-900 transition-colors" />
-          </div>
-        </button>
-      </motion.div>
-
-    </div>
-
-    {/* 5. VERTICAL SCROLL INDICATOR */}
-    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-      <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40 vertical-text">
-        Scroll to Explore
-      </span>
-      <div className="h-12 w-[1px] bg-gradient-to-b from-white/40 to-transparent" />
-    </div>
-  </Link>
+    {/* Boutique Scroll Indicator */}
+    <motion.div 
+      animate={{ y: [0, 10, 0] }}
+      transition={{ duration: 2, repeat: Infinity }}
+      className="absolute bottom-12 flex flex-col items-center gap-4"
+    >
+      <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/30">Explore Archive</span>
+      <div className="w-[1px] h-10 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+    </motion.div>
+  </div>
 </motion.div>
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
