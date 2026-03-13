@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import { Heart, ShoppingCart, Trash2, Tag } from "lucide-react";
+import { Heart, ShoppingCart, Trash2, Tag,X} from "lucide-react";
 
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { deleteWishListItem } from "@/store/slices/wishlistSlice";
