@@ -235,7 +235,7 @@ export default function WishListItemContent() {
                 key={`${cartItem.productId}-${cartItem.size}-${weight}`}
                 className="relative rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group overflow-hidden"
               >
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border transition-all duration-700 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] group-hover:-translate-y-2">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] transition-all duration-700 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] group-hover:-translate-y-2">
                   {/* PRODUCT IMAGE */}
                   <img
                     src={image}
