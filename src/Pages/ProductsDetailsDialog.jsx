@@ -930,59 +930,63 @@ export default function ProductsDetailsDialog() {
 
                 {/* IMAGE PREVIEW GRID */}
                 {reviewImages.length > 0 && (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    className="mt-8 pt-6 border-t border-stone-100"
-  >
-    <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-4 ml-1">
-      Selected Imagery ({reviewImages.length})
-    </p>
-    
-    <div className="flex flex-wrap gap-4">
-      <AnimatePresence>
-        {reviewImages.map((img, idx) => (
-          <motion.div
-            key={idx} // If names aren't unique, consider using the file object itself or a unique ID
-            initial={{ opacity: 0, scale: 0.9, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-            transition={{ delay: idx * 0.05 }}
-            className="relative group"
-          >
-            {/* The Image Chip */}
-            <div className="relative w-24 h-24 overflow-hidden rounded-2xl border-2 border-white shadow-sm transition-transform duration-500 group-hover:scale-105">
-              <img
-                src={URL.createObjectURL(img)}
-                alt={`preview-${idx}`}
-                className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all duration-700"
-              />
-              
-              {/* Refined Overlay */}
-              <div className="absolute inset-0 bg-stone-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <span className="text-[8px] text-white font-black uppercase tracking-[0.2em] translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                  View
-                </span>
-              </div>
-            </div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-8 pt-6 border-t border-stone-100"
+                  >
+                    <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-4 ml-1">
+                      Selected Imagery ({reviewImages.length})
+                    </p>
 
-            {/* Remove Action */}
-            <button
-              onClick={() => {
-                const newImages = [...reviewImages];
-                newImages.splice(idx, 1);
-                setReviewImages(newImages);
-              }}
-              className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center text-stone-400 hover:text-[#B23A2E] hover:scale-110 transition-all opacity-0 group-hover:opacity-100 border border-stone-50"
-            >
-              <X size={12} strokeWidth={3} />
-            </button>
-          </motion.div>
-        ))}
-      </AnimatePresence>
-    </div>
-  </motion.div>
-)}
+                    <div className="flex flex-wrap gap-4">
+                      <AnimatePresence>
+                        {reviewImages.map((img, idx) => (
+                          <motion.div
+                            key={idx} // If names aren't unique, consider using the file object itself or a unique ID
+                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{
+                              opacity: 0,
+                              scale: 0.5,
+                              transition: { duration: 0.2 },
+                            }}
+                            transition={{ delay: idx * 0.05 }}
+                            className="relative group"
+                          >
+                            {/* The Image Chip */}
+                            <div className="relative w-24 h-24 overflow-hidden rounded-2xl border-2 border-white shadow-sm transition-transform duration-500 group-hover:scale-105">
+                              <img
+                                src={URL.createObjectURL(img)}
+                                alt={`preview-${idx}`}
+                                className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all duration-700"
+                              />
+
+                              {/* Refined Overlay */}
+                              <div className="absolute inset-0 bg-stone-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span className="text-[8px] text-white font-black uppercase tracking-[0.2em] translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                  View
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Remove Action */}
+                            <button
+                              onClick={() => {
+                                const newImages = [...reviewImages];
+                                newImages.splice(idx, 1);
+                                setReviewImages(newImages);
+                              }}
+                              className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center text-stone-400 hover:text-[#B23A2E] hover:scale-110 transition-all opacity-0 group-hover:opacity-100 border border-stone-50"
+                            >
+                              <X size={12} strokeWidth={3} />
+                            </button>
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
+                )}
               </div>
 
               {/* SUBMIT ACTION */}
@@ -994,62 +998,76 @@ export default function ProductsDetailsDialog() {
               </Button>
             </div>
 
-            <div className="mt-6 flex flex-col sm:flex-row gap-4 items-center">
-              {/* ADD TO CART */}
-              <Button
-                onClick={() => {
-                  setIsAddingToCart(true);
-                  handleAddToCart(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size,
-                    selectedVariant.weight,
-                  );
-                  setTimeout(() => setIsAddingToCart(false), 250);
-                }}
-                className="
-      w-full sm:w-auto
-      bg-[#F08C7D] text-white
-      px-12 py-4
-      text-base font-semibold
-      rounded-lg
-      shadow-md hover:shadow-lg
-      hover:bg-[#ee7f6e]
-      active:scale-[0.98]
-      transition
-    "
-              >
-                Add to Cart
-              </Button>
-
-              {/* WISHLIST ICON */}
-              <button
-                disabled={!selectedVariant}
-                onClick={() => {
-                  if (!selectedVariant) return;
-                  handleAddToWishList(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size || "",
-                    selectedVariant.weight,
-                  );
-                }}
-                className="
-      h-14 w-14
-      rounded-full
-      border border-gray-300
+            <div className="mt-8 flex flex-col sm:flex-row gap-5 items-center">
+  {/* PRIMARY CTA: ACQUIRE TO BASKET */}
+  <button
+    onClick={() => {
+      setIsAddingToCart(true);
+      handleAddToCart(
+        productDetails._id,
+        selectedVariant.stock,
+        selectedVariant.size,
+        selectedVariant.weight,
+      );
+      setTimeout(() => setIsAddingToCart(false), 250);
+    }}
+    className="
+      relative overflow-hidden
+      w-full sm:flex-1
+      bg-stone-900 text-white
+      px-12 py-5
+      text-[11px] font-black uppercase tracking-[0.3em]
+      rounded-2xl
+      shadow-xl hover:shadow-2xl
+      hover:bg-[#B23A2E]
+      active:scale-[0.97]
+      transition-all duration-500
       flex items-center justify-center
-      text-gray-600
-      hover:border-[#F08C7D]
-      hover:text-[#F08C7D]
-      hover:bg-[#F08C7D]/10
-      transition
-      disabled:opacity-50
     "
-              >
-                <Heart className="w-6 h-6" />
-              </button>
-            </div>
+  >
+    <span className={isAddingToCart ? "opacity-0" : "opacity-100 transition-opacity"}>
+      Acquire to Basket
+    </span>
+    
+    {/* Minimalist Loading Overlay */}
+    {isAddingToCart && (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-1 w-12 bg-white/20 rounded-full overflow-hidden">
+          <div className="h-full bg-white w-1/2 animate-shimmer" />
+        </div>
+      </div>
+    )}
+  </button>
+
+  {/* SECONDARY CTA: WISHLIST ICON */}
+  <button
+    disabled={!selectedVariant}
+    onClick={() => {
+      if (!selectedVariant) return;
+      handleAddToWishList(
+        productDetails._id,
+        selectedVariant.stock,
+        selectedVariant.size || "",
+        selectedVariant.weight,
+      );
+    }}
+    className="
+      h-16 w-16
+      rounded-2xl
+      border border-stone-200
+      flex items-center justify-center
+      text-stone-400
+      hover:border-stone-900
+      hover:text-stone-900
+      hover:bg-stone-50
+      transition-all duration-300
+      disabled:opacity-30
+      group
+    "
+  >
+    <Heart className="w-6 h-6 transition-transform duration-300 group-hover:scale-110 group-active:scale-90" />
+  </button>
+</div>
           </div>
         </div>
         <div className="mt-10  mx-auto">
