@@ -6,6 +6,7 @@ import {
   ChevronRight,
   ClipboardList,
   Heart,
+  Leaf,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import StarRatingComponent from "./Star-Review";
@@ -442,24 +443,80 @@ export default function ProductsDetailsDialog() {
             )}
 
             {productDetails?.details && (
-  <div className="mt-12 overflow-hidden rounded-[2rem] bg-stone-50/50 border border-stone-100 shadow-sm">
+              <div className="mt-12 overflow-hidden rounded-[2rem] bg-stone-50/50 border border-stone-100 shadow-sm">
+                {/* HEADER */}
+                <div className="px-8 py-6 border-b border-stone-100 bg-white/50 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-stone-900 flex items-center justify-center">
+                      <ClipboardList size={14} className="text-white" />
+                    </div>
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-900">
+                      Harvest Specifications
+                    </h3>
+                  </div>
+                  <span className="text-[10px] font-serif italic text-stone-400">
+                    Ver. 2026.04
+                  </span>
+                </div>
+
+                {/* DATA GRID */}
+                <div className="px-8 py-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+                    {Object.entries(productDetails.details)
+                      .filter(
+                        ([key, value]) =>
+                          !["_id", "__v"].includes(key) &&
+                          value !== null &&
+                          value !== undefined &&
+                          value !== "",
+                      )
+                      .map(([key, value]) => (
+                        <div
+                          key={key}
+                          className="flex justify-between items-baseline py-4 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-0"
+                        >
+                          <span className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+                            {key.replace(/_/g, " ")}
+                          </span>
+                          <span className="text-sm font-serif italic text-stone-900 text-right">
+                            {value}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                {/* FOOTER DECORATION */}
+                <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#B23A2E]/20 to-transparent" />
+              </div>
+            )}
+
+            {productDetails?.nutrition && (
+  <div className="mt-8 overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
     {/* HEADER */}
-    <div className="px-8 py-6 border-b border-stone-100 bg-white/50 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-stone-900 flex items-center justify-center">
-          <ClipboardList size={14} className="text-white" />
+    <div className="px-8 py-8 border-b border-stone-800 flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <div className="w-10 h-10 rounded-full bg-[#B23A2E] flex items-center justify-center shadow-lg shadow-[#B23A2E]/20">
+          <Leaf size={18} className="text-white" />
         </div>
-        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-900">
-          Harvest Specifications
-        </h3>
+        <div>
+          <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">
+            Nutritional Values
+          </h3>
+          <p className="text-lg font-serif italic text-white leading-none mt-1">
+            Per 100g serving
+          </p>
+        </div>
       </div>
-      <span className="text-[10px] font-serif italic text-stone-400">Ver. 2026.04</span>
+      <div className="hidden sm:block px-4 py-1 border border-stone-700 rounded-full text-[8px] font-black uppercase tracking-widest text-stone-500">
+        Lab Verified
+      </div>
     </div>
 
-    {/* DATA GRID */}
-    <div className="px-8 py-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12">
-        {Object.entries(productDetails.details)
+    {/* NUTRITION GRID */}
+    <div className="px-8 py-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+        {Object.entries(productDetails.nutrition)
           .filter(
             ([key, value]) =>
               !["_id", "__v"].includes(key) &&
@@ -468,60 +525,29 @@ export default function ProductsDetailsDialog() {
               value !== "",
           )
           .map(([key, value]) => (
-            <div
-              key={key}
-              className="flex justify-between items-baseline py-4 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-0"
-            >
-              <span className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+            <div key={key} className="space-y-1 group">
+              <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 group-hover:text-[#B23A2E] transition-colors">
                 {key.replace(/_/g, " ")}
-              </span>
-              <span className="text-sm font-serif italic text-stone-900 text-right">
+              </p>
+              <p className="text-2xl font-light tracking-tighter text-white">
                 {value}
-              </span>
+              </p>
+              {/* Subtle underline decoration */}
+              <div className="h-[1px] w-full bg-stone-800 group-hover:bg-stone-700 transition-colors" />
             </div>
           ))}
       </div>
     </div>
-    
-    {/* FOOTER DECORATION */}
-    <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#B23A2E]/20 to-transparent" />
+
+    {/* FOOTER NOTE */}
+    <div className="px-8 py-4 bg-stone-800/50 flex items-center gap-2">
+      <div className="w-1 h-1 bg-[#B23A2E] rounded-full animate-pulse" />
+      <p className="text-[9px] font-medium text-stone-500 italic tracking-wider">
+        Pure Himalayan produce. Values may vary with seasonal harvest.
+      </p>
+    </div>
   </div>
 )}
-
-            {productDetails?.nutrition && (
-              <div className="mt-4 rounded-xl bg-white border border-gray-200 shadow-sm">
-                {/* HEADER (STATIC) */}
-                <div className="px-6 py-4 font-semibold text-lg flex items-center gap-2">
-                  <span className="text-xl">🍎</span>
-                  Nutrition
-                </div>
-
-                {/* CONTENT (ALWAYS VISIBLE) */}
-                <div className="px-6 pb-6">
-                  {Object.entries(productDetails.nutrition)
-                    .filter(
-                      ([key, value]) =>
-                        !["_id", "__v"].includes(key) &&
-                        value !== null &&
-                        value !== undefined &&
-                        value !== "",
-                    )
-                    .map(([key, value]) => (
-                      <div
-                        key={key}
-                        className="flex justify-between items-center py-2 border-b last:border-b-0"
-                      >
-                        <span className="font-medium text-gray-700 capitalize">
-                          {key.replace(/_/g, " ")}
-                        </span>
-                        <span className="font-semibold text-gray-900">
-                          {value}
-                        </span>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
           </div>
           <div className="flex flex-col gap-6">
             <motion.div
