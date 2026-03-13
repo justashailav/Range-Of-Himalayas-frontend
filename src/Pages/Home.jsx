@@ -274,94 +274,97 @@ export default function Home() {
       </div>
 
       <motion.div
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
-  className="relative w-full h-[90vh] md:h-screen overflow-hidden bg-stone-900"
->
-  {/* 1. THE CINEMATIC BACKDROP */}
-  <div className="absolute inset-0 w-full h-full">
-    <motion.img
-      src={bgImage}
-      initial={{ scale: 1.1 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 3, ease: "easeOut" }}
-      className="w-full h-full object-cover opacity-80" // Slightly lowered opacity to let stone-900 peek through
-    />
-    
-    {/* Sophisticated Radial Overlay: Darks the center sign area specifically */}
-    <div className="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-stone-900/20 to-stone-900/80" />
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(28,25,23,0.6)_100%)]" />
-    
-    {/* The Journal Border: A very thin white line 2rem from the edge */}
-    <div className="absolute inset-8 border border-white/10 pointer-events-none" />
-  </div>
-
-  <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-    
-    {/* Label with signature Red Dot */}
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5 }}
-      className="flex items-center gap-3 mb-10"
-    >
-      <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" />
-      <span className="text-white/80 text-[10px] font-black uppercase tracking-[0.5em]">
-        Volume 01 • Harvest 2026
-      </span>
-    </motion.div>
-
-    {/* The Headline: PURELY (Sans) + himalayan (Serif) */}
-    <div className="flex flex-col items-center">
-      <motion.h1
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.8 }}
-        style={{ mixBlendMode: 'overlay' }} // This makes the white text interact with the wood texture below
-        className="text-[18vw] md:text-[12rem] font-black text-white leading-[0.7] tracking-[-0.05em] uppercase"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="relative w-full h-[90vh] md:h-screen overflow-hidden bg-stone-900"
       >
-        Purely
-      </motion.h1>
-      
-      <motion.h1
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.9, duration: 1 }}
-        className="text-[14vw] md:text-[9rem] font-serif italic font-light text-stone-200 leading-[0.7] -mt-4 md:-mt-8"
-      >
-        himalayan
-      </motion.h1>
-    </div>
+        {/* 1. THE CINEMATIC BACKDROP */}
+        <div className="absolute inset-0 w-full h-full">
+          <motion.img
+            src={bgImage}
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 3, ease: "easeOut" }}
+            className="w-full h-full object-cover opacity-80" // Slightly lowered opacity to let stone-900 peek through
+          />
 
-    {/* Product Inventory Dispatch */}
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.2 }}
-      className="mt-16 flex items-center gap-6 md:gap-12"
-    >
-      {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
-        <div key={i} className="flex items-center gap-3">
-          <span className="text-white/40 text-[9px] font-mono tracking-widest">{i + 1}.</span>
-          <span className="text-white/90 text-[10px] font-black uppercase tracking-[0.3em]">
-            {item}
-          </span>
+          {/* Sophisticated Radial Overlay: Darks the center sign area specifically */}
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-stone-900/20 to-stone-900/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(28,25,23,0.6)_100%)]" />
+
+          {/* The Journal Border: A very thin white line 2rem from the edge */}
+          <div className="absolute inset-8 border border-white/10 pointer-events-none" />
         </div>
-      ))}
-    </motion.div>
 
-    {/* Boutique Scroll Indicator */}
-    <motion.div 
-      animate={{ y: [0, 10, 0] }}
-      transition={{ duration: 2, repeat: Infinity }}
-      className="absolute bottom-12 flex flex-col items-center gap-4"
-    >
-      <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/30">Explore Archive</span>
-      <div className="w-[1px] h-10 bg-gradient-to-b from-[#B23A2E] to-transparent" />
-    </motion.div>
-  </div>
-</motion.div>
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+          {/* Label with signature Red Dot */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center gap-3 mb-10"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" />
+            <span className="text-white/80 text-[10px] font-black uppercase tracking-[0.5em]">
+              Volume 01 • Harvest 2026
+            </span>
+          </motion.div>
+
+          {/* The Headline: PURELY (Sans) + himalayan (Serif) */}
+          <div className="flex flex-col items-center">
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              style={{ mixBlendMode: "overlay" }} // This makes the white text interact with the wood texture below
+              className="text-[18vw] md:text-[12rem] font-black text-white leading-[0.7] tracking-[-0.05em] uppercase"
+            >
+              Purely
+            </motion.h1>
+
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 1 }}
+              className="text-[14vw] md:text-[9rem] font-serif italic font-light text-stone-200 leading-[0.7] -mt-4 md:-mt-8"
+            >
+              himalayan
+            </motion.h1>
+          </div>
+
+          {/* Product Inventory Dispatch */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="mt-16 flex items-center gap-6 md:gap-12"
+          >
+            {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <span className="text-white/40 text-[9px] font-mono tracking-widest">
+                  {i + 1}.
+                </span>
+                <span className="text-white/90 text-[10px] font-black uppercase tracking-[0.3em]">
+                  {item}
+                </span>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Boutique Scroll Indicator */}
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute bottom-12 flex flex-col items-center gap-4"
+          >
+            <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/30">
+              Explore Archive
+            </span>
+            <div className="w-[1px] h-10 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+          </motion.div>
+        </div>
+      </motion.div>
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
           <motion.span
@@ -530,7 +533,7 @@ export default function Home() {
         {/* Optional: A very faint divider to anchor the grid below */}
         <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
       </div>
-      <div className="relative p-10">
+      <div className="relative p-6">
         {/* LEFT ARROW */}
         <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
           <ChevronLeft className="w-5 h-5" />
