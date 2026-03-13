@@ -8,7 +8,7 @@ import { Heart, ShoppingCart, Trash2, Tag } from "lucide-react";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { deleteWishListItem } from "@/store/slices/wishlistSlice";
 import { Helmet } from "react-helmet";
-
+import { motion, AnimatePresence } from "framer-motion";
 export default function WishListItemContent() {
   const dispatch = useDispatch();
   const { wishListItems } = useSelector((state) => state.wishList);
@@ -24,7 +24,7 @@ export default function WishListItemContent() {
       (item) =>
         item.productId.toString() === productId.toString() &&
         (item.size || "") === (size || "") &&
-        item.weight === weight
+        item.weight === weight,
     );
 
     if (existingIndex > -1) {
@@ -42,7 +42,7 @@ export default function WishListItemContent() {
         quantity: 1,
         size: size || "",
         weight,
-      })
+      }),
     ).then((res) => {
       if (res?.success) {
         dispatch(fetchCartItems(user?._id));
@@ -54,7 +54,7 @@ export default function WishListItemContent() {
             productId,
             size: size || "",
             weight,
-          })
+          }),
         );
       }
     });
@@ -69,9 +69,9 @@ export default function WishListItemContent() {
       deleteWishListItem({
         userId: user?._id,
         productId: item.productId,
-        size: item.size||"",
-        weight:item.weight,
-      })
+        size: item.size || "",
+        weight: item.weight,
+      }),
     ).then((data) => {
       if (data?.success) toast.success("Item removed from wishlist");
       else toast.error(data?.message || "Failed to remove item");
@@ -106,41 +106,46 @@ export default function WishListItemContent() {
   return (
     <div className=" px-4 sm:px-6 lg:px-10 py-8 bg-[#FFF8E1] min-h-screen">
       <div className="relative mb-12 border-b border-stone-100 pb-8">
-  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-    <div className="space-y-1">
-      <motion.div 
-        initial={{ opacity: 0, x: -10 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="flex items-center gap-2"
-      >
-        <span className="w-8 h-[1px] bg-[#B23A2E]" />
-        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-          Personal Archive
-        </span>
-      </motion.div>
-      
-      <h2 className="text-4xl md:text-5xl font-black text-stone-900 tracking-tighter">
-        My <span className="italic font-serif font-light text-stone-400">Wishlist</span>
-      </h2>
-    </div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-1">
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2"
+            >
+              <span className="w-8 h-[1px] bg-[#B23A2E]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+                Personal Archive
+              </span>
+            </motion.div>
 
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-stone-900 text-white shadow-xl shadow-stone-200"
-    >
-      <Heart size={14} className="fill-[#B23A2E] text-[#B23A2E]" />
-      <span className="text-xs font-black uppercase tracking-widest">
-        {wishListItems.length} {wishListItems.length === 1 ? "Selection" : "Selections"}
-      </span>
-    </motion.div>
-  </div>
-  
-  {/* Subtitle - Optional but adds "Boutique" feel */}
-  <p className="mt-4 text-stone-400 text-sm font-medium max-w-md">
-    A curated collection of your favorite Himalayan treasures, reserved for your next harvest.
-  </p>
-</div>
+            <h2 className="text-4xl md:text-5xl font-black text-stone-900 tracking-tighter">
+              My{" "}
+              <span className="italic font-serif font-light text-stone-400">
+                Wishlist
+              </span>
+            </h2>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-stone-900 text-white shadow-xl shadow-stone-200"
+          >
+            <Heart size={14} className="fill-[#B23A2E] text-[#B23A2E]" />
+            <span className="text-xs font-black uppercase tracking-widest">
+              {wishListItems.length}{" "}
+              {wishListItems.length === 1 ? "Selection" : "Selections"}
+            </span>
+          </motion.div>
+        </div>
+
+        {/* Subtitle - Optional but adds "Boutique" feel */}
+        <p className="mt-4 text-stone-400 text-sm font-medium max-w-md">
+          A curated collection of your favorite Himalayan treasures, reserved
+          for your next harvest.
+        </p>
+      </div>
 
       {wishListItems.length === 0 ? (
         <div className="text-center py-20 rounded-2xl shadow-sm">
@@ -160,13 +165,13 @@ export default function WishListItemContent() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {wishListItems.map((cartItem) => {
             const product = productList.find(
-              (p) => p._id === cartItem.productId
+              (p) => p._id === cartItem.productId,
             );
 
             const variant = product?.variants?.find(
               (v) =>
                 v.size === cartItem.size &&
-                (cartItem.weight ? v.weight === cartItem.weight : true)
+                (cartItem.weight ? v.weight === cartItem.weight : true),
             );
 
             const image = product?.image;
@@ -255,7 +260,7 @@ export default function WishListItemContent() {
                         product?._id || cartItem.productId,
                         totalStock,
                         variant?.size,
-                        weight
+                        weight,
                       )
                     }
                     className="w-full flex items-center justify-center gap-2 bg-[#F08C7D] text-white font-semibold py-3 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:bg-[#f39b8d] active:scale-95 transition-all duration-300"
