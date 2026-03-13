@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Heart, LogOut, Package, Settings, User } from "lucide-react";
+import { ArrowRight, Heart, LogOut, Package, Settings, User } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { searchProducts } from "@/store/slices/searchSlice";
 import { Button } from "@/components/ui/button";
