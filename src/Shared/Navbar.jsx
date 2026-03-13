@@ -23,7 +23,6 @@ import { resetAuthSlice } from "@/store/slices/authSlice";
 import { persistor } from "@/store/store";
 import { useScroll, motion, useMotionValueEvent } from "framer-motion";
 
-
 export default function Navbar() {
   const [isMenu, setIsMenu] = useState(false);
   const [openCart, setOpenCart] = useState(false);
@@ -233,71 +232,122 @@ export default function Navbar() {
               <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
                 <DropdownMenuGroup>
                   <DropdownMenuContent className="w-56 bg-[#fdfcf7] border border-stone-200 rounded-none p-2 shadow-xl">
-  {user ? (
-    <>
-      {/* HEADER SECTION */}
-      <div className="px-3 py-4 border-b border-stone-100 mb-2">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">Member</p>
-        <p className="font-serif italic text-stone-900 truncate">{user?.name || "Explorer"}</p>
-      </div>
+                    {user ? (
+                      <>
+                        {/* HEADER SECTION */}
+                        <div className="px-3 py-4 border-b border-stone-100 mb-2">
+                          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
+                            Member
+                          </p>
+                          <p className="font-serif italic text-stone-900 truncate">
+                            {user?.name || "Explorer"}
+                          </p>
+                        </div>
 
-      {/* NAVIGATION LINKS */}
-      <Link to="/profile">
-        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-stone-100 focus:bg-stone-100 group">
-          <User className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors" strokeWidth={1.5} />
-          <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">The Profile</span>
-        </DropdownMenuItem>
-      </Link>
+                        {/* NAVIGATION LINKS */}
+                        <Link to="/profile">
+                          <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-stone-100 focus:bg-stone-100 group">
+                            <User
+                              className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors"
+                              strokeWidth={1.5}
+                            />
+                            <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">
+                              The Profile
+                            </span>
+                          </DropdownMenuItem>
+                        </Link>
 
-      <Link to="/account">
-        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-stone-100 focus:bg-stone-100 group">
-          <Settings className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors" strokeWidth={1.5} />
-          <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">Account Settings</span>
-        </DropdownMenuItem>
-      </Link>
+                        <Link to="/account">
+                          <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-stone-100 focus:bg-stone-100 group">
+                            <Settings
+                              className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors"
+                              strokeWidth={1.5}
+                            />
+                            <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">
+                              Account Settings
+                            </span>
+                          </DropdownMenuItem>
+                        </Link>
 
-      {/* TRACK ORDER: Refined as an editorial link rather than a heavy button */}
-      <DropdownMenuItem 
-        onClick={() => navigate("/order-tracking")}
-        className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-[#2d3a2d] hover:text-white focus:bg-[#2d3a2d] focus:text-white group border-t border-stone-100 mt-2"
-      >
-        <Package className="w-4 h-4 text-stone-400 group-hover:text-white transition-colors" strokeWidth={1.5} />
-        <span className="text-[10px] font-black uppercase tracking-[0.2em]">Track Current Harvest</span>
-      </DropdownMenuItem>
+                        {/* TRACK ORDER: Refined as an editorial link rather than a heavy button */}
+                        <DropdownMenuItem
+                          onClick={() => navigate("/order-tracking")}
+                          className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-[#2d3a2d] hover:text-white focus:bg-[#2d3a2d] focus:text-white group border-t border-stone-100 mt-2"
+                        >
+                          <Package
+                            className="w-4 h-4 text-stone-400 group-hover:text-white transition-colors"
+                            strokeWidth={1.5}
+                          />
+                          <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                            Track Current Harvest
+                          </span>
+                        </DropdownMenuItem>
 
-      {/* LOGOUT */}
-      <DropdownMenuItem
-        onClick={handleLogout}
-        className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-red-50 group"
-      >
-        <LogOut className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors" strokeWidth={1.5} />
-        <span className="text-[11px] font-black uppercase tracking-widest text-stone-400 group-hover:text-[#B23A2E]">Exit Archive</span>
-      </DropdownMenuItem>
-    </>
-  ) : (
-    <Link to="/login">
-      <DropdownMenuItem className="flex items-center gap-3 px-3 py-4 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-800 transition-colors">
-        <User className="w-4 h-4 text-white/60" strokeWidth={1.5} />
-        <span className="text-[11px] font-black uppercase tracking-[0.4em]">Member Login</span>
-      </DropdownMenuItem>
-    </Link>
-  )}
-</DropdownMenuContent>
+                        {/* LOGOUT */}
+                        <DropdownMenuItem
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-red-50 group"
+                        >
+                          <LogOut
+                            className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors"
+                            strokeWidth={1.5}
+                          />
+                          <span className="text-[11px] font-black uppercase tracking-widest text-stone-400 group-hover:text-[#B23A2E]">
+                            Exit Archive
+                          </span>
+                        </DropdownMenuItem>
+                      </>
+                    ) : (
+                      <Link to="/login">
+                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-4 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-800 transition-colors">
+                          <User
+                            className="w-4 h-4 text-white/60"
+                            strokeWidth={1.5}
+                          />
+                          <span className="text-[11px] font-black uppercase tracking-[0.4em]">
+                            Member Login
+                          </span>
+                        </DropdownMenuItem>
+                      </Link>
+                    )}
+                  </DropdownMenuContent>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {isMenu ? (
-              <FaTimes
-                className="text-2xl sm:text-3xl text-white cursor-pointer hover:text-gray-200 transition"
-                onClick={toggleMenu}
-              />
-            ) : (
-              <GiHamburgerMenu
-                className="text-2xl sm:text-3xl text-white cursor-pointer hover:text-gray-200 transition"
-                onClick={toggleMenu}
-              />
-            )}
+            <button
+  onClick={toggleMenu}
+  className="relative z-[100] p-2 flex items-center justify-center transition-all duration-300 active:scale-90"
+  aria-label="Toggle Menu"
+>
+  <div className="flex flex-col items-end gap-1.5 group">
+    {/* Top Line */}
+    <span 
+      className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
+        isMenu ? "w-8 -rotate-45 translate-y-[8px]" : "w-8 group-hover:w-5"
+      }`} 
+    />
+    
+    {/* Middle Line (Fades out when menu is open) */}
+    <span 
+      className={`h-[1.5px] bg-white transition-all duration-500 ${
+        isMenu ? "opacity-0 w-0" : "w-5 group-hover:w-8"
+      }`} 
+    />
+    
+    {/* Bottom Line */}
+    <span 
+      className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
+        isMenu ? "w-8 rotate-45 -translate-y-[8px]" : "w-8 group-hover:w-6"
+      }`} 
+    />
+  </div>
+
+  {/* Optional Label (Hidden on smallest screens) */}
+  <span className={`ml-3 hidden sm:block text-[9px] font-black uppercase tracking-[0.4em] text-white transition-opacity duration-300 ${isMenu ? "opacity-0" : "opacity-60"}`}>
+    Menu
+  </span>
+</button>
           </div>
         </div>
         <div className="hidden lg:flex items-center justify-between w-full">
