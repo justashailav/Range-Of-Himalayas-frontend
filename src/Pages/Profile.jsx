@@ -4,6 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { updateProfile } from "@/store/slices/authSlice";
 import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
+import { Settings } from "lucide-react";
 
 export default function Profile() {
   const { user } = useSelector((state) => state.auth);
