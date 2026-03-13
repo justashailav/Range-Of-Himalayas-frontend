@@ -793,62 +793,94 @@ export default function ProductsDetailsDialog() {
             </div>
 
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
-  {/* STOCK STATUS */}
-  <div className="flex items-center gap-2.5">
-    {selectedVariant?.stock > 0 ? (
-      <>
-        {/* Dynamic Status Dot */}
-        <div className={`h-1.5 w-1.5 rounded-full ${
-          selectedVariant.stock < 5 
-            ? "bg-[#B23A2E] animate-pulse" 
-            : "bg-stone-400"
-        }`} />
-        
-        <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${
-          selectedVariant.stock < 5 ? "text-[#B23A2E]" : "text-stone-500"
-        }`}>
-          {selectedVariant.stock < 5 
-            ? "Critical Reserve — Low Stock" 
-            : `Available Yield: ${selectedVariant.stock}`}
-        </p>
-      </>
-    ) : (
-      <>
-        <div className="h-1.5 w-1.5 rounded-full bg-stone-300" />
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
-          Currently Vaulted
-        </p>
-      </>
-    )}
-  </div>
+              {/* STOCK STATUS */}
+              <div className="flex items-center gap-2.5">
+                {selectedVariant?.stock > 0 ? (
+                  <>
+                    {/* Dynamic Status Dot */}
+                    <div
+                      className={`h-1.5 w-1.5 rounded-full ${
+                        selectedVariant.stock < 5
+                          ? "bg-[#B23A2E] animate-pulse"
+                          : "bg-stone-400"
+                      }`}
+                    />
 
-  {/* SHIPPING PROMISE */}
-  <div className="flex items-center gap-3">
-    <div className="h-4 w-[1px] bg-stone-200 hidden sm:block" /> {/* Divider */}
-    <div className="flex items-center gap-2">
-      <div className="p-1 rounded-full bg-stone-100">
-        <Truck size={12} className="text-stone-600" />
-      </div>
-      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-600">
-        Complimentary Transit
-      </span>
-    </div>
-  </div>
-</div>
+                    <p
+                      className={`text-[10px] font-black uppercase tracking-[0.2em] ${
+                        selectedVariant.stock < 5
+                          ? "text-[#B23A2E]"
+                          : "text-stone-500"
+                      }`}
+                    >
+                      {selectedVariant.stock < 5
+                        ? "Critical Reserve — Low Stock"
+                        : `Available Yield: ${selectedVariant.stock}`}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="h-1.5 w-1.5 rounded-full bg-stone-300" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+                      Currently Vaulted
+                    </p>
+                  </>
+                )}
+              </div>
 
-            {/* Review Section */}
-            <div className="flex flex-col items-start gap-2 mb-4">
-              <label className="font-semibold text-gray-700">Your Rating</label>
-              <div className="flex items-center gap-2">
-                <StarRatingComponent
-                  rating={rating}
-                  onChange={handleRatingChange}
-                />
-                <span className="text-sm text-gray-600">
-                  {rating > 0 ? `${rating} / 5` : "Select Rating"}
-                </span>
+              {/* SHIPPING PROMISE */}
+              <div className="flex items-center gap-3">
+                <div className="h-4 w-[1px] bg-stone-200 hidden sm:block" />{" "}
+                {/* Divider */}
+                <div className="flex items-center gap-2">
+                  <div className="p-1 rounded-full bg-stone-100">
+                    <Truck size={12} className="text-stone-600" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-600">
+                    Complimentary Transit
+                  </span>
+                </div>
               </div>
             </div>
+
+            {/* Review Section */}
+            <div className="flex flex-col items-start gap-4 py-6 border-t border-stone-100 mt-8">
+  {/* LABEL */}
+  <div className="space-y-1">
+    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 block">
+      Product Evaluation
+    </label>
+    <p className="text-xl font-serif italic text-stone-900 leading-none">
+      How would you rate this harvest?
+    </p>
+  </div>
+
+  {/* RATING INTERFACE */}
+  <div className="flex items-center gap-6 bg-stone-50 px-6 py-4 rounded-2xl border border-stone-100 w-full sm:w-auto transition-all hover:bg-stone-100/50">
+    <div className="scale-110 origin-left">
+      <StarRatingComponent
+        rating={rating}
+        onChange={handleRatingChange}
+      />
+    </div>
+    
+    {/* VERTICAL DIVIDER */}
+    <div className="h-6 w-[1px] bg-stone-200" />
+
+    <span className="text-[11px] font-black uppercase tracking-widest text-stone-900 min-w-[100px]">
+      {rating > 0 ? (
+        <motion.span
+          initial={{ opacity: 0, x: -5 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          {rating} / 5 Score
+        </motion.span>
+      ) : (
+        <span className="text-stone-400">Select Grade</span>
+      )}
+    </span>
+  </div>
+</div>
             <textarea
               value={reviewMsg}
               onChange={(e) => setReviewMsg(e.target.value)}
