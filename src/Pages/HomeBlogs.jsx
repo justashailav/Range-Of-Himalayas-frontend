@@ -206,133 +206,148 @@ export default function HomeBlog() {
 
                     <div className="p-6 flex flex-col justify-between h-[260px]">
                       <div className="p-8 space-y-4">
-  {/* METADATA: THE DISPATCH LOG */}
-  <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 gap-6">
-    <div className="flex items-center gap-2">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" /> {/* Signature red dot */}
-      <span>
-        {new Date(b.createdAt).toLocaleDateString("en-IN", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        })}
-      </span>
-    </div>
-    <div className="flex items-center gap-2">
-      <div className="w-3 h-[1px] bg-stone-300" />
-      <span className="italic font-serif lowercase tracking-normal text-stone-500">
-        By {b.author || "Archive Admin"}
-      </span>
-    </div>
-  </div>
-
-  {/* TITLE: THE HEADLINE */}
-  <h3 className="text-xl font-black text-stone-900 leading-tight group-hover:text-[#B23A2E] transition-colors duration-500 uppercase tracking-tighter">
-    {b.title}
-  </h3>
-
-  {/* EXCERPT: THE PREVIEW */}
-  <p className="text-sm text-stone-500 font-serif italic leading-relaxed line-clamp-3">
-    {b.metaDescription ||
-      b.content?.replace(/<[^>]+>/g, "").slice(0, 150) + "..."}
-  </p>
-
-  {/* DECORATIVE FOOTER: THE "READ MORE" ANCHOR */}
-  <div className="pt-2 flex items-center gap-2">
-    <div className="h-[1px] w-8 bg-stone-100 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
-    <span className="text-[9px] font-black uppercase tracking-widest text-stone-400 group-hover:text-stone-900 transition-colors duration-500">
-      Open Entry
-    </span>
-  </div>
-</div>
-
-                      <div className="flex items-center justify-between text-gray-500 text-xs border-t border-gray-100 pt-3 relative">
-                        <div className="flex items-center gap-4">
-                          {/* ❤️ Like */}
-                          <button
-                            onClick={(e) => handleLike(e, b._id)}
-                            className="flex items-center gap-1 hover:text-pink-600 transition"
-                          >
-                            <Heart
-                              size={14}
-                              fill={b.isLiked ? "currentColor" : "none"}
-                              className={b.isLiked ? "text-pink-600" : ""}
-                            />
-                            <span>{b.likesCount || 0}</span>
-                          </button>
-
-                          {/* 💬 Comments */}
-                          <div className="flex items-center gap-1">
-                            <MessageSquare size={14} />
-                            <span>{b.comments?.length || 0}</span>
-                          </div>
-
-                          {/* 🔗 Share */}
-                          <div className="relative" ref={shareRef}>
-                            <button
-                              onClick={(e) => handleShareClick(e, b._id)}
-                              className="flex items-center gap-1 hover:text-green-700 transition"
-                            >
-                              <Share2 size={16} />
-                              <span className="text-xs">Share</span>
-                            </button>
-
-                            <AnimatePresence>
-                              {openShareId === b._id && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: 10 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: 10 }}
-                                  transition={{ duration: 0.2 }}
-                                  className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-xl flex gap-2 z-50"
-                                >
-                                  {[
-                                    {
-                                      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-                                      icon: <FaFacebook />,
-                                      bg: "bg-blue-600",
-                                    },
-                                    {
-                                      href: `https://twitter.com/intent/tweet?url=${encodedUrl}`,
-                                      icon: <FaTwitter />,
-                                      bg: "bg-sky-500",
-                                    },
-                                    {
-                                      href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}`,
-                                      icon: <FaPinterest />,
-                                      bg: "bg-red-600",
-                                    },
-                                    {
-                                      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-                                      icon: <FaLinkedin />,
-                                      bg: "bg-blue-700",
-                                    },
-                                    {
-                                      href: `https://t.me/share/url?url=${encodedUrl}`,
-                                      icon: <FaTelegramPlane />,
-                                      bg: "bg-sky-600",
-                                    },
-                                  ].map((btn, i) => (
-                                    <a
-                                      key={i}
-                                      href={btn.href}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      onClick={(e) => e.stopPropagation()}
-                                      className={`${btn.bg} text-white w-8 h-8 flex items-center justify-center rounded-full hover:scale-110 transition-transform`}
-                                    >
-                                      {btn.icon}
-                                    </a>
-                                  ))}
-                                </motion.div>
+                        {/* METADATA: THE DISPATCH LOG */}
+                        <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 gap-6">
+                          <div className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" />{" "}
+                            {/* Signature red dot */}
+                            <span>
+                              {new Date(b.createdAt).toLocaleDateString(
+                                "en-IN",
+                                {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                },
                               )}
-                            </AnimatePresence>
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-[1px] bg-stone-300" />
+                            <span className="italic font-serif lowercase tracking-normal text-stone-500">
+                              By {b.author || "Archive Admin"}
+                            </span>
                           </div>
                         </div>
 
-                        <span className="text-pink-600 text-sm font-medium hover:underline">
-                          Read More →
-                        </span>
+                        {/* TITLE: THE HEADLINE */}
+                        <h3 className="text-xl font-black text-stone-900 leading-tight group-hover:text-[#B23A2E] transition-colors duration-500 uppercase tracking-tighter">
+                          {b.title}
+                        </h3>
+
+                        {/* EXCERPT: THE PREVIEW */}
+                        <p className="text-sm text-stone-500 font-serif italic leading-relaxed line-clamp-3">
+                          {b.metaDescription ||
+                            b.content?.replace(/<[^>]+>/g, "").slice(0, 150) +
+                              "..."}
+                        </p>
+
+                        {/* DECORATIVE FOOTER: THE "READ MORE" ANCHOR */}
+                        <div className="pt-2 flex items-center gap-2">
+                          <div className="h-[1px] w-8 bg-stone-100 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
+                          <span className="text-[9px] font-black uppercase tracking-widest text-stone-400 group-hover:text-stone-900 transition-colors duration-500">
+                            Open Entry
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between text-gray-500 text-xs border-t border-gray-100 pt-3 relative">
+                        <div className="flex items-center gap-6 pt-4 border-t border-stone-100">
+  {/* ❤️ APPRECIATE */}
+  <button
+    onClick={(e) => handleLike(e, b._id)}
+    className="group flex items-center gap-1.5 transition-colors"
+  >
+    <Heart
+      size={16}
+      strokeWidth={b.isLiked ? 0 : 2}
+      fill={b.isLiked ? "#B23A2E" : "none"}
+      className={`transition-transform duration-300 group-hover:scale-125 ${
+        b.isLiked ? "text-[#B23A2E]" : "text-stone-400 group-hover:text-stone-900"
+      }`}
+    />
+    <span className={`text-[10px] font-black tracking-widest ${
+      b.isLiked ? "text-stone-900" : "text-stone-400"
+    }`}>
+      {b.likesCount || 0}
+    </span>
+  </button>
+
+  {/* 💬 NOTES */}
+  <div className="flex items-center gap-1.5 text-stone-400">
+    <MessageSquare size={16} strokeWidth={2} className="group-hover:text-stone-900 transition-colors" />
+    <span className="text-[10px] font-black tracking-widest">
+      {b.comments?.length || 0}
+    </span>
+  </div>
+
+  {/* 🔗 CIRCULATE (Share) */}
+  <div className="relative ml-auto" ref={shareRef}>
+    <button
+      onClick={(e) => handleShareClick(e, b._id)}
+      className="flex items-center gap-2 group"
+    >
+      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400 group-hover:text-[#B23A2E] transition-colors">
+        Circulate
+      </span>
+      <Share2 size={14} className="text-stone-400 group-hover:text-[#B23A2E] transition-transform group-hover:rotate-12" />
+    </button>
+
+    <AnimatePresence>
+      {openShareId === b._id && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 10 }}
+          className="absolute bottom-12 right-0 bg-stone-900 text-white rounded-2xl p-3 shadow-2xl flex gap-3 z-50 border border-white/10"
+        >
+          {[
+            { href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, icon: <FaFacebook /> },
+            { href: `https://twitter.com/intent/tweet?url=${encodedUrl}`, icon: <FaTwitter /> },
+            { href: `https://whatsapp.com/send?text=${encodedUrl}`, icon: <FaWhatsapp /> },
+            { href: `https://t.me/share/url?url=${encodedUrl}`, icon: <FaTelegramPlane /> },
+          ].map((btn, i) => (
+            <a
+              key={i}
+              href={btn.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/10 hover:bg-[#B23A2E] hover:text-white transition-all duration-300"
+            >
+              {btn.icon}
+            </a>
+          ))}
+          {/* Arrow pointing down to the button */}
+          <div className="absolute -bottom-1 right-4 w-2 h-2 bg-stone-900 rotate-45 border-r border-b border-white/10" />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+</div>
+
+                        <div className="group/link inline-flex items-center gap-3 cursor-pointer">
+  {/* The Expanding Line */}
+  <div className="relative w-8 h-[1px] bg-stone-200 overflow-hidden transition-all duration-500 group-hover/link:w-12 group-hover/link:bg-[#B23A2E]">
+    <motion.div 
+      className="absolute inset-0 bg-[#B23A2E]"
+      initial={{ x: "-100%" }}
+      whileHover={{ x: "100%" }}
+      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+    />
+  </div>
+
+  {/* The Text */}
+  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400 group-hover/link:text-stone-900 transition-colors duration-500">
+    Explore Entry
+  </span>
+
+  {/* The Subtle Chevron */}
+  <ChevronRight 
+    size={10} 
+    className="text-stone-300 transform transition-all duration-500 group-hover/link:translate-x-1 group-hover/link:text-[#B23A2E]" 
+  />
+</div>
                       </div>
                     </div>
                   </motion.div>
