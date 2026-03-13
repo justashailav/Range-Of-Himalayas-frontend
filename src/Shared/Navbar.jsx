@@ -357,57 +357,65 @@ export default function Navbar() {
           </div>
         </div>
         <div className="hidden lg:flex items-center justify-between w-full">
-          <Link 
-  to="/" 
-  className="flex-shrink-0 flex items-center h-full transition-all duration-700 ease-in-out hover:scale-105"
->
-  {/* 'h-full' and 'flex items-center' on the Link ensure 
+          <Link
+            to="/"
+            className="flex-shrink-0 flex items-center h-full transition-all duration-700 ease-in-out hover:scale-105"
+          >
+            {/* 'h-full' and 'flex items-center' on the Link ensure 
     the logo is centered relative to the navbar's height.
   */}
-  <img 
-    src={logo} 
-    className="w-28 sm:w-32 lg:w-40 brightness-0 invert opacity-90 hover:opacity-100 transition-opacity" 
-    alt="Range of Himalayas" 
-  />
-</Link>
+            <img
+              src={logo}
+              className="w-28 sm:w-32 lg:w-40 brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
+              alt="Range of Himalayas"
+            />
+          </Link>
           <nav className="flex items-center justify-center gap-6 lg:gap-10 flex-1 h-full px-4">
-  {[
-    { name: "Home", path: "/" },
-    { name: "Our Story", path: "/about-us" },
-    { name: "Create Box", path: "/custombox" },
-    { name: "Journal", path: "/blog" },
-    { name: "Contact", path: "/contact-us" },
-  ].map((link) => (
-    <Link
-      key={link.name}
-      to={link.path}
-      className="relative group flex items-center h-full"
-    >
-      {/* The Text: Optimized for the Editorial look */}
-      <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.4em] text-white/70 group-hover:text-white transition-all duration-500 whitespace-nowrap">
-        {link.name}
-      </span>
+            {[
+              { name: "Home", path: "/" },
+              { name: "Our Story", path: "/about-us" },
+              { name: "Create Box", path: "/custombox" },
+              { name: "Journal", path: "/blog" },
+              { name: "Contact", path: "/contact-us" },
+            ].map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="relative group flex items-center h-full"
+              >
+                {/* The Text: Optimized for the Editorial look */}
+                <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.4em] text-white/70 group-hover:text-white transition-all duration-500 whitespace-nowrap">
+                  {link.name}
+                </span>
 
-      {/* The Harvest Dot: Centered below the text */}
-      <span className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out" />
-    </Link>
-  ))}
-</nav>
+                {/* The Harvest Dot: Centered below the text */}
+                <span className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out" />
+              </Link>
+            ))}
+          </nav>
           <div className="flex mb-2 items-center gap-3 lg:gap-6">
-            <div className="relative flex-1 min-w-[150px] max-w-[250px] ml-6">
-              <CiSearch
-                className="absolute right-3 top-2 text-white text-2xl cursor-pointer"
-                onClick={handleSearch}
-              />
-              <input
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="w-full pl-2 pr-10 py-2 rounded-md border-none placeholder-white text-white
-                           bg-white/20 backdrop-blur-sm"
-              />
-            </div>
+            <div className="relative group flex items-center min-w-[160px] max-w-[240px] ml-6 h-full">
+  {/* The Search Input */}
+  <input
+    placeholder="SEARCH HARVEST..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    onKeyDown={handleKeyDown}
+    className="w-full pl-4 pr-10 py-1.5 rounded-full 
+               bg-white/10 backdrop-blur-md border border-white/10
+               text-[10px] tracking-[0.2em] text-white placeholder-white/40
+               focus:outline-none focus:bg-white/20 focus:border-white/30 
+               transition-all duration-700 ease-in-out"
+  />
+  
+  {/* The Icon: Centered perfectly using top-1/2 and translate */}
+  <CiSearch
+    className="absolute right-3 top-1/2 -translate-y-1/2 text-white text-xl 
+               cursor-pointer opacity-60 group-hover:opacity-100 
+               transition-opacity duration-500"
+    onClick={handleSearch}
+  />
+</div>
 
             {!user && (
               <Link to="/login">
