@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
   ArrowRight,
+  Camera,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
