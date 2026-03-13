@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../assets/logo-himalayas.png"
 import { Helmet } from "react-helmet";
+import { motion, AnimatePresence } from "framer-motion";
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
