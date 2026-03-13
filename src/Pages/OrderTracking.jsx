@@ -91,14 +91,35 @@ export default function OrderTracking() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-3xl backdrop-blur-xl bg-white/70 shadow-[0_8px_40px_rgba(229,115,115,0.15)] rounded-3xl border border-white/30 p-6 md:p-10"
       >
-        <div className="text-center mb-6 md:mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#E57373] mb-2 tracking-tight">
-            Track Your Order
-          </h2>
-          <p className="text-gray-600 text-sm md:text-base">
-            Get live updates on your order’s journey in real time.
-          </p>
-        </div>
+       <div className="text-center mb-12 md:mb-16 space-y-3">
+  {/* The Brand Marker */}
+  <div className="flex items-center justify-center gap-3">
+    <div className="h-[1px] w-8 bg-[#B23A2E] opacity-50" />
+    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+      Live Monitoring
+    </span>
+    <div className="h-[1px] w-8 bg-[#B23A2E] opacity-50" />
+  </div>
+
+  {/* Main Headline */}
+  <h2 className="text-4xl md:text-5xl font-black text-stone-900 uppercase tracking-tighter leading-none">
+    Transit Surveillance
+  </h2>
+
+  {/* Refined Description */}
+  <p className="text-stone-500 font-serif italic text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+    "Trace the precise movements of your Himalayan harvest as it descends 
+    from the valleys to your doorstep."
+  </p>
+  
+  {/* Subtle Visual Anchor */}
+  <div className="pt-4 flex justify-center">
+    <div className="flex gap-1">
+      <div className="h-1 w-1 bg-stone-900 rounded-full" />
+      <div className="h-1 w-8 bg-stone-200 rounded-full" />
+    </div>
+  </div>
+</div>
         <div className="flex flex-col sm:flex-row gap-3 mb-6 md:mb-8">
           <input
             type="text"
