@@ -9,6 +9,7 @@ import {
   ClipboardList,
   Heart,
   Leaf,
+  Star,
   Truck,
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -1124,7 +1125,7 @@ export default function ProductsDetailsDialog() {
             <div className="flex flex-col items-end gap-2">
               <div className="flex gap-0.5">
                 {[...Array(5)].map((_, starIdx) => (
-                  <Star 
+                  <Star
                     key={starIdx}
                     size={12} 
                     fill={starIdx < r.reviewValue ? "#B23A2E" : "none"} 
