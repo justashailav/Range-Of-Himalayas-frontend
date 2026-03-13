@@ -457,60 +457,78 @@ export default function Navbar() {
 
             <Sheet open={openCart} onOpenChange={setOpenCart}>
               <div className="relative flex items-center h-full">
-  <Sheet open={openCart} onOpenChange={setOpenCart}>
-    <div 
-      className="group relative p-2 cursor-pointer outline-none"
-      onClick={() => setOpenCart(true)}
-    >
-      {/* 1. THE ICON: Switching to a sleeker bag/basket icon for a boutique feel */}
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="20" 
-        height="20" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="white" 
-        strokeWidth="1.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className="transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]"
-      >
-        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
-      </svg>
-      
-      {/* 2. THE BADGE: Using the Harvest Red + Ring for depth */}
-      {totalCount > 0 && (
-        <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900 transition-transform duration-500 group-hover:scale-125">
-          {totalCount}
-        </span>
-      )}
-    </div>
+                <Sheet open={openCart} onOpenChange={setOpenCart}>
+                  <div
+                    className="group relative p-2 cursor-pointer outline-none"
+                    onClick={() => setOpenCart(true)}
+                  >
+                    {/* 1. THE ICON: Switching to a sleeker bag/basket icon for a boutique feel */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]"
+                    >
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                      <path d="M3 6h18" />
+                      <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
 
-    {/* 3. THE SHEET: Styled for the 'Archive' feel */}
-    <SheetContent 
-      side="right" 
-      className="sm:max-w-md bg-[#fdfcf7] border-l border-stone-200 p-0 shadow-2xl"
-    >
-      {/* UserCartWrapper will handle the internal styling */}
-      <UserCartWrapper
-        cartItems={cartItems}
-        setOpenCartSheet={setOpenCart}
-      />
-    </SheetContent>
-  </Sheet>
-</div>
+                    {/* 2. THE BADGE: Using the Harvest Red + Ring for depth */}
+                    {totalCount > 0 && (
+                      <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900 transition-transform duration-500 group-hover:scale-125">
+                        {totalCount}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* 3. THE SHEET: Styled for the 'Archive' feel */}
+                  <SheetContent
+                    side="right"
+                    className="sm:max-w-md bg-[#fdfcf7] border-l border-stone-200 p-0 shadow-2xl"
+                  >
+                    {/* UserCartWrapper will handle the internal styling */}
+                    <UserCartWrapper
+                      cartItems={cartItems}
+                      setOpenCartSheet={setOpenCart}
+                    />
+                  </SheetContent>
+                </Sheet>
+              </div>
             </Sheet>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer ring-2 ring-gray-300 transition">
-                  <AvatarImage
-                    src={
-                      user?.profile?.profilePhoto ||
-                      "https://github.com/shadcn.png"
-                    }
-                  />
-                </Avatar>
-              </DropdownMenuTrigger>
+              <div className="flex items-center h-full ml-2">
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      {/* 1. WRAPPER: Ensuring it sits perfectly on the center line */}
+      <div className="relative group cursor-pointer outline-none flex items-center h-full">
+        
+        {/* 2. THE AVATAR: Ring matches the boutique aesthetic */}
+        <Avatar className="h-8 w-8 lg:h-9 lg:w-9 ring-2 ring-white/20 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-xl">
+          <AvatarImage
+            src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
+            className="object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-700"
+          />
+          {/* Custom Fallback in the Journal font */}
+          <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-serif italic">
+            {user?.name?.charAt(0) || "PH"}
+          </AvatarFallback>
+        </Avatar>
+
+        {/* 3. STATUS DOT: A small signature mark */}
+        <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-stone-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
+      </div>
+    </DropdownMenuTrigger>
+
+    {/* DropdownMenuContent follows... */}
+  </DropdownMenu>
+</div>
               <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
                 <DropdownMenuGroup>
                   {user ? (
