@@ -66,7 +66,7 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const [isMounted, setIsMounted] = useState(false);
   const dispatch = useDispatch();
   const { images: galleryItems, loading } = useSelector(
     (state) => state.gallery,
@@ -76,6 +76,25 @@ export default function Home() {
     dispatch(getGalleryItems());
   }, [dispatch]);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+   const containerRef = useRef(null);
+
+  // 2. Setup Scroll Tracking for the container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  // 3. Create the Parallax/Fade values used in your JSX
+  // Adjust the numbers (e.g., 300, -150) to change the intensity
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  if (!isMounted) {
+    return <div className="h-screen bg-stone-900" />; 
+  }
   const filteredItems =
     activeCategory === "All"
       ? galleryItems
@@ -270,19 +289,6 @@ export default function Home() {
       </motion.div>
     );
   }
-  const containerRef = useRef(null);
-
-  // 2. Setup Scroll Tracking for the container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  // 3. Create the Parallax/Fade values used in your JSX
-  // Adjust the numbers (e.g., 300, -150) to change the intensity
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   return (
     <div className="bg-[#FFF8E1] overflow-x-hidden">
       <Helmet>
