@@ -301,49 +301,52 @@ export default function Home() {
           <span>🚚 Fast delivery from our orchards directly to you!</span>
         </div>
       </div>
-       <section 
-      ref={containerRef} 
+      <section
+      ref={containerRef}
       className="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-stone-900"
     >
-      {/* 1. BACKGROUND: Scale logic for both views */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         <motion.img
           src={bgImage}
           style={{ y: backgroundY }}
-          className="w-full h-full object-cover object-center opacity-60 scale-110"
+          className="w-full h-full object-cover object-center opacity-80"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-transparent to-stone-900" />
+
+        {/* Softer cinematic overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
       </div>
 
-      {/* 2. MAIN CONTENT AREA */}
-      <motion.div 
+      {/* CONTENT */}
+      <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
         className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center"
       >
-        {/* Top Label: Mono font for that "Archive" feel */}
-        <motion.div 
+        {/* Label */}
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-2 md:gap-4 mb-6 md:mb-12"
         >
           <span className="w-1 h-1 md:w-2 md:h-2 rounded-full bg-[#B23A2E]" />
-          <p className="text-white/70 text-[8px] md:text-[12px] font-bold uppercase tracking-[0.4em] md:tracking-[0.6em]">
+          <p className="text-white/80 text-[8px] md:text-[12px] font-bold uppercase tracking-[0.4em] md:tracking-[0.6em]">
             Volume 01 • Harvest 2026
           </p>
         </motion.div>
 
-        {/* Headline: Dramatic scale difference */}
+        {/* HEADLINE */}
         <div className="relative flex flex-col items-center">
-          <h1 className="text-[20vw] md:text-[14rem] font-black text-white uppercase leading-[0.7] tracking-tighter">
+          <h1 className="text-[20vw] md:text-[14rem] font-black text-white uppercase leading-[0.7] tracking-tighter drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]">
             Purely
           </h1>
-          <h1 className="text-[14vw] md:text-[10rem] font-serif italic font-extralight text-stone-300 leading-[0.7] -mt-2 md:-mt-6 md:ml-20">
+
+          <h1 className="text-[14vw] md:text-[10rem] font-serif italic font-extralight text-stone-200 leading-[0.7] -mt-2 md:-mt-6 md:ml-20 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]">
             himalayan
           </h1>
         </div>
 
-        {/* Inventory: Horizontal on Desktop, Stacked/Tight on Mobile */}
-        <motion.div 
+        {/* PRODUCT LIST */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -351,7 +354,10 @@ export default function Home() {
         >
           {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
             <div key={i} className="flex items-center gap-3">
-              <span className="text-[#B23A2E] text-[7px] md:text-[10px] font-mono">0{i + 1}</span>
+              <span className="text-[#B23A2E] text-[7px] md:text-[10px] font-mono">
+                0{i + 1}
+              </span>
+
               <span className="text-white text-[9px] md:text-[12px] font-black uppercase tracking-[0.2em]">
                 {item}
               </span>
@@ -360,12 +366,14 @@ export default function Home() {
         </motion.div>
       </motion.div>
 
-      {/* Luxury Framing: Thicker on Desktop */}
+      {/* BORDER FRAME */}
       <div className="absolute inset-4 md:inset-10 border border-white/10 pointer-events-none" />
-      
-      {/* Scroll Indicator */}
+
+      {/* SCROLL INDICATOR */}
       <div className="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-4">
-        <span className="text-[8px] font-bold uppercase tracking-widest text-white/30">Scroll</span>
+        <span className="text-[8px] font-bold uppercase tracking-widest text-white/30">
+          Scroll
+        </span>
         <div className="w-[1px] h-16 bg-gradient-to-b from-white/20 to-transparent" />
       </div>
     </section>
