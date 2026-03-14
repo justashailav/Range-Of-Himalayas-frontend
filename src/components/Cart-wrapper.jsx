@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
+import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import { Button } from "./ui/button";
 import UserCartItemsContent from "./Cart-Item-Content";
 import { useDispatch, useSelector } from "react-redux";
