@@ -61,7 +61,13 @@ const stagger = {
     },
   },
 };
-const containerRef = useRef(null);
+export default function Home() {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const dispatch = useDispatch();
+  const containerRef = useRef(null);
 
 // 1. Hook into scroll progress of this specific container
 const { scrollYProgress } = useScroll({
@@ -74,12 +80,6 @@ const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-40%"]);
 const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-export default function Home() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const dispatch = useDispatch();
   const { images: galleryItems, loading } = useSelector(
     (state) => state.gallery,
   );
