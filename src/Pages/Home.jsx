@@ -34,7 +34,7 @@ import TopSelectionSkeleton from "./TopSelectionSkeleton";
 import TrendingProductSkeleton from "./TrendingProductSkeleton";
 import GallerySkeleton from "./GallerySkeleton";
 import { useRef } from "react";
-import { useScroll, useTransform } from "framer-motion";
+
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -66,8 +66,7 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const containerRef = useRef(null);
-  const [isMounted, setIsMounted] = useState(false);
+
   const dispatch = useDispatch();
   const { images: galleryItems, loading } = useSelector(
     (state) => state.gallery,
@@ -76,19 +75,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(getGalleryItems());
   }, [dispatch]);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  if (!isMounted) {
-    return <div className="h-screen bg-stone-900" />;
-  }
+
   const filteredItems =
     activeCategory === "All"
       ? galleryItems
@@ -308,98 +295,96 @@ export default function Home() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        /* Use min-h-[100dvh] to prevent content cut-off on tiny screens */
-        className="relative w-full min-h-[100dvh] md:h-screen overflow-hidden bg-stone-900"
+        className="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-stone-900"
       >
         {/* 1. THE CINEMATIC BACKDROP */}
         <div className="absolute inset-0 w-full h-full">
           <motion.img
             src={bgImage}
-            style={{ y: backgroundY }}
-            initial={{ scale: 1.2, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.8 }}
-            transition={{ duration: 2.5, ease: "easeOut" }}
-            /* object-center ensures the subject stays visible on narrow screens */
-            className="w-full h-full object-cover object-center"
+            style={{ y: backgroundY }} // Parallax applied here
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 3, ease: "easeOut" }}
+            className="w-full h-full object-cover opacity-80"
           />
 
           {/* Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/70 via-stone-900/30 to-stone-900/90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(28,25,23,0.7)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-stone-900/20 to-stone-900/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(28,25,23,0.6)_100%)]" />
 
-          {/* The Journal Border: Thinner on mobile for more breathing room */}
-          <div className="absolute inset-3 md:inset-8 border border-white/10 pointer-events-none" />
+          {/* The Journal Border: Tighter on mobile (inset-4) for better framing */}
+          <div className="absolute inset-4 md:inset-8 border border-white/10 pointer-events-none" />
         </div>
 
         {/* 2. THE FLOATING CONTENT LAYER */}
         <motion.div
-          style={{ y: contentY, opacity: contentOpacity }}
-          className="relative z-10 flex flex-col items-center justify-center h-[100dvh] text-center px-4 md:px-6"
+          style={{ y: contentY, opacity: contentOpacity }} // Parallax + Fade on scroll
+          className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6"
         >
           {/* Label with signature Red Dot */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="flex items-center gap-2 md:gap-3 mb-4 md:mb-10"
+            className="flex items-center gap-3 mb-6 md:mb-10"
           >
-            <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-[#B23A2E]" />
-            <span className="text-white/80 text-[7px] md:text-[10px] font-black uppercase tracking-[0.25em] md:tracking-[0.5em]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E]" />
+            <span className="text-white/80 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em]">
               Volume 01 • Harvest 2026
             </span>
           </motion.div>
 
-          {/* The Headline: Using 'clamp' ensures text doesn't get too small or too huge */}
-          <div className="flex flex-col items-center w-full max-w-sm md:max-w-none">
+          {/* The Headline: Responsive scaling using VW units */}
+          <div className="flex flex-col items-center w-full">
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.8 }}
               style={{ mixBlendMode: "overlay" }}
-              className="text-[24vw] md:text-[12rem] font-black text-white leading-[0.75] md:leading-[0.7] tracking-[-0.05em] uppercase"
+              className="text-[22vw] md:text-[12rem] font-black text-white leading-[0.8] md:leading-[0.7] tracking-[-0.05em] uppercase"
             >
               Purely
             </motion.h1>
 
             <motion.h1
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.9, duration: 1 }}
-              className="text-[16vw] md:text-[9rem] font-serif italic font-light text-stone-200 leading-[0.5] md:leading-[0.7] -mt-1 md:-mt-8"
+              className="text-[18vw] md:text-[9rem] font-serif italic font-light text-stone-200 leading-[0.6] md:leading-[0.7] -mt-2 md:-mt-8"
             >
               himalayan
             </motion.h1>
           </div>
 
-          {/* Product Inventory: Grid on mobile for better alignment */}
+          {/* Product Inventory Dispatch: Responsive Flex-wrap for mobile */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-            className="mt-16 md:mt-20 grid grid-cols-1 xs:grid-cols-3 gap-y-4 gap-x-8 md:flex md:flex-wrap md:justify-center items-center"
+            className="mt-12 md:mt-16 flex flex-wrap justify-center items-center gap-x-6 gap-y-3 md:gap-12 max-w-[320px] md:max-w-none"
           >
             {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
-              <div key={i} className="flex items-center justify-center gap-2">
-                <span className="text-white/40 text-[7px] md:text-[9px] font-mono tracking-widest">
-                  0{i + 1}
+              <div key={i} className="flex items-center gap-2 md:gap-3">
+                <span className="text-white/40 text-[8px] md:text-[9px] font-mono tracking-widest">
+                  {i + 1}.
                 </span>
-                <span className="text-white/90 text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] whitespace-nowrap">
+                <span className="text-white/90 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] whitespace-nowrap">
                   {item}
                 </span>
               </div>
             ))}
           </motion.div>
 
-          {/* Boutique Scroll Indicator: Slightly smaller for mobile */}
+          {/* Boutique Scroll Indicator */}
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-6 md:bottom-12 flex flex-col items-center gap-3"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute bottom-8 md:bottom-12 flex flex-col items-center gap-4"
           >
-            <span className="text-[6px] md:text-[8px] font-black uppercase tracking-[0.3em] text-white/40">
+            <span className="text-[7px] md:text-[8px] font-black uppercase tracking-[0.4em] text-white/30">
               Explore Archive
             </span>
-            <div className="w-[1px] h-6 md:h-10 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+            <div className="w-[1px] h-8 md:h-10 bg-gradient-to-b from-[#B23A2E] to-transparent" />
           </motion.div>
         </motion.div>
       </motion.div>
