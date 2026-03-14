@@ -34,7 +34,7 @@ import TopSelectionSkeleton from "./TopSelectionSkeleton";
 import TrendingProductSkeleton from "./TrendingProductSkeleton";
 import GallerySkeleton from "./GallerySkeleton";
 import { useRef } from "react";
-import {useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform } from "framer-motion";
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
