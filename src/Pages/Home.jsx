@@ -68,7 +68,6 @@ export default function Home() {
 
   const dispatch = useDispatch();
   const containerRef = useRef(null);
-  const [isMounted, setIsMounted] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -79,11 +78,6 @@ export default function Home() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return <div className="h-screen bg-stone-900" />;
 
   const { images: galleryItems, loading } = useSelector(
     (state) => state.gallery,
