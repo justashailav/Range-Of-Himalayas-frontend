@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import { CheckCircle, Map, Calendar, ArrowRight, Home, User } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function OrderSuccess() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Extracting data from state
   const { orderId, totalAmount = 0, paymentMethod } = location.state || {};
 
   useEffect(() => {
@@ -18,76 +21,111 @@ export default function OrderSuccess() {
   const isCOD = paymentMethod === "cod";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full text-center space-y-6">
-        {/* ✅ Success Icon */}
-        <div className="flex items-center justify-center bg-green-100 w-20 h-20 rounded-full mx-auto">
-          <svg
-            className="w-12 h-12 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
+    <div className="min-h-screen bg-[#FCFCFC] flex items-center justify-center px-6 py-20 selection:bg-black selection:text-white">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-3xl w-full bg-white border border-gray-100 shadow-[0_40px_100px_rgba(0,0,0,0.04)] rounded-none overflow-hidden"
+      >
+        {/* --- TOP STATUS BAR --- */}
+        <div className="bg-[#004D3A] py-12 text-center text-white px-8">
+          <motion.div 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-6"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
+            <CheckCircle className="text-white" size={32} strokeWidth={1.5} />
+          </motion.div>
+          <h1 className="text-4xl md:text-5xl font-serif italic mb-2 tracking-tight">The journey is set.</h1>
+          <p className="text-white/70 text-[10px] uppercase font-black tracking-[0.4em]">Confirmation ID: #{orderId}</p>
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-800">
-          Order Placed Successfully!
-        </h1>
+        {/* --- ORDER SUMMARY CONTENT --- */}
+        <div className="p-8 md:p-16 space-y-12">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Payment Details */}
+            <div className="space-y-6">
+              <h3 className="text-[11px] font-black uppercase tracking-widest text-gray-400">Reservation Details</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-end border-b border-gray-50 pb-4">
+                  <span className="text-sm text-gray-500 font-light italic">Experience Fee</span>
+                  <span className="text-xl font-serif text-black leading-none">₹{totalAmount.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold uppercase tracking-wider text-gray-800">Method</span>
+                  <span className="text-xs text-gray-400 font-medium uppercase">{isCOD ? "Cash on Delivery" : "Online via Razorpay"}</span>
+                </div>
+              </div>
+            </div>
 
-        {/* ✅ Order Details */}
-        <div className="text-gray-700 space-y-2 text-sm">
-          <p>
-            Order ID:{" "}
-            <span className="font-semibold text-gray-900">#{orderId}</span>
-          </p>
+            {/* Note/Status */}
+            <div className="bg-gray-50 p-6 space-y-3">
+              <h3 className="text-[11px] font-black uppercase tracking-widest text-emerald-800">Note</h3>
+              {isCOD ? (
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-800">₹200 Advance Received</p>
+                  <p className="text-xs text-gray-500 leading-relaxed font-light">
+                    Your spot is reserved. The balance will be collected by our ground team upon arrival in the village.
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xs text-gray-500 leading-relaxed font-light">
+                  Your full payment has been authenticated. A detailed digital itinerary has been dispatched to your email.
+                </p>
+              )}
+            </div>
+          </div>
 
-          <p>
-            <span className="font-medium">Order Total:</span> ₹{totalAmount}
-          </p>
+          <hr className="border-gray-100" />
 
-          {isCOD ? (
-            <>
-              <p className="text-green-700 font-medium">
-                ₹200 advance paid successfully
-              </p>
-              <p className="text-gray-600">
-                Remaining amount will be collected on delivery
-              </p>
-              <p className="font-medium">
-                Payment Method: Cash on Delivery
-              </p>
-            </>
-          ) : (
-            <p className="font-medium text-green-700">
-              Payment completed online via Razorpay
-            </p>
-          )}
+          {/* --- CONCIERGE/NEXT STEPS --- */}
+          <div className="space-y-8">
+            <h3 className="text-[11px] font-black uppercase tracking-widest text-gray-400">Next Steps</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex gap-4 items-start group cursor-default">
+                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white transition-colors">
+                  <Calendar size={18} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-tight">Prepare your gear</h4>
+                  <p className="text-xs text-gray-400 font-light mt-1">Check the packing list sent to your dashboard.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start group cursor-default">
+                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white transition-colors">
+                  <Map size={18} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-tight">Sync Itinerary</h4>
+                  <p className="text-xs text-gray-400 font-light mt-1">Add your dates to Google Calendar or Apple Wallet.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* --- ACTIONS --- */}
+          <div className="pt-8 flex flex-col sm:flex-row gap-4">
+            <button
+              onClick={() => navigate("/account")}
+              className="flex-1 bg-black text-white py-5 px-8 flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#004D3A] transition-all"
+            >
+              <User size={16} /> View My Bookings
+            </button>
+
+            <Link
+              to="/"
+              className="flex-1 border border-gray-200 text-black py-5 px-8 flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] hover:border-black transition-all"
+            >
+              <Home size={16} /> Return Home
+            </Link>
+          </div>
         </div>
+      </motion.div>
 
-        {/* ✅ Actions */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
-          <button
-            onClick={() => navigate("/account")}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all"
-          >
-            View Orders
-          </button>
-
-          <Link
-            to="/"
-            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg transition-all"
-          >
-            Back to Home
-          </Link>
-        </div>
-      </div>
+      {/* Background Decorative Element */}
+      <div className="fixed bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-gray-100/50 to-transparent -z-10" />
     </div>
   );
 }

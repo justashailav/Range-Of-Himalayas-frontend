@@ -113,7 +113,6 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
 
   return (
     <div className="space-y-12">
-      {/* SAVED ADDRESSES GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {addressList && addressList.length > 0 ? (
           addressList.map((singleAddressItem) => (
