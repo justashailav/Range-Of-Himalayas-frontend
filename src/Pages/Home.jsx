@@ -34,7 +34,7 @@ import TopSelectionSkeleton from "./TopSelectionSkeleton";
 import TrendingProductSkeleton from "./TrendingProductSkeleton";
 import GallerySkeleton from "./GallerySkeleton";
 import { useRef } from "react";
-
+import {useScroll, useTransform } from "framer-motion";
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -270,6 +270,19 @@ export default function Home() {
       </motion.div>
     );
   }
+  const containerRef = useRef(null);
+
+  // 2. Setup Scroll Tracking for the container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  // 3. Create the Parallax/Fade values used in your JSX
+  // Adjust the numbers (e.g., 300, -150) to change the intensity
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   return (
     <div className="bg-[#FFF8E1] overflow-x-hidden">
       <Helmet>
