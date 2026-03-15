@@ -1029,108 +1029,117 @@ export default function ProductsDetailsDialog() {
               </p>
             </div>
           ) : (
-            <div className="space-y-8 md:space-y-12"> 
-  {/* We use vertical gaps here because each review is now a 'physical' box */}
-  {reviews.map((r, i) => (
-    <motion.div
-      key={i}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
-      /* THE BOX DESIGN: 
+            <div className="space-y-8 md:space-y-12">
+              {/* We use vertical gaps here because each review is now a 'physical' box */}
+              {reviews.map((r, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  /* THE BOX DESIGN: 
          - bg-[#fdfcf7]: A warm, premium paper white
          - border-stone-200: Sharp, clean definition
          - shadow-sm: Lifted off the page
       */
-      className="group relative grid grid-cols-1 md:grid-cols-12 bg-[#fdfcf7] border border-stone-200 p-8 md:p-12 shadow-sm hover:shadow-xl hover:border-[#B23A2E]/30 transition-all duration-700"
-    >
-      {/* TOP DECOR: Corner Stamp (Mobile Only) */}
-      <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10px] right-[-10px] w-8 h-8 bg-stone-50 rotate-45 border-b border-stone-200" />
-      </div>
+                  className="group relative grid grid-cols-1 md:grid-cols-12 bg-[#fdfcf7] border border-stone-200 p-8 md:p-12 shadow-sm hover:shadow-xl hover:border-[#B23A2E]/30 transition-all duration-700"
+                >
+                  {/* TOP DECOR: Corner Stamp (Mobile Only) */}
+                  <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden pointer-events-none">
+                    <div className="absolute top-[-10px] right-[-10px] w-8 h-8 bg-stone-50 rotate-45 border-b border-stone-200" />
+                  </div>
 
-      {/* INDEX: Side Margin Numbering */}
-      <div className="hidden md:flex col-span-1 flex-col justify-start">
-        <span className="text-[10px] font-black text-[#B23A2E] opacity-40">
-          REF_{String(i + 1).padStart(3, "0")}
-        </span>
-      </div>
+                  {/* INDEX: Side Margin Numbering */}
+                  <div className="hidden md:flex col-span-1 flex-col justify-start">
+                    <span className="text-[10px] font-black text-[#B23A2E] opacity-40">
+                      REF_{String(i + 1).padStart(3, "0")}
+                    </span>
+                  </div>
 
-      {/* LEFT COL: IDENTITY & STATUS */}
-      <div className="md:col-span-3 mb-10 md:mb-0 space-y-8">
-        <div className="relative inline-block">
-          {/* Boxed Initial */}
-          <div className="w-20 h-20 bg-stone-900 flex items-center justify-center text-white font-serif italic text-4xl shadow-lg group-hover:bg-[#B23A2E] transition-colors duration-500">
-            {r.userName.charAt(0)}
-          </div>
-          {/* Red Detail Tag */}
-          <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#B23A2E] border-4 border-[#fdfcf7] rounded-full" />
-        </div>
+                  {/* LEFT COL: IDENTITY & STATUS */}
+                  <div className="md:col-span-3 mb-10 md:mb-0 space-y-8">
+                    <div className="relative inline-block">
+                      {/* Boxed Initial */}
+                      <div className="w-20 h-20 bg-stone-900 flex items-center justify-center text-white font-serif italic text-4xl shadow-lg group-hover:bg-[#B23A2E] transition-colors duration-500">
+                        {r.userName.charAt(0)}
+                      </div>
+                      {/* Red Detail Tag */}
+                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#B23A2E] border-4 border-[#fdfcf7] rounded-full" />
+                    </div>
 
-        <div className="space-y-3">
-          <div>
-            <h3 className="text-[14px] font-black uppercase tracking-[0.2em] text-stone-900 leading-none">
-              {r.userName}
-            </h3>
-            <p className="text-[10px] text-stone-400 uppercase tracking-widest mt-2">
-              {dayjs(r.createdAt).format("MMM YYYY")}
-            </p>
-          </div>
-          
-          <div className="pt-4 border-t border-stone-100 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[8px] font-black uppercase tracking-widest text-stone-400">
-              Identity Verified
-            </span>
-          </div>
-        </div>
-      </div>
+                    <div className="space-y-3">
+                      <div>
+                        <h3 className="text-[14px] font-black uppercase tracking-[0.2em] text-stone-900 leading-none">
+                          {r.userName}
+                        </h3>
+                        <p className="text-[10px] text-stone-400 uppercase tracking-widest mt-2">
+                          {dayjs(r.createdAt).format("MMM YYYY")}
+                        </p>
+                      </div>
 
-      {/* RIGHT COL: THE CONTENT */}
-      <div className="md:col-span-8 md:pl-12 flex flex-col justify-between">
-        <div className="space-y-10">
-          {/* Header Info */}
-          <div className="flex flex-wrap items-center gap-6">
-            <div className="flex gap-1.5 p-2 bg-stone-50 border border-stone-100">
-              {[...Array(5)].map((_, starIdx) => (
-                <div
-                  key={starIdx}
-                  className={`w-2 h-2 ${
-                    starIdx < r.reviewValue ? "bg-[#B23A2E]" : "bg-stone-200"
-                  }`}
-                />
+                      <div className="pt-4 border-t border-stone-100 flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-[8px] font-black uppercase tracking-widest text-stone-400">
+                          Identity Verified
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RIGHT COL: THE CONTENT */}
+                  <div className="md:col-span-8 md:pl-12 flex flex-col justify-between">
+                    <div className="space-y-10">
+                      {/* Header Info */}
+                      <div className="flex flex-wrap items-center gap-6">
+                        <div className="flex gap-1.5 p-2 bg-stone-50 border border-stone-100">
+                          {[...Array(5)].map((_, starIdx) => (
+                            <div
+                              key={starIdx}
+                              className={`w-2 h-2 ${
+                                starIdx < r.reviewValue
+                                  ? "bg-[#B23A2E]"
+                                  : "bg-stone-200"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-stone-300">
+                          Grade: {r.reviewValue}.0
+                        </span>
+                      </div>
+
+                      <blockquote className="relative">
+                        {/* Hanging Quotation Mark */}
+                        <span className="absolute -top-6 -left-4 text-6xl text-stone-100 font-serif pointer-events-none">
+                          “
+                        </span>
+                        <p className="text-xl md:text-3xl font-serif italic text-stone-800 leading-relaxed relative z-10">
+                          {r.reviewMessage ||
+                            "An exceptional addition to the private collection."}
+                        </p>
+                      </blockquote>
+                    </div>
+
+                    {/* Action/Footer Area */}
+                    <div className="mt-12 pt-8 border-t border-stone-100 flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-stone-400 italic">
+                          Record No.{" "}
+                          {Math.random()
+                            .toString(36)
+                            .substr(2, 9)
+                            .toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="h-[1px] flex-1 mx-8 bg-stone-50 hidden md:block" />
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#B23A2E]">
+                        Verified Acquisition
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
               ))}
             </div>
-            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-stone-300">
-              Grade: {r.reviewValue}.0
-            </span>
-          </div>
-
-          <blockquote className="relative">
-            {/* Hanging Quotation Mark */}
-            <span className="absolute -top-6 -left-4 text-6xl text-stone-100 font-serif pointer-events-none">“</span>
-            <p className="text-xl md:text-3xl font-serif italic text-stone-800 leading-relaxed relative z-10">
-              {r.reviewMessage || "An exceptional addition to the private collection."}
-            </p>
-          </blockquote>
-        </div>
-
-        {/* Action/Footer Area */}
-        <div className="mt-12 pt-8 border-t border-stone-100 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <span className="text-[9px] font-black uppercase tracking-widest text-stone-400 italic">
-              Record No. {Math.random().toString(36).substr(2, 9).toUpperCase()}
-            </span>
-          </div>
-          <div className="h-[1px] flex-1 mx-8 bg-stone-50 hidden md:block" />
-          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#B23A2E]">
-            Verified Acquisition
-          </span>
-        </div>
-      </div>
-    </motion.div>
-  ))}
-</div>
           )}
         </div>
 

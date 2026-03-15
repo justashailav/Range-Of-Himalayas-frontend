@@ -89,16 +89,6 @@ export default function WishListItemContent() {
           />
         </Helmet>
         <Heart className="w-16 h-16 mx-auto text-gray-300" />
-        <h2 className="text-2xl font-semibold">Your Wishlist is Empty</h2>
-        <p className="max-w-md mx-auto text-gray-600">
-          Add products you love to your wishlist. Review them anytime and easily
-          move them to your cart.
-        </p>
-        <a href="/viewproducts">
-          <Button className="mt-4 px-6 py-3 bg-[#F08C7D] hover:bg-[#e27265] text-white rounded-lg font-medium">
-            Continue Shopping
-          </Button>
-        </a>
       </div>
     );
   }
