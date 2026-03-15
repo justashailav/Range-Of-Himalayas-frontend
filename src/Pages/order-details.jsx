@@ -305,7 +305,7 @@ export default function ShoppingOrderDetailsView() {
   {/* Positioned at bottom-left for better thumb-reach visibility on mobile */}
   <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 backdrop-blur-md rounded-full border border-white/10 shadow-lg">
     <span className="text-[8px] font-black text-stone-400 uppercase tracking-widest">
-      Units
+      QTY
     </span>
     <p className="text-[11px] font-black text-white uppercase tracking-tighter">
       {item.quantity}
