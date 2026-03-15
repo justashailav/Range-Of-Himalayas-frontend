@@ -966,8 +966,6 @@ export default function ProductsDetailsDialog() {
                   </div>
                 )}
               </button>
-
-              {/* SECONDARY CTA: WISHLIST ICON */}
               <button
                 disabled={!selectedVariant}
                 onClick={() => {
@@ -998,77 +996,96 @@ export default function ProductsDetailsDialog() {
             </div>
           </div>
         </div>
-        <div className="mt-20 max-w-4xl mx-auto px-4">
-          {/* SECTION HEADER */}
-          <div className="text-center mb-16 space-y-2">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-              The Archive
-            </h4>
-            <h2 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
-              Collector Testimonials
-            </h2>
-            <div className="h-[1px] w-12 bg-stone-200 mx-auto mt-4" />
-          </div>
+      <div className="mt-32 max-w-5xl mx-auto px-6">
+  {/* SECTION HEADER */}
+  <div className="text-center mb-24 space-y-4">
+    <motion.h4 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.6em] text-[#B23A2E]"
+    >
+      The Archive
+    </motion.h4>
+    <h2 className="text-4xl md:text-6xl font-black text-stone-900 uppercase tracking-tighter leading-none">
+      Collector <span className="font-serif italic capitalize tracking-normal text-[#B23A2E]">Testimonials</span>
+    </h2>
+    <div className="h-[1px] w-24 bg-stone-200 mx-auto mt-8" />
+  </div>
 
-          {reviews.length === 0 ? (
-            <div className="py-20 text-center bg-stone-50 rounded-[3rem] border border-dashed border-stone-200">
-              <p className="text-stone-400 font-serif italic text-lg">
-                The archive is currently empty. Be the first to document your
-                experience.
+  {reviews.length === 0 ? (
+    <div className="py-24 text-center border-y border-stone-100 bg-[#fdfcf7]/50">
+      <p className="text-stone-400 font-serif italic text-xl">
+        The archive is currently empty. <br />
+        <span className="text-xs uppercase font-black tracking-widest not-italic mt-4 block">Be the first to document.</span>
+      </p>
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 gap-16 md:gap-24">
+      {reviews.map((r, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="relative grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 pb-16 border-b border-stone-100 last:border-0"
+        >
+          {/* LEFT COL: USER INFO (Responsive) */}
+          <div className="md:col-span-4 flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-6">
+            <div className="relative group">
+              <div className="w-14 h-14 md:w-20 md:h-20 bg-white border border-stone-200 rounded-none flex items-center justify-center text-stone-900 font-serif italic text-xl md:text-3xl shadow-sm group-hover:border-[#B23A2E] transition-colors duration-500">
+                {r.userName.charAt(0)}
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#B23A2E] border-2 border-white" />
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="text-[12px] font-black uppercase tracking-[0.2em] text-stone-900">
+                {r.userName}
+              </h3>
+              <p className="text-[9px] text-stone-400 uppercase tracking-widest flex items-center gap-2">
+                <span className="w-4 h-[1px] bg-stone-200" />
+                {dayjs(r.createdAt).fromNow()}
               </p>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-12">
-              {reviews.map((r, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="relative group pb-12 border-b border-stone-100 last:border-0"
-                >
-                  {/* HEADER: USER & RATING */}
-                  <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
-                    <div className="flex items-center gap-4">
-                      {/* Profile Initial - Elegant Stone Circle */}
-                      <div className="w-12 h-12 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-900 font-black text-sm">
-                        {r.userName.charAt(0).toUpperCase()}
-                      </div>
-                      <div>
-                        <h3 className="text-[11px] font-black uppercase tracking-widest text-stone-900">
-                          {r.userName}
-                        </h3>
-                        <p className="text-[10px] text-stone-400 uppercase tracking-tight">
-                          {dayjs(r.createdAt).fromNow()}
-                        </p>
-                      </div>
-                    </div>
+          </div>
 
-                    <div className="flex flex-col items-end gap-2">
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, starIdx) => (
-                          <Star
-                            key={starIdx}
-                            size={12}
-                            fill={starIdx < r.reviewValue ? "#B23A2E" : "none"}
-                            className={
-                              starIdx < r.reviewValue
-                                ? "text-[#B23A2E]"
-                                : "text-stone-200"
-                            }
-                          />
-                        ))}
-                      </div>
-                      <span className="text-[8px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-2 py-1 rounded-md border border-[#B23A2E]/10">
-                        Verified Acquisition
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+          {/* RIGHT COL: CONTENT & RATING */}
+          <div className="md:col-span-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, starIdx) => (
+                  <Star
+                    key={starIdx}
+                    size={14}
+                    strokeWidth={1}
+                    fill={starIdx < r.reviewValue ? "#B23A2E" : "none"}
+                    className={starIdx < r.reviewValue ? "text-[#B23A2E]" : "text-stone-200"}
+                  />
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-[#B23A2E] border border-[#B23A2E]/20 px-3 py-1.5 bg-white">
+                  Verified Acquisition
+                </span>
+              </div>
             </div>
-          )}
-        </div>
+
+            <blockquote className="relative">
+              <p className="text-lg md:text-2xl font-serif italic text-stone-800 leading-relaxed">
+                "{r.comment || "An exceptional addition to the private collection."}"
+              </p>
+            </blockquote>
+          </div>
+
+          {/* BACKGROUND DECOR (Mobile Hidden) */}
+          <span className="hidden md:block absolute -left-12 top-0 text-[100px] font-black text-stone-50/50 select-none pointer-events-none">
+            0{i + 1}
+          </span>
+        </motion.div>
+      ))}
+    </div>
+  )}
+</div>
 
         <div className="py-24 bg-stone-50/50">
           <div className="max-w-[1400px] mx-auto px-6 relative">
