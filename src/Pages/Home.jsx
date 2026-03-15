@@ -531,72 +531,75 @@ export default function Home() {
         <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
       </div>
       <div className="relative px-4 md:px-6 pt-0 pb-10">
-  {productList && productList.length > 0 ? (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <Swiper
-        modules={[Navigation]}
-        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex + 1)}
-        grabCursor={true}
-        spaceBetween={20}
-        slidesPerView={1.2}
-        breakpoints={{
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-          1280: { slidesPerView: 4 },
-        }}
-        className="pb-6" 
-      >
-        {productList.map((item) => (
-          <SwiperSlide key={item._id} className="py-2">
-            <motion.div whileHover={{ y: -8 }} transition={{ duration: 0.3 }}>
-              <ShoppingProductTile
-                product={item}
-                handleAddToCart={handleAddToCart}
-                handleAddToWishList={handleAddToWishList}
-              />
-            </motion.div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        {productList && productList.length > 0 ? (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Swiper
+              modules={[Navigation]}
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex + 1)}
+              grabCursor={true}
+              spaceBetween={20}
+              slidesPerView={1.2}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+                1280: { slidesPerView: 4 },
+              }}
+              className="pb-6"
+            >
+              {productList.map((item) => (
+                <SwiperSlide key={item._id} className="py-2">
+                  <motion.div
+                    whileHover={{ y: -8 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ShoppingProductTile
+                      product={item}
+                      handleAddToCart={handleAddToCart}
+                      handleAddToWishList={handleAddToWishList}
+                    />
+                  </motion.div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
-      {/* BOUTIQUE FRACTION PAGINATION */}
-      <div className="mt-4 flex flex-col items-center justify-center space-y-2">
-        <div className="flex items-center gap-4">
-            {/* Left Decorative Line */}
-            <span className="h-[1px] w-8 bg-gray-200" />
-            
-            <div className="flex items-baseline font-mono text-[11px] tracking-widest text-gray-900">
-                <span className="text-[#d84c3c] font-bold">
-                    {activeIndex.toString().padStart(2, '0')}
-                </span>
-                <span className="mx-2 text-gray-300">/</span>
-                <span className="text-gray-400">
-                    {productList.length.toString().padStart(2, '0')}
-                </span>
+            {/* BOUTIQUE FRACTION PAGINATION */}
+            <div className="mt-4 flex flex-col items-center justify-center space-y-2">
+              <div className="flex items-center gap-4">
+                {/* Left Decorative Line */}
+                <span className="h-[1px] w-8 bg-gray-200" />
+
+                <div className="flex items-baseline font-mono text-[11px] tracking-widest text-gray-900">
+                  <span className="text-[#d84c3c] font-bold">
+                    {activeIndex.toString().padStart(2, "0")}
+                  </span>
+                  <span className="mx-2 text-gray-300">/</span>
+                  <span className="text-gray-400">
+                    {productList.length.toString().padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* Right Decorative Line */}
+                <span className="h-[1px] w-8 bg-gray-200" />
+              </div>
+
+              <p className="text-[9px] uppercase tracking-[0.4em] text-gray-400 font-medium">
+                Slide to Discover
+              </p>
             </div>
-
-            {/* Right Decorative Line */}
-            <span className="h-[1px] w-8 bg-gray-200" />
-        </div>
-        
-        <p className="text-[9px] uppercase tracking-[0.4em] text-gray-400 font-medium">
-          Slide to Discover
-        </p>
+          </motion.div>
+        ) : (
+          /* Empty state instead of skeleton - just a quiet spacer */
+          <div className="h-[400px] flex items-center justify-center">
+            <span className="text-[10px] uppercase tracking-widest text-gray-300 animate-pulse">
+              Loading Collection...
+            </span>
+          </div>
+        )}
       </div>
-    </motion.div>
-  ) : (
-    /* Empty state instead of skeleton - just a quiet spacer */
-    <div className="h-[400px] flex items-center justify-center">
-        <span className="text-[10px] uppercase tracking-widest text-gray-300 animate-pulse">
-            Loading Collection...
-        </span>
-    </div>
-  )}
-</div>
 
       <div>
         {/* HEADER */}
@@ -689,12 +692,12 @@ export default function Home() {
       <div className="mt-12 sm:mt-24 px-4 sm:px-6 max-w-7xl mx-auto">
   <div className="relative group">
     
-    {/* 1. The Decorative Frame (Back layer) */}
-    {/* Adjusted -inset for mobile so it doesn't bleed off screen */}
+    {/* 1. The Decorative Frame */}
     <div className="absolute -inset-2 sm:-inset-4 border border-[#E8DCD3] rounded-[2rem] sm:rounded-[3rem] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
 
     {/* 2. Main Image Container */}
-    <div className="relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] bg-[#F3F0EB] shadow-[0_20px_40px_-15px_rgba(142,125,110,0.15)] md:shadow-[0_30px_60px_-15px_rgba(142,125,110,0.15)]">
+    {/* Changed: Removed fixed h-[450px] for mobile and used aspect-ratio instead */}
+    <div className="relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] bg-[#F3F0EB] shadow-xl">
       <motion.div
         initial={{ opacity: 0, scale: 1.1 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -705,23 +708,23 @@ export default function Home() {
         <img
           src={foundersImage}
           alt="Founders of Range of Himalayas"
-          /* Mobile height adjusted to h-[450px] for better vertical framing */
-          className="w-full h-[450px] sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
+          /* Use aspect-[4/5] for mobile (portrait) and h-auto to ensure visibility */
+          className="w-full aspect-[4/5] sm:aspect-auto sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
         />
 
         {/* 3. Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40 md:to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+        {/* Darkened gradient for mobile to ensure the white badge text pops */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:bg-gradient-to-b md:from-transparent md:to-black/20" />
       </motion.div>
 
       {/* 4. Floating Caption Badge */}
-      {/* Positioned more tightly on mobile with smaller text */}
-      <div className="absolute bottom-6 left-6 right-6 sm:right-auto sm:bottom-12 sm:left-12">
-        <div className="bg-white/90 backdrop-blur-md px-5 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl border border-white/50 shadow-xl">
-          <p className="text-[8px] sm:text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-0.5 sm:mb-1">
+      {/* Changed: Adjusted positioning and added bottom-4 for tighter mobile screens */}
+      <div className="absolute bottom-4 left-4 right-4 sm:bottom-12 sm:left-12 sm:right-auto">
+        <div className="bg-white/95 backdrop-blur-md px-4 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl border border-white/50 shadow-2xl">
+          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-1">
             Our Visionaries
           </p>
-          <h4 className="text-lg sm:text-xl font-serif text-gray-900 leading-tight">
+          <h4 className="text-base sm:text-xl font-serif text-gray-900 leading-tight">
             Nurturing the Roots
           </h4>
         </div>
@@ -729,10 +732,10 @@ export default function Home() {
     </div>
 
     {/* 5. Artistic Corner Stamp */}
-    {/* Kept hidden on very small screens, visible from 'sm' (640px) up */}
-    <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 hidden sm:flex">
-      <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-2 sm:p-4 text-center shadow-2xl rotate-12 transition-transform duration-500 group-hover:rotate-0">
-        <span className="text-[6px] sm:text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
+    {/* Hidden on very small mobile devices to avoid cluttering the visual field */}
+    <div className="absolute -bottom-3 -right-3 hidden sm:flex">
+      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-3 text-center shadow-2xl rotate-12">
+        <span className="text-[7px] sm:text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
           Authentic <br /> Himalayan <br /> Harvest
         </span>
       </div>
