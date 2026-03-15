@@ -348,20 +348,44 @@ export default function ProductsDetailsDialog() {
                   exit={{ opacity: 0 }}
                   onClick={() => setIsImageOpen(false)}
                 >
-                  {/* --- MINIMALIST CLOSE UI --- */}
-                  <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute top-10 right-10 flex items-center gap-4 z-[110]"
+                  {/* --- MINIMALIST CLOSE UI --- */}\
+                  <motion.button
+                    onClick={() => setOpen(false)} // Or your close function
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    whileHover={{ x: -4 }}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute top-6 right-6 md:top-12 md:right-12 flex items-center gap-6 z-[110] group"
                   >
-                    <span className="text-[10px] font-black text-stone-500 uppercase tracking-[0.4em] hidden md:block">
-                      Close Archive
-                    </span>
-                    <div className="w-12 h-12 flex items-center justify-center bg-white/10 rounded-full border border-white/10 hover:bg-white/20 transition-colors">
-                      <X className="text-white" size={20} />
+                    {/* The Text Label */}
+                    <div className="flex flex-col items-end">
+                      <span className="text-[9px] md:text-[10px] font-black text-stone-400 group-hover:text-[#B23A2E] uppercase tracking-[0.5em] transition-colors duration-500">
+                        Exit
+                      </span>
+                      <span className="text-[8px] font-serif italic text-stone-300 group-hover:text-stone-400 transition-colors duration-500 hidden md:block">
+                        Archive
+                      </span>
                     </div>
-                  </motion.div>
 
+                    {/* Vertical Divider Line */}
+                    <div className="h-10 w-[1px] bg-stone-200 group-hover:bg-[#B23A2E] transition-colors duration-500 relative overflow-hidden">
+                      <motion.div
+                        className="absolute inset-0 bg-[#B23A2E]"
+                        initial={{ y: "100%" }}
+                        whileHover={{ y: "0%" }}
+                        transition={{ duration: 0.4 }}
+                      />
+                    </div>
+
+                    {/* The Icon */}
+                    <div className="relative">
+                      <X
+                        className="text-stone-300 group-hover:text-stone-900 group-hover:rotate-90 transition-all duration-700 ease-in-out"
+                        size={18}
+                        strokeWidth={1}
+                      />
+                    </div>
+                  </motion.button>
                   {/* --- PRODUCT IMAGE --- */}
                   <motion.img
                     src={mainImage}
@@ -378,7 +402,6 @@ export default function ProductsDetailsDialog() {
                     className="max-w-[95vw] max-h-[85vh] object-contain rounded-lg shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
                     onClick={(e) => e.stopPropagation()}
                   />
-
                   {/* --- BOTANICAL FOOTER --- */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
