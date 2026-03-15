@@ -118,6 +118,48 @@ export default function ShoppingOrderDetailsView() {
                 </span>
               </h1>
             </div>
+            <div className="flex flex-col md:flex-row gap-6 md:gap-12 bg-white/50 p-6 rounded-2xl border border-stone-100">
+  {/* 1. DISPATCH SCHEDULE (The Future) */}
+  <div className="relative space-y-1">
+    <div className="flex items-center gap-2">
+      <span className="relative flex h-2 w-2">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
+      </span>
+      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#B23A2E]">
+        Scheduled Dispatch
+      </p>
+    </div>
+    
+    <div className="flex items-baseline gap-2">
+      <p className="text-xl md:text-2xl font-black text-stone-900 tracking-tighter">
+        18 April
+      </p>
+      <p className="text-stone-400 font-serif italic text-sm">Spring 2026 Harvest</p>
+    </div>
+    
+    <p className="text-[9px] font-medium text-stone-500 uppercase tracking-widest leading-none">
+      * Pre-order reservation confirmed
+    </p>
+  </div>
+
+  {/* 2. BOOKING LOG (The Past) */}
+  <div className="border-t md:border-t-0 md:border-l border-stone-200/60 pt-6 md:pt-0 md:pl-10 space-y-1">
+    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+      Booking Timestamp
+    </p>
+    <p className="text-sm font-bold text-stone-600 font-mono">
+      {new Date(order.createdAt).toLocaleDateString("en-IN", {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      })}
+    </p>
+    <p className="text-[9px] text-stone-400 uppercase tracking-tighter">
+      Order Ref: {order._id.slice(-6).toUpperCase()}
+    </p>
+  </div>
+</div>
 
             {/* --- QUICK STATS GRID --- */}
             {/* Switched to a 2-column grid on mobile, flex-row on desktop */}
@@ -294,30 +336,30 @@ export default function ShoppingOrderDetailsView() {
                 >
                   {/* PRODUCT IMAGE CONTAINER */}
                   <div className="relative w-full md:w-40 h-48 md:h-40 rounded-[1.5rem] md:rounded-2xl overflow-hidden bg-stone-100 border border-stone-200/50 flex-shrink-0 group/img">
-  {/* --- THE IMAGE --- */}
-  <img
-    src={product.image || "/placeholder.png"}
-    alt={product.title}
-    className="w-full h-full object-cover transition-all duration-1000 group-hover/img:scale-110 grayscale-[0.3] group-hover/img:grayscale-0"
-  />
+                    {/* --- THE IMAGE --- */}
+                    <img
+                      src={product.image || "/placeholder.png"}
+                      alt={product.title}
+                      className="w-full h-full object-cover transition-all duration-1000 group-hover/img:scale-110 grayscale-[0.3] group-hover/img:grayscale-0"
+                    />
 
-  {/* --- QUANTITY OVERLAY --- */}
-  {/* Positioned at bottom-left for better thumb-reach visibility on mobile */}
-  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 backdrop-blur-md rounded-full border border-white/10 shadow-lg">
-    <span className="text-[8px] font-black text-stone-400 uppercase tracking-widest">
-      QTY
-    </span>
-    <p className="text-[11px] font-black text-white uppercase tracking-tighter">
-      {item.quantity}
-    </p>
-  </div>
+                    {/* --- QUANTITY OVERLAY --- */}
+                    {/* Positioned at bottom-left for better thumb-reach visibility on mobile */}
+                    <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 backdrop-blur-md rounded-full border border-white/10 shadow-lg">
+                      <span className="text-[8px] font-black text-stone-400 uppercase tracking-widest">
+                        QTY
+                      </span>
+                      <p className="text-[11px] font-black text-white uppercase tracking-tighter">
+                        {item.quantity}
+                      </p>
+                    </div>
 
-  {/* --- TEXTURE OVERLAY (Matches your Archive aesthetic) --- */}
-  <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')]" />
-  
-  {/* --- VIGNETTE EFFECT --- */}
-  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 md:opacity-0 group-hover/img:opacity-60 transition-opacity duration-500" />
-</div>
+                    {/* --- TEXTURE OVERLAY (Matches your Archive aesthetic) --- */}
+                    <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')]" />
+
+                    {/* --- VIGNETTE EFFECT --- */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 md:opacity-0 group-hover/img:opacity-60 transition-opacity duration-500" />
+                  </div>
 
                   {/* PRODUCT DETAILS */}
                   <div className="flex-1 flex flex-col justify-between">

@@ -264,7 +264,7 @@ export default function OrderTracking() {
       Seasonal Dispatch
     </p>
     <p className="text-sm md:text-base font-black text-stone-800 uppercase tracking-tighter">
-      Starting 14 April <span className="text-stone-300 font-serif italic lowercase font-light tracking-normal">2026</span>
+      Starting 18 April <span className="text-stone-300 font-serif italic lowercase font-light tracking-normal">2026</span>
     </p>
     
     {/* Optional: Mobile-only mini badge */}
