@@ -851,115 +851,120 @@ export default function Home() {
 
         {/* Social Cards Grid */}
         <section className="px-4 py-16 md:py-24 bg-[#fdfdfb] overflow-hidden">
-      {/* Header Section */}
-      <div className="text-center mb-12 md:mb-20 px-4">
-        <motion.span
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-[#D84C3C] font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mb-4 block"
-        >
-          Our Community
-        </motion.span>
+          {/* Header Section */}
+          <div className="text-center mb-12 md:mb-20 px-4">
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-[#D84C3C] font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mb-4 block"
+            >
+              Our Community
+            </motion.span>
 
-        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">
-          Follow the <span className="italic font-light text-gray-500">Harvest</span>
-        </h2>
+            <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">
+              Follow the{" "}
+              <span className="italic font-light text-gray-500">Harvest</span>
+            </h2>
 
-        <div className="w-12 h-[1px] bg-[#D84C3C]/40 mx-auto mb-8" />
+            <div className="w-12 h-[1px] bg-[#D84C3C]/40 mx-auto mb-8" />
 
-        <p className="text-gray-500 text-sm md:text-base max-w-lg mx-auto leading-relaxed font-light">
-          Step into our Himalayan orchards. Get the freshest updates on our
-          <span className="text-slate-900 font-medium"> organic harvests</span> and 
-          handpicked apple collections.
-        </p>
-      </div>
-
-      {/* Social Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
-        
-        {/* Instagram Card */}
-        <motion.a
-          href="https://www.instagram.com/range.of.himalayas"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          whileHover={{ y: -5 }}
-          className="group relative block"
-        >
-          <div className="relative overflow-hidden rounded-[2rem] bg-white border border-stone-100 p-8 md:p-12 flex flex-col items-center text-center shadow-sm group-hover:shadow-xl transition-all duration-500">
-            
-            {/* FIX: Ghost Icon Overlay - Positioned better for visibility */}
-            <div className="absolute -top-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none">
-              <FaInstagram className="text-[15rem] rotate-12" />
-            </div>
-
-            {/* Main Icon Wrapper */}
-            <div className="relative z-10 mb-6 md:mb-8">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-stone-50 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
-                <FaInstagram className="text-3xl md:text-4xl text-[#D84C3C]" />
-              </div>
-            </div>
-
-            <div className="relative z-10">
-              <h3 className="text-xl md:text-2xl font-serif text-slate-900 mb-2">Instagram</h3>
-              <p className="text-stone-400 text-xs md:text-sm tracking-widest uppercase mb-8">
-                @range.of.himalayas
-              </p>
-
-              {/* Minimalist Button */}
-              <div className="inline-flex items-center gap-3 text-[#D84C3C] font-bold uppercase tracking-widest text-[10px] group-hover:gap-5 transition-all">
-                <span>Explore Gallery</span>
-                <FaArrowRight />
-              </div>
-            </div>
-
-            {/* Subtle bottom border highlight */}
-            <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#D84C3C] group-hover:w-full transition-all duration-500" />
+            <p className="text-gray-500 text-sm md:text-base max-w-lg mx-auto leading-relaxed font-light">
+              Step into our Himalayan orchards. Get the freshest updates on our
+              <span className="text-slate-900 font-medium">
+                {" "}
+                organic harvests
+              </span>{" "}
+              and handpicked apple collections.
+            </p>
           </div>
-        </motion.a>
 
-        {/* Facebook Card */}
-        <motion.a
-          href="https://www.facebook.com/rangeofhimalayas"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          whileHover={{ y: -5 }}
-          className="group relative block"
-        >
-          <div className="relative overflow-hidden rounded-[2rem] bg-white border border-stone-100 p-8 md:p-12 flex flex-col items-center text-center shadow-sm group-hover:shadow-xl transition-all duration-500">
-            
-            {/* Ghost Icon Overlay */}
-            <div className="absolute -top-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none">
-              <FaFacebook className="text-[15rem] rotate-12" />
-            </div>
+          {/* Social Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+            {/* Instagram Card */}
+            <motion.a
+              href="https://www.instagram.com/range.of.himalayas"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ y: -5 }}
+              className="group relative block"
+            >
+              <div className="relative overflow-hidden rounded-[2rem] bg-white border border-stone-100 p-8 md:p-12 flex flex-col items-center text-center shadow-sm group-hover:shadow-xl transition-all duration-500">
+                {/* FIX: Ghost Icon Overlay - Positioned better for visibility */}
+                <div className="absolute -top-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none">
+                  <FaInstagram className="text-[15rem] rotate-12" />
+                </div>
 
-            <div className="relative z-10 mb-6 md:mb-8">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-stone-50 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
-                <FaFacebook className="text-3xl md:text-4xl text-[#D84C3C]" />
+                {/* Main Icon Wrapper */}
+                <div className="relative z-10 mb-6 md:mb-8">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-stone-50 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
+                    <FaInstagram className="text-3xl md:text-4xl text-[#D84C3C]" />
+                  </div>
+                </div>
+
+                <div className="relative z-10">
+                  <h3 className="text-xl md:text-2xl font-serif text-slate-900 mb-2">
+                    Instagram
+                  </h3>
+                  <p className="text-stone-400 text-xs md:text-sm tracking-widest uppercase mb-8">
+                    @range.of.himalayas
+                  </p>
+
+                  {/* Minimalist Button */}
+                  <div className="inline-flex items-center gap-3 text-[#D84C3C] font-bold uppercase tracking-widest text-[10px] group-hover:gap-5 transition-all">
+                    <span>Explore Gallery</span>
+                    <FaArrowRight />
+                  </div>
+                </div>
+
+                {/* Subtle bottom border highlight */}
+                <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#D84C3C] group-hover:w-full transition-all duration-500" />
               </div>
-            </div>
+            </motion.a>
 
-            <div className="relative z-10">
-              <h3 className="text-xl md:text-2xl font-serif text-slate-900 mb-2">Facebook</h3>
-              <p className="text-stone-400 text-xs md:text-sm tracking-widest uppercase mb-8">
-                @rangeofhimalayas
-              </p>
+            {/* Facebook Card */}
+            <motion.a
+              href="https://www.facebook.com/rangeofhimalayas"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ y: -5 }}
+              className="group relative block"
+            >
+              <div className="relative overflow-hidden rounded-[2rem] bg-white border border-stone-100 p-8 md:p-12 flex flex-col items-center text-center shadow-sm group-hover:shadow-xl transition-all duration-500">
+                {/* Ghost Icon Overlay */}
+                <div className="absolute -top-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none">
+                  <FaFacebook className="text-[15rem] rotate-12" />
+                </div>
 
-              <div className="inline-flex items-center gap-3 text-[#D84C3C] font-bold uppercase tracking-widest text-[10px] group-hover:gap-5 transition-all">
-                <span>Join Community</span>
-                <FaArrowRight />
+                <div className="relative z-10 mb-6 md:mb-8">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-stone-50 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
+                    <FaFacebook className="text-3xl md:text-4xl text-[#D84C3C]" />
+                  </div>
+                </div>
+
+                <div className="relative z-10">
+                  <h3 className="text-xl md:text-2xl font-serif text-slate-900 mb-2">
+                    Facebook
+                  </h3>
+                  <p className="text-stone-400 text-xs md:text-sm tracking-widest uppercase mb-8">
+                    @rangeofhimalayas
+                  </p>
+
+                  <div className="inline-flex items-center gap-3 text-[#D84C3C] font-bold uppercase tracking-widest text-[10px] group-hover:gap-5 transition-all">
+                    <span>Join Community</span>
+                    <FaArrowRight />
+                  </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#D84C3C] group-hover:w-full transition-all duration-500" />
               </div>
-            </div>
-
-            <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#D84C3C] group-hover:w-full transition-all duration-500" />
+            </motion.a>
           </div>
-        </motion.a>
-      </div>
-    </section>
+        </section>
       </section>
 
       <HomeBlog />
@@ -967,181 +972,194 @@ export default function Home() {
         <div className="max-w-6xl mx-auto text-center">
           {/* Refined Badge */}
           <div className="text-center px-6 py-12 md:py-20">
-  {/* 1. REFINED BADGE - Switched to your brand Red/Stone theme */}
-  <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="inline-flex items-center gap-2.5 px-5 py-2 bg-white border border-stone-200 text-[#B23A2E] rounded-full shadow-sm"
-  >
-    <span className="relative flex h-2 w-2">
-      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
-      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
-    </span>
-    <span className="text-[10px] font-black uppercase tracking-[0.3em]">
-      Orchard Moments
-    </span>
-  </motion.div>
+            {/* 1. REFINED BADGE - Switched to your brand Red/Stone theme */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2.5 px-5 py-2 bg-white border border-stone-200 text-[#B23A2E] rounded-full shadow-sm"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em]">
+                Orchard Moments
+              </span>
+            </motion.div>
 
-  {/* 2. HERO HEADING - Fluid typography for mobile */}
-  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-stone-900 mt-8 mb-6 tracking-tighter leading-[1.1] md:leading-none uppercase">
-    From Orchard <br className="sm:hidden" />
-    <span className="font-serif italic font-light lowercase tracking-normal text-stone-500 block sm:inline mt-2 sm:mt-0">
-      to Table
-    </span>
-  </h2>
+            {/* 2. HERO HEADING - Fluid typography for mobile */}
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-stone-900 mt-8 mb-6 tracking-tighter leading-[1.1] md:leading-none uppercase">
+              From Orchard <br className="sm:hidden" />
+              <span className="font-serif italic font-light lowercase tracking-normal text-stone-500 block sm:inline mt-2 sm:mt-0">
+                to Table
+              </span>
+            </h2>
 
-  {/* 3. REFINED DESCRIPTION - Improved readability */}
-  <p className="text-stone-500 text-sm md:text-lg max-w-xl mx-auto leading-relaxed font-serif italic border-t border-stone-100 pt-8 px-4">
-    "Witness the journey of our orchards through the seasons—a
-    celebration of <span className="text-stone-800">purity</span>, 
-    tradition, and mindful farming."
-  </p>
+            {/* 3. REFINED DESCRIPTION - Improved readability */}
+            <p className="text-stone-500 text-sm md:text-lg max-w-xl mx-auto leading-relaxed font-serif italic border-t border-stone-100 pt-8 px-4">
+              "Witness the journey of our orchards through the seasons—a
+              celebration of <span className="text-stone-800">purity</span>,
+              tradition, and mindful farming."
+            </p>
 
-  {/* 4. OPTIONAL DECORATIVE LINE */}
-  <div className="flex justify-center items-center gap-3 mt-10 opacity-30">
-    <div className="h-[1px] w-8 bg-stone-400" />
-    <div className="w-1 h-1 bg-stone-800 rotate-45" />
-    <div className="h-[1px] w-8 bg-stone-400" />
-  </div>
-</div>
+            {/* 4. OPTIONAL DECORATIVE LINE */}
+            <div className="flex justify-center items-center gap-3 mt-10 opacity-30">
+              <div className="h-[1px] w-8 bg-stone-400" />
+              <div className="w-1 h-1 bg-stone-800 rotate-45" />
+              <div className="h-[1px] w-8 bg-stone-400" />
+            </div>
+          </div>
           {/* Elegant Category Navigation */}
-         <div className="relative mb-12">
-  {/* Container: Scrollable on mobile, Centered on desktop */}
-  <div className="flex overflow-x-auto md:justify-center gap-3 px-6 md:px-0 no-scrollbar pb-4 md:pb-0">
-    {categories.map((cat) => (
-      <button
-        key={cat}
-        onClick={() => {
-          setActiveCategory(cat);
-          setCurrentIndex(0);
-          setCurrentImageIndex(0);
-        }}
-        /* UI FIX: 
+          <div className="relative mb-12">
+            {/* Container: Scrollable on mobile, Centered on desktop */}
+            <div className="flex overflow-x-auto md:justify-center gap-3 px-6 md:px-0 no-scrollbar pb-4 md:pb-0">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setActiveCategory(cat);
+                    setCurrentIndex(0);
+                    setCurrentImageIndex(0);
+                  }}
+                  /* UI FIX: 
            - 'whitespace-nowrap' prevents text from breaking into two lines
            - 'px-6 py-2.5' is more balanced for mobile
            - Transitioned to your brand's 'Stone' and 'Red' palette
         */
-        className={`relative px-6 py-2.5 md:px-8 md:py-3 rounded-full text-[11px] md:text-xs font-black uppercase tracking-[0.15em] transition-all duration-500 whitespace-nowrap border
+                  className={`relative px-6 py-2.5 md:px-8 md:py-3 rounded-full text-[11px] md:text-xs font-black uppercase tracking-[0.15em] transition-all duration-500 whitespace-nowrap border
           ${
             activeCategory === cat
               ? "text-white border-[#B23A2E] shadow-lg shadow-red-900/10"
               : "bg-white text-stone-500 border-stone-200 hover:border-stone-400 hover:text-stone-900"
           }`}
-      >
-        {activeCategory === cat && (
-          <motion.div
-            layoutId="activeTab"
-            className="absolute inset-0 bg-[#B23A2E]"
-            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-          />
-        )}
-        <span className="relative z-10">{cat}</span>
-      </button>
-    ))}
-  </div>
+                >
+                  {activeCategory === cat && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-0 bg-[#B23A2E]"
+                      transition={{
+                        type: "spring",
+                        bounce: 0.2,
+                        duration: 0.6,
+                      }}
+                    />
+                  )}
+                  <span className="relative z-10">{cat}</span>
+                </button>
+              ))}
+            </div>
 
-  {/* Subtle mobile hint: Fades the right edge to show there is more to scroll */}
-  <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-[#fdfdfb] to-transparent md:hidden pointer-events-none" />
-</div>
+            {/* Subtle mobile hint: Fades the right edge to show there is more to scroll */}
+            <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-[#fdfdfb] to-transparent md:hidden pointer-events-none" />
+          </div>
 
-{/* Add this CSS to your global stylesheet or a style tag to hide the scrollbar */}
-<style jsx>{`
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-`}</style>
+          {/* Add this CSS to your global stylesheet or a style tag to hide the scrollbar */}
+          <style jsx>{`
+            .no-scrollbar::-webkit-scrollbar {
+              display: none;
+            }
+            .no-scrollbar {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+          `}</style>
           {/* Main Gallery Display */}
           {loading ? (
             <GallerySkeleton />
           ) : filteredItems.length > 0 ? (
-            <div className="relative group max-w-5xl mx-auto">
-              <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2.5rem] bg-slate-200 shadow-2xl">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={filteredItems[currentIndex]?.images[currentImageIndex]}
-                    src={filteredItems[currentIndex]?.images[currentImageIndex]}
-                    alt={filteredItems[currentIndex]?.title}
-                    initial={{ opacity: 0, scale: 1.1 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-full h-full object-cover"
-                  />
-                </AnimatePresence>
+            <div className="relative group max-w-5xl mx-auto px-4 sm:px-0">
+  {/* MAIN VIEWER */}
+  <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-stone-100 shadow-2xl">
+    <AnimatePresence mode="wait">
+      <motion.img
+        key={filteredItems[currentIndex]?.images[currentImageIndex]}
+        src={filteredItems[currentIndex]?.images[currentImageIndex]}
+        alt={filteredItems[currentIndex]?.title}
+        initial={{ opacity: 0, scale: 1.1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+    </AnimatePresence>
 
-                {/* Glass Content Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="max-w-2xl text-left"
-                  >
-                    <span className="px-3 py-1 bg-red-600/20 backdrop-blur-md border border-red-500/30 text-red-100 rounded-lg text-xs font-bold uppercase tracking-tighter">
-                      {filteredItems[currentIndex]?.category}
-                    </span>
-                    <h3 className="text-3xl md:text-4xl font-black text-white mt-4 mb-2 tracking-tight">
-                      {filteredItems[currentIndex]?.title}
-                    </h3>
-                    <p className="text-gray-300 text-base md:text-lg leading-relaxed line-clamp-2 font-light">
-                      {filteredItems[currentIndex]?.desc}
-                    </p>
-                  </motion.div>
-                </div>
+    {/* GRADIENT OVERLAY - Stronger on mobile for text legibility */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent sm:from-black/70" />
 
-                {/* Navigation Controls */}
-                <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button
-                    onClick={prevSlide}
-                    className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110"
-                  >
-                    <FaArrowLeft />
-                  </button>
-                  <button
-                    onClick={nextSlide}
-                    className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl hover:bg-white hover:text-black transition-all transform hover:scale-110"
-                  >
-                    <FaArrowRight />
-                  </button>
-                </div>
-              </div>
+    {/* CONTENT OVERLAY */}
+    <div className="absolute inset-x-0 bottom-0 p-6 sm:p-12">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="max-w-2xl text-left"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <span className="h-[1px] w-6 bg-[#B23A2E]" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#B23A2E]">
+            {filteredItems[currentIndex]?.category}
+          </span>
+        </div>
+        
+        <h3 className="text-2xl sm:text-4xl font-serif italic text-white mb-3">
+          {filteredItems[currentIndex]?.title}
+        </h3>
+        
+        <p className="text-gray-300 text-sm sm:text-lg leading-relaxed line-clamp-3 sm:line-clamp-2 font-light max-w-lg">
+          {filteredItems[currentIndex]?.desc}
+        </p>
+      </motion.div>
+    </div>
 
-              {/* Cinematic Thumbnails */}
-              <div className="flex justify-center gap-4 mt-10">
-                {filteredItems[currentIndex].images.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className="relative group"
-                  >
-                    <div
-                      className={`w-28 h-20 rounded-2xl overflow-hidden border-4 transition-all duration-500 ${
-                        index === currentImageIndex
-                          ? "border-red-600 scale-110 shadow-lg"
-                          : "border-transparent grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
-                      }`}
-                    >
-                      <img
-                        src={img}
-                        alt="thumb"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    {index === currentImageIndex && (
-                      <motion.div
-                        layoutId="thumbGlow"
-                        className="absolute inset-0 bg-red-600/20 blur-xl -z-10"
-                      />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
+    {/* NAVIGATION CONTROLS - Hidden on mobile as users prefer swiping */}
+    <div className="absolute top-1/2 -translate-y-1/2 w-full hidden sm:flex justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <button
+        onClick={prevSlide}
+        className="p-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all"
+      >
+        <FaArrowLeft size={14} />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="p-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all"
+      >
+        <FaArrowRight size={14} />
+      </button>
+    </div>
+  </div>
+
+  {/* CINEMATIC THUMBNAILS - Scrollable on mobile */}
+  <div className="flex overflow-x-auto no-scrollbar sm:justify-center gap-4 mt-6 sm:mt-10 px-2 pb-4">
+    {filteredItems[currentIndex].images.map((img, index) => (
+      <button
+        key={index}
+        onClick={() => setCurrentImageIndex(index)}
+        className="relative flex-shrink-0"
+      >
+        <div
+          className={`w-20 h-20 sm:w-28 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all duration-500 ${
+            index === currentImageIndex
+              ? "border-[#B23A2E] scale-105 sm:scale-110 shadow-lg"
+              : "border-transparent opacity-40 hover:opacity-100"
+          }`}
+        >
+          <img
+            src={img}
+            alt="thumb"
+            className={`w-full h-full object-cover transition-all duration-700 ${index !== currentImageIndex ? 'grayscale' : ''}`}
+          />
+        </div>
+        {index === currentImageIndex && (
+          <motion.div
+            layoutId="thumbGlow"
+            className="absolute inset-0 bg-[#B23A2E]/20 blur-xl -z-10"
+          />
+        )}
+      </button>
+    ))}
+  </div>
+</div>
           ) : (
             <div className="py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-slate-400">
               No moments found in this category.
