@@ -287,18 +287,8 @@ export default function ProductsDetailsDialog() {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative aspect-[4/5] overflow-hidden rounded-[3rem] bg-stone-50 border border-stone-100 group shadow-2xl shadow-stone-200/50"
+              className="relative aspect-[4/5] overflow-hidden rounded-[3rem] bg-stone-50 border border-stone-100 group shadow-2xl shadow-stone-200/50 mt-4"
             >
-              {/* Drag Indicator Overlay (Desktop only) */}
-              <div className="absolute inset-0 z-10 flex items-center justify-between px-6 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="w-10 h-10 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-stone-400">
-                  <ArrowLeft size={16} />
-                </div>
-                <div className="w-10 h-10 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-stone-400">
-                  <ArrowRight size={16} />
-                </div>
-              </div>
-
               <AnimatePresence
                 mode="popLayout"
                 initial={false}
@@ -337,7 +327,7 @@ export default function ProductsDetailsDialog() {
                     opacity: { duration: 0.3 },
                     scale: { duration: 0.4 },
                   }}
-                  className="w-full h-full object-cover cursor-zoom-in group-active:cursor-grabbing select-none mt-4"
+                  className="w-full h-full object-cover cursor-zoom-in group-active:cursor-grabbing select-none"
                 />
               </AnimatePresence>
 
