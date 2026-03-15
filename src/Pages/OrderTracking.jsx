@@ -108,47 +108,47 @@ export default function OrderTracking() {
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-3xl backdrop-blur-xl bg-white/70 shadow-[0_8px_40px_rgba(229,115,115,0.15)] rounded-3xl border border-white/30 p-6 md:p-10"
+        className="w-full max-w-3xl backdrop-blur-xl bg-white/70 shadow-[0_8px_40px_rgba(229,115,115,0.15)] rounded-3xl border border-white/30 p-6 md:p-10 mt-10"
       >
         <div className="text-center mb-10 md:mb-16 space-y-4 md:space-y-5 px-4">
-  {/* --- 1. THE BRAND MARKER --- */}
-  <div className="flex items-center justify-center gap-2 md:gap-3">
-    <div className="h-[1px] w-6 md:w-8 bg-[#B23A2E] opacity-30" />
-    
-    {/* Added a pulse dot for 'Live' effect */}
-    <span className="relative flex h-2 w-2">
-      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
-      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
-    </span>
+          {/* --- 1. THE BRAND MARKER --- */}
+          <div className="flex items-center justify-center gap-2 md:gap-3">
+            <div className="h-[1px] w-6 md:w-8 bg-[#B23A2E] opacity-30" />
 
-    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-[#B23A2E] whitespace-nowrap">
-      Live Monitoring
-    </span>
-    <div className="h-[1px] w-6 md:w-8 bg-[#B23A2E] opacity-30" />
-  </div>
+            {/* Added a pulse dot for 'Live' effect */}
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
+            </span>
 
-  {/* --- 2. MAIN HEADLINE --- */}
-  {/* Using text-3xl for mobile to ensure 'Surveillance' doesn't break poorly */}
-  <h2 className="text-3xl md:text-6xl font-black text-stone-900 uppercase tracking-tighter leading-[0.9] md:leading-none">
-    Transit <br className="md:hidden" /> 
-    <span className="text-stone-800">Surveillance</span>
-  </h2>
+            <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-[#B23A2E] whitespace-nowrap">
+              Live Monitoring
+            </span>
+            <div className="h-[1px] w-6 md:w-8 bg-[#B23A2E] opacity-30" />
+          </div>
 
-  {/* --- 3. REFINED DESCRIPTION --- */}
-  <p className="text-stone-500 font-serif italic text-sm md:text-lg max-w-sm md:max-w-xl mx-auto leading-relaxed px-2">
-    "Trace the precise movements of your Himalayan harvest as it
-    descends from the valleys to your doorstep."
-  </p>
+          {/* --- 2. MAIN HEADLINE --- */}
+          {/* Using text-3xl for mobile to ensure 'Surveillance' doesn't break poorly */}
+          <h2 className="text-3xl md:text-6xl font-black text-stone-900 uppercase tracking-tighter leading-[0.9] md:leading-none">
+            Transit <br className="md:hidden" />
+            <span className="text-stone-800">Surveillance</span>
+          </h2>
 
-  {/* --- 4. SUBTLE VISUAL ANCHOR --- */}
-  <div className="pt-2 md:pt-4 flex justify-center">
-    <div className="flex items-center gap-1.5">
-      <div className="h-1.5 w-1.5 bg-stone-900 rounded-full" />
-      <div className="h-[1px] w-12 md:w-16 bg-stone-200" />
-      <div className="h-1 w-1 bg-stone-200 rounded-full" />
-    </div>
-  </div>
-</div>
+          {/* --- 3. REFINED DESCRIPTION --- */}
+          <p className="text-stone-500 font-serif italic text-sm md:text-lg max-w-sm md:max-w-xl mx-auto leading-relaxed px-2">
+            "Trace the precise movements of your Himalayan harvest as it
+            descends from the valleys to your doorstep."
+          </p>
+
+          {/* --- 4. SUBTLE VISUAL ANCHOR --- */}
+          <div className="pt-2 md:pt-4 flex justify-center">
+            <div className="flex items-center gap-1.5">
+              <div className="h-1.5 w-1.5 bg-stone-900 rounded-full" />
+              <div className="h-[1px] w-12 md:w-16 bg-stone-200" />
+              <div className="h-1 w-1 bg-stone-200 rounded-full" />
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col sm:flex-row gap-4 mb-10 md:mb-12 max-w-2xl mx-auto">
           <div className="relative flex-1 group">
             {/* Minimalist Icon Replacement for Emojis */}
