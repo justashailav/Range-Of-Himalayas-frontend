@@ -1069,97 +1069,97 @@ export default function Home() {
             <GallerySkeleton />
           ) : filteredItems.length > 0 ? (
             <div className="relative group max-w-5xl mx-auto px-4 sm:px-0">
-  {/* MAIN VIEWER */}
-  <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-stone-100 shadow-2xl">
-    <AnimatePresence mode="wait">
-      <motion.img
-        key={filteredItems[currentIndex]?.images[currentImageIndex]}
-        src={filteredItems[currentIndex]?.images[currentImageIndex]}
-        alt={filteredItems[currentIndex]?.title}
-        initial={{ opacity: 0, scale: 1.1 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 1.05 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-    </AnimatePresence>
+              {/* MAIN VIEWER */}
+              <div className="relative aspect-[4/5] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-stone-100 shadow-2xl">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={filteredItems[currentIndex]?.images[currentImageIndex]}
+                    src={filteredItems[currentIndex]?.images[currentImageIndex]}
+                    alt={filteredItems[currentIndex]?.title}
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </AnimatePresence>
 
-    {/* GRADIENT OVERLAY - Stronger on mobile for text legibility */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent sm:from-black/70" />
+                {/* GRADIENT OVERLAY - Stronger on mobile for text legibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent sm:from-black/70" />
 
-    {/* CONTENT OVERLAY */}
-    <div className="absolute inset-x-0 bottom-0 p-6 sm:p-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="max-w-2xl text-left"
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <span className="h-[1px] w-6 bg-[#B23A2E]" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#B23A2E]">
-            {filteredItems[currentIndex]?.category}
-          </span>
-        </div>
-        
-        <h3 className="text-2xl sm:text-4xl font-serif italic text-white mb-3">
-          {filteredItems[currentIndex]?.title}
-        </h3>
-        
-        <p className="text-gray-300 text-sm sm:text-lg leading-relaxed line-clamp-3 sm:line-clamp-2 font-light max-w-lg">
-          {filteredItems[currentIndex]?.desc}
-        </p>
-      </motion.div>
-    </div>
+                {/* CONTENT OVERLAY */}
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-12">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="max-w-2xl text-left"
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="h-[1px] w-6 bg-[#B23A2E]" />
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#B23A2E]">
+                        {filteredItems[currentIndex]?.category}
+                      </span>
+                    </div>
 
-    {/* NAVIGATION CONTROLS - Hidden on mobile as users prefer swiping */}
-    <div className="absolute top-1/2 -translate-y-1/2 w-full hidden sm:flex justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-      <button
-        onClick={prevSlide}
-        className="p-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all"
-      >
-        <FaArrowLeft size={14} />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="p-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all"
-      >
-        <FaArrowRight size={14} />
-      </button>
-    </div>
-  </div>
+                    <h3 className="text-2xl sm:text-4xl font-serif italic text-white mb-3">
+                      {filteredItems[currentIndex]?.title}
+                    </h3>
 
-  {/* CINEMATIC THUMBNAILS - Scrollable on mobile */}
-  <div className="flex overflow-x-auto no-scrollbar sm:justify-center gap-4 mt-6 sm:mt-10 px-2 pb-4">
-    {filteredItems[currentIndex].images.map((img, index) => (
-      <button
-        key={index}
-        onClick={() => setCurrentImageIndex(index)}
-        className="relative flex-shrink-0"
-      >
-        <div
-          className={`w-20 h-20 sm:w-28 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all duration-500 ${
-            index === currentImageIndex
-              ? "border-[#B23A2E] scale-105 sm:scale-110 shadow-lg"
-              : "border-transparent opacity-40 hover:opacity-100"
-          }`}
-        >
-          <img
-            src={img}
-            alt="thumb"
-            className={`w-full h-full object-cover transition-all duration-700 ${index !== currentImageIndex ? 'grayscale' : ''}`}
-          />
-        </div>
-        {index === currentImageIndex && (
-          <motion.div
-            layoutId="thumbGlow"
-            className="absolute inset-0 bg-[#B23A2E]/20 blur-xl -z-10"
-          />
-        )}
-      </button>
-    ))}
-  </div>
-</div>
+                    <p className="text-gray-300 text-sm sm:text-lg leading-relaxed line-clamp-3 sm:line-clamp-2 font-light max-w-lg">
+                      {filteredItems[currentIndex]?.desc}
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* NAVIGATION CONTROLS - Hidden on mobile as users prefer swiping */}
+                <div className="absolute top-1/2 -translate-y-1/2 w-full hidden sm:flex justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button
+                    onClick={prevSlide}
+                    className="p-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all"
+                  >
+                    <FaArrowLeft size={14} />
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    className="p-5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all"
+                  >
+                    <FaArrowRight size={14} />
+                  </button>
+                </div>
+              </div>
+
+              {/* CINEMATIC THUMBNAILS - Scrollable on mobile */}
+              <div className="flex overflow-x-auto no-scrollbar sm:justify-center gap-4 mt-6 sm:mt-10 px-2 pb-4">
+                {filteredItems[currentIndex].images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className="relative flex-shrink-0"
+                  >
+                    <div
+                      className={`w-20 h-20 sm:w-28 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all duration-500 ${
+                        index === currentImageIndex
+                          ? "border-[#B23A2E] scale-105 sm:scale-110 shadow-lg"
+                          : "border-transparent opacity-40 hover:opacity-100"
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt="thumb"
+                        className={`w-full h-full object-cover transition-all duration-700 ${index !== currentImageIndex ? "grayscale" : ""}`}
+                      />
+                    </div>
+                    {index === currentImageIndex && (
+                      <motion.div
+                        layoutId="thumbGlow"
+                        className="absolute inset-0 bg-[#B23A2E]/20 blur-xl -z-10"
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
           ) : (
             <div className="py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-slate-400">
               No moments found in this category.
