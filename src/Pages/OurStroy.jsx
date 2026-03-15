@@ -218,10 +218,10 @@ export default function OurStory() {
             >
               <div className="relative p-4 bg-stone-50 border border-stone-200 rounded-2xl shadow-2xl">
                 <img
-                  src={ourImage}
-                  alt="Our Himalayan Journey"
-                  className="rounded-xl w-full h-[500px] object-cover filter contrast-[1.1] sepia-[0.1]"
-                />
+    src={ourImage}
+    alt="Our Himalayan Journey"
+    className="w-full h-auto max-h-[85vh] object-contain mx-auto filter contrast-[1.05] brightness-[1.02]"
+  />
                 {/* Decorative Label on Image */}
                 <div className="absolute -bottom-6 -right-6 bg-stone-900 text-white p-6 rounded-xl hidden md:block shadow-2xl">
                   <p className="text-xs uppercase tracking-[0.3em] font-bold text-stone-400">
@@ -352,7 +352,7 @@ export default function OurStory() {
               <p className="mt-8 text-xl text-stone-500 font-light leading-relaxed max-w-xl">
                 At{" "}
                 <span className="text-stone-900 font-semibold italic">
-                  2,300m elevation
+                  8,000m elevation
                 </span>
                 , nature moves at its own pace. Fruits ripen slowly in the thin
                 mountain air, concentrating sugars and nutrients to create an
@@ -438,7 +438,7 @@ export default function OurStory() {
                   Current Altitude
                 </p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-black">2,300</span>
+                  <span className="text-4xl font-black">8,000</span>
                   <span className="text-lg font-serif italic text-stone-400">
                     meters
                   </span>
