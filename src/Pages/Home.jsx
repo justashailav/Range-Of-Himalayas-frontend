@@ -16,7 +16,7 @@ import TopSelections from "./TopSelections";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation,Pagination } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   addToWishList,
@@ -528,32 +528,31 @@ export default function Home() {
         </div>
 
         {/* Optional: A very faint divider to anchor the grid below */}
-        <div className="mt-8 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
+        <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
       </div>
-     <div className="relative px-4 md:px-6 py-10">
+      <div className="relative px-4 md:px-6 pt-0 pb-10">
   {productList && productList.length > 0 ? (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
       <Swiper
-        modules={[Navigation, Pagination]}
-        pagination={{
-          el: ".custom-pagination",
-          type: "progressbar",
-        }}
+        modules={[Navigation]}
+        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex + 1)}
+        grabCursor={true}
         spaceBetween={20}
-        slidesPerView={1.2} 
+        slidesPerView={1.2}
         breakpoints={{
-          640: { slidesPerView: 2, spaceBetween: 24 },
-          1024: { slidesPerView: 3, spaceBetween: 30 },
-          1280: { slidesPerView: 4, spaceBetween: 30 },
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+          1280: { slidesPerView: 4 },
         }}
-        className="pb-16"
+        className="pb-6" 
       >
         {productList.map((item) => (
           <SwiperSlide key={item._id} className="py-2">
-            <motion.div 
-              whileHover={{ y: -8 }} 
-              transition={{ duration: 0.3 }}
-            >
+            <motion.div whileHover={{ y: -8 }} transition={{ duration: 0.3 }}>
               <ShoppingProductTile
                 product={item}
                 handleAddToCart={handleAddToCart}
@@ -564,30 +563,37 @@ export default function Home() {
         ))}
       </Swiper>
 
-      {/* CUSTOM PROGRESS NAVIGATION (Responsive & Minimal) */}
-      <div className="mt-8 flex flex-col items-center gap-4">
-        {/* The Actual Progress Line */}
-        <div className="custom-pagination relative w-full max-w-[200px] h-[2px] bg-gray-100 overflow-hidden">
-          {/* Swiper injects the active progress bar here automatically */}
-          <style jsx global>{`
-            .custom-pagination .swiper-pagination-progressbar-fill {
-              background-color: #D84C3C !important;
-            }
-          `}</style>
+      {/* BOUTIQUE FRACTION PAGINATION */}
+      <div className="mt-4 flex flex-col items-center justify-center space-y-2">
+        <div className="flex items-center gap-4">
+            {/* Left Decorative Line */}
+            <span className="h-[1px] w-8 bg-gray-200" />
+            
+            <div className="flex items-baseline font-mono text-[11px] tracking-widest text-gray-900">
+                <span className="text-[#d84c3c] font-bold">
+                    {activeIndex.toString().padStart(2, '0')}
+                </span>
+                <span className="mx-2 text-gray-300">/</span>
+                <span className="text-gray-400">
+                    {productList.length.toString().padStart(2, '0')}
+                </span>
+            </div>
+
+            {/* Right Decorative Line */}
+            <span className="h-[1px] w-8 bg-gray-200" />
         </div>
         
-        {/* Simple Label for Mobile Users */}
-        <span className="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-medium md:hidden">
-          Swipe to explore
-        </span>
+        <p className="text-[9px] uppercase tracking-[0.4em] text-gray-400 font-medium">
+          Slide to Discover
+        </p>
       </div>
-    </>
+    </motion.div>
   ) : (
-    /* Skeleton grid */
-    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      {[1, 2, 3].map((i) => (
-        <TrendingProductSkeleton key={i} />
-      ))}
+    /* Empty state instead of skeleton - just a quiet spacer */
+    <div className="h-[400px] flex items-center justify-center">
+        <span className="text-[10px] uppercase tracking-widest text-gray-300 animate-pulse">
+            Loading Collection...
+        </span>
     </div>
   )}
 </div>
