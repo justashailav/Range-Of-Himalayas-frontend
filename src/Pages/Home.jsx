@@ -61,7 +61,7 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const [activeIndex, setActiveIndex] = useState(1);
   const dispatch = useDispatch();
 
   const { images: galleryItems, loading } = useSelector(
