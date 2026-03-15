@@ -88,7 +88,64 @@ export default function WishListItemContent() {
             content="Range Of Himalayas – Fresh apples, juicy kiwis directly sourced from the Himalayan farms."
           />
         </Helmet>
-        <Heart className="w-16 h-16 mx-auto text-gray-300" />
+        <div className="min-h-[60vh] flex items-center justify-center px-6">
+  <motion.div 
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="relative max-w-2xl w-full bg-[#fdfcf7] border border-stone-200 p-12 md:p-20 text-center shadow-sm overflow-hidden"
+  >
+    {/* Decorative Background Element */}
+    <div className="absolute top-0 left-0 w-full h-1 bg-[#B23A2E]/20" />
+    <span className="absolute -top-10 -right-10 text-[150px] font-black text-stone-50 select-none pointer-events-none">
+      NULL
+    </span>
+
+    <div className="relative z-10 space-y-8">
+      {/* The Icon - Elevated & Minimal */}
+      <div className="relative inline-block">
+        <div className="w-24 h-24 bg-stone-50 border border-stone-100 flex items-center justify-center mx-auto transition-transform duration-700 hover:rotate-12">
+          <Heart className="w-10 h-10 text-[#B23A2E] stroke-[1px]" />
+        </div>
+        <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-[#B23A2E] flex items-center justify-center">
+          <div className="w-2 h-[1px] bg-white rotate-90 absolute" />
+          <div className="w-2 h-[1px] bg-white absolute" />
+        </div>
+      </div>
+
+      {/* Text Content */}
+      <div className="space-y-4">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+          Private Collection
+        </h4>
+        <h2 className="text-4xl md:text-5xl font-black text-stone-900 uppercase tracking-tighter">
+          The Gallery is <br />
+          <span className="font-serif italic capitalize tracking-normal text-[#B23A2E]">Vacant</span>
+        </h2>
+        <p className="max-w-xs mx-auto text-[13px] md:text-[14px] font-serif italic text-stone-500 leading-relaxed">
+          Your personal archive of desired acquisitions is currently unpopulated. Document the pieces that resonate with your spirit.
+        </p>
+      </div>
+
+      {/* Action Button */}
+      <div className="pt-6">
+        <a href="/viewproducts" className="group relative inline-flex items-center gap-4">
+          <div className="relative z-10 px-8 py-4 bg-stone-900 text-white text-[10px] font-black uppercase tracking-[0.3em] transition-transform duration-300 group-hover:-translate-x-2 group-hover:-translate-y-2">
+            Explore Archive
+          </div>
+          {/* Button Shadow/Border Effect */}
+          <div className="absolute inset-0 border border-stone-900 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1" />
+        </a>
+      </div>
+    </div>
+
+    {/* Footer Detail */}
+    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 w-full px-12 opacity-30">
+      <div className="h-[1px] flex-1 bg-stone-200" />
+      <span className="text-[8px] font-black uppercase tracking-widest text-stone-400">Inventory Ledger v.01</span>
+      <div className="h-[1px] flex-1 bg-stone-200" />
+    </div>
+  </motion.div>
+</div>
       </div>
     );
   }
