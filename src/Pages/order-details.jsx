@@ -98,298 +98,354 @@ export default function ShoppingOrderDetailsView() {
             </span>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-1">
-              <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-stone-900 leading-none">
-                Order{" "}
-                <span className="text-stone-300 font-light italic">
-                  Details
-                </span>
-              </h1>
-              <div className="flex items-center gap-2 pt-2">
-                <div className="px-2 py-0.5 bg-stone-100 rounded text-[9px] font-bold text-stone-500 uppercase tracking-widest">
-                  ID
-                </div>
-                <p className="text-sm font-black tracking-widest text-stone-400 uppercase">
-                  {orderDetails._id}
-                </p>
-              </div>
-            </div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-6 border-b border-stone-100 pb-8 md:pb-12">
+  {/* --- PRIMARY HEADER --- */}
+  <div className="space-y-4 md:space-y-2">
+    {/* ID Badge - Moved to top for better hierarchy on small screens */}
+    <div className="flex items-center gap-2">
+      <div className="px-2 py-0.5 bg-stone-100 rounded text-[9px] font-bold text-stone-500 uppercase tracking-widest">
+        ID
+      </div>
+      <p className="text-[10px] md:text-sm font-black tracking-widest text-stone-400 uppercase break-all md:break-normal max-w-[200px] md:max-w-none">
+        {orderDetails._id}
+      </p>
+    </div>
 
-            {/* QUICK STATS - Adds professional weight */}
-            <div className="flex gap-10 md:text-right border-t md:border-t-0 md:border-l border-stone-100 pt-6 md:pt-0 md:pl-10">
-              <div>
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
-                  Items Summary
-                </p>
-                <p className="text-sm font-black text-stone-900 italic">
-                  {orderDetails.cartItems.length}{" "}
-                  {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
-                </p>
-              </div>
-              <div>
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
-                  Status
-                </p>
-                <p className="text-sm font-black text-green-700 uppercase tracking-tighter flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                  {orderDetails.orderStatus}
-                </p>
-              </div>
-            </div>
-          </div>
+    <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-stone-900 leading-[0.85]">
+      Order{" "}
+      <span className="text-stone-300 font-serif italic font-light block md:inline">
+        Details
+      </span>
+    </h1>
+  </div>
+
+  {/* --- QUICK STATS GRID --- */}
+  {/* Switched to a 2-column grid on mobile, flex-row on desktop */}
+  <div className="grid grid-cols-2 md:flex gap-x-4 gap-y-6 md:gap-10 md:text-right border-t md:border-t-0 md:border-l border-stone-100 pt-8 md:pt-2 md:pl-10">
+    <div className="space-y-1">
+      <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
+        Inventory
+      </p>
+      <p className="text-base md:text-lg font-black text-stone-900 italic">
+        {orderDetails.cartItems.length}{" "}
+        <span className="text-xs md:text-sm font-serif">
+          {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
+        </span>
+      </p>
+    </div>
+
+    <div className="space-y-1">
+      <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
+        Track Status
+      </p>
+      {/* Status colors adjusted for high-end boutique look */}
+      <p className="text-sm md:text-base font-black text-[#B23A2E] uppercase tracking-tighter flex items-center md:justify-end gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E] animate-pulse" />
+        {orderDetails.orderStatus}
+      </p>
+    </div>
+
+    {/* Optional: Add a third "Order Date" stat that appears only on mobile to fill the grid, or leave empty for breathing room */}
+  </div>
+</div>
         </div>
 
         {/* ================= ORDER SUMMARY ================= */}
         <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.02)] relative overflow-hidden">
-  {/* BACKGROUND DECORATION */}
-  <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
-    <Receipt textAnchor="middle" size={120} className="-rotate-12" />
-  </div>
-
-  <div className="relative z-10">
-    <div className="flex items-center gap-4 mb-10">
-      <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em]">
-        Transaction Details
-      </h2>
-      <div className="h-px flex-1 bg-stone-100" />
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-      {[
-        ["Placement Date", orderDetails.orderDate?.split("T")[0]],
-        ["Payment Method", orderDetails.paymentMethod],
-        ["Settlement", orderDetails.paymentStatus],
-        ["Cancellation", orderDetails.cancelStatus],
-        ["Refund Issue", orderDetails.refundStatus],
-        ["Return Log", orderDetails.returnStatus || "None Recorded"],
-      ].map(([label, value]) => (
-        <div key={label} className="group flex justify-between items-end border-b border-stone-50 pb-3 hover:border-stone-200 transition-colors">
-          <span className="text-[9px] font-black text-stone-400 uppercase tracking-widest">
-            {label}
-          </span>
-          <span className="text-xs font-black text-stone-900 uppercase tracking-tighter transition-all group-hover:pr-1">
-            {value || "-"}
-          </span>
-        </div>
-      ))}
-    </div>
-
-    {/* TOTAL & STATUS HIGHLIGHT */}
-    <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
-      {/* FINAL PRICE CARD */}
-      <div className="p-6 rounded-[2rem] bg-stone-50 border border-stone-100">
-        <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">Total Transaction</p>
-        <div className="flex items-baseline gap-1">
-          <span className="text-sm font-bold text-stone-900">₹</span>
-          <span className="text-4xl font-black text-stone-900 tracking-tighter italic">
-            {orderDetails.totalAmount}
-          </span>
-        </div>
-      </div>
-
-      {/* COD BREAKDOWN (IF APPLICABLE) */}
-      {orderDetails.paymentMethod === "cod" ? (
-        <div className="p-6 rounded-[2rem] bg-[#B23A2E]/5 border border-[#B23A2E]/10 flex flex-col justify-center">
-          <div className="flex justify-between text-[10px] font-black uppercase mb-1">
-            <span className="text-stone-400">Advance Paid</span>
-            <span className="text-stone-900">₹{orderDetails.codAdvanceAmount || 200}</span>
+          {/* BACKGROUND DECORATION */}
+          <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+            <Receipt textAnchor="middle" size={120} className="-rotate-12" />
           </div>
-          <div className="flex justify-between text-[10px] font-black uppercase">
-            <span className="text-[#B23A2E]">Due at Delivery</span>
-            <span className="text-[#B23A2E] text-lg tracking-tighter font-black">₹{orderDetails.codRemainingAmount}</span>
+
+          <div className="relative z-10">
+            <div className="flex items-center gap-4 mb-10">
+              <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em]">
+                Transaction Details
+              </h2>
+              <div className="h-px flex-1 bg-stone-100" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+              {[
+                ["Placement Date", orderDetails.orderDate?.split("T")[0]],
+                ["Payment Method", orderDetails.paymentMethod],
+                ["Settlement", orderDetails.paymentStatus],
+                ["Cancellation", orderDetails.cancelStatus],
+                ["Refund Issue", orderDetails.refundStatus],
+                ["Return Log", orderDetails.returnStatus || "None Recorded"],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="group flex justify-between items-end border-b border-stone-50 pb-3 hover:border-stone-200 transition-colors"
+                >
+                  <span className="text-[9px] font-black text-stone-400 uppercase tracking-widest">
+                    {label}
+                  </span>
+                  <span className="text-xs font-black text-stone-900 uppercase tracking-tighter transition-all group-hover:pr-1">
+                    {value || "-"}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* TOTAL & STATUS HIGHLIGHT */}
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* FINAL PRICE CARD */}
+              <div className="p-6 rounded-[2rem] bg-stone-50 border border-stone-100">
+                <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">
+                  Total Transaction
+                </p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-sm font-bold text-stone-900">₹</span>
+                  <span className="text-4xl font-black text-stone-900 tracking-tighter italic">
+                    {orderDetails.totalAmount}
+                  </span>
+                </div>
+              </div>
+
+              {/* COD BREAKDOWN (IF APPLICABLE) */}
+              {orderDetails.paymentMethod === "cod" ? (
+                <div className="p-6 rounded-[2rem] bg-[#B23A2E]/5 border border-[#B23A2E]/10 flex flex-col justify-center">
+                  <div className="flex justify-between text-[10px] font-black uppercase mb-1">
+                    <span className="text-stone-400">Advance Paid</span>
+                    <span className="text-stone-900">
+                      ₹{orderDetails.codAdvanceAmount || 200}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-[10px] font-black uppercase">
+                    <span className="text-[#B23A2E]">Due at Delivery</span>
+                    <span className="text-[#B23A2E] text-lg tracking-tighter font-black">
+                      ₹{orderDetails.codRemainingAmount}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-6 rounded-[2rem] bg-stone-900 flex flex-col justify-center items-center text-center">
+                  <p className="text-[9px] font-black text-stone-500 uppercase tracking-widest mb-2">
+                    Order Status
+                  </p>
+                  <span className="text-xs font-black text-white uppercase tracking-[0.2em]">
+                    {orderDetails.orderStatus}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* ACTION BUTTONS */}
+            <div className="mt-10 flex flex-wrap items-center gap-6">
+              {isCancelable() && orderDetails.orderStatus !== "cancelled" && (
+                <button
+                  onClick={handleCancelOrder}
+                  disabled={loadingCancelOrder}
+                  className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 hover:text-red-600 transition-colors flex items-center gap-2 group"
+                >
+                  <div className="w-2 h-2 rounded-full bg-red-500 group-hover:animate-ping" />
+                  {loadingCancelOrder ? "Processing..." : "Void Order"}
+                </button>
+              )}
+
+              {isReturnable() && (
+                <button
+                  onClick={handleReturnFullOrder}
+                  disabled={isFullOrderReturned}
+                  className="px-8 py-3 rounded-full bg-stone-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#B23A2E] transition-all shadow-xl shadow-stone-200"
+                >
+                  {isFullOrderReturned ? "Return Initiated" : "Request Return"}
+                </button>
+              )}
+
+              {successMsg && (
+                <span className="text-[10px] font-bold text-green-600 uppercase italic">
+                  ✓ {successMsg}
+                </span>
+              )}
+              {errorMsg && (
+                <span className="text-[10px] font-bold text-red-600 uppercase italic">
+                  ! {errorMsg}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="p-6 rounded-[2rem] bg-stone-900 flex flex-col justify-center items-center text-center">
-           <p className="text-[9px] font-black text-stone-500 uppercase tracking-widest mb-2">Order Status</p>
-           <span className="text-xs font-black text-white uppercase tracking-[0.2em]">
-             {orderDetails.orderStatus}
-           </span>
-        </div>
-      )}
-    </div>
-
-    {/* ACTION BUTTONS */}
-    <div className="mt-10 flex flex-wrap items-center gap-6">
-      {isCancelable() && orderDetails.orderStatus !== "cancelled" && (
-        <button
-          onClick={handleCancelOrder}
-          disabled={loadingCancelOrder}
-          className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 hover:text-red-600 transition-colors flex items-center gap-2 group"
-        >
-          <div className="w-2 h-2 rounded-full bg-red-500 group-hover:animate-ping" />
-          {loadingCancelOrder ? "Processing..." : "Void Order"}
-        </button>
-      )}
-
-      {isReturnable() && (
-        <button
-          onClick={handleReturnFullOrder}
-          disabled={isFullOrderReturned}
-          className="px-8 py-3 rounded-full bg-stone-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#B23A2E] transition-all shadow-xl shadow-stone-200"
-        >
-          {isFullOrderReturned ? "Return Initiated" : "Request Return"}
-        </button>
-      )}
-      
-      {successMsg && <span className="text-[10px] font-bold text-green-600 uppercase italic">✓ {successMsg}</span>}
-      {errorMsg && <span className="text-[10px] font-bold text-red-600 uppercase italic">! {errorMsg}</span>}
-    </div>
-  </div>
-</section>
+        </section>
 
         {/* ================= ORDERED ITEMS ================= */}
-       <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
-  {/* SECTION HEADER */}
-  <div className="flex items-center gap-4 mb-10">
-    <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em]">
-      Parcel Contents
-    </h2>
-    <div className="h-px flex-1 bg-stone-50" />
-    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-      {orderDetails.cartItems.length} {orderDetails.cartItems.length === 1 ? 'Item' : 'Items'}
-    </span>
-  </div>
-
-  <div className="divide-y divide-stone-50">
-    {orderDetails.cartItems.map((item) => {
-      const product = productList.find((p) => p._id === item.productId) || {};
-
-      return (
-        <div
-          key={item.productId}
-          className="group flex flex-col sm:flex-row gap-6 py-8 first:pt-0 last:pb-0 transition-all"
-        >
-          {/* PRODUCT IMAGE CONTAINER */}
-          <div className="relative w-full sm:w-32 h-32 rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 flex-shrink-0">
-            <img
-              src={product.image || "/placeholder.png"}
-              alt={product.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
-            />
-            <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
-               <p className="text-[10px] font-black text-stone-900 uppercase tracking-tighter">
-                 Qty {item.quantity}
-               </p>
-            </div>
+        <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+          {/* SECTION HEADER */}
+          <div className="flex items-center gap-4 mb-10">
+            <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em]">
+              Parcel Contents
+            </h2>
+            <div className="h-px flex-1 bg-stone-50" />
+            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
+              {orderDetails.cartItems.length}{" "}
+              {orderDetails.cartItems.length === 1 ? "Item" : "Items"}
+            </span>
           </div>
 
-          {/* PRODUCT DETAILS */}
-          <div className="flex-1 flex flex-col justify-between">
-            <div className="space-y-1">
-              <div className="flex justify-between items-start gap-4">
-                <h3 className="font-black text-stone-900 uppercase tracking-tight leading-tight group-hover:text-[#B23A2E] transition-colors">
-                  {product.title}
-                </h3>
-                <p className="text-lg font-black text-stone-900 tracking-tighter italic shrink-0">
-                  ₹{item.price * item.quantity}
-                </p>
-              </div>
-              
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest">Weight</span>
-                  <span className="text-[11px] font-bold text-stone-600 uppercase tracking-tighter">{item.weight}</span>
-                </div>
-                
-                {item.size && (
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest">Size</span>
-                    <span className="text-[11px] font-bold text-stone-600 uppercase tracking-tighter">{item.size}</span>
+          <div className="divide-y divide-stone-50">
+            {orderDetails.cartItems.map((item) => {
+              const product =
+                productList.find((p) => p._id === item.productId) || {};
+
+              return (
+                <div
+                  key={item.productId}
+                  className="group flex flex-col sm:flex-row gap-6 py-8 first:pt-0 last:pb-0 transition-all"
+                >
+                  {/* PRODUCT IMAGE CONTAINER */}
+                  <div className="relative w-full sm:w-32 h-32 rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 flex-shrink-0">
+                    <img
+                      src={product.image || "/placeholder.png"}
+                      alt={product.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
+                    />
+                    <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
+                      <p className="text-[10px] font-black text-stone-900 uppercase tracking-tighter">
+                        Qty {item.quantity}
+                      </p>
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
 
-            {/* DECORATIVE BRAND TAG */}
-            <div className="mt-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-stone-200" />
-              <span className="text-[8px] font-black text-stone-400 uppercase tracking-[0.2em]">
-                Authentic Himalayan Harvest
-              </span>
-            </div>
+                  {/* PRODUCT DETAILS */}
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-start gap-4">
+                        <h3 className="font-black text-stone-900 uppercase tracking-tight leading-tight group-hover:text-[#B23A2E] transition-colors">
+                          {product.title}
+                        </h3>
+                        <p className="text-lg font-black text-stone-900 tracking-tighter italic shrink-0">
+                          ₹{item.price * item.quantity}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest">
+                            Weight
+                          </span>
+                          <span className="text-[11px] font-bold text-stone-600 uppercase tracking-tighter">
+                            {item.weight}
+                          </span>
+                        </div>
+
+                        {item.size && (
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest">
+                              Size
+                            </span>
+                            <span className="text-[11px] font-bold text-stone-600 uppercase tracking-tighter">
+                              {item.size}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* DECORATIVE BRAND TAG */}
+                    <div className="mt-4 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-stone-200" />
+                      <span className="text-[8px] font-black text-stone-400 uppercase tracking-[0.2em]">
+                        Authentic Himalayan Harvest
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </div>
-      );
-    })}
-  </div>
-</section>
+        </section>
 
         {/* ================= SHIPPING INFO ================= */}
         <section className="bg-stone-900 text-white rounded-[2.5rem] p-8 sm:p-10 shadow-2xl shadow-stone-200 relative overflow-hidden">
-  {/* DECORATIVE TOPOGRAPHY */}
-  <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
-    <Truck size={140} strokeWidth={1} className="rotate-12 translate-x-10 translate-y-10" />
-  </div>
-
-  <div className="relative z-10">
-    {/* SECTION HEADER */}
-    <div className="flex items-center gap-4 mb-8">
-      <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-500">
-        Delivery Destination
-      </h2>
-      <div className="h-[1px] flex-1 bg-stone-800" />
-    </div>
-
-    <div className="space-y-6">
-      {/* RECIPIENT NAME */}
-      <div>
-        <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Recipient</p>
-        <p className="text-2xl font-black tracking-tight italic text-stone-100 italic">
-          {user.name}
-        </p>
-      </div>
-
-      {/* ADDRESS BODY */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-1">
-          <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Street & Locality</p>
-          <p className="text-sm font-bold text-stone-300 leading-relaxed uppercase tracking-tight">
-            {orderDetails.addressInfo.address}
-          </p>
-          <p className="text-sm font-bold text-stone-300 uppercase tracking-tight">
-            {orderDetails.addressInfo.city} — {orderDetails.addressInfo.pincode}
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {/* CONTACT */}
-          <div>
-            <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Contact Line</p>
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-stone-800 flex items-center justify-center">
-                <Phone size={10} className="text-stone-400" />
-              </div>
-              <p className="text-sm font-black tracking-widest text-stone-200">{orderDetails.addressInfo.phone}</p>
-            </div>
+          {/* DECORATIVE TOPOGRAPHY */}
+          <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
+            <Truck
+              size={140}
+              strokeWidth={1}
+              className="rotate-12 translate-x-10 translate-y-10"
+            />
           </div>
 
-          {/* DELIVERY NOTES */}
-          {orderDetails.addressInfo.notes && (
-            <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
-              <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">Courier Notes</p>
-              <p className="text-xs italic text-stone-400 font-medium">
-                "{orderDetails.addressInfo.notes}"
-              </p>
+          <div className="relative z-10">
+            {/* SECTION HEADER */}
+            <div className="flex items-center gap-4 mb-8">
+              <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-500">
+                Delivery Destination
+              </h2>
+              <div className="h-[1px] flex-1 bg-stone-800" />
             </div>
-          )}
-        </div>
-      </div>
-    </div>
 
-    {/* FOOTER BADGE */}
-    <div className="mt-10 pt-6 border-t border-stone-800 flex justify-between items-center">
-      <div className="flex items-center gap-2">
-        <MapPin size={12} className="text-[#B23A2E]" />
-        <span className="text-[10px] font-black uppercase tracking-widest text-stone-500">Verified Address</span>
-      </div>
-      <div className="text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 bg-stone-800 rounded-full text-stone-400">
-        Himalayan Boutique Logistics
-      </div>
-    </div>
-  </div>
-</section>
+            <div className="space-y-6">
+              {/* RECIPIENT NAME */}
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">
+                  Recipient
+                </p>
+                <p className="text-2xl font-black tracking-tight italic text-stone-100 italic">
+                  {user.name}
+                </p>
+              </div>
+
+              {/* ADDRESS BODY */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-1">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">
+                    Street & Locality
+                  </p>
+                  <p className="text-sm font-bold text-stone-300 leading-relaxed uppercase tracking-tight">
+                    {orderDetails.addressInfo.address}
+                  </p>
+                  <p className="text-sm font-bold text-stone-300 uppercase tracking-tight">
+                    {orderDetails.addressInfo.city} —{" "}
+                    {orderDetails.addressInfo.pincode}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  {/* CONTACT */}
+                  <div>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">
+                      Contact Line
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-stone-800 flex items-center justify-center">
+                        <Phone size={10} className="text-stone-400" />
+                      </div>
+                      <p className="text-sm font-black tracking-widest text-stone-200">
+                        {orderDetails.addressInfo.phone}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* DELIVERY NOTES */}
+                  {orderDetails.addressInfo.notes && (
+                    <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">
+                        Courier Notes
+                      </p>
+                      <p className="text-xs italic text-stone-400 font-medium">
+                        "{orderDetails.addressInfo.notes}"
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* FOOTER BADGE */}
+            <div className="mt-10 pt-6 border-t border-stone-800 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <MapPin size={12} className="text-[#B23A2E]" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-stone-500">
+                  Verified Address
+                </span>
+              </div>
+              <div className="text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 bg-stone-800 rounded-full text-stone-400">
+                Himalayan Boutique Logistics
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
