@@ -286,62 +286,64 @@ export default function Home() {
           <span>🚚 Fast delivery from our orchards directly to you!</span>
         </div>
       </div>
-      <section className="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-stone-950">
+      <section className="relative w-full h-[100dvh] overflow-hidden bg-stone-950">
       
-      {/* 1. THE IMAGE (Clean, offset to the right) */}
+      {/* 1. THE IMAGE */}
       <div className="absolute inset-0 z-0">
         <motion.img
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 0.8 }}
           transition={{ duration: 1.8, ease: "easeOut" }}
           src={bgImage} 
-          className="w-full h-full object-cover object-center md:object-right md:scale-105"
+          /* On mobile, we center the image object so the product bowl stays visible */
+          className="w-full h-full object-cover object-center md:object-right"
           alt="Himalayan Harvest"
         />
         
-        {/* Asymmetrical Gradient: Darker on the left to ground the minimal text */}
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/40 to-transparent md:from-stone-950/80 md:via-stone-950/20 md:to-transparent" />
+        {/* Responsive Gradient: Top-to-bottom on mobile, Left-to-right on desktop */}
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-transparent to-stone-950 md:bg-gradient-to-r md:from-stone-950 md:via-stone-950/20 md:to-transparent" />
       </div>
 
       {/* 2. THE CONTENT LAYER */}
-      <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
+      <div className="relative z-10 flex flex-col justify-between h-full px-8 py-16 md:px-20 md:py-20 lg:px-32">
         
-        {/* TOP: Status Label */}
+        {/* TOP: Status Label (Centered on mobile for balance) */}
         <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex items-center gap-3"
+          className="flex items-center justify-center md:justify-start gap-3"
         >
           <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse" />
-          <p className="text-white/70 text-[10px] md:text-xs tracking-[0.5em] uppercase font-bold">
+          <p className="text-white/80 text-[9px] md:text-xs tracking-[0.3em] md:tracking-[0.5em] uppercase font-bold">
             Volume 01 • Harvest 2026
           </p>
         </motion.div>
 
         {/* BOTTOM: Product Navigation */}
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-8 md:gap-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="flex flex-col md:flex-row md:items-center gap-x-12 gap-y-6 border-t border-white/10 pt-10"
+            transition={{ delay: 0.8, duration: 0.8 }}
+            /* Mobile: Centered grid for touch targets | Desktop: Left-aligned row */
+            className="grid grid-cols-1 gap-y-5 md:flex md:flex-row md:items-center md:gap-x-12 border-t border-white/10 pt-8 md:pt-10"
           >
             {["Red Rice", "Pahadi Rajma", "Apricots"].map((item, i) => (
-              <div key={i} className="flex items-center gap-3 group cursor-pointer">
+              <div key={i} className="flex items-center justify-center md:justify-start gap-3 group cursor-pointer">
                 <span className="text-[#B23A2E] text-[8px] md:text-[11px] font-mono font-bold">
                   0{i + 1}
                 </span>
-                <span className="text-white/60 group-hover:text-white text-[11px] md:text-[13px] uppercase tracking-[0.3em] transition-colors duration-300 whitespace-nowrap">
+                <span className="text-white/60 group-hover:text-white text-[12px] md:text-[13px] uppercase tracking-[0.2em] md:tracking-[0.3em] transition-colors duration-300">
                   {item}
                 </span>
               </div>
             ))}
           </motion.div>
 
-          {/* Boutique Scroll Indicator (Visual anchor for the bottom corner) */}
-          <div className="hidden md:block">
-            <div className="w-[1px] h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+          {/* Boutique Scroll Indicator (Centered on mobile, hidden if preferred) */}
+          <div className="flex justify-center md:justify-start">
+            <div className="w-[1px] h-10 md:h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
           </div>
         </div>
       </div>
