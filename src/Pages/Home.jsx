@@ -690,129 +690,137 @@ export default function Home() {
       </div>
 
       <div className="mt-12 sm:mt-24 px-4 sm:px-6 max-w-7xl mx-auto">
-  <div className="relative group">
-    
-    {/* 1. The Decorative Frame */}
-    <div className="absolute -inset-2 sm:-inset-4 border border-stone-200 rounded-[2rem] sm:rounded-[3rem] pointer-events-none opacity-50" />
+        <div className="relative group">
+          {/* 1. The Decorative Frame */}
+          <div className="absolute -inset-2 sm:-inset-4 border border-stone-200 rounded-[2rem] sm:rounded-[3rem] pointer-events-none opacity-50" />
 
-    {/* 2. Main Content Container (Replaced Image with a Text Block) */}
-    <div className="relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] bg-[#F9F7F2] border border-stone-100 shadow-xl min-h-[400px] flex items-center justify-center p-8 sm:p-20">
-      
-      {/* Decorative Background Element (Subtle Himalayan Peak Shape) */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
-         <svg viewBox="0 0 1000 1000" className="w-full h-full">
-            <path d="M500 200 L800 800 L200 800 Z" fill="currentColor" />
-         </svg>
-      </div>
-
-      {/* 3. YOUR TEXT AREA */}
-      <div className="relative z-10 max-w-2xl text-center sm:text-left">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          {/* Accent Label */}
-          <div className="flex items-center justify-center sm:justify-start gap-3 mb-6">
-            <span className="h-[1px] w-8 bg-[#D84C3C]" />
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[#D84C3C] font-bold">
-              Founder's Letter
-            </span>
-          </div>
-
-          {/* Main Content: Replace this with your words */}
-          <h2 className="text-3xl sm:text-5xl font-serif text-stone-800 leading-[1.2] mb-6">
-            "Our journey began in the <span className="italic text-stone-500">high altitudes</span>, where purity is the only standard."
-          </h2>
-
-          <div className="space-y-4">
-            <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
-              This is where you can write your own story. Whether it's about your vision, 
-              the process, or the people behind the harvest, this space is designed to 
-              scale beautifully. The text will wrap naturally on mobile devices, 
-              ensuring that not a single word is cut off.
-            </p>
-            
-            <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
-              Add a second paragraph here to share more depth. The stone-washed 
-              background keeps the focus on your message while maintaining a 
-              premium, boutique aesthetic.
-            </p>
-          </div>
-
-          {/* Signature / Footer */}
-          <div className="mt-10 pt-8 border-t border-stone-200/60">
-            <p className="font-serif italic text-xl text-stone-800">The Founders</p>
-            <p className="text-[10px] uppercase tracking-widest text-stone-400 mt-1">Range of Himalayas</p>
-          </div>
-        </motion.div>
-      </div>
-
-    </div>
-
-    {/* 4. Artistic Corner Stamp (Optional) */}
-    <div className="absolute -bottom-4 -right-2 hidden md:flex">
-      <div className="w-20 h-20 rounded-full border border-stone-200 flex items-center justify-center p-4 text-center rotate-12 bg-white shadow-sm">
-        <span className="text-[7px] font-bold text-stone-400 uppercase tracking-widest leading-tight">
-          Est. <br /> 2026
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-      <div className="px-6 py-20 bg-[#FAF9F6]">
-        <div className="max-w-4xl mx-auto text-center relative">
-          {/* 1. Subtle Background Element */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
-            <h1 className="text-[180px] font-serif select-none">Harvest</h1>
-          </div>
-
-          <div className="relative z-10 flex flex-col items-center">
-            {/* 2. Refined Branding Accent */}
-            <div className="flex items-center gap-4 mb-6">
-              <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
-              <span className="text-[10px] uppercase tracking-[0.5em] text-[#D84C3C] font-black">
-                From Our Orchards
-              </span>
-              <div className="h-[1px] w-10 bg-[#D84C3C]/30" />
+          {/* 2. Main Content Container (Replaced Image with a Text Block) */}
+          <div className="relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] bg-[#F9F7F2] border border-stone-100 shadow-xl min-h-[400px] flex items-center justify-center p-8 sm:p-20">
+            {/* Decorative Background Element (Subtle Himalayan Peak Shape) */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
+              <svg viewBox="0 0 1000 1000" className="w-full h-full">
+                <path d="M500 200 L800 800 L200 800 Z" fill="currentColor" />
+              </svg>
             </div>
 
-            {/* 3. The Headline: Bold yet Elegant */}
-            <h2 className="text-4xl md:text-6xl font-serif text-gray-900 leading-[1.1] mb-8">
-              Himalayan{" "}
-              <span className="italic font-light text-gray-500">Harvest</span>
-            </h2>
+            {/* 3. YOUR TEXT AREA */}
+            <div className="relative z-10 max-w-2xl text-center sm:text-left">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                {/* Accent Label */}
+                <div className="flex items-center justify-center sm:justify-start gap-3 mb-6">
+                  <span className="h-[1px] w-8 bg-[#D84C3C]" />
+                  <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[#D84C3C] font-bold">
+                    Founder's Letter
+                  </span>
+                </div>
 
-            {/* 4. Elegant Vertical Divider */}
-            <div className="w-[1px] h-12 bg-gradient-to-b from-[#D84C3C] to-transparent mb-8" />
+                {/* Main Content: Replace this with your words */}
+                <h2 className="text-3xl sm:text-5xl font-serif text-stone-800 leading-[1.2] mb-6">
+                  "Our journey began in the{" "}
+                  <span className="italic text-stone-500">high altitudes</span>,
+                  where purity is the only standard."
+                </h2>
 
-            {/* 5. The Narrative Paragraph */}
-            <p className="text-gray-600 text-lg md:text-xl font-light leading-relaxed max-w-3xl mx-auto">
-              Discover how we nurture{" "}
-              <span className="text-gray-900 font-medium italic">
-                premium apples
-              </span>{" "}
-              with a blend of time-honored traditions and{" "}
-              <span className="text-gray-900 font-medium">
-                thoughtful modern practices
-              </span>
-              in the pristine foothills of the Himalayas.
-            </p>
+                <div className="space-y-4">
+                  <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
+                    This is where you can write your own story. Whether it's
+                    about your vision, the process, or the people behind the
+                    harvest, this space is designed to scale beautifully. The
+                    text will wrap naturally on mobile devices, ensuring that
+                    not a single word is cut off.
+                  </p>
 
-            {/* 6. Subtle Signature (Optional) */}
-            <div className="mt-10 flex items-center gap-3 opacity-60">
-              <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">
-                Est. 2024
-              </span>
-              <div className="w-1 h-1 rounded-full bg-gray-300" />
-              <span className="text-[9px] uppercase tracking-widest font-bold text-gray-400">
-                Himachal Pradesh
+                  <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
+                    Add a second paragraph here to share more depth. The
+                    stone-washed background keeps the focus on your message
+                    while maintaining a premium, boutique aesthetic.
+                  </p>
+                </div>
+
+                {/* Signature / Footer */}
+                <div className="mt-10 pt-8 border-t border-stone-200/60">
+                  <p className="font-serif italic text-xl text-stone-800">
+                    The Founders
+                  </p>
+                  <p className="text-[10px] uppercase tracking-widest text-stone-400 mt-1">
+                    Range of Himalayas
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* 4. Artistic Corner Stamp (Optional) */}
+          <div className="absolute -bottom-4 -right-2 hidden md:flex">
+            <div className="w-20 h-20 rounded-full border border-stone-200 flex items-center justify-center p-4 text-center rotate-12 bg-white shadow-sm">
+              <span className="text-[7px] font-bold text-stone-400 uppercase tracking-widest leading-tight">
+                Est. <br /> 2026
               </span>
             </div>
           </div>
         </div>
       </div>
+      <div className="px-6 py-16 md:py-32 bg-[#FAF9F6] overflow-hidden">
+  <div className="max-w-4xl mx-auto text-center relative">
+    
+    {/* 1. Background Element: Optimized for mobile */}
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 md:-translate-y-1/2 opacity-[0.03] pointer-events-none w-full">
+      {/* Reduced size on mobile (text-[80px]) to prevent horizontal scroll */}
+      <h1 className="text-[80px] sm:text-[120px] md:text-[180px] font-serif select-none leading-none">
+        Harvest
+      </h1>
+    </div>
+
+    <div className="relative z-10 flex flex-col items-center">
+      {/* 2. Refined Branding Accent */}
+      <div className="flex items-center gap-3 md:gap-4 mb-6">
+        <div className="h-[1px] w-6 md:w-10 bg-[#D84C3C]/30" />
+        <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-[#D84C3C] font-black whitespace-nowrap">
+          From Our Orchards
+        </span>
+        <div className="h-[1px] w-6 md:w-10 bg-[#D84C3C]/30" />
+      </div>
+
+      {/* 3. The Headline: Fluid sizing */}
+      <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif text-gray-900 leading-[1.2] md:leading-[1.1] mb-6 md:mb-8">
+        Himalayan{" "}
+        <span className="italic font-light text-gray-500 block sm:inline">Harvest</span>
+      </h2>
+
+      {/* 4. Elegant Vertical Divider */}
+      <div className="w-[1px] h-10 md:h-12 bg-gradient-to-b from-[#D84C3C] to-transparent mb-6 md:mb-8" />
+
+      {/* 5. The Narrative Paragraph: Max-width restricted for readability */}
+      <p className="text-gray-600 text-base md:text-xl font-light leading-relaxed max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto px-2">
+        Discover how we nurture{" "}
+        <span className="text-gray-900 font-medium italic">
+          premium apples
+        </span>{" "}
+        with a blend of time-honored traditions and{" "}
+        <span className="text-gray-900 font-medium">
+          thoughtful modern practices
+        </span>{" "}
+        in the pristine foothills of the Himalayas.
+      </p>
+
+      {/* 6. Subtle Signature: Reorganized for mobile flow */}
+      <div className="mt-10 flex flex-wrap justify-center items-center gap-2 md:gap-3 opacity-60">
+        <span className="text-[8px] md:text-[9px] uppercase tracking-widest font-bold text-gray-400">
+          Est. 2024
+        </span>
+        <div className="w-1 h-1 rounded-full bg-gray-300 hidden xs:block" />
+        <span className="text-[8px] md:text-[9px] uppercase tracking-widest font-bold text-gray-400">
+          Himachal Pradesh
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
       <section className="px-6 py-20 bg-[#fdfdfb]">
         {/* Header Section */}
         <div className="text-center mb-16">
