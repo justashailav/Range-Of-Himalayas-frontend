@@ -327,23 +327,6 @@ export default function Blog() {
           })}
         </motion.div>
       </div>
-
-      {/* PRELAUNCH CTA */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={fadeUp}
-        className="relative px-8 py-20 bg-[#1C1C1C] mt-24 rounded-[3.5rem] max-w-5xl mx-auto overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.1)]"
-      >
-        {/* DECORATIVE ORCHARD MIST (Subtle Background Gradient) */}
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-stone-800/40 via-transparent to-transparent opacity-50" />
-
-        {/* TEXTURED WATERMARK */}
-        <div className="absolute -bottom-10 -left-10 opacity-[0.03] text-[15rem] font-black text-white pointer-events-none select-none italic tracking-tighter">
-          Harvest
-        </div>
-      </motion.section>
       <Footer />
     </div>
   );
