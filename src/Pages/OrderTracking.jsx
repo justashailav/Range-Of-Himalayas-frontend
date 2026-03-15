@@ -158,7 +158,7 @@ export default function OrderTracking() {
 
             <input
               type="text"
-              placeholder="Reference ID (e.g. #65c2...)"
+              placeholder="Reference ID (e.g. 65c2...)"
               value={orderId}
               onChange={(e) => setOrderId(e.target.value)}
               className="
@@ -224,143 +224,187 @@ export default function OrderTracking() {
             className="space-y-12"
           >
             {/* SUMMARY CARD: THE SHIPPING LABEL */}
-            <div className="bg-stone-50 border border-stone-200 p-6 md:p-8 rounded-[2rem] relative overflow-hidden">
-              {/* Decorative Corner Accent */}
-              <div className="absolute top-0 right-0 w-16 h-16 bg-stone-100 flex items-center justify-center rounded-bl-[2rem] border-l border-b border-stone-200">
-                <Package size={20} className="text-stone-400" />
-              </div>
+           {/* --- WRAPPER CONTAINER --- */}
+<div className="space-y-8">
+  {/* TOP INFO CARD */}
+  <div className="bg-stone-50 border border-stone-200 p-6 md:p-8 rounded-[2rem] relative overflow-hidden">
+    {/* Decorative Corner Accent */}
+    <div className="absolute top-0 right-0 w-12 h-12 md:w-16 md:h-16 bg-stone-100 flex items-center justify-center rounded-bl-[2rem] border-l border-b border-stone-200">
+      <Package size={18} className="text-stone-400" />
+    </div>
 
-              <div className="grid md:grid-cols-2 gap-6 items-start">
-                <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-                    Logistics Ref.
-                  </p>
-                  <p className="font-mono text-sm font-bold text-stone-900 bg-white inline-block px-3 py-1 rounded-lg border border-stone-100">
-                    {order._id}
-                  </p>
-                </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div className="space-y-1">
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
+          Logistics Ref.
+        </p>
+        <p className="font-mono text-[10px] md:text-sm font-bold text-stone-900 bg-white inline-block px-3 py-1 rounded-lg border border-stone-100 break-all max-w-full">
+          {order._id}
+        </p>
+      </div>
 
-                <div className="space-y-1 md:text-right">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-                    Current Status
-                  </p>
-                  <p className="text-[#B23A2E] font-black uppercase tracking-widest text-sm">
-                    {order.orderStatus || "Processing Archive"}
-                  </p>
-                </div>
-              </div>
+      <div className="space-y-1 md:text-right">
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
+          Current Status
+        </p>
+        <p className="text-[#B23A2E] font-black uppercase tracking-widest text-xs md:text-sm">
+          {order.orderStatus || "Processing Archive"}
+        </p>
+      </div>
+    </div>
 
-              <div className="mt-8 pt-6 border-t border-stone-200/60 flex flex-wrap gap-x-12 gap-y-4">
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
-                    Dispatch Date
-                  </p>
-                  <p className="text-sm font-bold text-stone-800">
-                    {new Date(order.createdAt).toLocaleDateString("en-IN")}
-                  </p>
+    <div className="mt-8 pt-6 border-t border-stone-200/60 flex flex-row gap-x-8 md:gap-x-12 gap-y-4 justify-between md:justify-start">
+      <div>
+        <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+  {/* 1. DISPATCH SCHEDULE */}
+  <div className="relative">
+    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#B23A2E] mb-1 flex items-center gap-2">
+      <span className="w-1 h-1 rounded-full bg-[#B23A2E] animate-pulse" />
+      Seasonal Dispatch
+    </p>
+    <p className="text-sm md:text-base font-black text-stone-800 uppercase tracking-tighter">
+      Starting 14 April <span className="text-stone-300 font-serif italic lowercase font-light tracking-normal">2026</span>
+    </p>
+    
+    {/* Optional: Mobile-only mini badge */}
+    <div className="md:hidden mt-2 inline-block px-2 py-0.5 bg-stone-100 rounded text-[8px] font-black text-stone-500 uppercase tracking-widest">
+      Pre-order Active
+    </div>
+  </div>
+
+  {/* 2. ORDER ARCHIVE DATE (Original createdAt) */}
+  <div className="border-t md:border-t-0 md:border-l border-stone-100 pt-4 md:pt-0 md:pl-10">
+    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
+      Booking Recorded
+    </p>
+    <p className="text-xs md:text-sm font-bold text-stone-500 font-mono">
+      {new Date(order.createdAt).toLocaleDateString("en-IN", {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      })}
+    </p>
+  </div>
+</div>
+      </div>
+      <div>
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
+          Market Value
+        </p>
+        <p className="text-xs md:text-sm font-bold text-stone-800">
+          ₹{order.totalAmount.toLocaleString()}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {/* --- THE RESPONSIVE TIMELINE STEPPER --- */}
+  <div className="relative pt-4 px-2 md:px-4">
+    
+    {/* DESKTOP BACKGROUND TRACK (Hidden on Mobile) */}
+    <div className="hidden md:block absolute top-[24px] left-[5%] w-[90%] h-[1px] bg-stone-200 -z-10" />
+
+    {/* MOBILE VERTICAL TRACK (Hidden on Desktop) */}
+    <div className="md:hidden absolute left-[24px] top-0 bottom-0 w-[1px] bg-stone-200 -z-10" />
+
+    {/* CONTAINER: Flex-col on mobile, flex-row on desktop */}
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-start relative z-10 space-y-8 md:space-y-0">
+      {ORDER_STAGES.map((stage, index) => {
+        const Icon = stage.icon;
+        const completed = index <= currentIndex;
+        const active = index === currentIndex;
+        const historyItem = order.statusHistory?.find(
+          (s) => s.status.toLowerCase() === stage.key.toLowerCase(),
+        );
+
+        return (
+          <div
+            key={stage.key}
+            className="flex flex-row md:flex-col items-center md:items-center w-full md:w-1/5 group gap-6 md:gap-0"
+          >
+            {/* ICON CIRCLE */}
+            <motion.div
+              className={`w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full border transition-all duration-700 ${
+                completed
+                  ? "bg-stone-900 border-stone-900 text-white shadow-xl"
+                  : "bg-white border-stone-200 text-stone-300"
+              } ${active ? "ring-8 ring-stone-900/5 scale-110" : ""}`}
+            >
+              {completed ? (
+                <Check size={18} strokeWidth={3} />
+              ) : (
+                <Icon size={18} strokeWidth={1.5} />
+              )}
+            </motion.div>
+
+            {/* LABEL & TIME */}
+            <div className="md:mt-4 text-left md:text-center">
+              <p
+                className={`text-[10px] md:text-[9px] font-black uppercase tracking-widest ${completed ? "text-stone-900" : "text-stone-300"}`}
+              >
+                {stage.label}
+              </p>
+
+              {historyItem && (
+                <div className="mt-1 md:mt-2 text-[9px] md:text-[8px] font-bold text-stone-400 uppercase tracking-tight leading-tight md:leading-none">
+                  <span className="md:block">
+                    {new Date(historyItem.updatedAt).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                    })}
+                  </span>
+                  <span className="mx-2 md:hidden">/</span>
+                  <span className="md:block md:mt-1 opacity-60 font-medium">
+                    {new Date(historyItem.updatedAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
                 </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">
-                    Market Value
-                  </p>
-                  <p className="text-sm font-bold text-stone-800">
-                    ₹{order.totalAmount.toLocaleString()}
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
-
-            {/* THE TIMELINE STEPPER */}
-            <div className="relative pt-4 px-4">
-              {/* Background Track */}
-              <div className="absolute top-[24px] left-[5%] w-[90%] h-[1px] bg-stone-200 -z-10" />
-
-              {/* Progress Track */}
-              <motion.div
-                className="absolute top-[24px] left-[5%] h-[1px] bg-stone-900 -z-10"
-                initial={{ width: 0 }}
-                animate={{
-                  width: `${(currentIndex / (ORDER_STAGES.length - 1)) * 90}%`,
-                }}
-                transition={{ duration: 1, ease: "circOut" }}
-              />
-
-              <div className="flex justify-between items-start relative z-10">
-                {ORDER_STAGES.map((stage, index) => {
-                  const Icon = stage.icon;
-                  const completed = index <= currentIndex;
-                  const active = index === currentIndex;
-                  const historyItem = order.statusHistory?.find(
-                    (s) => s.status.toLowerCase() === stage.key.toLowerCase(),
-                  );
-
-                  return (
-                    <div
-                      key={stage.key}
-                      className="flex flex-col items-center w-1/5 group"
-                    >
-                      <motion.div
-                        className={`w-12 h-12 flex items-center justify-center rounded-full border transition-all duration-700 ${
-                          completed
-                            ? "bg-stone-900 border-stone-900 text-white shadow-xl"
-                            : "bg-white border-stone-200 text-stone-300"
-                        } ${active ? "ring-8 ring-stone-900/5 scale-110" : ""}`}
-                      >
-                        {completed ? (
-                          <Check size={18} strokeWidth={3} />
-                        ) : (
-                          <Icon size={18} strokeWidth={1.5} />
-                        )}
-                      </motion.div>
-
-                      <div className="mt-4 text-center">
-                        <p
-                          className={`text-[9px] font-black uppercase tracking-widest ${completed ? "text-stone-900" : "text-stone-300"}`}
-                        >
-                          {stage.label}
-                        </p>
-
-                        {historyItem && (
-                          <div className="mt-2 text-[8px] font-bold text-stone-400 uppercase tracking-tight leading-none">
-                            <p>
-                              {new Date(
-                                historyItem.updatedAt,
-                              ).toLocaleDateString("en-IN", {
-                                day: "2-digit",
-                                month: "short",
-                              })}
-                            </p>
-                            <p className="mt-1 opacity-60 font-medium">
-                              {new Date(
-                                historyItem.updatedAt,
-                              ).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
             {/* FINAL MESSAGE BANNER */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className={`mt-12 py-5 px-8 rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] text-center border ${
-                order.orderStatus === "delivered"
-                  ? "bg-stone-900 text-white border-stone-900"
-                  : "bg-stone-50 text-stone-600 border-stone-200"
-              }`}
-            >
-              {order.orderStatus === "delivered"
-                ? "✓ Consignment Successfully Delivered"
-                : "◌ Transit in Progress — Anticipate Arrival"}
-            </motion.div>
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  className={`mt-8 md:mt-12 py-4 md:py-6 px-6 md:px-10 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-center border transition-all duration-500 shadow-sm ${
+    order.orderStatus === "delivered"
+      ? "bg-stone-900 text-white border-stone-900 shadow-stone-200"
+      : "bg-white text-stone-600 border-stone-200"
+  }`}
+>
+  <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3">
+    {order.orderStatus === "delivered" ? (
+      <>
+        <span className="text-[#B23A2E] text-base md:text-lg">✓</span>
+        <span className="leading-relaxed">
+          Consignment <span className="hidden md:inline">Successfully</span> Delivered
+        </span>
+      </>
+    ) : (
+      <>
+        {/* Pulsing transit icon for mobile engagement */}
+        <span className="relative flex h-2 w-2 mb-1 md:mb-0">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-stone-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-stone-400"></span>
+        </span>
+        <span className="leading-relaxed">
+          Transit in Progress <span className="md:mx-2 text-stone-300 hidden md:inline">—</span> 
+          <br className="md:hidden" />
+          <span className="font-serif italic lowercase font-medium tracking-normal text-xs md:text-sm md:uppercase md:font-black md:tracking-[0.3em] md:not-italic">
+            Anticipate Arrival
+          </span>
+        </span>
+      </>
+    )}
+  </div>
+</motion.div>
           </motion.div>
         )}
       </motion.div>
