@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import { Heart, ShoppingCart, Trash2, Tag } from "lucide-react";
+import { Heart, ShoppingCart, Trash2, Tag, ArrowRight } from "lucide-react";
 
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { deleteWishListItem } from "@/store/slices/wishlistSlice";
@@ -164,63 +164,90 @@ export default function WishListItemContent() {
       <div className="relative mb-12 border-b border-stone-100 pb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="relative pt-12 pb-8 md:pt-20 md:pb-16 px-4 md:px-0 border-b border-stone-100 mb-12">
-  <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
-    
-    {/* TOP LABEL: Editorial Accent */}
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="flex items-center gap-3 md:gap-4"
-    >
-      {/* Line that grows on desktop, stays compact on mobile */}
-      <motion.span 
-        initial={{ width: 0 }}
-        animate={{ width: typeof window !== 'undefined' && window.innerWidth > 768 ? 64 : 32 }}
-        className="h-[1px] bg-[#B23A2E]" 
-      />
-      <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] md:tracking-[0.6em] text-[#B23A2E] whitespace-nowrap">
-        Curated Archive
-      </span>
-    </motion.div>
+            <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
+              {/* TOP LABEL: Editorial Accent */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="flex items-center gap-3 md:gap-4"
+              >
+                {/* Line that grows on desktop, stays compact on mobile */}
+                <motion.span
+                  initial={{ width: 0 }}
+                  animate={{
+                    width:
+                      typeof window !== "undefined" && window.innerWidth > 768
+                        ? 64
+                        : 32,
+                  }}
+                  className="h-[1px] bg-[#B23A2E]"
+                />
+                <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] md:tracking-[0.6em] text-[#B23A2E] whitespace-nowrap">
+                  Curated Archive
+                </span>
+              </motion.div>
 
-    {/* MAIN TITLE: Mixed Typography */}
-    <div className="relative">
-      <h2 className="text-5xl md:text-8xl font-black text-stone-900 tracking-tighter leading-[0.9] uppercase">
-        My <br className="md:hidden" /> {/* Stack on mobile for impact */}
-        <span className="italic font-serif font-light text-stone-300 md:text-stone-200 block md:inline mt-2 md:mt-0 md:ml-4 transition-colors duration-700 hover:text-[#B23A2E]">
-          Wishlist
-        </span>
-      </h2>
-      
-      {/* BACKGROUND ACCENT: Subtle Numbering */}
-      <span className="absolute -top-6 -right-2 md:right-0 text-[60px] md:text-[120px] font-black text-stone-50 select-none pointer-events-none -z-10">
-        01
-      </span>
-    </div>
+              {/* MAIN TITLE: Mixed Typography */}
+              <div className="relative">
+                <h2 className="text-5xl md:text-8xl font-black text-stone-900 tracking-tighter leading-[0.9] uppercase">
+                  My <br className="md:hidden" />{" "}
+                  {/* Stack on mobile for impact */}
+                  <span className="italic font-serif font-light text-stone-300 md:text-stone-200 block md:inline mt-2 md:mt-0 md:ml-4 transition-colors duration-700 hover:text-[#B23A2E]">
+                    Wishlist
+                  </span>
+                </h2>
 
-    {/* SUBTITLE: Contextual detail */}
-    <motion.p 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.4 }}
-      className="text-[10px] md:text-[12px] font-serif italic text-stone-400 max-w-[240px] md:max-w-md leading-relaxed"
-    >
-      A private inventory of documented pieces awaiting acquisition.
-    </motion.p>
-  </div>
-</div>
+                {/* BACKGROUND ACCENT: Subtle Numbering */}
+                <span className="absolute -top-6 -right-2 md:right-0 text-[60px] md:text-[120px] font-black text-stone-50 select-none pointer-events-none -z-10">
+                  01
+                </span>
+              </div>
+
+              {/* SUBTITLE: Contextual detail */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-[10px] md:text-[12px] font-serif italic text-stone-400 max-w-[240px] md:max-w-md leading-relaxed"
+              >
+                A private inventory of documented pieces awaiting acquisition.
+              </motion.p>
+            </div>
+          </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-stone-900 text-white shadow-xl shadow-stone-200"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }}
+            className="inline-flex items-center group cursor-default"
           >
-            <Heart size={14} className="fill-[#B23A2E] text-[#B23A2E]" />
-            <span className="text-xs font-black uppercase tracking-widest">
-              {wishListItems.length}{" "}
-              {wishListItems.length === 1 ? "Selection" : "Selections"}
-            </span>
+            {/* The Icon Tab */}
+            <div className="bg-[#B23A2E] p-2.5 md:p-3 shadow-lg shadow-[#B23A2E]/10 flex items-center justify-center">
+              <Heart
+                size={14}
+                className="text-white fill-white group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+
+            {/* The Text Content */}
+            <div className="bg-stone-900 px-4 md:px-6 py-2.5 md:py-3 flex items-center gap-3 shadow-lg shadow-stone-900/10">
+              <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white">
+                {wishListItems.length}
+              </span>
+
+              {/* Vertical Divider */}
+              <div className="w-[1px] h-3 bg-stone-700" />
+
+              <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">
+                {wishListItems.length === 1
+                  ? "Documented Piece"
+                  : "Archived Items"}
+              </span>
+            </div>
+
+            {/* Decorative Corner (Optional subtle detail) */}
+            <div className="w-[4px] h-[4px] bg-[#B23A2E] self-start mt-0" />
           </motion.div>
         </div>
 
@@ -319,116 +346,106 @@ export default function WishListItemContent() {
                 key={`${cartItem.productId}-${cartItem.size}-${weight}`}
                 className="relative rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group overflow-hidden"
               >
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] transition-all duration-700 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] group-hover:-translate-y-2">
-                  {/* PRODUCT IMAGE */}
-                  <img
-                    src={image}
-                    alt={title}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[0.1] group-hover:grayscale-0"
-                  />
+                <motion.div
+        key={`${cartItem.productId}-${cartItem.size}-${weight}`}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="group relative flex flex-col"
+      >
+        {/* IMAGE CONTAINER: We use rounded-none for a more "archival gallery" look */}
+        <div className="relative aspect-[4/5] overflow-hidden bg-stone-100 transition-all duration-700 group-hover:shadow-2xl group-hover:-translate-y-2">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
+          />
 
-                  {/* TOP ACTION BAR */}
-                  <div className="absolute top-5 inset-x-5 flex justify-between items-start z-20">
-                    {/* DISCOUNT BADGE */}
-                    {discount > 0 ? (
-                      <motion.span
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="bg-[#B23A2E] text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm"
-                      >
-                        {discount}% SAVINGS
-                      </motion.span>
-                    ) : (
-                      <div />
-                    )}
+          {/* TOP ACTION BAR */}
+          <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-20">
+            {discount > 0 ? (
+              <span className="bg-[#B23A2E] text-white text-[9px] font-black px-3 py-1.5 tracking-tighter">
+                {discount}% REDUCTION
+              </span>
+            ) : <div />}
 
-                    {/* DELETE BUTTON - Updated for Mobile Visibility */}
-                    <motion.button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevents accidental clicks on the card
-                        handleCartItemDelete(cartItem);
-                      }}
-                      whileTap={{ scale: 0.9 }}
-                      /* Change: opacity-100 on mobile (default), 
-         opacity-0 on desktop (md:opacity-0),
-         group-hover reveals it on desktop.
-      */
-                      className="w-10 h-10 flex items-center justify-center bg-white/90 backdrop-blur-md rounded-full text-stone-400 active:text-[#B23A2E] md:opacity-0 group-hover:opacity-100 transition-all duration-300 md:translate-y-2 group-hover:translate-y-0 shadow-md"
-                      title="Remove from archive"
-                    >
-                      <Trash2 size={16} />
-                    </motion.button>
-                  </div>
+            <motion.button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCartItemDelete(cartItem);
+              }}
+              whileTap={{ scale: 0.9 }}
+              /* Visible always on mobile (opacity-100), hover only on desktop (md:opacity-0) */
+              className="w-10 h-10 flex items-center justify-center bg-white text-stone-900 shadow-xl border border-stone-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300"
+            >
+              <Trash2 size={16} strokeWidth={1.5} />
+            </motion.button>
+          </div>
 
-                  {/* GRADIENT OVERLAY - Made slightly more visible on mobile to help the white button pop */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          {/* GRADIENT OVERLAY */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
+
+        {/* CONTENT SECTION */}
+        <div className="pt-8 pb-4 space-y-6">
+          <div className="flex justify-between items-start gap-4 border-b border-stone-100 pb-4">
+            <div className="flex-1">
+              <h3 className="text-lg md:text-xl font-black text-stone-900 tracking-tighter leading-tight uppercase">
+                {title}
+              </h3>
+              <div className="flex gap-3 mt-2">
+                 <span className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+                    Ref_{cartItem.productId.slice(-4).toUpperCase()}
+                 </span>
+              </div>
+            </div>
+            
+            <div className="text-right">
+              {price !== salePrice ? (
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] text-stone-300 line-through font-bold">
+                    ₹{price}
+                  </span>
+                  <span className="text-2xl font-serif italic text-[#B23A2E]">
+                    ₹{salePrice}
+                  </span>
                 </div>
+              ) : (
+                <span className="text-2xl font-serif italic text-stone-900">
+                  ₹{price}
+                </span>
+              )}
+            </div>
+          </div>
 
-                <div className="p-6 space-y-6">
-                  {/* TITLE & PRICE SECTION */}
-                  <div className="flex justify-between items-start gap-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-black text-stone-900 tracking-tighter leading-[1.1] line-clamp-2 uppercase">
-                        {title}
-                      </h3>
-                    </div>
-                    <div className="text-right shrink-0">
-                      {price !== salePrice ? (
-                        <div className="flex flex-col items-end">
-                          <span className="text-[10px] text-stone-300 line-through font-bold decoration-stone-300">
-                            ₹{price}
-                          </span>
-                          <span className="text-2xl font-serif italic text-stone-900">
-                            ₹{salePrice}
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="text-2xl font-serif italic text-stone-900">
-                          ₹{price}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+          {/* ATTRIBUTES: Cleaner Tags */}
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: "Size", value: variant?.size },
+              { label: "Net", value: weight }
+            ].map((attr, idx) => attr.value && (
+              <div key={idx} className="flex items-center gap-2 px-0 py-1 text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
+                <span className="w-1 h-1 bg-[#B23A2E] rounded-full" />
+                {attr.label}: {attr.value}
+              </div>
+            ))}
+          </div>
 
-                  {/* MINIMALIST ATTRIBUTE TAGS */}
-                  <div className="flex flex-wrap gap-2">
-                    {variant?.size && (
-                      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
-                        <span className="text-stone-300">Size:</span>{" "}
-                        {variant.size}
-                      </div>
-                    )}
-                    {weight && (
-                      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-50 border border-stone-100 rounded-md">
-                        <span className="text-stone-300">Net:</span> {weight}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* PREMIUM ADD TO CART BUTTON */}
-                  <button
-                    onClick={() =>
-                      handleAddToCart(
-                        product?._id || cartItem.productId,
-                        totalStock,
-                        variant?.size,
-                        weight,
-                      )
-                    }
-                    className="w-full group/btn relative flex items-center justify-center gap-3 bg-stone-900 text-white py-4 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-[#B23A2E] hover:shadow-xl hover:shadow-stone-200 active:scale-[0.98]"
-                  >
-                    {/* Subtle Shine Effect */}
-                    <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]" />
-
-                    <ShoppingCart
-                      size={16}
-                      className="transition-transform group-hover/btn:-rotate-12"
-                    />
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">
-                      Move to Basket
-                    </span>
-                  </button>
-                </div>
+          {/* ACTION: Move to Basket */}
+          <button
+            onClick={() => handleAddToCart(product?._id, totalStock, variant?.size, weight)}
+            className="w-full relative flex items-center justify-between group/btn bg-stone-900 text-white px-6 py-5 overflow-hidden transition-all duration-500 hover:bg-[#B23A2E]"
+          >
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] relative z-10">
+              Move to Basket
+            </span>
+            <ArrowRight size={16} className="relative z-10 transition-transform duration-500 group-hover/btn:translate-x-2" />
+            
+            {/* Hover Background Slide */}
+            <div className="absolute inset-0 bg-[#B23A2E] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500 ease-out" />
+          </button>
+        </div>
+      </motion.div>
               </div>
             );
           })}
