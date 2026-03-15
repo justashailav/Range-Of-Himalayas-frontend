@@ -461,25 +461,35 @@ export default function Home() {
       <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           {/* Title Section */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-3">
-              <span className="h-[1px] w-8 bg-[#D84C3C]" />
-              <span className="text-[11px] uppercase tracking-[0.5em] text-[#D84C3C] font-bold">
-                Curated Selection
-              </span>
-            </div>
+          <div className="flex flex-col items-center md:items-start space-y-4 md:space-y-3 text-center md:text-left">
+  
+  {/* Label with responsive lines */}
+  <div className="flex items-center gap-3">
+    {/* Left line (always visible) */}
+    <span className="h-[1px] w-6 md:w-8 bg-[#D84C3C]" />
+    
+    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-[#D84C3C] font-bold">
+      Curated Selection
+    </span>
 
-            <h1 className="text-4xl md:text-5xl font-serif text-gray-900 leading-tight">
-              Trending{" "}
-              <span className="text-gray-400 italic font-light">Now</span>
-            </h1>
+    {/* Right line (mobile only - creates symmetry when centered) */}
+    <span className="h-[1px] w-6 bg-[#D84C3C] md:hidden" />
+  </div>
 
-            <p className="text-sm text-gray-500 max-w-md font-light leading-relaxed">
-              Discover this week's most-loved essentials from the Himalayan
-              foothills, handpicked for their purity and craftsmanship.
-            </p>
-          </div>
+  {/* Responsive Headline */}
+  <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-gray-900 leading-[1.2] md:leading-tight">
+    Trending{" "}
+    <span className="text-gray-400 italic font-light block sm:inline mt-1 sm:mt-0">
+      Now
+    </span>
+  </h1>
 
+  {/* Responsive Paragraph */}
+  <p className="text-sm md:text-base text-gray-500 max-w-[280px] sm:max-w-md font-light leading-relaxed">
+    Discover this week's most-loved essentials from the Himalayan
+    foothills, handpicked for their purity and craftsmanship.
+  </p>
+</div>
           {/* Action Section */}
           <div className="flex items-center">
             <Link to="/viewproducts" className="group relative">
