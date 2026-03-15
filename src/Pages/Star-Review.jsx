@@ -3,23 +3,29 @@ import { motion } from "framer-motion";
 
 export default function StarRatingComponent({ rating, onChange }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-4">
-      <div className="flex items-center -ml-2"> {/* Negative margin compensates for padding */}
+    /* Mobile: Stacked and centered for thumb-reach
+       Desktop: Row-aligned with consistent spacing
+    */
+    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-1 sm:gap-4 w-full sm:w-auto">
+      
+      {/* STAR GROUP */}
+      <div className="flex items-center justify-center -ml-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <motion.button
             key={star}
-            whileHover={onChange ? { scale: 1.1, y: -2 } : {}}
+            whileHover={onChange ? { scale: 1.1 } : {}}
             whileTap={onChange ? { scale: 0.9 } : {}}
             onClick={onChange ? () => onChange(star) : undefined}
             type="button"
-            /* RESPONSIVE TOUCH TARGET: 
-               p-3 for mobile (easier to tap), md:p-2 for desktop (compact)
+            /* TOUCH TARGETS: 
+               p-3 on mobile creates a 44px+ hit area (UX standard)
+               p-1.5 on desktop keeps it boutique and tight
             */
-            className={`relative p-3 md:p-2 transition-all duration-300 outline-none ${
+            className={`relative p-3 sm:p-1.5 transition-all duration-300 outline-none ${
               onChange ? "cursor-pointer" : "cursor-default"
             }`}
           >
-            {/* Subtle Glow */}
+            {/* Background Glow - LayoutId makes it slide between stars */}
             {star <= rating && (
               <motion.div
                 layoutId="star-glow"
@@ -28,35 +34,40 @@ export default function StarRatingComponent({ rating, onChange }) {
             )}
 
             <StarIcon
-              strokeWidth={1.5}
-              /* RESPONSIVE SIZE: 
-                 w-6 for mobile visibility, w-5 for desktop sleekness
-              */
-              className={`w-6 h-6 md:w-5 md:h-5 transition-all duration-500 ${
+              strokeWidth={1.2}
+              /* ICON SIZING: Slightly larger on mobile for better visibility */
+              className={`w-6 h-6 sm:w-5 sm:h-5 transition-all duration-500 ${
                 star <= rating 
-                  ? "text-[#B23A2E] fill-[#B23A2E] drop-shadow-[0_2px_4px_rgba(178,58,46,0.2)]" 
-                  : "text-stone-300 fill-transparent"
+                  ? "text-[#B23A2E] fill-[#B23A2E] drop-shadow-[0_2px_4px_rgba(178,58,46,0.15)]" 
+                  : "text-stone-200 fill-transparent hover:text-stone-400"
               }`}
             />
             
-            {/* Animated underline indicator */}
+            {/* The active selection dot */}
             {onChange && star === rating && (
               <motion.div 
                 layoutId="active-star-indicator"
-                className="absolute bottom-1 md:bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full"
+                className="absolute bottom-1 sm:bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#B23A2E] rounded-full"
               />
             )}
           </motion.button>
         ))}
       </div>
       
-      {/* RESPONSIVE TEXT: 
-          Centered on mobile, left-aligned on desktop
-      */}
+      {/* RATING TEXT */}
       {rating > 0 && (
-        <span className="text-[9px] md:text-[10px] font-serif italic text-stone-400 animate-in fade-in slide-in-from-top-1 md:slide-in-from-left-2 tracking-widest sm:ml-0 self-center sm:self-auto">
-          {rating}.0 <span className="uppercase font-black text-[8px] tracking-[0.2em] not-italic ml-1">Archive Rating</span>
-        </span>
+        <motion.div 
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-row items-center gap-2 sm:border-l sm:border-stone-100 sm:pl-4 mt-1 sm:mt-0"
+        >
+          <span className="text-[11px] sm:text-[10px] font-serif italic text-stone-400 tracking-tighter">
+            {rating}.0
+          </span>
+          <span className="text-[8px] font-black uppercase tracking-[0.25em] text-stone-300 whitespace-nowrap">
+            Archive Rating
+          </span>
+        </motion.div>
       )}
     </div>
   );
