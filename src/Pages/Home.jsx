@@ -287,67 +287,68 @@ export default function Home() {
         </div>
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden bg-stone-950">
-      
-      {/* 1. THE IMAGE */}
-      <div className="absolute inset-0 z-0">
-        <motion.img
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.8 }}
-          transition={{ duration: 1.8, ease: "easeOut" }}
-          src={bgImage} 
-          /* On mobile, we center the image object so the product bowl stays visible */
-          className="w-full h-full object-cover object-center md:object-right"
-          alt="Himalayan Harvest"
-        />
-        
-        {/* Responsive Gradient: Top-to-bottom on mobile, Left-to-right on desktop */}
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-transparent to-stone-950 md:bg-gradient-to-r md:from-stone-950 md:via-stone-950/20 md:to-transparent" />
-      </div>
+        {/* 1. THE IMAGE */}
+        <div className="absolute inset-0 z-0">
+          <motion.img
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.8 }}
+            transition={{ duration: 1.8, ease: "easeOut" }}
+            src={bgImage}
+            /* On mobile, we center the image object so the product bowl stays visible */
+            className="w-full h-full object-cover object-center md:object-right"
+            alt="Himalayan Harvest"
+          />
 
-      {/* 2. THE CONTENT LAYER */}
-      <div className="relative z-10 flex flex-col justify-between h-full px-8 py-16 md:px-20 md:py-20 lg:px-32">
-        
-        {/* TOP: Status Label (Centered on mobile for balance) */}
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="flex items-center justify-center md:justify-start gap-3"
-        >
-          <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse" />
-          <p className="text-white/80 text-[9px] md:text-xs tracking-[0.3em] md:tracking-[0.5em] uppercase font-bold">
-            Volume 01 • Harvest 2026
-          </p>
-        </motion.div>
+          {/* Responsive Gradient: Top-to-bottom on mobile, Left-to-right on desktop */}
+          <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-transparent to-stone-950 md:bg-gradient-to-r md:from-stone-950 md:via-stone-950/20 md:to-transparent" />
+        </div>
 
-        {/* BOTTOM: Product Navigation */}
-        <div className="flex flex-col gap-8 md:gap-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+        {/* 2. THE CONTENT LAYER */}
+        <div className="relative z-10 flex flex-col justify-between h-full px-8 py-16 md:px-20 md:py-20 lg:px-32">
+          {/* TOP: Status Label (Centered on mobile for balance) */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            /* Mobile: Centered grid for touch targets | Desktop: Left-aligned row */
-            className="grid grid-cols-1 gap-y-5 md:flex md:flex-row md:items-center md:gap-x-12 border-t border-white/10 pt-8 md:pt-10"
+            transition={{ delay: 0.5 }}
+            className="flex items-center justify-center md:justify-start gap-3"
           >
-            {["Red Rice", "Pahadi Rajma", "Apricots"].map((item, i) => (
-              <div key={i} className="flex items-center justify-center md:justify-start gap-3 group cursor-pointer">
-                <span className="text-[#B23A2E] text-[8px] md:text-[11px] font-mono font-bold">
-                  0{i + 1}
-                </span>
-                <span className="text-white/60 group-hover:text-white text-[12px] md:text-[13px] uppercase tracking-[0.2em] md:tracking-[0.3em] transition-colors duration-300">
-                  {item}
-                </span>
-              </div>
-            ))}
+            <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse" />
+            <p className="text-white/80 text-[9px] md:text-xs tracking-[0.3em] md:tracking-[0.5em] uppercase font-bold">
+              Volume 01 • Harvest 2026
+            </p>
           </motion.div>
 
-          {/* Boutique Scroll Indicator (Centered on mobile, hidden if preferred) */}
-          <div className="flex justify-center md:justify-start">
-            <div className="w-[1px] h-10 md:h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+          {/* BOTTOM: Product Navigation */}
+          <div className="flex flex-col gap-8 md:gap-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              /* Mobile: Centered grid for touch targets | Desktop: Left-aligned row */
+              className="grid grid-cols-1 gap-y-5 md:flex md:flex-row md:items-center md:gap-x-12 border-t border-white/10 pt-8 md:pt-10"
+            >
+              {["Red Rice", "Pahadi Rajma", "Apricots"].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-center md:justify-start gap-3 group cursor-pointer"
+                >
+                  <span className="text-[#B23A2E] text-[8px] md:text-[11px] font-mono font-bold">
+                    0{i + 1}
+                  </span>
+                  <span className="text-white/60 group-hover:text-white text-[12px] md:text-[13px] uppercase tracking-[0.2em] md:tracking-[0.3em] transition-colors duration-300">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Boutique Scroll Indicator (Centered on mobile, hidden if preferred) */}
+            <div className="flex justify-center md:justify-start">
+              <div className="w-[1px] h-10 md:h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
@@ -462,66 +463,68 @@ export default function Home() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           {/* Title Section */}
           <div className="flex flex-col items-center md:items-start space-y-4 md:space-y-3 text-center md:text-left">
-  
-  {/* Label with responsive lines */}
-  <div className="flex items-center gap-3">
-    {/* Left line (always visible) */}
-    <span className="h-[1px] w-6 md:w-8 bg-[#D84C3C]" />
-    
-    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-[#D84C3C] font-bold">
-      Curated Selection
-    </span>
+            {/* Label with responsive lines */}
+            <div className="flex items-center gap-3">
+              {/* Left line (always visible) */}
+              <span className="h-[1px] w-6 md:w-8 bg-[#D84C3C]" />
 
-    {/* Right line (mobile only - creates symmetry when centered) */}
-    <span className="h-[1px] w-6 bg-[#D84C3C] md:hidden" />
-  </div>
+              <span className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] md:tracking-[0.5em] text-[#D84C3C] font-bold">
+                Curated Selection
+              </span>
 
-  {/* Responsive Headline */}
-  <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-gray-900 leading-[1.2] md:leading-tight">
-    Trending{" "}
-    <span className="text-gray-400 italic font-light block sm:inline mt-1 sm:mt-0">
-      Now
-    </span>
-  </h1>
+              {/* Right line (mobile only - creates symmetry when centered) */}
+              <span className="h-[1px] w-6 bg-[#D84C3C] md:hidden" />
+            </div>
 
-  {/* Responsive Paragraph */}
-  <p className="text-sm md:text-base text-gray-500 max-w-[280px] sm:max-w-md font-light leading-relaxed">
-    Discover this week's most-loved essentials from the Himalayan
-    foothills, handpicked for their purity and craftsmanship.
-  </p>
-</div>
-          {/* Action Section */}
-          <div className="flex items-center">
-            <Link to="/viewproducts" className="group relative">
-              <div className="flex items-center gap-4 py-3 px-1">
-                <span className="text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
-                  View All Collections
-                </span>
+            {/* Responsive Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-gray-900 leading-[1.2] md:leading-tight">
+              Trending{" "}
+              <span className="text-gray-400 italic font-light block sm:inline mt-1 sm:mt-0">
+                Now
+              </span>
+            </h1>
 
-                <div className="relative w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
-                  {/* Background fill effect on hover */}
-                  <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-
-                  {/* Arrow icon */}
-                  <svg
-                    className="w-5 h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </div>
-              </div>
-              {/* Subtle underline that expands */}
-              <div className="absolute bottom-0 left-0 h-[1px] bg-gray-200 w-full group-hover:bg-[#D84C3C]/30 transition-colors" />
-            </Link>
+            {/* Responsive Paragraph */}
+            <p className="text-sm md:text-base text-gray-500 max-w-[280px] sm:max-w-md font-light leading-relaxed">
+              Discover this week's most-loved essentials from the Himalayan
+              foothills, handpicked for their purity and craftsmanship.
+            </p>
           </div>
+          {/* Action Section */}
+          <div className="flex justify-center md:justify-end items-center pt-6 md:pt-0">
+  <Link to="/viewproducts" className="group relative">
+    <div className="flex items-center gap-3 md:gap-4 py-3 px-1">
+      {/* Text: Slightly smaller on mobile to keep it on one line */}
+      <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
+        View All Collections
+      </span>
+
+      {/* Circle Icon: Scaled down for mobile */}
+      <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
+        {/* Background fill effect on hover */}
+        <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+
+        {/* Arrow icon: Responsive size */}
+        <svg
+          className="w-4 h-4 md:w-5 md:h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"
+          />
+        </svg>
+      </div>
+    </div>
+
+    {/* Subtle underline: Hidden on mobile to keep the UI clean, or kept for flair */}
+    <div className="absolute bottom-0 left-0 h-[1px] bg-gray-200 w-full scale-x-100 group-hover:bg-[#D84C3C] transition-all duration-500 origin-left" />
+  </Link>
+</div>
         </div>
 
         {/* Optional: A very faint divider to anchor the grid below */}
