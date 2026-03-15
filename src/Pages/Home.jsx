@@ -693,50 +693,69 @@ export default function Home() {
   <div className="relative group">
     
     {/* 1. The Decorative Frame */}
-    <div className="absolute -inset-2 sm:-inset-4 border border-[#E8DCD3] rounded-[2rem] sm:rounded-[3rem] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+    <div className="absolute -inset-2 sm:-inset-4 border border-stone-200 rounded-[2rem] sm:rounded-[3rem] pointer-events-none opacity-50" />
 
-    {/* 2. Main Image Container */}
-    {/* Changed: Removed fixed h-[450px] for mobile and used aspect-ratio instead */}
-    <div className="relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] bg-[#F3F0EB] shadow-xl">
-      <motion.div
-        initial={{ opacity: 0, scale: 1.1 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5, ease: [0.2, 1, 0.3, 1] }}
-        className="relative"
-      >
-        <img
-          src={foundersImage}
-          alt="Founders of Range of Himalayas"
-          /* Use aspect-[4/5] for mobile (portrait) and h-auto to ensure visibility */
-          className="w-full aspect-[4/5] sm:aspect-auto sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
-        />
-
-        {/* 3. Overlays */}
-        {/* Darkened gradient for mobile to ensure the white badge text pops */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:bg-gradient-to-b md:from-transparent md:to-black/20" />
-      </motion.div>
-
-      {/* 4. Floating Caption Badge */}
-      {/* Changed: Adjusted positioning and added bottom-4 for tighter mobile screens */}
-      <div className="absolute bottom-4 left-4 right-4 sm:bottom-12 sm:left-12 sm:right-auto">
-        <div className="bg-white/95 backdrop-blur-md px-4 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl border border-white/50 shadow-2xl">
-          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-1">
-            Our Visionaries
-          </p>
-          <h4 className="text-base sm:text-xl font-serif text-gray-900 leading-tight">
-            Nurturing the Roots
-          </h4>
-        </div>
+    {/* 2. Main Content Container (Replaced Image with a Text Block) */}
+    <div className="relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] bg-[#F9F7F2] border border-stone-100 shadow-xl min-h-[400px] flex items-center justify-center p-8 sm:p-20">
+      
+      {/* Decorative Background Element (Subtle Himalayan Peak Shape) */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
+         <svg viewBox="0 0 1000 1000" className="w-full h-full">
+            <path d="M500 200 L800 800 L200 800 Z" fill="currentColor" />
+         </svg>
       </div>
+
+      {/* 3. YOUR TEXT AREA */}
+      <div className="relative z-10 max-w-2xl text-center sm:text-left">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* Accent Label */}
+          <div className="flex items-center justify-center sm:justify-start gap-3 mb-6">
+            <span className="h-[1px] w-8 bg-[#D84C3C]" />
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[#D84C3C] font-bold">
+              Founder's Letter
+            </span>
+          </div>
+
+          {/* Main Content: Replace this with your words */}
+          <h2 className="text-3xl sm:text-5xl font-serif text-stone-800 leading-[1.2] mb-6">
+            "Our journey began in the <span className="italic text-stone-500">high altitudes</span>, where purity is the only standard."
+          </h2>
+
+          <div className="space-y-4">
+            <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
+              This is where you can write your own story. Whether it's about your vision, 
+              the process, or the people behind the harvest, this space is designed to 
+              scale beautifully. The text will wrap naturally on mobile devices, 
+              ensuring that not a single word is cut off.
+            </p>
+            
+            <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
+              Add a second paragraph here to share more depth. The stone-washed 
+              background keeps the focus on your message while maintaining a 
+              premium, boutique aesthetic.
+            </p>
+          </div>
+
+          {/* Signature / Footer */}
+          <div className="mt-10 pt-8 border-t border-stone-200/60">
+            <p className="font-serif italic text-xl text-stone-800">The Founders</p>
+            <p className="text-[10px] uppercase tracking-widest text-stone-400 mt-1">Range of Himalayas</p>
+          </div>
+        </motion.div>
+      </div>
+
     </div>
 
-    {/* 5. Artistic Corner Stamp */}
-    {/* Hidden on very small mobile devices to avoid cluttering the visual field */}
-    <div className="absolute -bottom-3 -right-3 hidden sm:flex">
-      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-3 text-center shadow-2xl rotate-12">
-        <span className="text-[7px] sm:text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
-          Authentic <br /> Himalayan <br /> Harvest
+    {/* 4. Artistic Corner Stamp (Optional) */}
+    <div className="absolute -bottom-4 -right-2 hidden md:flex">
+      <div className="w-20 h-20 rounded-full border border-stone-200 flex items-center justify-center p-4 text-center rotate-12 bg-white shadow-sm">
+        <span className="text-[7px] font-bold text-stone-400 uppercase tracking-widest leading-tight">
+          Est. <br /> 2026
         </span>
       </div>
     </div>
