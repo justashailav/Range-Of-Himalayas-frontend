@@ -322,27 +322,6 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {/* Unified Headline (No longer covering the bowl) */}
-        <div className="flex flex-col mb-16 md:mb-20">
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
-            className="text-white text-[20vw] md:text-[10rem] font-black leading-[0.8] uppercase tracking-tighter"
-          >
-            Purely
-          </motion.h1>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-            className="text-stone-300 text-[14vw] md:text-[8rem] font-serif italic font-extralight leading-[0.8] -mt-2 md:-mt-6 ml-4 md:ml-12"
-          >
-            Himalayan
-          </motion.h1>
-        </div>
-
         {/* Refined Products Row: More room on desktop */}
         <motion.div 
           initial={{ opacity: 0 }}
@@ -350,7 +329,7 @@ export default function Home() {
           transition={{ delay: 1.2 }}
           className="flex flex-col md:flex-row md:items-center gap-x-12 gap-y-6 border-t border-white/10 pt-10"
         >
-          {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
+          {["Red Rice", "Pahadi Rajma", "Apricots"].map((item, i) => (
             <div key={i} className="flex items-center gap-3">
               <span className="text-[#B23A2E] text-[8px] md:text-[11px] font-mono font-bold">0{i+1}</span>
               <span className="text-white text-[11px] md:text-[13px] uppercase tracking-[0.25em] md:tracking-[0.4em] whitespace-nowrap">
