@@ -148,41 +148,41 @@ export default function HomeBlog() {
                 >
                   {/* --- 1. VISUAL ZONE --- */}
                   <a
-  href={`/blog/${b.slug}`}
-  /* Changed: h-60 on mobile, h-72 on desktop. 
+                    href={`/blog/${b.slug}`}
+                    /* Changed: h-60 on mobile, h-72 on desktop. 
      Added 'rounded-2xl' to match the boutique aesthetic you've been using */
-  className="relative h-60 md:h-72 overflow-hidden bg-stone-100 block rounded-2xl md:rounded-none group"
->
-  {b.coverImage && (
-    <>
-      <img
-        src={b.coverImage}
-        alt={b.title}
-        className="w-full h-full object-cover transition-all duration-[1.5s] ease-out grayscale-[20%] group-hover:grayscale-0 group-hover:scale-110"
-      />
-      {/* Overlay: Slightly stronger on mobile to ensure text is readable regardless of light */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent md:opacity-60 group-hover:opacity-30 transition-opacity duration-700" />
-    </>
-  )}
+                    className="relative h-60 md:h-72 overflow-hidden bg-stone-100 block rounded-2xl md:rounded-none group"
+                  >
+                    {b.coverImage && (
+                      <>
+                        <img
+                          src={b.coverImage}
+                          alt={b.title}
+                          className="w-full h-full object-cover transition-all duration-[1.5s] ease-out grayscale-[20%] group-hover:grayscale-0 group-hover:scale-110"
+                        />
+                        {/* Overlay: Slightly stronger on mobile to ensure text is readable regardless of light */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent md:opacity-60 group-hover:opacity-30 transition-opacity duration-700" />
+                      </>
+                    )}
 
-  {/* Archive Tag: Smaller on mobile, repositioned for tight screens */}
-  {b.category && (
-    <div className="absolute top-4 left-4 md:top-6 md:left-6">
-      <span className="bg-stone-900/90 backdrop-blur-md text-white text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] md:tracking-[0.25em] px-3 py-1 md:px-4 md:py-1.5 rounded-sm">
-        {b.category}
-      </span>
-    </div>
-  )}
+                    {/* Archive Tag: Smaller on mobile, repositioned for tight screens */}
+                    {b.category && (
+                      <div className="absolute top-4 left-4 md:top-6 md:left-6">
+                        <span className="bg-stone-900/90 backdrop-blur-md text-white text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] md:tracking-[0.25em] px-3 py-1 md:px-4 md:py-1.5 rounded-sm">
+                          {b.category}
+                        </span>
+                      </div>
+                    )}
 
-  {/* Reference Stamp: 
+                    {/* Reference Stamp: 
       On mobile, we make it partially visible (opacity-60) so it's not "lost", 
       since hover doesn't exist on touch screens. */}
-  <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white/90">
-    <p className="text-[8px] md:text-[9px] font-mono tracking-[0.3em] md:tracking-[0.4em] translate-y-0 opacity-60 md:opacity-0 md:translate-y-2 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-      REF: {b._id.slice(-6).toUpperCase()} // 2026
-    </p>
-  </div>
-</a>
+                    <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 text-white/90">
+                      <p className="text-[8px] md:text-[9px] font-mono tracking-[0.3em] md:tracking-[0.4em] translate-y-0 opacity-60 md:opacity-0 md:translate-y-2 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        REF: {b._id.slice(-6).toUpperCase()} // 2026
+                      </p>
+                    </div>
+                  </a>
 
                   {/* --- 2. NARRATIVE ZONE --- */}
                   <div className="p-8 flex-grow space-y-5">
