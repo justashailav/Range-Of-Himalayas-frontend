@@ -112,191 +112,201 @@ export default function CustomerReviews() {
       </div>
 
       {/* Stats Section */}
-      <div className="flex justify-center mb-16 md:mb-24 px-4">
-        <div className="relative group w-full max-w-lg md:max-w-5xl">
-          {/* --- DECORATIVE ARCHIVE FRAME --- */}
-          {/* Hidden on mobile to keep the UI clean, visible on desktop for that 'boxed' feel */}
-          <div className="absolute -inset-2 md:-inset-4 border border-stone-100 rounded-[2rem] md:rounded-[3rem] -z-10 group-hover:border-stone-200 transition-colors duration-700" />
+     <div className="flex justify-center mb-16 md:mb-24 px-6">
+  <div className="w-full max-w-5xl">
+    {/* 1. TOP LABEL & DATE */}
+    <div className="flex justify-between items-end mb-6 px-2">
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-[1px] bg-[#B23A2E]" />
+        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+          Harvest Ledger
+        </span>
+      </div>
+      <span className="text-[9px] font-mono text-stone-400 uppercase tracking-widest hidden sm:block">
+        Updated: Mar 2026
+      </span>
+    </div>
 
-          <div className="bg-white border border-stone-200 rounded-[1.5rem] md:rounded-[2rem] px-6 py-8 md:px-12 md:py-10 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
-            {/* 1. SCORE UNIT */}
-            <div className="text-center space-y-3">
-              <div className="flex justify-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <FaStar
-                    key={i}
-                    className={`text-[9px] md:text-[10px] ${
-                      i < Math.round(averageRating)
-                        ? "text-[#B23A2E]"
-                        : "text-stone-200"
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <div className="flex flex-col items-center">
-                <span className="text-4xl md:text-5xl font-black text-stone-900 tracking-tighter">
-                  {averageRating}
-                </span>
-                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 mt-1 md:mt-2">
-                  Average Grade
-                </span>
-              </div>
-            </div>
-
-            {/* --- RESPONSIVE DIVIDER --- */}
-            {/* Horizontal on mobile, Vertical on Desktop */}
-            <div className="flex md:flex-col items-center gap-2 w-full md:w-auto">
-              <div className="flex-grow md:flex-none w-full md:w-[1px] h-[1px] md:h-8 bg-stone-100" />
-              <div className="w-1.5 h-1.5 rounded-full bg-stone-200 flex-shrink-0" />
-              <div className="flex-grow md:flex-none w-full md:w-[1px] h-[1px] md:h-8 bg-stone-100" />
-            </div>
-
-            {/* 2. VOLUME UNIT */}
-            <div className="text-center">
-              <div className="flex flex-col items-center">
-                <span className="text-4xl md:text-5xl font-black text-stone-900 tracking-tighter font-mono">
-                  {String(reviews?.length || 0).padStart(2, "0")}
-                </span>
-                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 mt-1 md:mt-2">
-                  Total Entries
-                </span>
-              </div>
-            </div>
-
-            {/* 3. VERIFICATION STAMP */}
-            {/* Now visible on mobile but styled as a small footer note */}
-            <div className="pt-4 md:pt-0 md:border-l border-stone-100 md:pl-12 w-full md:w-auto">
-              <div className="flex items-center justify-center md:justify-start gap-4 opacity-40">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-dashed border-stone-400 flex items-center justify-center">
-                  <div className="w-5 h-5 md:w-6 md:h-6 rounded-full border border-stone-400" />
-                </div>
-                <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-stone-500 leading-tight text-left">
-                  Verified <br /> Harvest 2026
-                </p>
-              </div>
-            </div>
-          </div>
+    {/* 2. THE FLOATING GRID */}
+    <div className="grid grid-cols-1 md:grid-cols-3 items-center border-y border-stone-200 py-12 gap-y-12 md:gap-y-0 relative">
+      
+      {/* 1. SCORE UNIT */}
+      <div className="flex flex-col items-center md:items-start md:pl-8 group">
+        <div className="flex gap-1 mb-4 opacity-60 group-hover:opacity-100 transition-opacity">
+          {[...Array(5)].map((_, i) => (
+            <FaStar key={i} className={`text-[8px] ${i < 5 ? "text-[#B23A2E]" : "text-stone-200"}`} />
+          ))}
         </div>
+        <div className="flex items-baseline gap-2">
+          <span className="text-6xl md:text-7xl font-black text-stone-900 tracking-tighter leading-none">
+            {averageRating}
+          </span>
+          <span className="text-[#B23A2E] font-serif italic text-xl">/ 5.0</span>
+        </div>
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 mt-4">
+          Quality Rating
+        </span>
       </div>
 
-      {/* Reviews Section */}
-      {isLoading ? (
-        <p className="text-center text-gray-500">Loading reviews...</p>
-      ) : reviews?.length === 0 ? (
-        <p className="text-center text-gray-500">No reviews yet.</p>
-      ) : (
-        <div className="relative max-w-7xl mx-auto group/slider">
-          {/* --- SCROLL CONTAINER --- */}
-          <div
-            ref={scrollContainer}
-            className="flex overflow-x-auto gap-4 md:gap-8 px-4 md:px-10 py-10 scroll-smooth no-scrollbar snap-x snap-mandatory"
-          >
-            {reviews.map((r, i) => (
-              <div
-                key={i}
-                /* MOBILE FIX: min-w-[85vw] ensures the next card is partially visible, 
-           prompting a swipe without needing arrows. 
-        */
-                className="bg-white min-w-[85vw] md:min-w-[400px] border border-stone-100 rounded-[2rem] hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all duration-700 p-6 md:p-8 flex-shrink-0 flex flex-col justify-between group/card snap-center"
-              >
-                <div>
-                  {/* Header: Product & Verification */}
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="space-y-1">
-                      <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
-                        Product Reference
-                      </span>
-                      <h3 className="font-black text-stone-900 uppercase tracking-tighter text-xs md:text-sm">
-                        {r.productId?.title}
-                      </h3>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#B23A2E] animate-pulse" />
-                      <span className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-stone-400">
-                        Verified Dispatch
-                      </span>
-                    </div>
-                  </div>
+      {/* 2. VOLUME UNIT - Centered with vertical markers */}
+      <div className="flex flex-col items-center relative py-4 md:py-0">
+        {/* Subtle Vertical Borders for Desktop */}
+        <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-16 w-[1px] bg-stone-200" />
+        <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-16 w-[1px] bg-stone-200" />
+        
+        <span className="text-6xl md:text-7xl font-black text-stone-900 tracking-tighter leading-none font-mono">
+          {String(reviews?.length || 0).padStart(2, "0")}
+        </span>
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 mt-4 text-center">
+          Customer <br className="md:hidden" /> Manuscripts
+        </span>
+      </div>
 
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-6">
-                    {[...Array(5)].map((_, starIndex) => (
-                      <FaStar
-                        key={starIndex}
-                        className={`text-[9px] md:text-[10px] ${starIndex < r.reviewValue ? "text-[#B23A2E]" : "text-stone-100"}`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* The Message */}
-                  <p className="text-stone-600 font-serif italic text-base md:text-lg leading-relaxed mb-6 line-clamp-4">
-                    "{r.reviewMessage}"
-                  </p>
-
-                  {/* Review Image: Responsive height */}
-                  {r.reviewImages?.length > 0 && (
-                    <div className="mb-6 relative group/img overflow-hidden rounded-xl bg-stone-100 border border-stone-200 p-1">
-                      <img
-                        src={`http://localhost:3000/${r.reviewImages[0].replace("\\", "/")}`}
-                        alt="review"
-                        className="w-full h-40 md:h-48 object-cover rounded-lg grayscale-[20%] group-hover/img:grayscale-0 transition-all duration-700"
-                      />
-                      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-md px-2 py-1 rounded text-[7px] font-mono text-stone-500">
-                        IMG_REC_{i + 100}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer: User Details */}
-                <div className="flex items-center justify-between border-t border-stone-50 pt-6">
-                  <div className="flex items-center gap-3 md:gap-4">
-                    <div className="relative">
-                      <div className="bg-stone-900 text-white font-black text-[9px] md:text-[10px] rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border-2 md:border-4 border-white shadow-sm uppercase">
-                        {r.userName.charAt(0)}
-                      </div>
-                      <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-[#B23A2E] border-2 border-white rounded-full" />
-                    </div>
-                    <div>
-                      <p className="font-black text-stone-900 text-[10px] md:text-xs uppercase tracking-widest">
-                        {r.userName}
-                      </p>
-                      <p className="text-[9px] md:text-[10px] font-serif italic text-stone-400">
-                        {dayjs(r.createdAt).fromNow()}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="opacity-10 group-hover/card:opacity-30 transition-opacity">
-                    <span className="font-serif italic text-2xl md:text-3xl">
-                      “
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* --- MINIMALIST PROGRESS INDICATOR --- */}
-          <div className="mt-8 flex justify-center items-center gap-4">
-            <div className="h-[1px] w-24 bg-stone-100 relative overflow-hidden">
-              <motion.div
-                className="absolute inset-y-0 left-0 bg-[#B23A2E] w-1/3"
-                animate={{ x: ["0%", "200%"] }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            </div>
-            <span className="text-[8px] font-black uppercase tracking-[0.4em] text-stone-400">
-              Swipe to Browse Archive
-            </span>
-            <div className="h-[1px] w-24 bg-stone-100" />
+      {/* 3. VERIFICATION STAMP - Stylized as an Official Seal */}
+      <div className="flex flex-col items-center md:items-end md:pr-8">
+        <div className="relative w-20 h-20 flex items-center justify-center">
+          {/* Rotating Text Border Effect */}
+          <div className="absolute inset-0 border border-dashed border-stone-200 rounded-full animate-[spin_10s_linear_infinite]" />
+          <div className="w-14 h-14 rounded-full border border-stone-100 flex flex-col items-center justify-center bg-stone-50/50">
+             <span className="text-[8px] font-black text-stone-900 uppercase">HLYN</span>
+             <span className="text-[7px] text-[#B23A2E] font-mono">2026</span>
           </div>
         </div>
-      )}
+        <div className="mt-4 text-center md:text-right">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-900">
+            Heritage Verified
+          </p>
+          <p className="text-[9px] font-serif italic text-stone-400 mt-1">
+            "Trust grown in stone"
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* 3. FOOTER TAGS */}
+    <div className="flex justify-center md:justify-start gap-8 mt-6 opacity-30 px-2 grayscale">
+       <div className="flex items-center gap-2">
+         <div className="w-1.5 h-1.5 rounded-full bg-stone-900" />
+         <span className="text-[8px] font-black uppercase tracking-widest">Organic Standard</span>
+       </div>
+       <div className="flex items-center gap-2">
+         <div className="w-1.5 h-1.5 rounded-full bg-stone-900" />
+         <span className="text-[8px] font-black uppercase tracking-widest">Boutique Batch</span>
+       </div>
+    </div>
+  </div>
+</div>
+
+      {/* Reviews Section */}
+     {isLoading ? (
+  <div className="flex flex-col items-center justify-center py-20 space-y-4">
+    <div className="w-12 h-12 border-t-2 border-[#B23A2E] rounded-full animate-spin" />
+    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">Accessing Archives...</p>
+  </div>
+) : reviews?.length === 0 ? (
+  <div className="text-center py-20 border border-dashed border-stone-200 rounded-[2rem]">
+    <p className="font-serif italic text-stone-400">The ledger is currently empty.</p>
+  </div>
+) : (
+  <div className="relative max-w-7xl mx-auto group/slider">
+    {/* --- SCROLL CONTAINER --- */}
+    <div
+      ref={scrollContainer}
+      className="flex overflow-x-auto gap-6 md:gap-10 px-6 md:px-12 py-12 scroll-smooth no-scrollbar snap-x snap-mandatory items-end"
+    >
+      {reviews.map((r, i) => (
+        <div
+          key={i}
+          /* UI CHANGE: Alternate heights for an editorial look */
+          className={`bg-white min-w-[80vw] md:min-w-[420px] border-b-4 border-r border-l border-t border-stone-100 rounded-tr-[4rem] rounded-bl-[4rem] rounded-tl-xl rounded-br-xl hover:border-[#B23A2E]/30 transition-all duration-700 p-8 md:p-10 flex-shrink-0 flex flex-col justify-between group/card snap-center shadow-sm hover:shadow-xl
+          ${i % 2 === 0 ? 'h-[500px] md:h-[550px]' : 'h-[450px] md:h-[500px]'}`}
+        >
+          <div className="relative">
+            {/* Top Left: Archive Index */}
+            <span className="absolute -top-4 -left-4 font-mono text-[10px] text-stone-300">
+              #{String(i + 1).padStart(3, '0')}
+            </span>
+
+            {/* Product Header */}
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1 h-1 bg-[#B23A2E] rounded-full" />
+                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#B23A2E]">
+                  Verified Dispatch
+                </span>
+              </div>
+              <h3 className="font-serif italic text-xl md:text-2xl text-stone-900 leading-none">
+                {r.productId?.title}
+              </h3>
+            </div>
+
+            {/* The Message: Bigger and more impactful */}
+            <p className="text-stone-600 font-serif italic text-lg md:text-xl leading-relaxed mb-8 line-clamp-5">
+              "{r.reviewMessage}"
+            </p>
+
+            {/* Rating: Minimalist Dots instead of Stars */}
+            <div className="flex gap-2 mb-8">
+              {[...Array(5)].map((_, starIndex) => (
+                <div
+                  key={starIndex}
+                  className={`w-1.5 h-1.5 rounded-full ${starIndex < r.reviewValue ? "bg-[#B23A2E]" : "bg-stone-100"}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {/* Review Image: Stylized with a 'Polaroid' feel */}
+            {r.reviewImages?.length > 0 && (
+              <div className="relative group/img aspect-video overflow-hidden rounded-lg bg-stone-50 border border-stone-100">
+                <img
+                  src={`http://localhost:3000/${r.reviewImages[0].replace("\\", "/")}`}
+                  alt="review"
+                  className="w-full h-full object-cover scale-110 group-hover/img:scale-100 transition-transform duration-1000"
+                />
+              </div>
+            )}
+
+            {/* Footer: Modern Minimalist */}
+            <div className="flex items-end justify-between">
+              <div className="space-y-1">
+                <p className="font-black text-stone-900 text-xs uppercase tracking-[0.2em]">
+                  {r.userName}
+                </p>
+                <p className="text-[10px] font-mono text-stone-400 uppercase tracking-widest">
+                  {dayjs(r.createdAt).format('MM // YYYY')}
+                </p>
+              </div>
+              
+              {/* Vertical Text Accent */}
+              <span className="text-[8px] font-black uppercase tracking-[0.5em] text-stone-200 rotate-180 [writing-mode:vertical-lr]">
+                Himalayan Harvest
+              </span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* --- FOOTER UI: FRACTIONAL COUNTER --- */}
+    <div className="mt-12 flex flex-col items-center space-y-4">
+      <div className="flex items-center gap-6">
+        <div className="h-[1px] w-12 bg-stone-200" />
+        <div className="flex items-baseline gap-2 font-mono">
+          <span className="text-xl font-black text-stone-900">01</span>
+          <span className="text-stone-300 text-xs">/</span>
+          <span className="text-stone-400 text-xs">{String(reviews.length).padStart(2, '0')}</span>
+        </div>
+        <div className="h-[1px] w-12 bg-stone-200" />
+      </div>
+      
+      <p className="text-[9px] font-black uppercase tracking-[0.4em] text-stone-400 animate-pulse">
+        Swipe to navigate ledger
+      </p>
+    </div>
+  </div>
+)}
     </div>
   );
 }
