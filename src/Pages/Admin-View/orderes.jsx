@@ -273,7 +273,9 @@ export default function AdminOrders() {
                       <TableCell className="font-medium text-gray-900">
                         {order._id}
                       </TableCell>
-                      <TableCell>{order.orderDate.split("T")[0]}</TableCell>
+                      <TableCell>
+  {order?.orderDate?.split("T")[0] || "No Date"}
+</TableCell>
                       <TableCell>
                         <Badge
                           className={`rounded-full px-3 py-1 font-semibold text-xs ${getStatusBadgeColor(
