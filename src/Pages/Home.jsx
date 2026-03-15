@@ -492,90 +492,106 @@ export default function Home() {
           </div>
           {/* Action Section */}
           <div className="flex justify-center md:justify-end items-center pt-6 md:pt-0">
-  <Link to="/viewproducts" className="group relative">
-    <div className="flex items-center gap-3 md:gap-4 py-3 px-1">
-      {/* Text: Slightly smaller on mobile to keep it on one line */}
-      <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
-        View All Collections
-      </span>
+            <Link to="/viewproducts" className="group relative">
+              <div className="flex items-center gap-3 md:gap-4 py-3 px-1">
+                {/* Text: Slightly smaller on mobile to keep it on one line */}
+                <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
+                  View All Collections
+                </span>
 
-      {/* Circle Icon: Scaled down for mobile */}
-      <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
-        {/* Background fill effect on hover */}
-        <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                {/* Circle Icon: Scaled down for mobile */}
+                <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
+                  {/* Background fill effect on hover */}
+                  <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
 
-        {/* Arrow icon: Responsive size */}
-        <svg
-          className="w-4 h-4 md:w-5 md:h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
-      </div>
-    </div>
+                  {/* Arrow icon: Responsive size */}
+                  <svg
+                    className="w-4 h-4 md:w-5 md:h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
+              </div>
 
-    {/* Subtle underline: Hidden on mobile to keep the UI clean, or kept for flair */}
-    <div className="absolute bottom-0 left-0 h-[1px] bg-gray-200 w-full scale-x-100 group-hover:bg-[#D84C3C] transition-all duration-500 origin-left" />
-  </Link>
-</div>
+              {/* Subtle underline: Hidden on mobile to keep the UI clean, or kept for flair */}
+              <div className="absolute bottom-0 left-0 h-[1px] bg-gray-200 w-full scale-x-100 group-hover:bg-[#D84C3C] transition-all duration-500 origin-left" />
+            </Link>
+          </div>
         </div>
 
         {/* Optional: A very faint divider to anchor the grid below */}
         <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
       </div>
-      <div className="relative p-6">
-        {/* LEFT ARROW */}
-        <button className="swiper-button-prev-custom absolute top-1/2 left-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
-          <ChevronLeft className="w-5 h-5" />
-        </button>
+     <div className="relative px-4 md:px-6 py-10">
+  {productList && productList.length > 0 ? (
+    <>
+      <Swiper
+        modules={[Navigation, Pagination]}
+        /* Link to the custom pagination below */
+        pagination={{
+          el: ".custom-pagination",
+          type: "progressbar",
+        }}
+        spaceBetween={20}
+        slidesPerView={1.2} // Shows a peek of the next card on mobile
+        breakpoints={{
+          640: { slidesPerView: 2, spaceBetween: 24 },
+          1024: { slidesPerView: 3, spaceBetween: 30 },
+          1280: { slidesPerView: 4, spaceBetween: 30 },
+        }}
+        className="pb-16" // Space for the progress bar
+      >
+        {productList.map((item) => (
+          <SwiperSlide key={item._id} className="py-2">
+            <motion.div 
+              whileHover={{ y: -8 }} 
+              transition={{ duration: 0.3 }}
+            >
+              <ShoppingProductTile
+                product={item}
+                handleAddToCart={handleAddToCart}
+                handleAddToWishList={handleAddToWishList}
+              />
+            </motion.div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-        {/* RIGHT ARROW */}
-        <button className="swiper-button-next-custom absolute top-1/2 right-2 z-10 -translate-y-1/2 bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md transition duration-200">
-          <ChevronRight className="w-5 h-5" />
-        </button>
-
-        {productList && productList.length > 0 ? (
-          <Swiper
-            modules={[Navigation]}
-            navigation={{
-              prevEl: ".swiper-button-prev-custom",
-              nextEl: ".swiper-button-next-custom",
-            }}
-            spaceBetween={30}
-            slidesPerView={1}
-            breakpoints={{
-              768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-            }}
-          >
-            {productList.map((item) => (
-              <SwiperSlide key={item._id}>
-                <motion.div whileHover={{ scale: 1.03 }}>
-                  <ShoppingProductTile
-                    product={item}
-                    handleAddToCart={handleAddToCart}
-                    handleAddToWishList={handleAddToWishList}
-                  />
-                </motion.div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        ) : (
-          /* 🔥 Skeleton grid */
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <TrendingProductSkeleton key={i} />
-            ))}
-          </div>
-        )}
+      {/* CUSTOM PROGRESS NAVIGATION (Responsive & Minimal) */}
+      <div className="mt-8 flex flex-col items-center gap-4">
+        {/* The Actual Progress Line */}
+        <div className="custom-pagination relative w-full max-w-[200px] h-[2px] bg-gray-100 overflow-hidden">
+          {/* Swiper injects the active progress bar here automatically */}
+          <style jsx global>{`
+            .custom-pagination .swiper-pagination-progressbar-fill {
+              background-color: #D84C3C !important;
+            }
+          `}</style>
+        </div>
+        
+        {/* Simple Label for Mobile Users */}
+        <span className="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-medium md:hidden">
+          Swipe to explore
+        </span>
       </div>
+    </>
+  ) : (
+    /* Skeleton grid */
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      {[1, 2, 3].map((i) => (
+        <TrendingProductSkeleton key={i} />
+      ))}
+    </div>
+  )}
+</div>
 
       <div>
         {/* HEADER */}
