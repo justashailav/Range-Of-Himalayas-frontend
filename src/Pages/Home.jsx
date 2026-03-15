@@ -288,43 +288,47 @@ export default function Home() {
       </div>
 <section className="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-stone-950">
       
-      {/* 1. THE CLEAN BANNER IMAGE (No baked-in text) */}
+      {/* 1. THE IMAGE (Offset to the right) */}
       <div className="absolute inset-0 z-0">
         <motion.img
           initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.7 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          animate={{ scale: 1, opacity: 0.8 }}
+          transition={{ duration: 1.8, ease: "easeOut" }}
           src={bgImage} 
-          className="w-full h-full object-cover object-center md:object-right"
+          /* Scale logic for responsive positioning */
+          className="w-full h-full object-cover object-center md:object-right md:scale-105"
           alt="Himalayan Harvest"
         />
-        {/* Modern Gradient: Darker on the left for text legibility, transparent on the right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/40 to-transparent md:from-stone-950/90 md:via-stone-950/20 md:to-transparent" />
-      </div>
-
-      {/* 2. THE TYPOGRAPHY LAYER */}
-      <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-20 lg:px-32">
         
-        {/* Small Label */}
+        {/* The Asymmetrical Gradient (Left to Right) */}
+        {/* This creates the dark canvas for your text */}
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/30 to-transparent md:from-stone-950/90 md:via-stone-950/40 md:to-transparent" />
+      1</div>
+
+      {/* 2. THE CONTENT LAYER (Offset to the left) */}
+      {/* Increased padding-left creates a wide breathing space for the text */}
+      <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-20 lg:px-40 xl:px-56">
+        
+        {/* Clean Label */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex items-center gap-3 mb-6"
+          className="flex items-center gap-2 mb-8"
         >
-          <span className="w-2 h-2 bg-[#B23A2E] rounded-full" />
-          <p className="text-white/60 text-[10px] md:text-xs tracking-[0.4em] uppercase font-medium">
+          <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full" />
+          <p className="text-white/70 text-[10px] md:text-xs tracking-[0.5em] uppercase font-bold">
             Volume 01 • Harvest 2026
           </p>
         </motion.div>
 
-        {/* Main Title Stack */}
-        <div className="flex flex-col mb-10 md:mb-16">
+        {/* Unified Headline (No longer covering the bowl) */}
+        <div className="flex flex-col mb-16 md:mb-20">
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.8 }}
-            className="text-white text-[18vw] md:text-[10rem] font-black leading-[0.8] uppercase tracking-tighter"
+            className="text-white text-[20vw] md:text-[10rem] font-black leading-[0.8] uppercase tracking-tighter"
           >
             Purely
           </motion.h1>
@@ -333,23 +337,23 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.8 }}
-            className="text-stone-300 text-[14vw] md:text-[7rem] font-serif italic leading-[0.8] -mt-2 md:-mt-4"
+            className="text-stone-300 text-[14vw] md:text-[8rem] font-serif italic font-extralight leading-[0.8] -mt-2 md:-mt-6 ml-4 md:ml-12"
           >
             Himalayan
           </motion.h1>
         </div>
 
-        {/* Products Row: Responsive Flex */}
+        {/* Refined Products Row: More room on desktop */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="flex flex-wrap gap-x-8 gap-y-4 md:gap-12 border-t border-white/10 pt-8 max-w-fit"
+          className="flex flex-col md:flex-row md:items-center gap-x-12 gap-y-6 border-t border-white/10 pt-10"
         >
           {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
             <div key={i} className="flex items-center gap-3">
-              <span className="text-[#B23A2E] text-[8px] md:text-[10px] font-mono font-bold">0{i+1}</span>
-              <span className="text-white/80 text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold">
+              <span className="text-[#B23A2E] text-[8px] md:text-[11px] font-mono font-bold">0{i+1}</span>
+              <span className="text-white text-[11px] md:text-[13px] uppercase tracking-[0.25em] md:tracking-[0.4em] whitespace-nowrap">
                 {item}
               </span>
             </div>
@@ -357,8 +361,8 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* Boutique Scroll Indicator (Optional) */}
-      <div className="absolute bottom-10 left-6 md:left-20 hidden md:block">
+      {/* Boutique Scroll Indicator */}
+      <div className="absolute bottom-10 left-6 md:left-20 lg:left-32 hidden md:block">
         <div className="w-[1px] h-12 bg-gradient-to-b from-[#B23A2E] to-transparent" />
       </div>
     </section>
