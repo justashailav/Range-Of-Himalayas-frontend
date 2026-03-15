@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "../assets/bgImage.png";
+import bgImage from "../assets/BannerImage.png";
 import foundersImage from "../assets/foundersLetter.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -8,7 +8,6 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
-import { HiOutlineChevronDoubleDown } from "react-icons/hi";
 import ShoppingProductTile from "./Product-tile";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
@@ -30,11 +29,8 @@ import { Helmet } from "react-helmet";
 import HomeBlog from "./HomeBlogs";
 import { motion, AnimatePresence } from "framer-motion";
 import HimalayanLoader from "./HimalayanLoader";
-import TopSelectionSkeleton from "./TopSelectionSkeleton";
 import TrendingProductSkeleton from "./TrendingProductSkeleton";
 import GallerySkeleton from "./GallerySkeleton";
-import { useRef } from "react";
-import {useScroll, useTransform } from "framer-motion";
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -67,17 +63,6 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const dispatch = useDispatch();
-  const containerRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  // Parallax effects
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   const { images: galleryItems, loading } = useSelector(
     (state) => state.gallery,
@@ -301,55 +286,82 @@ export default function Home() {
           <span>🚚 Fast delivery from our orchards directly to you!</span>
         </div>
       </div>
-<section
-  ref={containerRef}
-  className="relative w-full h-[100dvh] md:h-screen overflow-hidden"
->
-  {/* BACKGROUND IMAGE */}
-  <motion.img
-    src={bgImage}
-    style={{ y: backgroundY }}
-    className="absolute inset-0 w-full h-full object-cover object-bottom"
-  />
+<section className="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-stone-950">
+      
+      {/* 1. THE CLEAN BANNER IMAGE (No baked-in text) */}
+      <div className="absolute inset-0 z-0">
+        <motion.img
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.7 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          src={bgImage} 
+          className="w-full h-full object-cover object-center md:object-right"
+          alt="Himalayan Harvest"
+        />
+        {/* Modern Gradient: Darker on the left for text legibility, transparent on the right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/40 to-transparent md:from-stone-950/90 md:via-stone-950/20 md:to-transparent" />
+      </div>
 
-  {/* DARK OVERLAY */}
-  <div className="absolute inset-0 bg-black/50" />
-
-  {/* CONTENT */}
-  <motion.div
-    style={{ y: contentY, opacity: contentOpacity }}
-    className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6"
-  >
-    {/* SMALL LABEL */}
-    <div className="flex items-center gap-3 mb-6">
-      <span className="w-2 h-2 bg-red-600 rounded-full"></span>
-      <p className="text-white text-xs tracking-[0.4em] uppercase">
-        Volume 01 • Harvest 2026
-      </p>
-    </div>
-
-    {/* MAIN TITLE */}
-    <h1 className="text-white text-[18vw] md:text-[10rem] font-black leading-none drop-shadow-2xl">
-      Purely
-    </h1>
-
-    <h1 className="text-white text-[14vw] md:text-[7rem] font-serif italic leading-none drop-shadow-2xl -mt-4">
-      Himalayan
-    </h1>
-
-    {/* PRODUCTS */}
-    <div className="flex gap-10 mt-10 border-t border-white/20 pt-6">
-      {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
-        <span
-          key={i}
-          className="text-white text-xs uppercase tracking-widest"
+      {/* 2. THE TYPOGRAPHY LAYER */}
+      <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-20 lg:px-32">
+        
+        {/* Small Label */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+          className="flex items-center gap-3 mb-6"
         >
-          {item}
-        </span>
-      ))}
-    </div>
-  </motion.div>
-</section>
+          <span className="w-2 h-2 bg-[#B23A2E] rounded-full" />
+          <p className="text-white/60 text-[10px] md:text-xs tracking-[0.4em] uppercase font-medium">
+            Volume 01 • Harvest 2026
+          </p>
+        </motion.div>
+
+        {/* Main Title Stack */}
+        <div className="flex flex-col mb-10 md:mb-16">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="text-white text-[18vw] md:text-[10rem] font-black leading-[0.8] uppercase tracking-tighter"
+          >
+            Purely
+          </motion.h1>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+            className="text-stone-300 text-[14vw] md:text-[7rem] font-serif italic leading-[0.8] -mt-2 md:-mt-4"
+          >
+            Himalayan
+          </motion.h1>
+        </div>
+
+        {/* Products Row: Responsive Flex */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="flex flex-wrap gap-x-8 gap-y-4 md:gap-12 border-t border-white/10 pt-8 max-w-fit"
+        >
+          {["Red Rice", "Wild Honey", "Apricots"].map((item, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <span className="text-[#B23A2E] text-[8px] md:text-[10px] font-mono font-bold">0{i+1}</span>
+              <span className="text-white/80 text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold">
+                {item}
+              </span>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Boutique Scroll Indicator (Optional) */}
+      <div className="absolute bottom-10 left-6 md:left-20 hidden md:block">
+        <div className="w-[1px] h-12 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+      </div>
+    </section>
 
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
