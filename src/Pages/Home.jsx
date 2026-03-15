@@ -766,61 +766,62 @@ export default function Home() {
         </div>
       </div>
       <div className="px-6 py-16 md:py-32 bg-[#FAF9F6] overflow-hidden">
-  <div className="max-w-4xl mx-auto text-center relative">
-    
-    {/* 1. Background Element: Optimized for mobile */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 md:-translate-y-1/2 opacity-[0.03] pointer-events-none w-full">
-      {/* Reduced size on mobile (text-[80px]) to prevent horizontal scroll */}
-      <h1 className="text-[80px] sm:text-[120px] md:text-[180px] font-serif select-none leading-none">
-        Harvest
-      </h1>
-    </div>
+        <div className="max-w-4xl mx-auto text-center relative">
+          {/* 1. Background Element: Optimized for mobile */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 md:-translate-y-1/2 opacity-[0.03] pointer-events-none w-full">
+            {/* Reduced size on mobile (text-[80px]) to prevent horizontal scroll */}
+            <h1 className="text-[80px] sm:text-[120px] md:text-[180px] font-serif select-none leading-none">
+              Harvest
+            </h1>
+          </div>
 
-    <div className="relative z-10 flex flex-col items-center">
-      {/* 2. Refined Branding Accent */}
-      <div className="flex items-center gap-3 md:gap-4 mb-6">
-        <div className="h-[1px] w-6 md:w-10 bg-[#D84C3C]/30" />
-        <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-[#D84C3C] font-black whitespace-nowrap">
-          From Our Orchards
-        </span>
-        <div className="h-[1px] w-6 md:w-10 bg-[#D84C3C]/30" />
+          <div className="relative z-10 flex flex-col items-center">
+            {/* 2. Refined Branding Accent */}
+            <div className="flex items-center gap-3 md:gap-4 mb-6">
+              <div className="h-[1px] w-6 md:w-10 bg-[#D84C3C]/30" />
+              <span className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-[#D84C3C] font-black whitespace-nowrap">
+                From Our Orchards
+              </span>
+              <div className="h-[1px] w-6 md:w-10 bg-[#D84C3C]/30" />
+            </div>
+
+            {/* 3. The Headline: Fluid sizing */}
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif text-gray-900 leading-[1.2] md:leading-[1.1] mb-6 md:mb-8">
+              Himalayan{" "}
+              <span className="italic font-light text-gray-500 block sm:inline">
+                Harvest
+              </span>
+            </h2>
+
+            {/* 4. Elegant Vertical Divider */}
+            <div className="w-[1px] h-10 md:h-12 bg-gradient-to-b from-[#D84C3C] to-transparent mb-6 md:mb-8" />
+
+            {/* 5. The Narrative Paragraph: Max-width restricted for readability */}
+            <p className="text-gray-600 text-base md:text-xl font-light leading-relaxed max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto px-2">
+              Discover how we nurture{" "}
+              <span className="text-gray-900 font-medium italic">
+                premium apples
+              </span>{" "}
+              with a blend of time-honored traditions and{" "}
+              <span className="text-gray-900 font-medium">
+                thoughtful modern practices
+              </span>{" "}
+              in the pristine foothills of the Himalayas.
+            </p>
+
+            {/* 6. Subtle Signature: Reorganized for mobile flow */}
+            <div className="mt-10 flex flex-wrap justify-center items-center gap-2 md:gap-3 opacity-60">
+              <span className="text-[8px] md:text-[9px] uppercase tracking-widest font-bold text-gray-400">
+                Est. 2024
+              </span>
+              <div className="w-1 h-1 rounded-full bg-gray-300 hidden xs:block" />
+              <span className="text-[8px] md:text-[9px] uppercase tracking-widest font-bold text-gray-400">
+                Himachal Pradesh
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* 3. The Headline: Fluid sizing */}
-      <h2 className="text-3xl sm:text-4xl md:text-6xl font-serif text-gray-900 leading-[1.2] md:leading-[1.1] mb-6 md:mb-8">
-        Himalayan{" "}
-        <span className="italic font-light text-gray-500 block sm:inline">Harvest</span>
-      </h2>
-
-      {/* 4. Elegant Vertical Divider */}
-      <div className="w-[1px] h-10 md:h-12 bg-gradient-to-b from-[#D84C3C] to-transparent mb-6 md:mb-8" />
-
-      {/* 5. The Narrative Paragraph: Max-width restricted for readability */}
-      <p className="text-gray-600 text-base md:text-xl font-light leading-relaxed max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto px-2">
-        Discover how we nurture{" "}
-        <span className="text-gray-900 font-medium italic">
-          premium apples
-        </span>{" "}
-        with a blend of time-honored traditions and{" "}
-        <span className="text-gray-900 font-medium">
-          thoughtful modern practices
-        </span>{" "}
-        in the pristine foothills of the Himalayas.
-      </p>
-
-      {/* 6. Subtle Signature: Reorganized for mobile flow */}
-      <div className="mt-10 flex flex-wrap justify-center items-center gap-2 md:gap-3 opacity-60">
-        <span className="text-[8px] md:text-[9px] uppercase tracking-widest font-bold text-gray-400">
-          Est. 2024
-        </span>
-        <div className="w-1 h-1 rounded-full bg-gray-300 hidden xs:block" />
-        <span className="text-[8px] md:text-[9px] uppercase tracking-widest font-bold text-gray-400">
-          Himachal Pradesh
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
       <section className="px-6 py-20 bg-[#fdfdfb]">
         {/* Header Section */}
         <div className="text-center mb-16">
@@ -849,92 +850,116 @@ export default function Home() {
         </div>
 
         {/* Social Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto px-4 py-10">
-          {/* Instagram Card */}
-          <motion.a
-            href="https://www.instagram.com/range.of.himalayas"
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -12 }}
-            className="group relative block"
-          >
-            {/* Background Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-400/20 to-orange-400/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <section className="px-4 py-16 md:py-24 bg-[#fdfdfb] overflow-hidden">
+      {/* Header Section */}
+      <div className="text-center mb-12 md:mb-20 px-4">
+        <motion.span
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-[#D84C3C] font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs mb-4 block"
+        >
+          Our Community
+        </motion.span>
 
-            <div className="relative overflow-hidden rounded-[3rem] bg-white/80 backdrop-blur-xl p-12 flex flex-col items-center text-center border border-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_48px_80px_-16px_rgba(236,72,153,0.2)] transition-all duration-500">
-              {/* Ghost Icon Overlay */}
-              <div className="absolute top-[-20px] right-[-20px] opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
-                <FaInstagram className="text-[12rem] -rotate-12" />
+        <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">
+          Follow the <span className="italic font-light text-gray-500">Harvest</span>
+        </h2>
+
+        <div className="w-12 h-[1px] bg-[#D84C3C]/40 mx-auto mb-8" />
+
+        <p className="text-gray-500 text-sm md:text-base max-w-lg mx-auto leading-relaxed font-light">
+          Step into our Himalayan orchards. Get the freshest updates on our
+          <span className="text-slate-900 font-medium"> organic harvests</span> and 
+          handpicked apple collections.
+        </p>
+      </div>
+
+      {/* Social Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+        
+        {/* Instagram Card */}
+        <motion.a
+          href="https://www.instagram.com/range.of.himalayas"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          whileHover={{ y: -5 }}
+          className="group relative block"
+        >
+          <div className="relative overflow-hidden rounded-[2rem] bg-white border border-stone-100 p-8 md:p-12 flex flex-col items-center text-center shadow-sm group-hover:shadow-xl transition-all duration-500">
+            
+            {/* FIX: Ghost Icon Overlay - Positioned better for visibility */}
+            <div className="absolute -top-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none">
+              <FaInstagram className="text-[15rem] rotate-12" />
+            </div>
+
+            {/* Main Icon Wrapper */}
+            <div className="relative z-10 mb-6 md:mb-8">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-stone-50 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
+                <FaInstagram className="text-3xl md:text-4xl text-[#D84C3C]" />
               </div>
+            </div>
 
-              {/* Main Icon Wrapper */}
-              <div className="relative mb-8">
-                <div className="w-24 h-24 bg-white rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 ease-out">
-                  <FaInstagram className="text-5xl text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-pink-600 to-purple-600" />
-                </div>
-              </div>
-
-              <h3 className="text-3xl font-black text-slate-900 tracking-tight mb-1">
-                Instagram
-              </h3>
-              <p className="text-green-600 font-bold text-lg mb-8 tracking-wide italic">
+            <div className="relative z-10">
+              <h3 className="text-xl md:text-2xl font-serif text-slate-900 mb-2">Instagram</h3>
+              <p className="text-stone-400 text-xs md:text-sm tracking-widest uppercase mb-8">
                 @range.of.himalayas
               </p>
 
-              {/* Adaptive Button */}
-              <div className="mt-auto flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl group-hover:bg-green-700 transition-all duration-300 shadow-xl shadow-slate-900/10 group-hover:shadow-green-900/20">
-                <span className="font-bold uppercase tracking-widest text-xs">
-                  Explore Gallery
-                </span>
-                <FaArrowRight className="group-hover:translate-x-2 transition-transform duration-300" />
+              {/* Minimalist Button */}
+              <div className="inline-flex items-center gap-3 text-[#D84C3C] font-bold uppercase tracking-widest text-[10px] group-hover:gap-5 transition-all">
+                <span>Explore Gallery</span>
+                <FaArrowRight />
               </div>
             </div>
-          </motion.a>
 
-          {/* Facebook Card */}
-          <motion.a
-            href="https://www.facebook.com/rangeofhimalayas"
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -12 }}
-            transition={{ delay: 0.1 }}
-            className="group relative block"
-          >
-            {/* Background Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-emerald-400/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            {/* Subtle bottom border highlight */}
+            <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#D84C3C] group-hover:w-full transition-all duration-500" />
+          </div>
+        </motion.a>
 
-            <div className="relative overflow-hidden rounded-[3rem] bg-white/80 backdrop-blur-xl p-12 flex flex-col items-center text-center border border-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] group-hover:shadow-[0_48px_80px_-16px_rgba(37,99,235,0.2)] transition-all duration-500">
-              {/* Ghost Icon Overlay */}
-              <div className="absolute top-[-20px] right-[-20px] opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500">
-                <FaFacebook className="text-[12rem] -rotate-12" />
+        {/* Facebook Card */}
+        <motion.a
+          href="https://www.facebook.com/rangeofhimalayas"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          whileHover={{ y: -5 }}
+          className="group relative block"
+        >
+          <div className="relative overflow-hidden rounded-[2rem] bg-white border border-stone-100 p-8 md:p-12 flex flex-col items-center text-center shadow-sm group-hover:shadow-xl transition-all duration-500">
+            
+            {/* Ghost Icon Overlay */}
+            <div className="absolute -top-10 -right-10 opacity-[0.03] group-hover:opacity-[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none">
+              <FaFacebook className="text-[15rem] rotate-12" />
+            </div>
+
+            <div className="relative z-10 mb-6 md:mb-8">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-stone-50 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
+                <FaFacebook className="text-3xl md:text-4xl text-[#D84C3C]" />
               </div>
+            </div>
 
-              <div className="relative mb-8">
-                <div className="w-24 h-24 bg-white rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] flex items-center justify-center transform group-hover:-rotate-12 group-hover:scale-110 transition-transform duration-500 ease-out">
-                  <FaFacebook className="text-5xl text-blue-600" />
-                </div>
-              </div>
-
-              <h3 className="text-3xl font-black text-slate-900 tracking-tight mb-1">
-                Facebook
-              </h3>
-              <p className="text-green-600 font-bold text-lg mb-8 tracking-wide italic">
+            <div className="relative z-10">
+              <h3 className="text-xl md:text-2xl font-serif text-slate-900 mb-2">Facebook</h3>
+              <p className="text-stone-400 text-xs md:text-sm tracking-widest uppercase mb-8">
                 @rangeofhimalayas
               </p>
 
-              <div className="mt-auto flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl group-hover:bg-green-700 transition-all duration-300 shadow-xl shadow-slate-900/10 group-hover:shadow-green-900/20">
-                <span className="font-bold uppercase tracking-widest text-xs">
-                  Join Community
-                </span>
-                <FaArrowRight className="group-hover:translate-x-2 transition-transform duration-300" />
+              <div className="inline-flex items-center gap-3 text-[#D84C3C] font-bold uppercase tracking-widest text-[10px] group-hover:gap-5 transition-all">
+                <span>Join Community</span>
+                <FaArrowRight />
               </div>
             </div>
-          </motion.a>
-        </div>
+
+            <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#D84C3C] group-hover:w-full transition-all duration-500" />
+          </div>
+        </motion.a>
+      </div>
+    </section>
       </section>
 
       <HomeBlog />
