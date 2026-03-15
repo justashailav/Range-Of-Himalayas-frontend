@@ -528,26 +528,25 @@ export default function Home() {
         </div>
 
         {/* Optional: A very faint divider to anchor the grid below */}
-        <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
+        <div className="mt-8 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
       </div>
      <div className="relative px-4 md:px-6 py-10">
   {productList && productList.length > 0 ? (
     <>
       <Swiper
         modules={[Navigation, Pagination]}
-        /* Link to the custom pagination below */
         pagination={{
           el: ".custom-pagination",
           type: "progressbar",
         }}
         spaceBetween={20}
-        slidesPerView={1.2} // Shows a peek of the next card on mobile
+        slidesPerView={1.2} 
         breakpoints={{
           640: { slidesPerView: 2, spaceBetween: 24 },
           1024: { slidesPerView: 3, spaceBetween: 30 },
           1280: { slidesPerView: 4, spaceBetween: 30 },
         }}
-        className="pb-16" // Space for the progress bar
+        className="pb-16"
       >
         {productList.map((item) => (
           <SwiperSlide key={item._id} className="py-2">
