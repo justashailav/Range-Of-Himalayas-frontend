@@ -99,55 +99,55 @@ export default function ShoppingOrderDetailsView() {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-6 border-b border-stone-100 pb-8 md:pb-12">
-  {/* --- PRIMARY HEADER --- */}
-  <div className="space-y-4 md:space-y-2">
-    {/* ID Badge - Moved to top for better hierarchy on small screens */}
-    <div className="flex items-center gap-2">
-      <div className="px-2 py-0.5 bg-stone-100 rounded text-[9px] font-bold text-stone-500 uppercase tracking-widest">
-        ID
-      </div>
-      <p className="text-[10px] md:text-sm font-black tracking-widest text-stone-400 uppercase break-all md:break-normal max-w-[200px] md:max-w-none">
-        {orderDetails._id}
-      </p>
-    </div>
+            {/* --- PRIMARY HEADER --- */}
+            <div className="space-y-4 md:space-y-2">
+              {/* ID Badge - Moved to top for better hierarchy on small screens */}
+              <div className="flex items-center gap-2">
+                <div className="px-2 py-0.5 bg-stone-100 rounded text-[9px] font-bold text-stone-500 uppercase tracking-widest">
+                  ID
+                </div>
+                <p className="text-[10px] md:text-sm font-black tracking-widest text-stone-400 uppercase break-all md:break-normal max-w-[200px] md:max-w-none">
+                  {orderDetails._id}
+                </p>
+              </div>
 
-    <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-stone-900 leading-[0.85]">
-      Order{" "}
-      <span className="text-stone-300 font-serif italic font-light block md:inline">
-        Details
-      </span>
-    </h1>
-  </div>
+              <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-stone-900 leading-[0.85]">
+                Order{" "}
+                <span className="text-stone-300 font-serif italic font-light block md:inline">
+                  Details
+                </span>
+              </h1>
+            </div>
 
-  {/* --- QUICK STATS GRID --- */}
-  {/* Switched to a 2-column grid on mobile, flex-row on desktop */}
-  <div className="grid grid-cols-2 md:flex gap-x-4 gap-y-6 md:gap-10 md:text-right border-t md:border-t-0 md:border-l border-stone-100 pt-8 md:pt-2 md:pl-10">
-    <div className="space-y-1">
-      <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
-        Inventory
-      </p>
-      <p className="text-base md:text-lg font-black text-stone-900 italic">
-        {orderDetails.cartItems.length}{" "}
-        <span className="text-xs md:text-sm font-serif">
-          {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
-        </span>
-      </p>
-    </div>
+            {/* --- QUICK STATS GRID --- */}
+            {/* Switched to a 2-column grid on mobile, flex-row on desktop */}
+            <div className="grid grid-cols-2 md:flex gap-x-4 gap-y-6 md:gap-10 md:text-right border-t md:border-t-0 md:border-l border-stone-100 pt-8 md:pt-2 md:pl-10">
+              <div className="space-y-1">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
+                  Inventory
+                </p>
+                <p className="text-base md:text-lg font-black text-stone-900 italic">
+                  {orderDetails.cartItems.length}{" "}
+                  <span className="text-xs md:text-sm font-serif">
+                    {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
+                  </span>
+                </p>
+              </div>
 
-    <div className="space-y-1">
-      <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
-        Track Status
-      </p>
-      {/* Status colors adjusted for high-end boutique look */}
-      <p className="text-sm md:text-base font-black text-[#B23A2E] uppercase tracking-tighter flex items-center md:justify-end gap-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E] animate-pulse" />
-        {orderDetails.orderStatus}
-      </p>
-    </div>
+              <div className="space-y-1">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400">
+                  Track Status
+                </p>
+                {/* Status colors adjusted for high-end boutique look */}
+                <p className="text-sm md:text-base font-black text-[#B23A2E] uppercase tracking-tighter flex items-center md:justify-end gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#B23A2E] animate-pulse" />
+                  {orderDetails.orderStatus}
+                </p>
+              </div>
 
-    {/* Optional: Add a third "Order Date" stat that appears only on mobile to fill the grid, or leave empty for breathing room */}
-  </div>
-</div>
+              {/* Optional: Add a third "Order Date" stat that appears only on mobile to fill the grid, or leave empty for breathing room */}
+            </div>
+          </div>
         </div>
 
         {/* ================= ORDER SUMMARY ================= */}
@@ -293,18 +293,31 @@ export default function ShoppingOrderDetailsView() {
                   className="group flex flex-col sm:flex-row gap-6 py-8 first:pt-0 last:pb-0 transition-all"
                 >
                   {/* PRODUCT IMAGE CONTAINER */}
-                  <div className="relative w-full sm:w-32 h-32 rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 flex-shrink-0">
-                    <img
-                      src={product.image || "/placeholder.png"}
-                      alt={product.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
-                    />
-                    <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
-                      <p className="text-[10px] font-black text-stone-900 uppercase tracking-tighter">
-                        Qty {item.quantity}
-                      </p>
-                    </div>
-                  </div>
+                  <div className="relative w-full md:w-40 h-48 md:h-40 rounded-[1.5rem] md:rounded-2xl overflow-hidden bg-stone-100 border border-stone-200/50 flex-shrink-0 group/img">
+  {/* --- THE IMAGE --- */}
+  <img
+    src={product.image || "/placeholder.png"}
+    alt={product.title}
+    className="w-full h-full object-cover transition-all duration-1000 group-hover/img:scale-110 grayscale-[0.3] group-hover/img:grayscale-0"
+  />
+
+  {/* --- QUANTITY OVERLAY --- */}
+  {/* Positioned at bottom-left for better thumb-reach visibility on mobile */}
+  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 backdrop-blur-md rounded-full border border-white/10 shadow-lg">
+    <span className="text-[8px] font-black text-stone-400 uppercase tracking-widest">
+      Units
+    </span>
+    <p className="text-[11px] font-black text-white uppercase tracking-tighter">
+      {item.quantity}
+    </p>
+  </div>
+
+  {/* --- TEXTURE OVERLAY (Matches your Archive aesthetic) --- */}
+  <div className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')]" />
+  
+  {/* --- VIGNETTE EFFECT --- */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 md:opacity-0 group-hover/img:opacity-60 transition-opacity duration-500" />
+</div>
 
                   {/* PRODUCT DETAILS */}
                   <div className="flex-1 flex flex-col justify-between">
