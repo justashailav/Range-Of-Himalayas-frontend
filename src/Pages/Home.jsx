@@ -686,57 +686,59 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <div className="mt-16 sm:mt-24 px-6 max-w-7xl mx-auto">
-        <div className="relative group">
-          {/* 1. The Decorative Frame (Back layer) */}
-          <div className="absolute -inset-4 border border-[#E8DCD3] rounded-[3rem] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+      <div className="mt-12 sm:mt-24 px-4 sm:px-6 max-w-7xl mx-auto">
+  <div className="relative group">
+    
+    {/* 1. The Decorative Frame (Back layer) */}
+    {/* Adjusted -inset for mobile so it doesn't bleed off screen */}
+    <div className="absolute -inset-2 sm:-inset-4 border border-[#E8DCD3] rounded-[2rem] sm:rounded-[3rem] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
 
-          {/* 2. Main Image Container */}
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#F3F0EB] shadow-[0_30px_60px_-15px_rgba(142,125,110,0.15)]">
-            <motion.div
-              initial={{ opacity: 0, scale: 1.1 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: [0.2, 1, 0.3, 1] }}
-              className="relative"
-            >
-              <img
-                src={foundersImage}
-                alt="Founders of Range of Himalayas"
-                className="w-full h-[400px] sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
-              />
+    {/* 2. Main Image Container */}
+    <div className="relative overflow-hidden rounded-[1.8rem] sm:rounded-[2.5rem] bg-[#F3F0EB] shadow-[0_20px_40px_-15px_rgba(142,125,110,0.15)] md:shadow-[0_30px_60px_-15px_rgba(142,125,110,0.15)]">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.1 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5, ease: [0.2, 1, 0.3, 1] }}
+        className="relative"
+      >
+        <img
+          src={foundersImage}
+          alt="Founders of Range of Himalayas"
+          /* Mobile height adjusted to h-[450px] for better vertical framing */
+          className="w-full h-[450px] sm:h-[550px] lg:h-[750px] object-cover object-center transition-transform duration-[3s] group-hover:scale-105"
+        />
 
-              {/* 3. Sophisticated Overlays */}
-              {/* Subtle vignette to pop the subject */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 opacity-60" />
+        {/* 3. Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40 md:to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+      </motion.div>
 
-              {/* Soft light leak from the top left */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-            </motion.div>
-
-            {/* 4. Floating Caption Badge (Optional) */}
-            <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12">
-              <div className="bg-white/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/50 shadow-xl">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-1">
-                  Our Visionaries
-                </p>
-                <h4 className="text-xl font-serif text-gray-900">
-                  Nurturing the Roots
-                </h4>
-              </div>
-            </div>
-          </div>
-
-          {/* 5. Artistic Corner Stamp */}
-          <div className="absolute -bottom-6 -right-6 hidden md:block">
-            <div className="w-24 h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-4 text-center shadow-2xl rotate-12">
-              <span className="text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
-                Authentic <br /> Himalayan <br /> Harvest
-              </span>
-            </div>
-          </div>
+      {/* 4. Floating Caption Badge */}
+      {/* Positioned more tightly on mobile with smaller text */}
+      <div className="absolute bottom-6 left-6 right-6 sm:right-auto sm:bottom-12 sm:left-12">
+        <div className="bg-white/90 backdrop-blur-md px-5 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl border border-white/50 shadow-xl">
+          <p className="text-[8px] sm:text-[10px] uppercase tracking-[0.3em] text-[#D84C3C] font-black mb-0.5 sm:mb-1">
+            Our Visionaries
+          </p>
+          <h4 className="text-lg sm:text-xl font-serif text-gray-900 leading-tight">
+            Nurturing the Roots
+          </h4>
         </div>
       </div>
+    </div>
+
+    {/* 5. Artistic Corner Stamp */}
+    {/* Kept hidden on very small screens, visible from 'sm' (640px) up */}
+    <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 hidden sm:flex">
+      <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[#D84C3C] flex items-center justify-center p-2 sm:p-4 text-center shadow-2xl rotate-12 transition-transform duration-500 group-hover:rotate-0">
+        <span className="text-[6px] sm:text-[8px] font-bold text-white uppercase tracking-tighter leading-none">
+          Authentic <br /> Himalayan <br /> Harvest
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
       <div className="px-6 py-20 bg-[#FAF9F6]">
         <div className="max-w-4xl mx-auto text-center relative">
           {/* 1. Subtle Background Element */}
