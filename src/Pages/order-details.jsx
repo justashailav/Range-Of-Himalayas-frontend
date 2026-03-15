@@ -119,47 +119,49 @@ export default function ShoppingOrderDetailsView() {
               </h1>
             </div>
             <div className="flex flex-col md:flex-row gap-6 md:gap-12 bg-white/50 p-6 rounded-2xl border border-stone-100">
-  {/* 1. DISPATCH SCHEDULE (The Future) */}
-  <div className="relative space-y-1">
-    <div className="flex items-center gap-2">
-      <span className="relative flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
-      </span>
-      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#B23A2E]">
-        Scheduled Dispatch
-      </p>
-    </div>
-    
-    <div className="flex items-baseline gap-2">
-      <p className="text-xl md:text-2xl font-black text-stone-900 tracking-tighter">
-        18 April
-      </p>
-      <p className="text-stone-400 font-serif italic text-sm">Spring 2026 Harvest</p>
-    </div>
-    
-    <p className="text-[9px] font-medium text-stone-500 uppercase tracking-widest leading-none">
-      * Pre-order reservation confirmed
-    </p>
-  </div>
+              {/* 1. DISPATCH SCHEDULE (The Future) */}
+              <div className="relative space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
+                  </span>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#B23A2E]">
+                    Scheduled Dispatch
+                  </p>
+                </div>
 
-  {/* 2. BOOKING LOG (The Past) */}
-  <div className="border-t md:border-t-0 md:border-l border-stone-200/60 pt-6 md:pt-0 md:pl-10 space-y-1">
-    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
-      Booking Timestamp
-    </p>
-    <p className="text-sm font-bold text-stone-600 font-mono">
-      {new Date(order.createdAt).toLocaleDateString("en-IN", {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      })}
-    </p>
-    <p className="text-[9px] text-stone-400 uppercase tracking-tighter">
-      Order Ref: {order._id.slice(-6).toUpperCase()}
-    </p>
-  </div>
-</div>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-xl md:text-2xl font-black text-stone-900 tracking-tighter">
+                    18 April
+                  </p>
+                  <p className="text-stone-400 font-serif italic text-sm">
+                    Spring 2026 Harvest
+                  </p>
+                </div>
+
+                <p className="text-[9px] font-medium text-stone-500 uppercase tracking-widest leading-none">
+                  * Pre-order reservation confirmed
+                </p>
+              </div>
+
+              {/* 2. BOOKING LOG (The Past) */}
+              <div className="border-t md:border-t-0 md:border-l border-stone-200/60 pt-6 md:pt-0 md:pl-10 space-y-1">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+                  Booking Timestamp
+                </p>
+                <p className="text-sm font-bold text-stone-600 font-mono">
+                  {new Date(orderDetails.createdAt).toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
+                <p className="text-[9px] text-stone-400 uppercase tracking-tighter">
+                  Order Ref: {orderDetails._id.slice(-6).toUpperCase()}
+                </p>
+              </div>
+            </div>
 
             {/* --- QUICK STATS GRID --- */}
             {/* Switched to a 2-column grid on mobile, flex-row on desktop */}
