@@ -11,6 +11,7 @@ import {
   Leaf,
   Star,
   Truck,
+  X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import StarRatingComponent from "./Star-Review";
@@ -336,7 +337,7 @@ export default function ProductsDetailsDialog() {
                     opacity: { duration: 0.3 },
                     scale: { duration: 0.4 },
                   }}
-                  className="w-full h-full object-cover cursor-zoom-in group-active:cursor-grabbing select-none"
+                  className="w-full h-full object-cover cursor-zoom-in group-active:cursor-grabbing select-none mt-4"
                 />
               </AnimatePresence>
 
@@ -1078,150 +1079,154 @@ export default function ProductsDetailsDialog() {
           </div>
         </div>
         <div className="mt-20 max-w-4xl mx-auto px-4">
-  {/* SECTION HEADER */}
-  <div className="text-center mb-16 space-y-2">
-    <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-      The Archive
-    </h4>
-    <h2 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
-      Collector Testimonials
-    </h2>
-    <div className="h-[1px] w-12 bg-stone-200 mx-auto mt-4" />
-  </div>
-
-  {reviews.length === 0 ? (
-    <div className="py-20 text-center bg-stone-50 rounded-[3rem] border border-dashed border-stone-200">
-      <p className="text-stone-400 font-serif italic text-lg">
-        The archive is currently empty. Be the first to document your experience.
-      </p>
-    </div>
-  ) : (
-    <div className="grid grid-cols-1 gap-12">
-      {reviews.map((r, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative group pb-12 border-b border-stone-100 last:border-0"
-        >
-          {/* HEADER: USER & RATING */}
-          <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
-            <div className="flex items-center gap-4">
-              {/* Profile Initial - Elegant Stone Circle */}
-              <div className="w-12 h-12 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-900 font-black text-sm">
-                {r.userName.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <h3 className="text-[11px] font-black uppercase tracking-widest text-stone-900">
-                  {r.userName}
-                </h3>
-                <p className="text-[10px] text-stone-400 uppercase tracking-tight">
-                  {dayjs(r.createdAt).fromNow()}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-end gap-2">
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, starIdx) => (
-                  <Star
-                    key={starIdx}
-                    size={12} 
-                    fill={starIdx < r.reviewValue ? "#B23A2E" : "none"} 
-                    className={starIdx < r.reviewValue ? "text-[#B23A2E]" : "text-stone-200"}
-                  />
-                ))}
-              </div>
-              <span className="text-[8px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-2 py-1 rounded-md border border-[#B23A2E]/10">
-                Verified Acquisition
-              </span>
-            </div>
+          {/* SECTION HEADER */}
+          <div className="text-center mb-16 space-y-2">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+              The Archive
+            </h4>
+            <h2 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
+              Collector Testimonials
+            </h2>
+            <div className="h-[1px] w-12 bg-stone-200 mx-auto mt-4" />
           </div>
 
-          {/* CONTENT: TEXT & IMAGES */}
-          <div className="space-y-6 pl-0 md:pl-16">
-            <p className="text-xl font-serif italic text-stone-800 leading-relaxed italic">
-              "{r.reviewMessage}"
-            </p>
+          {reviews.length === 0 ? (
+            <div className="py-20 text-center bg-stone-50 rounded-[3rem] border border-dashed border-stone-200">
+              <p className="text-stone-400 font-serif italic text-lg">
+                The archive is currently empty. Be the first to document your
+                experience.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-12">
+              {reviews.map((r, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="relative group pb-12 border-b border-stone-100 last:border-0"
+                >
+                  {/* HEADER: USER & RATING */}
+                  <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
+                    <div className="flex items-center gap-4">
+                      {/* Profile Initial - Elegant Stone Circle */}
+                      <div className="w-12 h-12 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-900 font-black text-sm">
+                        {r.userName.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h3 className="text-[11px] font-black uppercase tracking-widest text-stone-900">
+                          {r.userName}
+                        </h3>
+                        <p className="text-[10px] text-stone-400 uppercase tracking-tight">
+                          {dayjs(r.createdAt).fromNow()}
+                        </p>
+                      </div>
+                    </div>
 
-            {r.reviewImages?.length > 0 && (
-              <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl max-w-2xl">
-                <img
-                  src={`http://localhost:3000/${r.reviewImages[0].replace("\\", "/")}`}
-                  alt="review imagery"
-                  className="w-full h-80 object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
-                />
-              </div>
-            )}
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  )}
-</div>
+                    <div className="flex flex-col items-end gap-2">
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, starIdx) => (
+                          <Star
+                            key={starIdx}
+                            size={12}
+                            fill={starIdx < r.reviewValue ? "#B23A2E" : "none"}
+                            className={
+                              starIdx < r.reviewValue
+                                ? "text-[#B23A2E]"
+                                : "text-stone-200"
+                            }
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[8px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-2 py-1 rounded-md border border-[#B23A2E]/10">
+                        Verified Acquisition
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CONTENT: TEXT & IMAGES */}
+                  <div className="space-y-6 pl-0 md:pl-16">
+                    <p className="text-xl font-serif italic text-stone-800 leading-relaxed italic">
+                      "{r.reviewMessage}"
+                    </p>
+
+                    {r.reviewImages?.length > 0 && (
+                      <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl max-w-2xl">
+                        <img
+                          src={`http://localhost:3000/${r.reviewImages[0].replace("\\", "/")}`}
+                          alt="review imagery"
+                          className="w-full h-80 object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="py-24 bg-stone-50/50">
-  <div className="max-w-[1400px] mx-auto px-6 relative">
-    
-    {/* SECTION HEADER */}
-    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-      <div className="space-y-2">
-        <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-          Extend the Journey
-        </h4>
-        <h2 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
-          Further Discoveries
-        </h2>
-      </div>
+          <div className="max-w-[1400px] mx-auto px-6 relative">
+            {/* SECTION HEADER */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+              <div className="space-y-2">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
+                  Extend the Journey
+                </h4>
+                <h2 className="text-4xl font-black text-stone-900 uppercase tracking-tighter">
+                  Further Discoveries
+                </h2>
+              </div>
 
-      {/* CUSTOM NAVIGATION BUTTONS */}
-      <div className="flex gap-3">
-        <button className="swiper-button-prev-custom w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:border-stone-900 hover:text-stone-900 transition-all duration-300 bg-white shadow-sm">
-          <ChevronLeft size={20} strokeWidth={1.5} />
-        </button>
-        <button className="swiper-button-next-custom w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:border-stone-900 hover:text-stone-900 transition-all duration-300 bg-white shadow-sm">
-          <ChevronRight size={20} strokeWidth={1.5} />
-        </button>
-      </div>
-    </div>
+              {/* CUSTOM NAVIGATION BUTTONS */}
+              <div className="flex gap-3">
+                <button className="swiper-button-prev-custom w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:border-stone-900 hover:text-stone-900 transition-all duration-300 bg-white shadow-sm">
+                  <ChevronLeft size={20} strokeWidth={1.5} />
+                </button>
+                <button className="swiper-button-next-custom w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:border-stone-900 hover:text-stone-900 transition-all duration-300 bg-white shadow-sm">
+                  <ChevronRight size={20} strokeWidth={1.5} />
+                </button>
+              </div>
+            </div>
 
-    {/* SWIPER CAROUSEL */}
-    <Swiper
-      modules={[Navigation]}
-      navigation={{
-        prevEl: ".swiper-button-prev-custom",
-        nextEl: ".swiper-button-next-custom",
-      }}
-      spaceBetween={32}
-      slidesPerView={1}
-      grabCursor={true}
-      breakpoints={{
-        640: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 },
-        1440: { slidesPerView: 4 },
-      }}
-      className="pb-12"
-    >
-      {productList.map((item) => (
-        <SwiperSlide key={item._id} className="h-full">
-          <div className="bg-white rounded-[2rem] p-2 shadow-sm border border-stone-100/50 hover:shadow-xl transition-shadow duration-500">
-            <ShoppingProductTile
-              product={item}
-              handleAddToCart={handleAddToCart}
-              handleAddToWishList={handleAddToWishList}
-            />
+            {/* SWIPER CAROUSEL */}
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                prevEl: ".swiper-button-prev-custom",
+                nextEl: ".swiper-button-next-custom",
+              }}
+              spaceBetween={32}
+              slidesPerView={1}
+              grabCursor={true}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+                1440: { slidesPerView: 4 },
+              }}
+              className="pb-12"
+            >
+              {productList.map((item) => (
+                <SwiperSlide key={item._id} className="h-full">
+                  <div className="bg-white rounded-[2rem] p-2 shadow-sm border border-stone-100/50 hover:shadow-xl transition-shadow duration-500">
+                    <ShoppingProductTile
+                      product={item}
+                      handleAddToCart={handleAddToCart}
+                      handleAddToWishList={handleAddToWishList}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* BOTTOM DECORATION */}
+            <div className="mt-12 flex justify-center">
+              <div className="h-[1px] w-24 bg-stone-200" />
+            </div>
           </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-    
-    {/* BOTTOM DECORATION */}
-    <div className="mt-12 flex justify-center">
-      <div className="h-[1px] w-24 bg-stone-200" />
-    </div>
-  </div>
-</div>
+        </div>
       </div>
     </div>
   );
