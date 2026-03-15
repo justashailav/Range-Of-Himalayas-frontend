@@ -1064,23 +1064,6 @@ export default function ProductsDetailsDialog() {
                       </span>
                     </div>
                   </div>
-
-                  {/* CONTENT: TEXT & IMAGES */}
-                  <div className="space-y-6 pl-0 md:pl-16">
-                    <p className="text-xl font-serif italic text-stone-800 leading-relaxed italic">
-                      "{r.reviewMessage}"
-                    </p>
-
-                    {r.reviewImages?.length > 0 && (
-                      <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl max-w-2xl">
-                        <img
-                          src={`http://localhost:3000/${r.reviewImages[0].replace("\\", "/")}`}
-                          alt="review imagery"
-                          className="w-full h-80 object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
-                        />
-                      </div>
-                    )}
-                  </div>
                 </motion.div>
               ))}
             </div>
