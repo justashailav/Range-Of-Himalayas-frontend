@@ -16,7 +16,7 @@ import TopSelections from "./TopSelections";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
+import { Navigation,Pagination } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   addToWishList,
