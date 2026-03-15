@@ -966,56 +966,95 @@ export default function Home() {
       <section className="px-6 py-20 bg-[#fafaf9]">
         <div className="max-w-6xl mx-auto text-center">
           {/* Refined Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 text-green-700 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm"
-          >
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            Orchard Moments
-          </motion.div>
+          <div className="text-center px-6 py-12 md:py-20">
+  {/* 1. REFINED BADGE - Switched to your brand Red/Stone theme */}
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    className="inline-flex items-center gap-2.5 px-5 py-2 bg-white border border-stone-200 text-[#B23A2E] rounded-full shadow-sm"
+  >
+    <span className="relative flex h-2 w-2">
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
+      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
+    </span>
+    <span className="text-[10px] font-black uppercase tracking-[0.3em]">
+      Orchard Moments
+    </span>
+  </motion.div>
 
-          {/* Hero Heading */}
-          <h2 className="text-5xl md:text-6xl font-black text-slate-900 mt-6 mb-4 tracking-tight">
-            From Orchard{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">
-              to Table
-            </span>
-          </h2>
+  {/* 2. HERO HEADING - Fluid typography for mobile */}
+  <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-stone-900 mt-8 mb-6 tracking-tighter leading-[1.1] md:leading-none uppercase">
+    From Orchard <br className="sm:hidden" />
+    <span className="font-serif italic font-light lowercase tracking-normal text-stone-500 block sm:inline mt-2 sm:mt-0">
+      to Table
+    </span>
+  </h2>
 
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed font-medium mb-12">
-            Witness the journey of our orchards through the seasons—a
-            celebration of purity, tradition, and mindful farming.
-          </p>
+  {/* 3. REFINED DESCRIPTION - Improved readability */}
+  <p className="text-stone-500 text-sm md:text-lg max-w-xl mx-auto leading-relaxed font-serif italic border-t border-stone-100 pt-8 px-4">
+    "Witness the journey of our orchards through the seasons—a
+    celebration of <span className="text-stone-800">purity</span>, 
+    tradition, and mindful farming."
+  </p>
 
+  {/* 4. OPTIONAL DECORATIVE LINE */}
+  <div className="flex justify-center items-center gap-3 mt-10 opacity-30">
+    <div className="h-[1px] w-8 bg-stone-400" />
+    <div className="w-1 h-1 bg-stone-800 rotate-45" />
+    <div className="h-[1px] w-8 bg-stone-400" />
+  </div>
+</div>
           {/* Elegant Category Navigation */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => {
-                  setActiveCategory(cat);
-                  setCurrentIndex(0);
-                  setCurrentImageIndex(0);
-                }}
-                className={`relative px-8 py-3 rounded-2xl text-sm font-bold transition-all duration-500 overflow-hidden
-            ${
-              activeCategory === cat
-                ? "text-white shadow-[0_10px_25px_-5px_rgba(220,38,38,0.4)]"
-                : "bg-white text-slate-600 border border-slate-200 hover:border-red-200 hover:text-red-600"
-            }`}
-              >
-                {activeCategory === cat && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500"
-                  />
-                )}
-                <span className="relative z-10">{cat}</span>
-              </button>
-            ))}
-          </div>
+         <div className="relative mb-12">
+  {/* Container: Scrollable on mobile, Centered on desktop */}
+  <div className="flex overflow-x-auto md:justify-center gap-3 px-6 md:px-0 no-scrollbar pb-4 md:pb-0">
+    {categories.map((cat) => (
+      <button
+        key={cat}
+        onClick={() => {
+          setActiveCategory(cat);
+          setCurrentIndex(0);
+          setCurrentImageIndex(0);
+        }}
+        /* UI FIX: 
+           - 'whitespace-nowrap' prevents text from breaking into two lines
+           - 'px-6 py-2.5' is more balanced for mobile
+           - Transitioned to your brand's 'Stone' and 'Red' palette
+        */
+        className={`relative px-6 py-2.5 md:px-8 md:py-3 rounded-full text-[11px] md:text-xs font-black uppercase tracking-[0.15em] transition-all duration-500 whitespace-nowrap border
+          ${
+            activeCategory === cat
+              ? "text-white border-[#B23A2E] shadow-lg shadow-red-900/10"
+              : "bg-white text-stone-500 border-stone-200 hover:border-stone-400 hover:text-stone-900"
+          }`}
+      >
+        {activeCategory === cat && (
+          <motion.div
+            layoutId="activeTab"
+            className="absolute inset-0 bg-[#B23A2E]"
+            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+          />
+        )}
+        <span className="relative z-10">{cat}</span>
+      </button>
+    ))}
+  </div>
 
+  {/* Subtle mobile hint: Fades the right edge to show there is more to scroll */}
+  <div className="absolute right-0 top-0 bottom-4 w-12 bg-gradient-to-l from-[#fdfdfb] to-transparent md:hidden pointer-events-none" />
+</div>
+
+{/* Add this CSS to your global stylesheet or a style tag to hide the scrollbar */}
+<style jsx>{`
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+`}</style>
           {/* Main Gallery Display */}
           {loading ? (
             <GallerySkeleton />
