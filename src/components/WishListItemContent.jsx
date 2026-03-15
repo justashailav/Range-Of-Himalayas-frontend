@@ -89,63 +89,72 @@ export default function WishListItemContent() {
           />
         </Helmet>
         <div className="min-h-[60vh] flex items-center justify-center px-6">
-  <motion.div 
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    className="relative max-w-2xl w-full bg-[#fdfcf7] border border-stone-200 p-12 md:p-20 text-center shadow-sm overflow-hidden"
-  >
-    {/* Decorative Background Element */}
-    <div className="absolute top-0 left-0 w-full h-1 bg-[#B23A2E]/20" />
-    <span className="absolute -top-10 -right-10 text-[150px] font-black text-stone-50 select-none pointer-events-none">
-      NULL
-    </span>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative max-w-2xl w-full bg-[#fdfcf7] border border-stone-200 p-12 md:p-20 text-center shadow-sm overflow-hidden"
+          >
+            {/* Decorative Background Element */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-[#B23A2E]/20" />
+            <span className="absolute -top-10 -right-10 text-[150px] font-black text-stone-50 select-none pointer-events-none">
+              NULL
+            </span>
 
-    <div className="relative z-10 space-y-8">
-      {/* The Icon - Elevated & Minimal */}
-      <div className="relative inline-block">
-        <div className="w-24 h-24 bg-stone-50 border border-stone-100 flex items-center justify-center mx-auto transition-transform duration-700 hover:rotate-12">
-          <Heart className="w-10 h-10 text-[#B23A2E] stroke-[1px]" />
+            <div className="relative z-10 space-y-8">
+              {/* The Icon - Elevated & Minimal */}
+              <div className="relative inline-block">
+                <div className="w-24 h-24 bg-stone-50 border border-stone-100 flex items-center justify-center mx-auto transition-transform duration-700 hover:rotate-12">
+                  <Heart className="w-10 h-10 text-[#B23A2E] stroke-[1px]" />
+                </div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-[#B23A2E] flex items-center justify-center">
+                  <div className="w-2 h-[1px] bg-white rotate-90 absolute" />
+                  <div className="w-2 h-[1px] bg-white absolute" />
+                </div>
+              </div>
+
+              {/* Text Content */}
+              <div className="space-y-4">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
+                  Private Collection
+                </h4>
+                <h2 className="text-4xl md:text-5xl font-black text-stone-900 uppercase tracking-tighter">
+                  The Gallery is <br />
+                  <span className="font-serif italic capitalize tracking-normal text-[#B23A2E]">
+                    Vacant
+                  </span>
+                </h2>
+                <p className="max-w-xs mx-auto text-[13px] md:text-[14px] font-serif italic text-stone-500 leading-relaxed">
+                  Your personal archive of desired acquisitions is currently
+                  unpopulated. Document the pieces that resonate with your
+                  spirit.
+                </p>
+              </div>
+
+              {/* Action Button */}
+              <div className="pt-6">
+                <a
+                  href="/viewproducts"
+                  className="group relative inline-flex items-center gap-4"
+                >
+                  <div className="relative z-10 px-8 py-4 bg-stone-900 text-white text-[10px] font-black uppercase tracking-[0.3em] transition-transform duration-300 group-hover:-translate-x-2 group-hover:-translate-y-2">
+                    Explore Archive
+                  </div>
+                  {/* Button Shadow/Border Effect */}
+                  <div className="absolute inset-0 border border-stone-900 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1" />
+                </a>
+              </div>
+            </div>
+
+            {/* Footer Detail */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 w-full px-12 opacity-30">
+              <div className="h-[1px] flex-1 bg-stone-200" />
+              <span className="text-[8px] font-black uppercase tracking-widest text-stone-400">
+                Inventory Ledger v.01
+              </span>
+              <div className="h-[1px] flex-1 bg-stone-200" />
+            </div>
+          </motion.div>
         </div>
-        <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-[#B23A2E] flex items-center justify-center">
-          <div className="w-2 h-[1px] bg-white rotate-90 absolute" />
-          <div className="w-2 h-[1px] bg-white absolute" />
-        </div>
-      </div>
-
-      {/* Text Content */}
-      <div className="space-y-4">
-        <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#B23A2E]">
-          Private Collection
-        </h4>
-        <h2 className="text-4xl md:text-5xl font-black text-stone-900 uppercase tracking-tighter">
-          The Gallery is <br />
-          <span className="font-serif italic capitalize tracking-normal text-[#B23A2E]">Vacant</span>
-        </h2>
-        <p className="max-w-xs mx-auto text-[13px] md:text-[14px] font-serif italic text-stone-500 leading-relaxed">
-          Your personal archive of desired acquisitions is currently unpopulated. Document the pieces that resonate with your spirit.
-        </p>
-      </div>
-
-      {/* Action Button */}
-      <div className="pt-6">
-        <a href="/viewproducts" className="group relative inline-flex items-center gap-4">
-          <div className="relative z-10 px-8 py-4 bg-stone-900 text-white text-[10px] font-black uppercase tracking-[0.3em] transition-transform duration-300 group-hover:-translate-x-2 group-hover:-translate-y-2">
-            Explore Archive
-          </div>
-          {/* Button Shadow/Border Effect */}
-          <div className="absolute inset-0 border border-stone-900 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1" />
-        </a>
-      </div>
-    </div>
-
-    {/* Footer Detail */}
-    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 w-full px-12 opacity-30">
-      <div className="h-[1px] flex-1 bg-stone-200" />
-      <span className="text-[8px] font-black uppercase tracking-widest text-stone-400">Inventory Ledger v.01</span>
-      <div className="h-[1px] flex-1 bg-stone-200" />
-    </div>
-  </motion.div>
-</div>
       </div>
     );
   }
@@ -154,25 +163,53 @@ export default function WishListItemContent() {
     <div className=" px-4 sm:px-6 lg:px-10 py-8 bg-[#FFF8E1] min-h-screen">
       <div className="relative mb-12 border-b border-stone-100 pb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-1">
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2"
-            >
-              <span className="w-8 h-[1px] bg-[#B23A2E]" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-                Personal Archive
-              </span>
-            </motion.div>
+          <div className="relative pt-12 pb-8 md:pt-20 md:pb-16 px-4 md:px-0 border-b border-stone-100 mb-12">
+  <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
+    
+    {/* TOP LABEL: Editorial Accent */}
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="flex items-center gap-3 md:gap-4"
+    >
+      {/* Line that grows on desktop, stays compact on mobile */}
+      <motion.span 
+        initial={{ width: 0 }}
+        animate={{ width: typeof window !== 'undefined' && window.innerWidth > 768 ? 64 : 32 }}
+        className="h-[1px] bg-[#B23A2E]" 
+      />
+      <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] md:tracking-[0.6em] text-[#B23A2E] whitespace-nowrap">
+        Curated Archive
+      </span>
+    </motion.div>
 
-            <h2 className="text-4xl md:text-5xl font-black text-stone-900 tracking-tighter">
-              My{" "}
-              <span className="italic font-serif font-light text-stone-400">
-                Wishlist
-              </span>
-            </h2>
-          </div>
+    {/* MAIN TITLE: Mixed Typography */}
+    <div className="relative">
+      <h2 className="text-5xl md:text-8xl font-black text-stone-900 tracking-tighter leading-[0.9] uppercase">
+        My <br className="md:hidden" /> {/* Stack on mobile for impact */}
+        <span className="italic font-serif font-light text-stone-300 md:text-stone-200 block md:inline mt-2 md:mt-0 md:ml-4 transition-colors duration-700 hover:text-[#B23A2E]">
+          Wishlist
+        </span>
+      </h2>
+      
+      {/* BACKGROUND ACCENT: Subtle Numbering */}
+      <span className="absolute -top-6 -right-2 md:right-0 text-[60px] md:text-[120px] font-black text-stone-50 select-none pointer-events-none -z-10">
+        01
+      </span>
+    </div>
+
+    {/* SUBTITLE: Contextual detail */}
+    <motion.p 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.4 }}
+      className="text-[10px] md:text-[12px] font-serif italic text-stone-400 max-w-[240px] md:max-w-md leading-relaxed"
+    >
+      A private inventory of documented pieces awaiting acquisition.
+    </motion.p>
+  </div>
+</div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
