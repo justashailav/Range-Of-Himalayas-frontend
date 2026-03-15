@@ -27,7 +27,6 @@ import {
   FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
 export default function HomeBlog() {
   const dispatch = useDispatch();
   const { blogs } = useSelector((state) => state.blogs);
