@@ -12,7 +12,7 @@ export default function ShoppingOrderDetailsView() {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
-  const [orderDetails, setOrderDetails] = useState(state?.orderDetails || null);
+  const [orderDetails, setOrderDetails] = useState(null);
 
   const [loadingCancelOrder, setLoadingCancelOrder] = useState(false);
   const [successMsg, setSuccessMsg] = useState(null);
@@ -20,12 +20,14 @@ export default function ShoppingOrderDetailsView() {
 
   // Fetch order details from backend if not passed via state
   useEffect(() => {
-    if (!orderDetails && orderId) {
-      dispatch(getAllOrderDetails(orderId)).then((res) => {
-        if (res?.payload) setOrderDetails(res.payload);
-      });
-    }
-  }, [orderDetails, orderId, dispatch]);
+  if (orderId) {
+    dispatch(getAllOrderDetails(orderId)).then((res) => {
+      if (res?.payload) {
+        setOrderDetails(res.payload);
+      }
+    });
+  }
+}, [orderId, dispatch]);
   useEffect(() => {
     if (state?.returnRequested) {
       setOrderDetails((prev) => ({
