@@ -65,24 +65,29 @@ export default function ShoppingOrderDetailsView() {
 
   // Full order cancellation
   const handleCancelOrder = async () => {
-    setLoadingCancelOrder(true);
-    setErrorMsg(null);
-    setSuccessMsg(null);
-    try {
-      const response = await dispatch(cancelOrder(orderDetails._id));
-      setSuccessMsg(
-        response?.payload?.message || "Order cancelled successfully",
-      );
+  setLoadingCancelOrder(true);
+  setErrorMsg(null);
+  setSuccessMsg(null);
 
-      // Fetch latest order details from backend
-      const updatedOrder = await dispatch(getAllOrderDetails(orderDetails._id));
-      if (updatedOrder?.payload) setOrderDetails(updatedOrder.payload);
-    } catch (error) {
-      setErrorMsg(error?.message || "Failed to cancel order");
-    } finally {
-      setLoadingCancelOrder(false);
-    }
-  };
+  try {
+    const response = await dispatch(cancelOrder(orderDetails._id));
+
+    setSuccessMsg(
+      response?.payload?.message || "Order cancelled successfully"
+    );
+
+    // Immediately update UI without refresh
+    setOrderDetails((prev) => ({
+      ...prev,
+      orderStatus: "cancelled",
+    }));
+
+  } catch (error) {
+    setErrorMsg(error?.message || "Failed to cancel order");
+  } finally {
+    setLoadingCancelOrder(false);
+  }
+};
 
   // Redirect to Return Request Page
   const handleReturnFullOrder = () => {
