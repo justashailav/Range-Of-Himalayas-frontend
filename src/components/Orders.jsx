@@ -168,71 +168,70 @@ export default function ShoppingOrders() {
                   </div>
 
                   {/* STATUS TIMELINE */}
-                  {statusSteps.includes(order.orderStatus) && (
-                    <div className="mt-12 mb-6 px-2">
-                      <div className="flex items-center">
-                        {statusSteps.map((step, idx) => (
-                          <div
-                            key={step}
-                            className="flex-1 relative flex flex-col items-center"
-                          >
-                            {/* THE TRACKING LINE */}
-                            {idx !== statusSteps.length - 1 && (
-                              <div
-                                className={`absolute top-[6px] left-[50%] w-full h-[1px] transition-colors duration-1000 ${
-                                  idx < currentIndex
-                                    ? "bg-stone-900"
-                                    : "bg-stone-200"
-                                }`}
-                              />
-                            )}
+                 {statusSteps.includes(order.orderStatus) && (
+  <div className="mt-12 mb-16 px-4 md:px-2">
+    <div className="flex flex-col md:flex-row items-stretch md:items-center">
+      {statusSteps.map((step, idx) => (
+        <div
+          key={step}
+          className="flex-1 relative flex flex-row md:flex-col items-start md:items-center min-h-[70px] md:min-h-0"
+        >
+          {/* THE TRACKING LINE */}
+          {idx !== statusSteps.length - 1 && (
+            <div
+              className={`absolute 
+                /* Desktop: Horizontal */
+                md:top-[6px] md:left-[50%] md:w-full md:h-[1px] 
+                /* Mobile: Vertical */
+                top-[12px] left-[6px] w-[1px] h-full 
+                transition-colors duration-1000 
+                ${idx < currentIndex ? "bg-stone-900" : "bg-stone-200"}`}
+            />
+          )}
 
-                            {/* THE NODE (POINT) */}
-                            <div className="relative z-10 flex flex-col items-center">
-                              <div
-                                className={`w-3 h-3 rounded-full border-2 transition-all duration-700 ${
-                                  idx <= currentIndex
-                                    ? "bg-stone-900 border-stone-900 shadow-[0_0_10px_rgba(0,0,0,0.1)]"
-                                    : "bg-white border-stone-200"
-                                } ${idx === currentIndex ? "animate-pulse ring-4 ring-stone-900/10" : ""}`}
-                              />
+          {/* THE NODE (POINT) */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div
+              className={`w-3 h-3 rounded-full border-2 transition-all duration-700 
+                ${idx <= currentIndex
+                  ? "bg-stone-900 border-stone-900 shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+                  : "bg-white border-stone-200"
+                } ${idx === currentIndex ? "animate-pulse ring-4 ring-stone-900/10" : ""}`}
+            />
+          </div>
 
-                              {/* STEP LABEL */}
-                              <div className="absolute top-6 flex flex-col items-center min-w-[80px]">
-                                <span
-                                  className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${
-                                    idx <= currentIndex
-                                      ? "text-stone-900"
-                                      : "text-stone-300"
-                                  }`}
-                                >
-                                  {step}
-                                </span>
+          {/* STEP LABEL & INDICATOR */}
+          <div className="ml-6 md:ml-0 md:absolute md:top-6 flex flex-col items-start md:items-center min-w-[80px]">
+            <span
+              className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${
+                idx <= currentIndex ? "text-stone-900" : "text-stone-300"
+              }`}
+            >
+              {step}
+            </span>
 
-                                {/* INDICATOR DOT FOR CURRENT STEP */}
-                                {idx === currentIndex && (
-                                  <motion.div
-                                    layoutId="active-dot"
-                                    className="w-1 h-1 bg-[#B23A2E] rounded-full mt-1"
-                                  />
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
+            {/* INDICATOR DOT FOR CURRENT STEP */}
+            {idx === currentIndex && (
+              <motion.div
+                layoutId="active-dot"
+                className="w-1 h-1 bg-[#B23A2E] rounded-full mt-1"
+              />
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
                   {/* ACTION */}
                   <div className="mt-8 flex justify-end">
-  <button
-    onClick={() =>
-      navigate(`/order-details/${order._id}`, {
-        state: { orderDetails: order },
-      })
-    }
-    className="
+                    <button
+                      onClick={() =>
+                        navigate(`/order-details/${order._id}`, {
+                          state: { orderDetails: order },
+                        })
+                      }
+                      className="
       group
       flex items-center gap-3
       px-8 py-3
@@ -244,18 +243,22 @@ export default function ShoppingOrders() {
       active:scale-[0.98]
       transition-all duration-500
     "
-  >
-    <span>Inspect Manifest</span>
-    <motion.span
-      className="inline-block"
-      initial={{ x: 0 }}
-      whileHover={{ x: 5 }}
-      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-    >
-      <ArrowRight size={14} strokeWidth={3} />
-    </motion.span>
-  </button>
-</div>
+                    >
+                      <span>Inspect Manifest</span>
+                      <motion.span
+                        className="inline-block"
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 5 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 10,
+                        }}
+                      >
+                        <ArrowRight size={14} strokeWidth={3} />
+                      </motion.span>
+                    </button>
+                  </div>
                 </CardContent>
               </Card>
             );
