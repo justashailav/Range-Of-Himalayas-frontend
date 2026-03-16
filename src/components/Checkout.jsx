@@ -205,7 +205,7 @@ export default function ShoppingCheckout() {
   }
   // Step 2 → Address selected
   useEffect(() => {
-    if (currentSelectedAddress) {r
+    if (currentSelectedAddress) {
       setCurrentStep(2);
     }
   }, [currentSelectedAddress]);
