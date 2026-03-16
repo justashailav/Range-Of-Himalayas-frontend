@@ -41,6 +41,7 @@ export default function ShoppingCheckout() {
 
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const isNavigatingToSuccess = useRef(false);
 
   useEffect(() => {
     if (!code) dispatch(resetCoupon());
@@ -76,9 +77,19 @@ export default function ShoppingCheckout() {
       : grandTotal - (Number(discountAmount) || 0);
 
   useEffect(() => {
-    if ((cartItems.length === 0 && boxes.length === 0) || !user) {
-      toast.error("Your cart is empty or you are not logged in.");
-      navigate("/");
+    // We check if isNavigatingToSuccess is true. 
+    // If it is, we ignore the empty cart and let the navigation happen.
+    if (!isNavigatingToSuccess.current) {
+      if ((cartItems.length === 0 && boxes.length === 0) || !user) {
+        // Small delay ensures we don't flash errors during state transitions
+        const timer = setTimeout(() => {
+          if (!isNavigatingToSuccess.current) {
+            toast.error("Your cart is empty or you are not logged in.");
+            navigate("/");
+          }
+        }, 100);
+        return () => clearTimeout(timer);
+      }
     }
   }, [cartItems, boxes, navigate, user]);
 
@@ -135,11 +146,13 @@ export default function ShoppingCheckout() {
           currency: response.currency,
           order_id: response.razorpayOrderId,
           name: "Range of Himalayas",
-          description:
-            paymentMethod === "cod" ? "₹200 COD Advance" : "Secure Payment",
+          description: paymentMethod === "cod" ? "₹200 COD Advance" : "Secure Payment",
 
           handler: async function (rzpResponse) {
             try {
+              // ✅ Set the ref to true IMMEDIATELY when the user pays
+              isNavigatingToSuccess.current = true; 
+
               await dispatch(
                 capturePayment({
                   orderId: response.orderId,
@@ -150,9 +163,13 @@ export default function ShoppingCheckout() {
               );
 
               toast.success("Payment successful!");
+              // Now navigate safely
               navigate("/order-success");
             } catch (err) {
+              // If verification fails, allow the redirect logic to work again
+              isNavigatingToSuccess.current = false;
               toast.error("Payment verification failed");
+              setIsProcessing(false);
             }
           },
 
@@ -161,33 +178,34 @@ export default function ShoppingCheckout() {
             email: user?.email,
             contact: currentSelectedAddress?.phone,
           },
-
-          theme: {
-            color: "#16a34a",
-          },
+          theme: { color: "#16a34a" },
         };
 
         const rzp = new window.Razorpay(options);
-
         rzp.on("payment.failed", function () {
+          isNavigatingToSuccess.current = false;
           toast.error("Payment failed. Please try again.");
         });
 
         rzp.open();
+        // Note: We don't set setIsProcessing(false) here because 
+        // the Razorpay modal is open and we are still "processing" the result.
         return;
       }
 
+      // ✅ Flow for non-Razorpay (if any)
+      isNavigatingToSuccess.current = true;
       toast.success(response.message || "Order placed successfully");
       navigate("/order-success");
+
     } catch (err) {
       toast.error(err.message || "Order failed");
-    } finally {
       setIsProcessing(false);
     }
   }
   // Step 2 → Address selected
   useEffect(() => {
-    if (currentSelectedAddress) {
+    if (currentSelectedAddress) {r
       setCurrentStep(2);
     }
   }, [currentSelectedAddress]);
