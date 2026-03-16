@@ -479,11 +479,11 @@ export default function ShoppingOrderDetailsView() {
                     Street & Locality
                   </p>
                   <p className="text-sm font-bold text-stone-300 leading-relaxed uppercase tracking-tight">
-                    {orderDetails.addressInfo.address}
+                    {orderDetails?.addressInfo?.address}
                   </p>
                   <p className="text-sm font-bold text-stone-300 uppercase tracking-tight">
-                    {orderDetails.addressInfo.city} —{" "}
-                    {orderDetails.addressInfo.pincode}
+                    {orderDetails?.addressInfo?.city} —{" "}
+                    {orderDetails?.addressInfo?.pincode}
                   </p>
                 </div>
 
@@ -498,19 +498,19 @@ export default function ShoppingOrderDetailsView() {
                         <Phone size={10} className="text-stone-400" />
                       </div>
                       <p className="text-sm font-black tracking-widest text-stone-200">
-                        {orderDetails.addressInfo.phone}
+                        {orderDetails?.addressInfo?.phone}
                       </p>
                     </div>
                   </div>
 
                   {/* DELIVERY NOTES */}
-                  {orderDetails.addressInfo.notes && (
+                  {orderDetails?.addressInfo?.notes && (
                     <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
                       <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">
                         Courier Notes
                       </p>
                       <p className="text-xs italic text-stone-400 font-medium">
-                        "{orderDetails.addressInfo.notes}"
+                        "{orderDetails?.addressInfo?.notes}"
                       </p>
                     </div>
                   )}
