@@ -194,11 +194,11 @@ export default function ShoppingOrderDetailsView() {
                   Inventory
                 </p>
                 <p className="text-base md:text-lg font-black text-stone-900 italic">
-                  {orderDetails.cartItems.length}{" "}
-                  <span className="text-xs md:text-sm font-serif">
-                    {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
-                  </span>
-                </p>
+  {(orderDetails?.cartItems?.length || 0)}{" "}
+  <span className="text-xs md:text-sm font-serif">
+    {(orderDetails?.cartItems?.length || 0) === 1 ? "Parcel" : "Parcels"}
+  </span>
+</p>
               </div>
 
               <div className="space-y-1">
@@ -350,9 +350,9 @@ export default function ShoppingOrderDetailsView() {
             </h2>
             <div className="h-px flex-1 bg-stone-50" />
             <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-              {orderDetails.cartItems.length}{" "}
-              {orderDetails.cartItems.length === 1 ? "Item" : "Items"}
-            </span>
+  {(orderDetails?.cartItems?.length || 0)}{" "}
+  {(orderDetails?.cartItems?.length || 0) === 1 ? "Item" : "Items"}
+</span>
           </div>
 
           <div className="divide-y divide-stone-50">
