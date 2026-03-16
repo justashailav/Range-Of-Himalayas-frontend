@@ -27,13 +27,13 @@ export default function ShoppingOrderDetailsView() {
     }
   }, [orderDetails, orderId, dispatch]);
   useEffect(() => {
-  if (state?.returnRequested) {
-    setOrderDetails((prev) => ({
-      ...prev,
-      returnStatus: "requested",
-    }));
-  }
-}, [state]); 
+    if (state?.returnRequested) {
+      setOrderDetails((prev) => ({
+        ...prev,
+        returnStatus: "requested",
+      }));
+    }
+  }, [state]);
 
   if (!orderDetails) {
     return (
@@ -45,20 +45,20 @@ export default function ShoppingOrderDetailsView() {
 
   // Cancel eligibility: within 24 hrs & confirmed
   const isCancelable = () => {
-  // Use createdAt if orderDate is missing
-  const timestamp = orderDetails.orderDate || orderDetails.createdAt;
-  
-  if (!timestamp) return false;
+    // Use createdAt if orderDate is missing
+    const timestamp = orderDetails.orderDate || orderDetails.createdAt;
 
-  const orderTime = new Date(timestamp).getTime();
-  const now = Date.now();
-  const hoursPassed = (now - orderTime) / (1000 * 60 * 60);
+    if (!timestamp) return false;
 
-  // Use toLowerCase() to be safe against casing issues
-  const currentStatus = orderDetails.orderStatus?.toLowerCase();
-  
-  return hoursPassed <= 24 && currentStatus === "confirmed";
-};
+    const orderTime = new Date(timestamp).getTime();
+    const now = Date.now();
+    const hoursPassed = (now - orderTime) / (1000 * 60 * 60);
+
+    // Use toLowerCase() to be safe against casing issues
+    const currentStatus = orderDetails.orderStatus?.toLowerCase();
+
+    return hoursPassed <= 24 && currentStatus === "confirmed";
+  };
   // Return eligibility: after delivered
   const isReturnable = () => orderDetails.orderStatus === "delivered";
 
@@ -73,29 +73,28 @@ export default function ShoppingOrderDetailsView() {
 
   // Full order cancellation
   const handleCancelOrder = async () => {
-  setLoadingCancelOrder(true);
-  setErrorMsg(null);
-  setSuccessMsg(null);
+    setLoadingCancelOrder(true);
+    setErrorMsg(null);
+    setSuccessMsg(null);
 
-  try {
-    const response = await dispatch(cancelOrder(orderDetails._id));
+    try {
+      const response = await dispatch(cancelOrder(orderDetails._id));
 
-    setSuccessMsg(
-      response?.payload?.message || "Order cancelled successfully"
-    );
+      setSuccessMsg(
+        response?.payload?.message || "Order cancelled successfully",
+      );
 
-    // Immediately update UI without refresh
-    setOrderDetails((prev) => ({
-      ...prev,
-      orderStatus: "cancelled",
-    }));
-
-  } catch (error) {
-    setErrorMsg(error?.message || "Failed to cancel order");
-  } finally {
-    setLoadingCancelOrder(false);
-  }
-};
+      // Immediately update UI without refresh
+      setOrderDetails((prev) => ({
+        ...prev,
+        orderStatus: "cancelled",
+      }));
+    } catch (error) {
+      setErrorMsg(error?.message || "Failed to cancel order");
+    } finally {
+      setLoadingCancelOrder(false);
+    }
+  };
 
   // Redirect to Return Request Page
   const handleReturnFullOrder = () => {
@@ -170,11 +169,14 @@ export default function ShoppingOrderDetailsView() {
                   Booking Timestamp
                 </p>
                 <p className="text-sm font-bold text-stone-600 font-mono">
-                  {new Date(orderDetails.createdAt).toLocaleDateString("en-IN", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {new Date(orderDetails.createdAt).toLocaleDateString(
+                    "en-IN",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    },
+                  )}
                 </p>
                 <p className="text-[9px] text-stone-400 uppercase tracking-tighter">
                   Order Ref: {orderDetails._id.slice(-6).toUpperCase()}
@@ -231,7 +233,13 @@ export default function ShoppingOrderDetailsView() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
               {[
                 // This will now use createdAt if orderDate doesn't exist
-["Placement Date", (orderDetails.orderDate || orderDetails.createdAt)?.split("T")[0]],,
+                [
+                  "Placement Date",
+                  (orderDetails.orderDate || orderDetails.createdAt)?.split(
+                    "T",
+                  )[0],
+                ],
+                ,
                 ["Payment Method", orderDetails.paymentMethod],
                 ["Settlement", orderDetails.paymentStatus],
                 ["Cancellation", orderDetails.cancelStatus],
@@ -309,13 +317,13 @@ export default function ShoppingOrderDetailsView() {
               )}
 
               {isReturnable() && !isFullOrderReturned && (
-  <button
-    onClick={handleReturnFullOrder}
-    className="px-8 py-3 rounded-full bg-stone-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#B23A2E] transition-all shadow-xl shadow-stone-200"
-  >
-    Request Return
-  </button>
-)}
+                <button
+                  onClick={handleReturnFullOrder}
+                  className="px-8 py-3 rounded-full bg-stone-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#B23A2E] transition-all shadow-xl shadow-stone-200"
+                >
+                  Request Return
+                </button>
+              )}
               {successMsg && (
                 <span className="text-[10px] font-bold text-green-600 uppercase italic">
                   ✓ {successMsg}
