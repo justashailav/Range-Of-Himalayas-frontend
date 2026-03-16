@@ -356,7 +356,7 @@ export default function ShoppingOrderDetailsView() {
           </div>
 
           <div className="divide-y divide-stone-50">
-            {orderDetails.cartItems.map((item) => {
+            {(orderDetails.cartItems || []).map((item) => {
               const product =
                 productList.find((p) => p._id === item.productId) || {};
 
