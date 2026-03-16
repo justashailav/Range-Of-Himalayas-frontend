@@ -1,6 +1,5 @@
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { cancelOrder, getAllOrderDetails } from "@/store/slices/orderSlice";
 import { MapPin, Phone, Receipt, Truck } from "lucide-react";
@@ -38,13 +37,20 @@ export default function ShoppingOrderDetailsView() {
 
   // Cancel eligibility: within 24 hrs & confirmed
   const isCancelable = () => {
-    if (!orderDetails.orderDate) return false;
-    const orderTime = new Date(orderDetails.orderDate).getTime();
-    const now = Date.now();
-    const hoursPassed = (now - orderTime) / (1000 * 60 * 60);
-    return hoursPassed <= 24 && orderDetails.orderStatus === "confirmed";
-  };
+  // Use createdAt if orderDate is missing
+  const timestamp = orderDetails.orderDate || orderDetails.createdAt;
+  
+  if (!timestamp) return false;
 
+  const orderTime = new Date(timestamp).getTime();
+  const now = Date.now();
+  const hoursPassed = (now - orderTime) / (1000 * 60 * 60);
+
+  // Use toLowerCase() to be safe against casing issues
+  const currentStatus = orderDetails.orderStatus?.toLowerCase();
+  
+  return hoursPassed <= 24 && currentStatus === "confirmed";
+};
   // Return eligibility: after delivered
   const isReturnable = () => orderDetails.orderStatus === "delivered";
 
