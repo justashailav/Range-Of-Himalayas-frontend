@@ -181,7 +181,7 @@ export default function ShoppingOrderDetailsView() {
                   )}
                 </p>
                 <p className="text-[9px] text-stone-400 uppercase tracking-tighter">
-                  Order Ref: {orderDetails._id.slice(-6).toUpperCase()}
+                  Order Ref: {orderDetails?._id?.slice(-6)?.toUpperCase()}
                 </p>
               </div>
             </div>
