@@ -217,7 +217,8 @@ export default function ShoppingOrderDetailsView() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
               {[
-                ["Placement Date", orderDetails.orderDate?.split("T")[0]],
+                // This will now use createdAt if orderDate doesn't exist
+["Placement Date", (orderDetails.orderDate || orderDetails.createdAt)?.split("T")[0]],,
                 ["Payment Method", orderDetails.paymentMethod],
                 ["Settlement", orderDetails.paymentStatus],
                 ["Cancellation", orderDetails.cancelStatus],
