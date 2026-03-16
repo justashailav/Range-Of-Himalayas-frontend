@@ -24,7 +24,9 @@ export default function ReturnRequestPage() {
   if (!orderDetails) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-stone-400 font-serif italic">Manifest data not found...</p>
+        <p className="text-stone-400 font-serif italic">
+          Manifest data not found...
+        </p>
       </div>
     );
   }
@@ -48,7 +50,7 @@ export default function ReturnRequestPage() {
         formData.append(`items[${idx}][quantity]`, item.quantity);
         formData.append(
           `items[${idx}][reason]`,
-          reasonInputs[item.productId] || "No reason provided"
+          reasonInputs[item.productId] || "No reason provided",
         );
       });
       photos.forEach((file) => formData.append("photos", file));
@@ -56,7 +58,9 @@ export default function ReturnRequestPage() {
 
       await dispatch(requestReturnItems(orderId, formData));
       toast.success("Return request submitted successfully");
-      navigate(-1);
+      navigate(`/order-details/${orderId}`, {
+        state: { returnRequested: true },
+      });
     } catch (error) {
       toast.error(error.message || "Submission failed");
     } finally {
@@ -68,8 +72,8 @@ export default function ReturnRequestPage() {
     <div className="min-h-screen bg-[#FDFDFD] p-4 sm:p-10 text-stone-900">
       <div className="max-w-4xl mx-auto">
         {/* BACK NAVIGATION */}
-        <button 
-          onClick={() => navigate(-1)}
+        <button
+          onClick={() => navigate(`/order-details/${orderId}`)}
           className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors mb-12"
         >
           <ArrowLeft size={14} /> Back to Order
@@ -84,10 +88,14 @@ export default function ReturnRequestPage() {
             </span>
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-4">
-            Return <span className="font-serif italic font-light text-stone-300">Inquiry</span>
+            Return{" "}
+            <span className="font-serif italic font-light text-stone-300">
+              Inquiry
+            </span>
           </h1>
           <p className="max-w-md text-sm text-stone-500 font-medium leading-relaxed">
-            We aim for perfection, but sometimes things fall short. Provide details below to initiate your return process.
+            We aim for perfection, but sometimes things fall short. Provide
+            details below to initiate your return process.
           </p>
         </header>
 
@@ -96,31 +104,51 @@ export default function ReturnRequestPage() {
           <div className="lg:col-span-7 space-y-12">
             <section>
               <div className="flex items-center justify-between mb-8 border-b border-stone-100 pb-4">
-                <h2 className="text-[11px] font-black uppercase tracking-[0.3em]">01. Parcel Contents</h2>
-                <span className="text-[10px] font-bold text-stone-400 uppercase">Select & Specify</span>
+                <h2 className="text-[11px] font-black uppercase tracking-[0.3em]">
+                  01. Parcel Contents
+                </h2>
+                <span className="text-[10px] font-bold text-stone-400 uppercase">
+                  Select & Specify
+                </span>
               </div>
 
               <div className="space-y-6">
                 {orderDetails.cartItems.map((item) => (
-                  <div key={item.productId} className="group relative bg-white border border-stone-100 rounded-[2rem] p-6 hover:border-stone-300 transition-all duration-500">
+                  <div
+                    key={item.productId}
+                    className="group relative bg-white border border-stone-100 rounded-[2rem] p-6 hover:border-stone-300 transition-all duration-500"
+                  >
                     <div className="flex gap-6">
                       <div className="w-24 h-24 rounded-2xl overflow-hidden bg-stone-50 border border-stone-100 shrink-0">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700" />
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
+                        />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-black uppercase tracking-tight text-sm mb-1">{item.name}</h3>
+                        <h3 className="font-black uppercase tracking-tight text-sm mb-1">
+                          {item.name}
+                        </h3>
                         <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-                          Qty: {item.quantity} · <span className="text-stone-900 italic font-serif lowercase text-xs">₹{item.price}</span>
+                          Qty: {item.quantity} ·{" "}
+                          <span className="text-stone-900 italic font-serif lowercase text-xs">
+                            ₹{item.price}
+                          </span>
                         </p>
                       </div>
                     </div>
 
                     <div className="mt-6">
-                      <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-2">Reason for Return</label>
+                      <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 block mb-2">
+                        Reason for Return
+                      </label>
                       <textarea
                         placeholder="Describe the issue (e.g., Damage, quality, wrong item)..."
                         value={reasonInputs[item.productId] || ""}
-                        onChange={(e) => handleReasonChange(item.productId, e.target.value)}
+                        onChange={(e) =>
+                          handleReasonChange(item.productId, e.target.value)
+                        }
                         className="w-full bg-stone-50 rounded-2xl border-none p-4 text-sm focus:ring-1 focus:ring-stone-200 placeholder:text-stone-300 resize-none transition-all"
                         rows={3}
                       />
@@ -135,8 +163,12 @@ export default function ReturnRequestPage() {
           <div className="lg:col-span-5 space-y-10">
             <section className="sticky top-10">
               <div className="flex items-center justify-between mb-8 border-b border-stone-100 pb-4">
-                <h2 className="text-[11px] font-black uppercase tracking-[0.3em]">02. Evidence</h2>
-                <span className="text-[10px] font-bold text-stone-400 uppercase">Optional</span>
+                <h2 className="text-[11px] font-black uppercase tracking-[0.3em]">
+                  02. Evidence
+                </h2>
+                <span className="text-[10px] font-bold text-stone-400 uppercase">
+                  Optional
+                </span>
               </div>
 
               <div className="space-y-4 mb-10">
@@ -150,8 +182,13 @@ export default function ReturnRequestPage() {
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
                   <div className="border border-dashed border-stone-200 rounded-[2rem] p-8 text-center group-hover:bg-stone-50 group-hover:border-stone-400 transition-all">
-                    <Camera className="mx-auto mb-3 text-stone-300 group-hover:text-stone-900 transition-colors" size={24} />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-stone-400">Add Photographs</p>
+                    <Camera
+                      className="mx-auto mb-3 text-stone-300 group-hover:text-stone-900 transition-colors"
+                      size={24}
+                    />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+                      Add Photographs
+                    </p>
                   </div>
                 </div>
 
@@ -159,8 +196,14 @@ export default function ReturnRequestPage() {
                 {photos.length > 0 && (
                   <div className="flex flex-wrap gap-2 pt-2">
                     {photos.map((file, idx) => (
-                      <div key={idx} className="w-16 h-16 rounded-xl overflow-hidden border border-stone-100 shadow-sm">
-                        <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" />
+                      <div
+                        key={idx}
+                        className="w-16 h-16 rounded-xl overflow-hidden border border-stone-100 shadow-sm"
+                      >
+                        <img
+                          src={URL.createObjectURL(file)}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                     ))}
                   </div>
@@ -176,8 +219,13 @@ export default function ReturnRequestPage() {
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
                   <div className="border border-dashed border-stone-200 rounded-[2rem] p-8 text-center group-hover:bg-stone-50 group-hover:border-stone-400 transition-all">
-                    <Video className="mx-auto mb-3 text-stone-300 group-hover:text-stone-900 transition-colors" size={24} />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-stone-400">Add Video Proof</p>
+                    <Video
+                      className="mx-auto mb-3 text-stone-300 group-hover:text-stone-900 transition-colors"
+                      size={24}
+                    />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+                      Add Video Proof
+                    </p>
                   </div>
                 </div>
               </div>
@@ -186,10 +234,13 @@ export default function ReturnRequestPage() {
               <div className="bg-stone-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-stone-200">
                 <div className="flex items-center gap-3 mb-6">
                   <Info size={14} className="text-stone-500" />
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Manifest Review Policy</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">
+                    Manifest Review Policy
+                  </p>
                 </div>
                 <p className="text-xs text-stone-400 leading-relaxed mb-8 italic">
-                  Return requests are processed by our Himalayan Logistics team within 48 business hours.
+                  Return requests are processed by our Himalayan Logistics team
+                  within 48 business hours.
                 </p>
                 <Button
                   onClick={handleSubmit}
