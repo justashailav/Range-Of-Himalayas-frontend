@@ -308,16 +308,14 @@ export default function ShoppingOrderDetailsView() {
                 </button>
               )}
 
-              {isReturnable() && (
-                <button
-                  onClick={handleReturnFullOrder}
-                  disabled={isFullOrderReturned}
-                  className="px-8 py-3 rounded-full bg-stone-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#B23A2E] transition-all shadow-xl shadow-stone-200"
-                >
-                  {isFullOrderReturned ? "Return Initiated" : "Request Return"}
-                </button>
-              )}
-
+              {isReturnable() && !isFullOrderReturned && (
+  <button
+    onClick={handleReturnFullOrder}
+    className="px-8 py-3 rounded-full bg-stone-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#B23A2E] transition-all shadow-xl shadow-stone-200"
+  >
+    Request Return
+  </button>
+)}
               {successMsg && (
                 <span className="text-[10px] font-bold text-green-600 uppercase italic">
                   ✓ {successMsg}
