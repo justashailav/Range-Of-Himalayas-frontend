@@ -12,29 +12,28 @@ export default function ShoppingOrderDetailsView() {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
-  const [orderDetails, setOrderDetails] = useState(null);
+  const [orderDetails, setOrderDetails] = useState(state?.orderDetails || null);
+
   const [loadingCancelOrder, setLoadingCancelOrder] = useState(false);
   const [successMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   // Fetch order details from backend if not passed via state
   useEffect(() => {
-  if (orderId) {
-    dispatch(getAllOrderDetails(orderId)).then((res) => {
-      if (res?.payload) {
-        setOrderDetails(res.payload);
-      }
-    });
-  }
-}, [orderId, dispatch]);
-  useEffect(() => {
-    if (state?.returnRequested) {
-      setOrderDetails((prev) => ({
-        ...prev,
-        returnStatus: "requested",
-      }));
+    if (!orderDetails && orderId) {
+      dispatch(getAllOrderDetails(orderId)).then((res) => {
+        if (res?.payload) setOrderDetails(res.payload);
+      });
     }
-  }, [state]);
+  }, [orderDetails, orderId, dispatch]);
+  useEffect(() => {
+  if (state?.returnRequested) {
+    setOrderDetails((prev) => ({
+      ...prev,
+      returnStatus: "requested",
+    }));
+  }
+}, [state]); 
 
   if (!orderDetails) {
     return (
@@ -46,20 +45,20 @@ export default function ShoppingOrderDetailsView() {
 
   // Cancel eligibility: within 24 hrs & confirmed
   const isCancelable = () => {
-    // Use createdAt if orderDate is missing
-    const timestamp = orderDetails.orderDate || orderDetails.createdAt;
+  // Use createdAt if orderDate is missing
+  const timestamp = orderDetails.orderDate || orderDetails.createdAt;
+  
+  if (!timestamp) return false;
 
-    if (!timestamp) return false;
+  const orderTime = new Date(timestamp).getTime();
+  const now = Date.now();
+  const hoursPassed = (now - orderTime) / (1000 * 60 * 60);
 
-    const orderTime = new Date(timestamp).getTime();
-    const now = Date.now();
-    const hoursPassed = (now - orderTime) / (1000 * 60 * 60);
-
-    // Use toLowerCase() to be safe against casing issues
-    const currentStatus = orderDetails.orderStatus?.toLowerCase();
-
-    return hoursPassed <= 24 && currentStatus === "confirmed";
-  };
+  // Use toLowerCase() to be safe against casing issues
+  const currentStatus = orderDetails.orderStatus?.toLowerCase();
+  
+  return hoursPassed <= 24 && currentStatus === "confirmed";
+};
   // Return eligibility: after delivered
   const isReturnable = () => orderDetails.orderStatus === "delivered";
 
@@ -74,33 +73,34 @@ export default function ShoppingOrderDetailsView() {
 
   // Full order cancellation
   const handleCancelOrder = async () => {
-    setLoadingCancelOrder(true);
-    setErrorMsg(null);
-    setSuccessMsg(null);
+  setLoadingCancelOrder(true);
+  setErrorMsg(null);
+  setSuccessMsg(null);
 
-    try {
-      const response = await dispatch(cancelOrder(orderDetails._id));
+  try {
+    const response = await dispatch(cancelOrder(orderDetails._id));
 
-      setSuccessMsg(
-        response?.payload?.message || "Order cancelled successfully",
-      );
+    setSuccessMsg(
+      response?.payload?.message || "Order cancelled successfully"
+    );
 
-      // Immediately update UI without refresh
-      setOrderDetails((prev) => ({
-        ...prev,
-        orderStatus: "cancelled",
-      }));
-    } catch (error) {
-      setErrorMsg(error?.message || "Failed to cancel order");
-    } finally {
-      setLoadingCancelOrder(false);
-    }
-  };
+    // Immediately update UI without refresh
+    setOrderDetails((prev) => ({
+      ...prev,
+      orderStatus: "cancelled",
+    }));
+
+  } catch (error) {
+    setErrorMsg(error?.message || "Failed to cancel order");
+  } finally {
+    setLoadingCancelOrder(false);
+  }
+};
 
   // Redirect to Return Request Page
   const handleReturnFullOrder = () => {
     navigate(`/return-request/${orderDetails._id}`, {
-      state: { orderDetails, returnRequested: true },
+      state: { orderDetails },
     });
   };
 
@@ -170,17 +170,14 @@ export default function ShoppingOrderDetailsView() {
                   Booking Timestamp
                 </p>
                 <p className="text-sm font-bold text-stone-600 font-mono">
-                  {new Date(orderDetails.createdAt).toLocaleDateString(
-                    "en-IN",
-                    {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    },
-                  )}
+                  {new Date(orderDetails.createdAt).toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </p>
                 <p className="text-[9px] text-stone-400 uppercase tracking-tighter">
-                  Order Ref: {orderDetails._id?.slice(-6).toUpperCase()}
+                  Order Ref: {orderDetails._id.slice(-6).toUpperCase()}
                 </p>
               </div>
             </div>
@@ -193,11 +190,11 @@ export default function ShoppingOrderDetailsView() {
                   Inventory
                 </p>
                 <p className="text-base md:text-lg font-black text-stone-900 italic">
-  {orderDetails?.cartItems?.length || 0}{" "}
-  <span className="text-xs md:text-sm font-serif">
-    {(orderDetails?.cartItems?.length || 0) === 1 ? "Parcel" : "Parcels"}
-  </span>
-</p>
+                  {orderDetails.cartItems.length}{" "}
+                  <span className="text-xs md:text-sm font-serif">
+                    {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
+                  </span>
+                </p>
               </div>
 
               <div className="space-y-1">
@@ -234,13 +231,7 @@ export default function ShoppingOrderDetailsView() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
               {[
                 // This will now use createdAt if orderDate doesn't exist
-                [
-                  "Placement Date",
-                  (orderDetails.orderDate || orderDetails.createdAt)?.split(
-                    "T",
-                  )[0],
-                ],
-                ,
+["Placement Date", (orderDetails.orderDate || orderDetails.createdAt)?.split("T")[0]],,
                 ["Payment Method", orderDetails.paymentMethod],
                 ["Settlement", orderDetails.paymentStatus],
                 ["Cancellation", orderDetails.cancelStatus],
@@ -350,13 +341,13 @@ export default function ShoppingOrderDetailsView() {
             </h2>
             <div className="h-px flex-1 bg-stone-50" />
             <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-  {orderDetails?.cartItems?.length || 0}{" "}
-  {(orderDetails?.cartItems?.length || 0) === 1 ? "Item" : "Items"}
-</span>
+              {orderDetails.cartItems.length}{" "}
+              {orderDetails.cartItems.length === 1 ? "Item" : "Items"}
+            </span>
           </div>
 
           <div className="divide-y divide-stone-50">
-            {(orderDetails.cartItems||[]).map((item) => {
+            {orderDetails.cartItems.map((item) => {
               const product =
                 productList.find((p) => p._id === item.productId) || {};
 
@@ -479,11 +470,11 @@ export default function ShoppingOrderDetailsView() {
                     Street & Locality
                   </p>
                   <p className="text-sm font-bold text-stone-300 leading-relaxed uppercase tracking-tight">
-                    {orderDetails?.addressInfo?.address}
+                    {orderDetails.addressInfo.address}
                   </p>
                   <p className="text-sm font-bold text-stone-300 uppercase tracking-tight">
-                    {orderDetails?.addressInfo?.city} —{" "}
-                    {orderDetails?.addressInfo?.pincode}
+                    {orderDetails.addressInfo.city} —{" "}
+                    {orderDetails.addressInfo.pincode}
                   </p>
                 </div>
 
@@ -498,19 +489,19 @@ export default function ShoppingOrderDetailsView() {
                         <Phone size={10} className="text-stone-400" />
                       </div>
                       <p className="text-sm font-black tracking-widest text-stone-200">
-                        {orderDetails?.addressInfo?.phone}
+                        {orderDetails.addressInfo.phone}
                       </p>
                     </div>
                   </div>
 
                   {/* DELIVERY NOTES */}
-                  {orderDetails?.addressInfo?.notes && (
+                  {orderDetails.addressInfo.notes && (
                     <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
                       <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">
                         Courier Notes
                       </p>
                       <p className="text-xs italic text-stone-400 font-medium">
-                        "{orderDetails?.addressInfo?.notes}"
+                        "{orderDetails.addressInfo.notes}"
                       </p>
                     </div>
                   )}
