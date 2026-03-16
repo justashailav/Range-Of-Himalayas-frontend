@@ -352,7 +352,7 @@ export default function OurStory() {
               <p className="mt-8 text-xl text-stone-500 font-light leading-relaxed max-w-xl">
                 At{" "}
                 <span className="text-stone-900 font-semibold italic">
-                  8,000m elevation
+                  8,000ft elevation
                 </span>
                 , nature moves at its own pace. Fruits ripen slowly in the thin
                 mountain air, concentrating sugars and nutrients to create an
@@ -440,7 +440,7 @@ export default function OurStory() {
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-black">8,000</span>
                   <span className="text-lg font-serif italic text-stone-400">
-                    meters
+                    ft
                   </span>
                 </div>
               </motion.div>

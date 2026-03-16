@@ -92,15 +92,6 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     ).then((res) => {
       if (res?.payload?.success || res?.success) {
         toast.success("Item removed");
-        
-        /* Instead of just fetching, which causes the 'flicker', 
-          Redux usually handles the state update within the 
-          'deleteCartItem.fulfilled' extraReducer. 
-          
-          If your slice is set up correctly, the item will disappear 
-          automatically without a full 'fetch' flicker.
-        */
-        dispatch(fetchCartItems(user._id)); 
       } else {
         toast.error("Failed to remove item");
       }
