@@ -181,7 +181,7 @@ export default function ShoppingOrderDetailsView() {
                   )}
                 </p>
                 <p className="text-[9px] text-stone-400 uppercase tracking-tighter">
-                  Order Ref: {orderDetails?._id?.slice(-6)?.toUpperCase()}
+                  Order Ref: Order Ref: {orderDetails?._id.slice(-6)?.toUpperCase()}
                 </p>
               </div>
             </div>
@@ -194,11 +194,11 @@ export default function ShoppingOrderDetailsView() {
                   Inventory
                 </p>
                 <p className="text-base md:text-lg font-black text-stone-900 italic">
-  {(orderDetails?.cartItems?.length || 0)}{" "}
-  <span className="text-xs md:text-sm font-serif">
-    {(orderDetails?.cartItems?.length || 0) === 1 ? "Parcel" : "Parcels"}
-  </span>
-</p>
+                  {orderDetails.cartItems.length}{" "}
+                  <span className="text-xs md:text-sm font-serif">
+                    {orderDetails.cartItems.length === 1 ? "Parcel" : "Parcels"}
+                  </span>
+                </p>
               </div>
 
               <div className="space-y-1">
@@ -350,13 +350,13 @@ export default function ShoppingOrderDetailsView() {
             </h2>
             <div className="h-px flex-1 bg-stone-50" />
             <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-  {(orderDetails?.cartItems?.length || 0)}{" "}
-  {(orderDetails?.cartItems?.length || 0) === 1 ? "Item" : "Items"}
-</span>
+              {orderDetails.cartItems.length}{" "}
+              {orderDetails.cartItems.length === 1 ? "Item" : "Items"}
+            </span>
           </div>
 
           <div className="divide-y divide-stone-50">
-            {(orderDetails.cartItems || []).map((item) => {
+            {orderDetails.cartItems.map((item) => {
               const product =
                 productList.find((p) => p._id === item.productId) || {};
 
@@ -479,11 +479,11 @@ export default function ShoppingOrderDetailsView() {
                     Street & Locality
                   </p>
                   <p className="text-sm font-bold text-stone-300 leading-relaxed uppercase tracking-tight">
-                    {orderDetails?.addressInfo?.address}
+                    {orderDetails.addressInfo.address}
                   </p>
                   <p className="text-sm font-bold text-stone-300 uppercase tracking-tight">
-                    {orderDetails?.addressInfo?.city} —{" "}
-                    {orderDetails?.addressInfo?.pincode}
+                    {orderDetails.addressInfo.city} —{" "}
+                    {orderDetails.addressInfo.pincode}
                   </p>
                 </div>
 
@@ -498,19 +498,19 @@ export default function ShoppingOrderDetailsView() {
                         <Phone size={10} className="text-stone-400" />
                       </div>
                       <p className="text-sm font-black tracking-widest text-stone-200">
-                        {orderDetails?.addressInfo?.phone}
+                        {orderDetails.addressInfo.phone}
                       </p>
                     </div>
                   </div>
 
                   {/* DELIVERY NOTES */}
-                  {orderDetails?.addressInfo?.notes && (
+                  {orderDetails.addressInfo.notes && (
                     <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
                       <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 mb-1">
                         Courier Notes
                       </p>
                       <p className="text-xs italic text-stone-400 font-medium">
-                        "{orderDetails?.addressInfo?.notes}"
+                        "{orderDetails.addressInfo.notes}"
                       </p>
                     </div>
                   )}

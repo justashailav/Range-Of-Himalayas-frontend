@@ -59,8 +59,8 @@ export default function ReturnRequestPage() {
       await dispatch(requestReturnItems(orderId, formData));
       toast.success("Return request submitted successfully");
       navigate(`/order-details/${orderId}`, {
-        state: { returnRequested: true },
-      });
+  state: { orderDetails, returnRequested: true },
+});
     } catch (error) {
       toast.error(error.message || "Submission failed");
     } finally {
