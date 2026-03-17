@@ -164,9 +164,9 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           </div>
         </div>
         <SheetClose className="group relative flex h-9 w-9 items-center justify-center rounded-full bg-stone-50 transition-all duration-300 hover:bg-stone-900 hover:rotate-90 active:scale-90 border border-stone-100">
-      <X className="h-4 w-4 text-stone-500 transition-colors group-hover:text-white" />
-      <span className="sr-only">Close Basket</span>
-    </SheetClose>
+          <X className="h-4 w-4 text-stone-500 transition-colors group-hover:text-white" />
+          <span className="sr-only">Close Basket</span>
+        </SheetClose>
       </div>
 
       {/* ================= SCROLLABLE BODY ================= */}

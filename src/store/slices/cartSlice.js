@@ -59,10 +59,19 @@ const cartSlice = createSlice({
       state.error = null;
     },
     deleteCartItemSuccess: (state, action) => {
-      state.loading = false;
-      state.message = action.payload.success ? "Item deleted successfully" : "";
-      state.cartItems = action.payload.data?.items || [];
-    },
+  state.loading = false;
+  state.message = "Item deleted successfully";
+
+  const { productId, size, weight } = action.meta; // we pass manually
+
+  state.cartItems = state.cartItems.filter((item) => {
+    return !(
+      item.productId === productId &&
+      (item.size || "") === (size || "") &&
+      item.weight === weight
+    );
+  });
+},
     deleteCartItemFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
@@ -152,20 +161,32 @@ export const updateCart =
       return { success: false, message: error.response?.data?.message || "Update failed" };
     }
   };
-
-export const deleteCartItem =
-  ({ userId, productId, size,weight }) =>
+  export const deleteCartItem =
+  ({ userId, productId, size, weight }) =>
   async (dispatch) => {
     dispatch(cartSlice.actions.deleteCartItemStart());
+
     try {
-      const res = await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/${userId}/${productId}`, {
-        data: { size,weight },
-        withCredentials: true,
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/user/${userId}/${productId}`,
+        {
+          data: { size, weight },
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: "cart/deleteCartItemSuccess",
+        meta: { productId, size, weight },
       });
-      dispatch(cartSlice.actions.deleteCartItemSuccess(res.data));
-      return res.data;
+
+      return { success: true };
     } catch (error) {
-      dispatch(cartSlice.actions.deleteCartItemFailed(error.response?.data?.message || error.message));
+      dispatch(
+        cartSlice.actions.deleteCartItemFailed(
+          error.response?.data?.message || error.message
+        )
+      );
       throw error;
     }
   };
