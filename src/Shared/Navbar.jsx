@@ -368,24 +368,11 @@ export default function Navbar() {
             to="/"
             className="flex-shrink-0 flex items-center h-full transition-all duration-700 ease-in-out hover:scale-105"
           >
-            {/* 'h-full' and 'flex items-center' on the Link ensure 
-    the logo is centered relative to the navbar's height.
-  */}
             <img
-  src={logo}
-  className="
-    /* Width: Downsized for a more sophisticated look */
-    w-20 sm:w-24 lg:w-28 
-    
-    /* Aesthetics: Invert for white, subtle dimming for that 'Archive' feel */
-    brightness-0 invert opacity-80 
-    
-    /* Interactions */
-    hover:opacity-100 transition-all duration-700 ease-in-out
-    object-contain
-  "
-  alt="Range of Himalayas"
-/>
+              src={logo}
+              className="w-20 sm:w-24 lg:w-28 brightness-0 invert opacity-80 hover:opacity-100 transition-all duration-700 ease-in-out object-contain mt-2"
+              alt="Range of Himalayas"
+            />
           </Link>
           <nav className="flex items-center justify-center gap-6 lg:gap-10 flex-1 h-full px-4">
             {[
