@@ -26,39 +26,53 @@ export default function Footer() {
         </div>
 
         {/* NAVIGATION: THE ESTATE */}
-        <div className="space-y-8">
-          <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
-            The Estate
-          </h4>
-          <ul className="space-y-4 text-[12px] font-black uppercase tracking-[0.2em] text-stone-300">
-            {['Our Story', 'Bespoke Crate', 'Field Notes'].map((item) => (
-              <li key={item}>
-                <a href={`/${item.toLowerCase().replace(' ', '')}`} className="hover:text-[#F08C7D] transition-all duration-300 flex items-center group">
-                  <span className="w-0 group-hover:w-4 h-px bg-[#F08C7D] transition-all duration-300 mr-0 group-hover:mr-2" />
-                  {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+<div className="space-y-8">
+  <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
+    The Estate
+  </h4>
+  <ul className="space-y-4 text-[12px] font-black uppercase tracking-[0.2em] text-stone-300">
+    {[
+      { name: 'Our Story', path: '/about-us' },
+      { name: 'Bespoke Crate', path: '/custombox' },
+      { name: 'Field Notes', path: '/blog' }
+    ].map((link) => (
+      <li key={link.name}>
+        <a 
+          href={link.path} 
+          className="hover:text-[#F08C7D] transition-all duration-300 group flex items-center"
+        >
+          <span className="w-0 group-hover:w-4 h-px bg-[#F08C7D] transition-all duration-300 mr-0 group-hover:mr-2" />
+          {link.name}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
 
-        {/* NAVIGATION: CONCIERGE */}
-        <div className="space-y-8">
-          <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
-            Concierge
-          </h4>
-          <ul className="space-y-4 text-[12px] font-black uppercase tracking-[0.2em] text-stone-300">
-             {['FAQS', 'Shipping', 'Exchanges', 'Privacy'].map((item) => (
-              <li key={item}>
-                <a href="#" className="hover:text-[#F08C7D] transition-all duration-300 group flex items-center">
-                  <span className="w-0 group-hover:w-4 h-px bg-[#F08C7D] transition-all duration-300 mr-0 group-hover:mr-2" />
-                  {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
+{/* NAVIGATION: CONCIERGE */}
+<div className="space-y-8">
+  <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
+    Concierge
+  </h4>
+  <ul className="space-y-4 text-[12px] font-black uppercase tracking-[0.2em] text-stone-300">
+    {[
+      { name: 'Common Inquiries', path: '/faqs' },
+      { name: 'Transit & Logistics', path: '/shipping-policy' },
+      { name: 'Exchanges', path: '/return-policy' },
+      { name: 'Privacy', path: '/privacy-policy' }
+    ].map((link) => (
+      <li key={link.name}>
+        <a 
+          href={link.path} 
+          className="hover:text-[#F08C7D] transition-all duration-300 group flex items-center"
+        >
+          <span className="w-0 group-hover:w-4 h-px bg-[#F08C7D] transition-all duration-300 mr-0 group-hover:mr-2" />
+          {link.name}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
         {/* CORRESPONDENCE: CONTACT */}
         <div className="space-y-8">
           <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
