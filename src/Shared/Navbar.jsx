@@ -5,7 +5,7 @@ import logo from "../assets/logo-himalayas.png";
 import UserCartWrapper from "@/components/Cart-wrapper";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -512,45 +512,50 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      {/* Use AnimatePresence for smooth entry/exit */}
-<AnimatePresence>
+      <AnimatePresence>
   {isMenu && (
     <div className="fixed inset-0 z-[100] lg:hidden">
-      {/* 1. BLUR OVERLAY: Animated Fade */}
+      {/* 1. ULTRA-DARK BLUR OVERLAY */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-stone-900/60 backdrop-blur-md"
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={toggleMenu}
       />
 
-      {/* 2. SIDEBAR: Animated Slide from Right */}
+      {/* 2. THE SIDEBAR: Midnight Slate with refined spacing */}
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: 0 }}
         exit={{ x: "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="absolute top-0 right-0 h-full w-[280px] sm:w-[350px] bg-[#1a241a] shadow-2xl p-8 flex flex-col"
+        transition={{ type: "spring", damping: 30, stiffness: 200 }}
+        /* Changed background to a rich Charcoal-Slate (#121414) */
+        className="absolute top-0 right-0 h-full w-[280px] sm:w-[380px] bg-[#121414] shadow-[0_0_50px_rgba(0,0,0,0.5)] p-10 flex flex-col border-l border-white/5"
       >
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-16">
-          <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30">
-            Menu / Archive
-          </span>
+        {/* HEADER: Minimalist Label */}
+        <div className="flex justify-between items-center mb-20">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white/20">
+              Selection
+            </span>
+            <div className="h-[2px] w-4 bg-[#F08C7D] mt-1" />
+          </div>
+          
           <button 
             onClick={toggleMenu} 
             className="group p-2 -mr-2 outline-none"
+            aria-label="Close Menu"
           >
-            <div className="relative w-6 h-6 flex items-center justify-center">
-               <span className="absolute w-6 h-[1px] bg-white/60 rotate-45 group-hover:bg-white group-hover:rotate-90 transition-all duration-500" />
-               <span className="absolute w-6 h-[1px] bg-white/60 -rotate-45 group-hover:bg-white group-hover:rotate-0 transition-all duration-500" />
+            <div className="relative w-5 h-5 flex items-center justify-center">
+               <span className="absolute w-full h-[1px] bg-white/40 rotate-45 group-hover:bg-[#F08C7D] transition-all duration-300" />
+               <span className="absolute w-full h-[1px] bg-white/40 -rotate-45 group-hover:bg-[#F08C7D] transition-all duration-300" />
             </div>
           </button>
         </div>
 
-        {/* 3. NAVIGATION: Added staggered animation to links */}
-        <nav className="flex flex-col gap-10">
+        {/* 3. NAVIGATION: Large Editorial Typography */}
+        <nav className="flex flex-col gap-12">
           {[
             { name: "Home", path: "/" },
             { name: "Our Story", path: "/about-us" },
@@ -560,52 +565,64 @@ export default function Navbar() {
           ].map((link, index) => (
             <motion.div
               key={link.name}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 * index }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + (index * 0.08), ease: "easeOut" }}
             >
               <Link
                 to={link.path}
                 onClick={toggleMenu}
-                className="group flex items-end justify-between pb-2 border-b border-white/5 hover:border-white/20 transition-colors"
+                className="group relative flex items-center"
               >
-                <span className="text-16px sm:text-lg font-black uppercase tracking-[0.4em] text-white/80 group-hover:text-white transition-colors">
-                  {link.name}
-                </span>
-                <span className="text-[10px] font-serif italic text-white/20 group-hover:text-[#F08C7D] mb-1 transition-colors">
+                {/* Numbering: Small and sophisticated */}
+                <span className="absolute -left-6 text-[8px] font-mono text-white/10 group-hover:text-[#F08C7D] transition-colors">
                   0{index + 1}
+                </span>
+                
+                <span className="text-xl sm:text-2xl font-black uppercase tracking-[0.3em] text-white/60 group-hover:text-white group-hover:translate-x-2 transition-all duration-500">
+                  {link.name}
                 </span>
               </Link>
             </motion.div>
           ))}
         </nav>
 
-        {/* 4. FOOTER: Redesigned for visual hierarchy */}
+        {/* 4. FOOTER: Premium Interaction */}
         <div className="mt-auto">
           {!user ? (
-            <Link to="/login" onClick={toggleMenu} className="block group">
-              <div className="relative overflow-hidden border border-white/20 py-5 text-center transition-all duration-500 group-hover:border-white">
-                <span className="relative z-10 text-[11px] font-black uppercase tracking-[0.4em] text-white">
-                  Member Login
+            <Link to="/login" onClick={toggleMenu} className="block">
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative group border border-white/10 p-6 text-center transition-all duration-500 hover:border-[#F08C7D]/50"
+              >
+                <span className="relative z-10 text-[11px] font-black uppercase tracking-[0.5em] text-white group-hover:text-[#F08C7D] transition-colors">
+                  Member Entry
                 </span>
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                <style jsx>{`.group:hover span { color: #1a241a; }`}</style>
-              </div>
+                {/* Subtle corner accents */}
+                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#F08C7D] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#F08C7D] opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
             </Link>
           ) : (
-            <button
-              onClick={() => { handleLogout(); toggleMenu(); }}
-              className="w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors border-t border-white/5"
-            >
-              Exit Account — {user?.name?.split(' ')[0]}
-            </button>
+            <div className="flex flex-col gap-4">
+               <p className="text-[10px] text-center text-white/30 tracking-widest uppercase italic">
+                 Welcome, {user?.name?.split(" ")[0]}
+               </p>
+               <button
+                onClick={() => { handleLogout(); toggleMenu(); }}
+                className="w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/20 hover:text-[#F08C7D] transition-colors"
+              >
+                Disconnect Archive
+              </button>
+            </div>
           )}
 
-          <div className="mt-8 flex flex-col items-center gap-2">
-            <div className="h-px w-8 bg-[#F08C7D]/30" />
-            <p className="text-[8px] font-black uppercase tracking-[0.6em] text-white/10">
+          <div className="mt-12 flex flex-col items-center opacity-30">
+            <p className="text-[7px] font-black uppercase tracking-[1em] text-white">
               Purely Himalayan
             </p>
+            <p className="text-[6px] text-white/50 mt-2 tracking-[0.5em]">EST. 2026</p>
           </div>
         </div>
       </motion.div>
