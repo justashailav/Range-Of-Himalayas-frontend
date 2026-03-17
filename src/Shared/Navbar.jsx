@@ -222,9 +222,6 @@ export default function Navbar() {
                             </span>
                           </DropdownMenuItem>
                         </Link>
-
-                        {/* TRACK ORDER: Refined as an editorial link rather than a heavy button */}
-
                         <DropdownMenuItem
                           onClick={() => navigate("/order-tracking")}
                           className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-[#2d3a2d] hover:text-white focus:bg-[#2d3a2d] focus:text-white group border-t border-stone-100 mt-2"
@@ -278,7 +275,7 @@ export default function Navbar() {
               className="p-2 flex items-center justify-center active:scale-90 transition-transform"
               aria-label="Toggle Menu"
             >
-              <div className="flex flex-col items-end gap-1 group">
+              <div className="flex flex-col items-end gap-1 group mb-2">
                 <span
                   className={`h-[1.5px] bg-white transition-all duration-500 ${isMenu ? "w-6 -rotate-45 translate-y-[5px]" : "w-6"}`}
                 />
