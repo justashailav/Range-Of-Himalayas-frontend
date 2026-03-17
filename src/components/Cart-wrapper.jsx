@@ -105,12 +105,6 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     toast.error("Something went wrong");
   }
 };
-  useEffect(() => {
-    if (message) toast.info(message);
-  }, [message]);
-
-  
-
   return (
     <SheetContent
       side="right"
