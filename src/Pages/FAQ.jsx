@@ -104,78 +104,88 @@ export default function FAQSection() {
           content="Everything you need to know about our fruits, delivery, packing, and services."
         />
       </Helmet>
-      <section className="bg-gradient-to-b from-[#FFF8E1] to-white py-16 px-6 sm:px-10">
-      <div className="max-w-4xl mx-auto text-center mb-12">
-        <span className="px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-          🌿 Frequently Asked Questions
-        </span>
-        <h2 className="text-4xl font-extrabold text-[#3B2F2F] mt-4 mb-3">
-          Your Questions, Answered
-        </h2>
-        <p className="text-gray-600 text-lg">
-          Everything you need to know about our fruits, delivery, and story.
-        </p>
-      </div>
+      <section className="bg-[#0D0D0D] py-24 px-6 sm:px-10 border-t border-white/5">
+  {/* HEADER: Minimalist & Centered */}
+  <div className="max-w-4xl mx-auto text-center mb-20">
+    <motion.span 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      className="text-[10px] font-black uppercase tracking-[0.5em] text-[#F08C7D] mb-4 block"
+    >
+      Information Bureau
+    </motion.span>
+    <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mt-4 mb-6">
+      Archive <span className="font-serif italic capitalize tracking-normal text-stone-400">Inquiries</span>
+    </h2>
+    <div className="h-px w-12 bg-[#F08C7D]/40 mx-auto mb-6" />
+    <p className="text-stone-500 text-sm uppercase tracking-widest max-w-lg mx-auto">
+      Details regarding our high-altitude harvests, transit logistics, and botanical heritage.
+    </p>
+  </div>
 
-      <div className="max-w-3xl mx-auto space-y-10">
-        {faqCategories.map((cat, catIdx) => (
-          <div key={catIdx}>
-            <h3 className="text-2xl font-bold text-[#6B3E26] mb-4">
-              {cat.heading}
-            </h3>
+  {/* FAQ BODY */}
+  <div className="max-w-3xl mx-auto space-y-16">
+    {faqCategories.map((cat, catIdx) => (
+      <div key={catIdx} className="space-y-6">
+        {/* Category Heading with thin line */}
+        <div className="flex items-center gap-4">
+          <h3 className="text-[11px] font-black text-stone-500 uppercase tracking-[0.4em] whitespace-nowrap">
+            {cat.heading}
+          </h3>
+          <div className="h-[1px] w-full bg-white/5" />
+        </div>
 
-            <div className="space-y-3">
-              {cat.faqs.map((faq, faqIdx) => {
-                const isOpen = openIndex[catIdx] === faqIdx;
+        <div className="space-y-2">
+          {cat.faqs.map((faq, faqIdx) => {
+            const isOpen = openIndex[catIdx] === faqIdx;
 
-                return (
-                  <motion.div
-                    key={faqIdx}
-                    layout
-                    transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-                    className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"
-                  >
-                    <button
-                      onClick={() => toggleFAQ(catIdx, faqIdx)}
-                      className="w-full flex justify-between items-center px-6 py-4 text-left hover:bg-[#FFF4E6] transition-colors"
+            return (
+              <motion.div
+                key={faqIdx}
+                layout
+                className={`overflow-hidden transition-all duration-500 border-b border-white/5 ${
+                  isOpen ? "bg-white/[0.02]" : "bg-transparent"
+                }`}
+              >
+                <button
+                  onClick={() => toggleFAQ(catIdx, faqIdx)}
+                  className="w-full flex justify-between items-center py-6 text-left outline-none group"
+                >
+                  <span className={`text-base md:text-lg uppercase tracking-wider transition-colors duration-300 ${
+                    isOpen ? "text-[#F08C7D] font-bold" : "text-stone-300 group-hover:text-white"
+                  }`}>
+                    {faq.question}
+                  </span>
+                  
+                  <div className="relative w-5 h-5 flex items-center justify-center">
+                    {/* Minimalist plus-to-minus icon */}
+                    <span className={`absolute h-px w-5 bg-stone-500 transition-transform duration-500 ${isOpen ? "rotate-0" : "rotate-90"}`} />
+                    <span className="absolute h-px w-5 bg-stone-500" />
+                  </div>
+                </button>
+
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      <span className="font-semibold text-[#3B2F2F] text-lg">
-                        {faq.question}
-                      </span>
-                      <motion.div
-                        animate={{ rotate: isOpen ? 180 : 0 }}
-                        transition={{ duration: 0.35 }}
-                      >
-                        <ChevronDown className="text-[#3B2F2F]" />
-                      </motion.div>
-                    </button>
-
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          key="content"
-                          layout
-                          initial={{ opacity: 0, scaleY: 0.9 }}
-                          animate={{ opacity: 1, scaleY: 1 }}
-                          exit={{ opacity: 0, scaleY: 0.9 }}
-                          transition={{
-                            duration: 0.45,
-                            ease: [0.25, 0.1, 0.25, 1],
-                          }}
-                          className="origin-top px-6 pb-4 text-gray-700 text-base leading-relaxed bg-white"
-                        >
-                          {faq.answer}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+                      <div className="pb-8 pr-12 text-stone-400 text-sm leading-relaxed font-serif italic">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
-    </section>
+    ))}
+  </div>
+</section>
     </div>
   );
 }
