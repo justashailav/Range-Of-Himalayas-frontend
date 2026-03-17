@@ -92,7 +92,6 @@ export default function ShoppingCheckout() {
 }, [cartItems, boxes, navigate, user]);
 
   async function handlePlaceOrder() {
-    isNavigatingToSuccess.current = true; 
     if (cartItems.length === 0 && boxes.length === 0)
       return toast.error("Your cart is empty.");
 
