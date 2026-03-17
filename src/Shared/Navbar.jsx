@@ -372,10 +372,20 @@ export default function Navbar() {
     the logo is centered relative to the navbar's height.
   */}
             <img
-              src={logo}
-              className="w-28 sm:w-32 lg:w-40 brightness-0 invert opacity-90 hover:opacity-100 transition-opacity object-contain"
-              alt="Range of Himalayas"
-            />
+  src={logo}
+  className="
+    /* Width: Downsized for a more sophisticated look */
+    w-20 sm:w-24 lg:w-28 
+    
+    /* Aesthetics: Invert for white, subtle dimming for that 'Archive' feel */
+    brightness-0 invert opacity-80 
+    
+    /* Interactions */
+    hover:opacity-100 transition-all duration-700 ease-in-out
+    object-contain
+  "
+  alt="Range of Himalayas"
+/>
           </Link>
           <nav className="flex items-center justify-center gap-6 lg:gap-10 flex-1 h-full px-4">
             {[
@@ -593,11 +603,11 @@ export default function Navbar() {
                     </>
                   ) : (
                     <Link to="/login">
-                      <DropdownMenuItem className="flex items-center justify-center gap-3 px-3 py-4 cursor-pointer outline-none bg-stone-50 border border-stone-200/60 hover:bg-[#B23A2E] hover:border-[#B23A2E] transition-all duration-300 group">
-  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-stone-600 group-hover:text-white transition-colors">
-    Member Login
-  </span>
-</DropdownMenuItem>
+                      <DropdownMenuItem className="flex items-center justify-center gap-3 px-3 py-4 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-900 transition-colors">
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">
+                          Member Login
+                        </span>
+                      </DropdownMenuItem>
                     </Link>
                   )}
                 </DropdownMenuGroup>
