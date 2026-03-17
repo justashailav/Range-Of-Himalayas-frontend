@@ -74,23 +74,22 @@ export default function Navbar() {
   const totalCount = cartCount + boxCount;
   const wishListCount = wishListItems?.length || 0;
   return (
-    <motion.nav
+   <>
+     <motion.nav
       variants={{
-    visible: { y: 0 },
-    hidden: { y: "-100%" },
-  }}
-  /* If isMenu is true, we force "visible". 
-     Otherwise, we follow the scroll logic (hidden/visible).
-  */
-  animate={isMenu ? "visible" : (hidden ? "hidden" : "visible")}
-  transition={{ duration: 0.35, ease: "easeInOut" }}
-  className={`fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-10 min-h-16 md:h-20 transition-all duration-300
-    ${
-      scrolled || isMenu // Force solid color when menu is open
-        ? "bg-[#F08C7D]/95 backdrop-blur-md shadow-md"
-        : "bg-[#F08C7D]"
-    }
-  `}
+        visible: { y: 0 },
+        hidden: { y: "-100%" },
+      }}
+      // Keep visible if menu is open, otherwise hide on scroll
+      animate={isMenu ? "visible" : hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className={`fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-10 min-h-16 md:h-20 transition-all duration-300
+        ${
+          scrolled || isMenu
+            ? "bg-[#F08C7D]/95 backdrop-blur-md shadow-md"
+            : "bg-[#F08C7D]"
+        }
+      `}
     >
       <div className="flex items-center justify-between w-full mt-2">
         <div className="flex items-center justify-between w-full h-14 lg:hidden px-4">
@@ -516,100 +515,108 @@ export default function Navbar() {
         </div>
       </div>
       {/* IMPORTANT: Move this WHOLE block OUTSIDE of your <motion.nav> */}
-<AnimatePresence>
-  {isMenu && (
-    <div className="fixed inset-0 z-[999] lg:hidden">
-      {/* 1. SOLID OVERLAY */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-black/60 backdrop-blur-md"
-        onClick={toggleMenu}
-      />
-
-      {/* 2. SIDEBAR: Solid Midnight Onyx */}
-      <motion.div
-        initial={{ x: "100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="absolute top-0 right-0 h-full w-[280px] sm:w-[350px] bg-[#111111] shadow-2xl p-8 flex flex-col"
-      >
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-16">
-          <span className="text-[9px] font-black uppercase tracking-[0.5em] text-[#F08C7D]">
-            Archive / 2026
-          </span>
-          <button onClick={toggleMenu} className="group p-2">
-            <div className="relative w-5 h-5 flex items-center justify-center">
-              <span className="absolute w-5 h-[1px] bg-white rotate-45 group-hover:bg-[#F08C7D] transition-all" />
-              <span className="absolute w-5 h-[1px] bg-white -rotate-45 group-hover:bg-[#F08C7D] transition-all" />
-            </div>
-          </button>
-        </div>
-
-        {/* 3. NAVIGATION */}
-        <nav className="flex flex-col gap-10">
-          {[
-            { name: "Home", path: "/" },
-            { name: "Our Story", path: "/about-us" },
-            { name: "Create Box", path: "/custombox" },
-            { name: "Journal", path: "/blog" },
-            { name: "Contact", path: "/contact-us" },
-          ].map((link, index) => (
-            <motion.div
-              key={link.name}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 * index }}
-            >
-              <Link
-                to={link.path}
-                onClick={toggleMenu}
-                className="group flex items-end justify-between pb-3 border-b border-white/5 hover:border-[#F08C7D]/40 transition-all"
-              >
-                <span className="text-lg font-black uppercase tracking-[0.3em] text-white/80 group-hover:text-white group-hover:translate-x-2 transition-all">
-                  {link.name}
-                </span>
-                <span className="text-[10px] font-serif italic text-[#F08C7D]/40 mb-1">
-                  0{index + 1}
-                </span>
-              </Link>
-            </motion.div>
-          ))}
-        </nav>
-
-        {/* 4. FOOTER */}
-        <div className="mt-auto">
-          {!user ? (
-            <Link to="/login" onClick={toggleMenu} className="block group">
-              <div className="relative overflow-hidden border border-[#F08C7D]/40 py-5 text-center transition-all duration-500 hover:border-[#F08C7D]">
-                <span className="relative z-10 text-[11px] font-black uppercase tracking-[0.4em] text-white transition-colors group-hover:text-[#111111]">
-                  Member Login
-                </span>
-                <div className="absolute inset-0 bg-[#F08C7D] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              </div>
-            </Link>
-          ) : (
-            <button
-              onClick={() => { handleLogout(); toggleMenu(); }}
-              className="w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 hover:text-[#F08C7D] transition-colors border-t border-white/5"
-            >
-              Exit Archive — {user?.name?.split(" ")[0]}
-            </button>
-          )}
-
-          <div className="mt-8 flex flex-col items-center gap-2">
-            <p className="text-[8px] font-black uppercase tracking-[0.6em] text-white/10">
-              Purely Himalayan
-            </p>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  )}
-</AnimatePresence>
     </motion.nav>
+    <AnimatePresence>
+        {isMenu && (
+          <div className="fixed inset-0 z-[999] lg:hidden">
+            {/* 1. SOLID OVERLAY */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+              onClick={toggleMenu}
+            />
+
+            {/* 2. SIDEBAR: Solid Midnight Onyx */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="absolute top-0 right-0 h-full w-[280px] sm:w-[350px] bg-[#111111] shadow-2xl p-8 flex flex-col"
+            >
+              {/* HEADER */}
+              <div className="flex justify-between items-center mb-16">
+                <span className="text-[9px] font-black uppercase tracking-[0.5em] text-[#F08C7D]">
+                  Archive / 2026
+                </span>
+                <button onClick={toggleMenu} className="group p-2">
+                  <div className="relative w-5 h-5 flex items-center justify-center">
+                    <span className="absolute w-5 h-[1px] bg-white rotate-45 group-hover:bg-[#F08C7D] transition-all" />
+                    <span className="absolute w-5 h-[1px] bg-white -rotate-45 group-hover:bg-[#F08C7D] transition-all" />
+                  </div>
+                </button>
+              </div>
+
+              {/* 3. NAVIGATION */}
+              <nav className="flex flex-col gap-10">
+                {[
+                  { name: "Home", path: "/" },
+                  { name: "Our Story", path: "/about-us" },
+                  { name: "Create Box", path: "/custombox" },
+                  { name: "Journal", path: "/blog" },
+                  { name: "Contact", path: "/contact-us" },
+                ].map((link, index) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 * index }}
+                  >
+                    <Link
+                      to={link.path}
+                      onClick={toggleMenu}
+                      className="group flex items-end justify-between pb-3 border-b border-white/5 hover:border-[#F08C7D]/40 transition-all"
+                    >
+                      <span className="text-lg font-black uppercase tracking-[0.3em] text-white/80 group-hover:text-white group-hover:translate-x-2 transition-all">
+                        {link.name}
+                      </span>
+                      <span className="text-[10px] font-serif italic text-[#F08C7D]/40 mb-1">
+                        0{index + 1}
+                      </span>
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              {/* 4. FOOTER */}
+              <div className="mt-auto">
+                {!user ? (
+                  <Link
+                    to="/login"
+                    onClick={toggleMenu}
+                    className="block group"
+                  >
+                    <div className="relative overflow-hidden border border-[#F08C7D]/40 py-5 text-center transition-all duration-500 hover:border-[#F08C7D]">
+                      <span className="relative z-10 text-[11px] font-black uppercase tracking-[0.4em] text-white transition-colors group-hover:text-[#111111]">
+                        Member Login
+                      </span>
+                      <div className="absolute inset-0 bg-[#F08C7D] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                    </div>
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      toggleMenu();
+                    }}
+                    className="w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 hover:text-[#F08C7D] transition-colors border-t border-white/5"
+                  >
+                    Exit Archive — {user?.name?.split(" ")[0]}
+                  </button>
+                )}
+
+                <div className="mt-8 flex flex-col items-center gap-2">
+                  <p className="text-[8px] font-black uppercase tracking-[0.6em] text-white/10">
+                    Purely Himalayan
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+   </>
   );
 }
