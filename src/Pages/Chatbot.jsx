@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessage } from "../store/slices/chatSlice";
 import { useNavigate } from "react-router-dom";
-import { MessageCircle, X, Send, MessageSquare, ChevronDown } from "lucide-react";
+import { MessageCircle, X, Send, MessageSquare, ChevronDown, Sparkles, Map, Package } from "lucide-react";
 
 const Chatbot = () => {
   const [open, setOpen] = useState(false);
@@ -16,127 +16,134 @@ const Chatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    dispatch(sendChatMessage(input));
+  const handleSend = (text = input) => {
+    const finalMsg = typeof text === "string" ? text : input;
+    if (!finalMsg.trim()) return;
+    dispatch(sendChatMessage(finalMsg));
     setInput("");
   };
 
+  const quickActions = [
+    { label: "Track Order", icon: <Package className="w-3 h-3" />, query: "Where is my order?" },
+    { label: "Our Heritage", icon: <Map className="w-3 h-3" />, query: "Tell me about Range of Himalayas" },
+    { label: "Latest Harvest", icon: <Sparkles className="w-3 h-3" />, query: "What are your seasonal products?" },
+  ];
+
   return (
     <>
-      {/* Floating Action Button - Hidden when chat is open on mobile to save space */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-[#B23A2E] rounded-full shadow-2xl z-50 flex items-center justify-center transition-all hover:scale-110 active:scale-95 animate-in zoom-in duration-300"
+          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-[#B23A2E] text-white rounded-full shadow-[0_10px_30px_rgba(178,58,46,0.4)] z-50 flex items-center justify-center transition-all hover:scale-110 active:scale-95 group"
         >
-          <MessageCircle className="text-white w-6 h-6 md:w-7 md:h-7" />
+          <MessageCircle className="w-6 h-6 md:w-7 md:h-7 group-hover:rotate-12 transition-transform" />
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
         </button>
       )}
 
-      {/* Chat Window */}
       {open && (
-        <div className="fixed inset-0 z-[60] md:inset-auto md:bottom-28 md:right-8 md:w-[400px] md:h-[600px] flex flex-col bg-white md:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-500 border border-stone-100">
+        <div className="fixed inset-0 z-[60] md:inset-auto md:bottom-28 md:right-8 md:w-[420px] md:h-[650px] flex flex-col bg-white md:rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden animate-in fade-in slide-in-from-bottom-12 duration-500 border border-stone-100">
           
-          {/* Header: Cinematic & Responsive */}
-          <div className="bg-stone-900 px-6 py-5 md:py-6 text-white flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-xl">
+          {/* Cinematic Header */}
+          <div className="bg-stone-900 px-6 py-6 text-white shrink-0 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                <div className="absolute top-[-50%] left-[-20%] w-[150%] h-[150%] bg-[radial-gradient(circle,white_0%,transparent_70%)] opacity-20" />
+            </div>
+            
+            <div className="flex items-center justify-between relative z-10">
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-full bg-stone-800 border border-white/10 flex items-center justify-center text-xl shadow-inner">
                   🏔️
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-500 border-2 border-stone-900 animate-pulse" />
+                <div>
+                  <h3 className="text-sm font-black tracking-[0.1em] uppercase">Himalayan Concierge</h3>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Active Now</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-[9px] font-black uppercase tracking-[0.25em] text-stone-500 mb-0.5">
-                  Live Concierge
-                </p>
-                <h3 className="text-sm font-black tracking-tight uppercase">
-                  Range of Himalayas
-                </h3>
-              </div>
+              <button onClick={() => setOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                <ChevronDown className="w-5 h-5 md:hidden" />
+                <X className="w-5 h-5 hidden md:block" />
+              </button>
             </div>
-            <button 
-              onClick={() => setOpen(false)}
-              className="p-2 hover:bg-white/10 rounded-full transition-colors"
-            >
-              <ChevronDown className="w-5 h-5 md:hidden" /> {/* Swipe-down feel for mobile */}
-              <X className="w-5 h-5 hidden md:block" />
-            </button>
           </div>
 
-          {/* Messages Area */}
+          {/* Messages & Quick Actions */}
           <div className="flex-1 p-5 md:p-6 overflow-y-auto no-scrollbar space-y-6 bg-[#FCFAF7]">
             {messages.length === 0 && (
-              <div className="flex flex-col items-center justify-center h-full text-center opacity-40 px-6">
-                <MessageSquare className="w-10 h-10 mb-4 text-stone-300 stroke-[1px]" />
-                <p className="text-xs font-serif italic text-stone-600 leading-relaxed">
-                  Namaste. How may we assist your exploration of the Himalayas today?
-                </p>
+              <div className="flex flex-col h-full">
+                <div className="flex-1 flex flex-col items-center justify-center text-center opacity-60 px-6">
+                  <div className="w-16 h-16 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6 border border-stone-100">
+                    <MessageSquare className="w-6 h-6 text-stone-300" />
+                  </div>
+                  <h4 className="text-stone-900 font-black text-[11px] uppercase tracking-widest mb-2">Welcome Home</h4>
+                  <p className="text-xs font-serif italic text-stone-500 leading-relaxed max-w-[200px]">
+                    Your gateway to the purest Himalayan harvest. How can I guide you?
+                  </p>
+                </div>
+                
+                {/* Quick Actions Grid */}
+                <div className="grid grid-cols-1 gap-2 mt-auto">
+                  {quickActions.map((action, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSend(action.query)}
+                      className="flex items-center gap-3 bg-white border border-stone-200/50 p-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-stone-600 hover:border-[#B23A2E] hover:text-[#B23A2E] transition-all group active:scale-[0.98]"
+                    >
+                      <span className="p-1.5 bg-stone-50 rounded-lg group-hover:bg-[#B23A2E]/5 transition-colors">
+                        {action.icon}
+                      </span>
+                      {action.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
             {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex animate-in fade-in slide-in-from-bottom-2 duration-300 ${
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`max-w-[88%] px-5 py-3.5 text-[13px] md:text-sm leading-relaxed shadow-sm transition-all ${
-                    msg.role === "user"
-                      ? "bg-stone-900 text-white rounded-2xl rounded-tr-none"
-                      : "bg-white text-stone-800 rounded-2xl rounded-tl-none border border-stone-200/40"
-                  }`}
-                >
+              <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div className={`max-w-[85%] px-5 py-3.5 text-[13px] leading-relaxed transition-all shadow-sm ${
+                  msg.role === "user" 
+                  ? "bg-stone-900 text-white rounded-[1.5rem] rounded-tr-none" 
+                  : "bg-white text-stone-800 rounded-[1.5rem] rounded-tl-none border border-stone-200/40"
+                }`}>
                   {msg.text}
-
-                  {msg.role === "assistant" && msg.text.toLowerCase().includes("whatsapp") && (
-                    <button
-                      onClick={() => navigate("/whatsapp-support")}
-                      className="mt-4 w-full bg-[#25D366] text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.1em] hover:brightness-105 transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-100"
-                    >
-                      📲 Connect on WhatsApp
-                    </button>
-                  )}
                 </div>
               </div>
             ))}
-
+            
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white border border-stone-100 px-4 py-3 rounded-2xl flex gap-1.5 shadow-sm">
-                  <div className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-bounce [animation-duration:0.8s]" />
-                  <div className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-bounce [animation-duration:0.8s] [animation-delay:0.2s]" />
-                  <div className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-bounce [animation-duration:0.8s] [animation-delay:0.4s]" />
+                <div className="bg-white border border-stone-100 px-5 py-3 rounded-2xl flex gap-2">
+                  <div className="w-1 h-1 bg-stone-300 rounded-full animate-bounce [animation-duration:0.6s]" />
+                  <div className="w-1 h-1 bg-stone-300 rounded-full animate-bounce [animation-duration:0.6s] [animation-delay:0.2s]" />
+                  <div className="w-1 h-1 bg-stone-300 rounded-full animate-bounce [animation-duration:0.6s] [animation-delay:0.4s]" />
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area: Sticky & Modern */}
-          <div className="p-4 md:p-5 bg-white border-t border-stone-100 pb-[env(safe-area-inset-bottom,16px)]">
-            <div className="relative flex items-center bg-stone-50 rounded-2xl px-4 py-1.5 border border-stone-200/60 focus-within:bg-white focus-within:border-stone-900/20 focus-within:shadow-inner transition-all duration-300">
+          {/* Modern Input Dock */}
+          <div className="p-6 bg-white border-t border-stone-100 pb-[env(safe-area-inset-bottom,24px)]">
+            <div className="relative flex items-center bg-stone-100/50 rounded-3xl px-5 py-2 group focus-within:bg-white focus-within:ring-4 focus-within:ring-stone-100/50 transition-all border border-transparent focus-within:border-stone-200">
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder="Type your message..."
+                placeholder="Ask about apples, honey, or heritage..."
                 className="flex-1 bg-transparent border-none py-3 text-sm focus:outline-none placeholder:text-stone-400 font-medium"
               />
               <button
-                onClick={handleSend}
+                onClick={() => handleSend()}
                 disabled={!input.trim()}
-                className="p-2 text-[#B23A2E] hover:scale-110 disabled:opacity-20 disabled:grayscale transition-all"
+                className="ml-2 w-10 h-10 bg-stone-900 text-white rounded-full flex items-center justify-center disabled:opacity-20 transition-all active:scale-90"
               >
-                <Send className="w-5 h-5 fill-current" />
+                <Send className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-[8px] text-center text-stone-300 uppercase tracking-widest mt-3 font-bold">
-              Powered by Range of Himalayas
-            </p>
           </div>
         </div>
       )}
