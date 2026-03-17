@@ -39,7 +39,7 @@ const Chatbot = () => {
         <div className="fixed inset-0 z-[60] md:inset-auto md:bottom-28 md:right-8 md:w-[400px] md:h-[600px] flex flex-col bg-white md:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-500 border border-stone-100 mt-6">
           
           {/* Header: Cinematic & Responsive */}
-          <div className="bg-stone-900 px-6 py-5 md:py-6 text-white flex items-center justify-between shrink-0 mt-6">
+          <div className="bg-stone-900 px-6 py-5 md:py-6 text-white flex items-center justify-between shrink-0 mt-8">
             <div className="flex items-center gap-4">
               <div className="relative">
                 <div className="w-10 h-10 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-xl">
