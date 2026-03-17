@@ -43,16 +43,9 @@ export default function ShoppingCheckout() {
   const [isProcessing, setIsProcessing] = useState(false);
   const isNavigatingToSuccess = useRef(false);
 
-  // Remove or modify the problematic useEffect:
-useEffect(() => {
-  // Only reset if we are NOT on the checkout page and NOT navigating to success
-  // Usually, it's safer to reset coupons only AFTER a successful order capture.
-  return () => {
-    if (isNavigatingToSuccess.current) {
-      dispatch(resetCoupon());
-    }
-  };
-}, [dispatch]);
+  useEffect(() => {
+    if (!code) dispatch(resetCoupon());
+  }, [code, dispatch]);
 
   // 🛒 Calculate totals
   const totalCartAmount = cartItems.reduce((sum, item) => {

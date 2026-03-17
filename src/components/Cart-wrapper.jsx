@@ -23,45 +23,58 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     discountAmount,
     finalAmount: couponFinal,
     success,
+    code,
   } = useSelector((state) => state.coupon);
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
-
   useEffect(() => {
+    if (success) {
+      setDiscount(discountAmount);
+      setIsCouponApplied(true);
+    }
+  }, [success, discountAmount]);
+  useEffect(() => {
+    // 1. Calculate the actual current total of everything in the cart
     const cartTotal = (cartItems || []).reduce((sum, item) => {
-      const price =
-        item.salesPrice && Number(item.salesPrice) > 0
+      const price = item.salesPrice && Number(item.salesPrice) > 0
           ? Number(item.salesPrice)
           : Number(item.price) || 0;
-      const quantity = Number(item.quantity) || 0;
-      return sum + price * quantity;
+      return sum + price * (Number(item.quantity) || 0);
     }, 0);
 
     const boxesTotal = (boxes || []).reduce((sum, box) => {
       const boxItemsTotal = (box.items || []).reduce((bSum, item) => {
-        const product = productList.find(
-          (p) => p._id.toString() === item.productId?.toString(),
-        );
+        const product = productList.find(p => p._id.toString() === item.productId?.toString());
         if (!product) return bSum;
-
-        const sizePriceObj = (product.customBoxPrices || []).find(
-          (p) => p.size === item.size,
-        );
-        const price = sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0;
-        const quantity = Number(item.quantity) || 1;
-
-        return bSum + price * quantity;
+        const sizePriceObj = (product.customBoxPrices || []).find(p => p.size === item.size);
+        return bSum + (sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0) * (Number(item.quantity) || 1);
       }, 0);
       return sum + boxItemsTotal;
     }, 0);
 
-    setFinalAmount(cartTotal + boxesTotal);
-    setCouponCode("");
-    setDiscount(0);
-    setIsCouponApplied(false);
-  }, [cartItems, boxes, productList]);
+    const currentGrandTotal = cartTotal + boxesTotal;
+
+    // 2. APPLY THE DISCOUNT TO THE CURRENT TOTAL
+    // This ensures that if the cart changes, the price stays correct
+    if (discountAmount > 0) {
+      setFinalAmount(Math.max(0, currentGrandTotal - discountAmount));
+    } else {
+      setFinalAmount(currentGrandTotal);
+    }
+    
+  }, [cartItems, boxes, productList, discountAmount]); 
+
+  // Add this useEffect to sync local state with Redux on component mount
+useEffect(() => {
+  if (discountAmount > 0) {
+    setIsCouponApplied(true);
+    setDiscount(discountAmount);
+    if (code) setCouponCode(code);
+  }
+}, [discountAmount, code]);
+  // removed couponFinal from deps because we calculate it live now
   const handleApplyCoupon = async () => {
     const trimmedCode = couponCode.trim().toUpperCase();
     if (!user?._id) {
@@ -98,12 +111,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     if (message) toast.info(message);
   }, [message]);
 
-  useEffect(() => {
-    // This return function runs when the component unmounts (Drawer closes)
-    return () => {
-      dispatch(resetCoupon());
-    };
-  }, [dispatch]);
+  
 
   return (
     <SheetContent
