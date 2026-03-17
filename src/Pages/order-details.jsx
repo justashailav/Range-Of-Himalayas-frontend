@@ -285,15 +285,21 @@ export default function ShoppingOrderDetailsView() {
                     </span>
                   </div>
                   <div className="flex justify-between items-baseline text-[10px] font-black uppercase">
-  <span className="text-[#B23A2E] tracking-widest">Due at Delivery</span>
-  <span className="text-[#B23A2E] text-2xl tracking-tighter font-black">
-    {/* .toLocaleString handles the rounding and adds thousand separators */}
-    ₹{Number(orderDetails.codRemainingAmount).toLocaleString('en-IN', {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 0
-    })}
-  </span>
-</div>
+                    <span className="text-[#B23A2E] tracking-widest">
+                      Due at Delivery
+                    </span>
+                    <span className="text-[#B23A2E] text-2xl tracking-tighter font-black">
+                      {/* .toLocaleString handles the rounding and adds thousand separators */}
+                      ₹
+                      {Number(orderDetails.codRemainingAmount).toLocaleString(
+                        "en-IN",
+                        {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 0,
+                        },
+                      )}
+                    </span>
+                  </div>
                 </div>
               ) : (
                 <div className="p-6 rounded-[2rem] bg-stone-900 flex flex-col justify-center items-center text-center">

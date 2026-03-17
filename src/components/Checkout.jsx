@@ -163,7 +163,7 @@ export default function ShoppingCheckout() {
               );
 
               toast.success("Payment successful!");
-              // Now navigate safely
+              dispatch(resetCoupon());
               navigate("/order-success");
             } catch (err) {
               // If verification fails, allow the redirect logic to work again

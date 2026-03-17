@@ -7,7 +7,7 @@ import CartProducts from "@/Pages/CartProducts";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
-import { applyCoupon } from "@/store/slices/couponSlice";
+import { applyCoupon, resetCoupon } from "@/store/slices/couponSlice";
 import { X } from "lucide-react";
 
 export default function UserCartWrapper({ setOpenCartSheet }) {
@@ -62,50 +62,6 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     setDiscount(0);
     setIsCouponApplied(false);
   }, [cartItems, boxes, productList]);
-
-  const handleAddToCart = (productId, totalStock, size, weight) => {
-    if (!user?._id) {
-      toast.error("Oops! You need to login first to add items to your cart.");
-      return;
-    }
-    const existingItemIndex = (cartItems || []).findIndex(
-      (item) =>
-        item.productId?.toString() === productId?.toString() &&
-        item.size === size &&
-        item.weight === weight,
-    );
-
-    if (existingItemIndex > -1) {
-      const currentQuantity = cartItems[existingItemIndex]?.quantity || 0;
-      if (currentQuantity + 1 > totalStock) {
-        toast.error(`Only ${totalStock} items available for this variant`);
-        return;
-      }
-    }
-
-    dispatch(
-      addToCart({
-        userId: user?._id,
-        productId,
-        quantity: 1,
-        size,
-        weight,
-      }),
-    )
-      .then((data) => {
-        if (data?.success) {
-          dispatch(fetchCartItems(user?._id));
-          toast.success("Product added to cart");
-          setOpenCartSheet(true);
-        } else {
-          toast.error(data?.message || "Failed to add item");
-        }
-      })
-      .catch((err) => {
-        console.error("AddToCart error:", err);
-        toast.error(err?.message || "Failed to add item");
-      });
-  };
   const handleApplyCoupon = async () => {
     const trimmedCode = couponCode.trim().toUpperCase();
     if (!user?._id) {
@@ -141,6 +97,13 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   useEffect(() => {
     if (message) toast.info(message);
   }, [message]);
+
+  useEffect(() => {
+    // This return function runs when the component unmounts (Drawer closes)
+    return () => {
+      dispatch(resetCoupon());
+    };
+  }, [dispatch]);
 
   return (
     <SheetContent
