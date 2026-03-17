@@ -9,7 +9,7 @@ import {
   Clock,
 } from "lucide-react";
 import { Helmet } from "react-helmet";
-
+import { motion, AnimatePresence } from "framer-motion";
 const steps = [
   {
     icon: CheckCircle,
@@ -58,14 +58,52 @@ export default function ShippingPolicy() {
         <meta name="author" content="Range Of Himalayas" />
       </Helmet>
       {/* Header Section */}
-      <div className="bg-[#FFF8E1] rounded-2xl shadow-md p-8 mb-8 text-center">
-        <div className="flex justify-center mb-4">
-          <Truck className="h-12 w-12 text-green-600" />
-        </div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Nature’s Freshness, Right to Your Door
-        </h1>
-      </div>
+      <div className="bg-[#111111] border border-white/5 rounded-none p-10 md:p-16 mb-16 text-center relative overflow-hidden group">
+  {/* Subtitle / Label */}
+  <motion.div 
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    className="flex items-center justify-center gap-3 mb-6"
+  >
+    <div className="h-px w-6 bg-[#F08C7D]/40" />
+    <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#F08C7D]">
+      Global Logistics
+    </span>
+    <div className="h-px w-6 bg-[#F08C7D]/40" />
+  </motion.div>
+
+  {/* Icon Section */}
+  <div className="flex justify-center mb-8">
+    <div className="relative">
+      {/* Decorative pulse effect */}
+      <div className="absolute inset-0 bg-[#F08C7D]/20 blur-2xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-1000" />
+      
+      <Truck 
+        strokeWidth={1} 
+        className="h-16 w-16 text-white relative z-10 opacity-80" 
+      />
+    </div>
+  </div>
+
+  {/* Main Heading */}
+  <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter leading-[0.9] max-w-2xl mx-auto">
+    Nature’s Freshness, <br />
+    <span className="font-serif italic capitalize tracking-normal text-stone-500">
+      Direct to your estate
+    </span>
+  </h1>
+
+  {/* Decorative "Stamp" or Detail */}
+  <div className="mt-10 flex flex-col items-center gap-2">
+    <p className="text-[9px] font-black uppercase tracking-[0.4em] text-stone-600">
+      Verified High-Altitude Transit
+    </p>
+    <div className="h-12 w-px bg-gradient-to-b from-[#F08C7D] to-transparent" />
+  </div>
+
+  {/* Background Grain/Texture (Optional) */}
+  <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+</div>
 
       {/* Commitment Section */}
       <div className="bg-[#FFF8E1] border border-gray-200 rounded-xl p-6 mb-10 flex items-start gap-4">
