@@ -373,7 +373,7 @@ export default function Navbar() {
   */}
             <img
               src={logo}
-              className="w-28 sm:w-32 lg:w-40 brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
+              className="w-28 sm:w-32 lg:w-40 brightness-0 invert opacity-90 hover:opacity-100 transition-opacity object-contain"
               alt="Range of Himalayas"
             />
           </Link>
@@ -422,24 +422,24 @@ export default function Navbar() {
               />
             </div>
 
-            {!user && (
+            {/* {!user && (
               <Link to="/login" className="flex items-center h-full">
                 <button className="relative group px-5 py-1.5 border border-white/30 rounded-none overflow-hidden transition-all duration-500 hover:border-white">
-                  {/* 1. THE TEXT: Ultra-refined and wide-tracked */}
+                  
                   <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-white transition-colors duration-500">
                     Login
                   </span>
 
-                  {/* 2. THE HOVER SLIDE: A subtle "ink" fill effect */}
+                 
                   <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out" />
 
-                  {/* 3. TEXT SWAP ON HOVER: Black text when the white background slides up */}
+                  
                   <span className="absolute inset-0 z-20 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.4em] text-[#2d3a2d] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     Login
                   </span>
                 </button>
               </Link>
-            )}
+            )} */}
             <div className="relative flex items-center h-full ml-4 lg:ml-6">
               <Link to="/wishlist" className="group relative p-2 outline-none">
                 {/* 1. THE ICON: Thin stroke and consistent height */}
