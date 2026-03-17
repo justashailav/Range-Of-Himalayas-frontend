@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaTimes, FaShoppingCart } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-himalayas.png";
 import UserCartWrapper from "@/components/Cart-wrapper";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import {AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +23,6 @@ import {
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { searchProducts } from "@/store/slices/searchSlice";
-import { Button } from "@/components/ui/button";
 import { resetAuthSlice } from "@/store/slices/authSlice";
 import { persistor } from "@/store/store";
 import { useScroll, motion, useMotionValueEvent } from "framer-motion";
