@@ -400,26 +400,24 @@ export default function Navbar() {
               </Link>
             ))}
           </nav>
-          <div className="flex mb-2 items-center gap-3 lg:gap-6">
-            <div className="relative group flex items-center min-w-[160px] max-w-[240px] ml-6 h-full">
+          <div className="flex items-center gap-3 lg:gap-6 h-full">
+            <div className="relative group flex items-center h-10 ml-6">
               {/* The Search Input */}
               <input
                 placeholder="SEARCH HARVEST..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full pl-4 pr-10 py-1.5 rounded-full 
-               bg-white/10 backdrop-blur-md border border-white/10
-               text-[10px] tracking-[0.2em] text-white placeholder-white/40
-               focus:outline-none focus:bg-white/20 focus:border-white/30 
-               transition-all duration-700 ease-in-out"
+                className="w-full pl-4 pr-10 py-2 rounded-full 
+    bg-white/10 backdrop-blur-md border border-white/20
+    text-[10px] tracking-[0.2em] text-white placeholder-white/60
+    focus:outline-none focus:ring-1 focus:ring-white/40
+    transition-all duration-500"
               />
 
               {/* The Icon: Centered perfectly using top-1/2 and translate */}
               <CiSearch
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white text-xl 
-               cursor-pointer opacity-60 group-hover:opacity-100 
-               transition-opacity duration-500"
+                className="absolute right-3 text-white text-lg opacity-70 group-hover:opacity-100 transition-opacity cursor-pointer"
                 onClick={handleSearch}
               />
             </div>
