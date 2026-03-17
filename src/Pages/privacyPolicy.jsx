@@ -232,40 +232,81 @@ export default function PrivacyPolicy() {
         <link rel="canonical" href="https://www.rangeofhimalayas.co.in/privacy-policy" />
       </Helmet>
 
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-10">
-          <div className="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-            🔒 Privacy Policy
+     <section className="bg-[#0D0D0D] py-20 md:py-32 px-6 sm:px-10 border-t border-white/5">
+  <div className="max-w-4xl mx-auto">
+    
+    {/* HEADER: Minimalist & Authority-focused */}
+    <div className="text-center mb-24">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        className="inline-block px-6 py-2 border border-[#F08C7D]/30 mb-8"
+      >
+        <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#F08C7D]">
+          Security Protocol 2026
+        </span>
+      </motion.div>
+      
+      <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-none mb-6">
+        Data <span className="font-serif italic capitalize tracking-normal text-stone-500">Sovereignty</span>
+      </h1>
+      
+      <p className="text-stone-500 text-xs md:text-sm uppercase tracking-[0.3em] max-w-lg mx-auto leading-relaxed">
+        Our commitment to your digital privacy is as steadfast as our heritage.
+      </p>
+    </div>
+
+    {/* PRIVACY SECTIONS: Vertical Archive Layout */}
+    <div className="space-y-20">
+      {sections.map((section, idx) => (
+        <motion.div
+          key={section.id}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.1 }}
+          className="relative group"
+        >
+          {/* Section Indicator */}
+          <div className="flex items-center gap-6 mb-8">
+             <span className="text-[10px] font-serif italic text-[#F08C7D]">
+               Section / 0{section.id}
+             </span>
+             <div className="h-px flex-1 bg-white/5 group-hover:bg-[#F08C7D]/20 transition-colors duration-700" />
           </div>
-          <h1 className="text-4xl font-extrabold text-[#1A3C34] mt-4 mb-2">
-            Your Privacy Matters to Us
-          </h1>
-          
-        </div>
 
-        <div className="space-y-8">
-          {sections.map((section) => (
-            <div
-              key={section.id}
-              className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6"
-            >
-              <h2 className="flex items-center gap-2 text-2xl font-bold text-[#184d3b] mb-3">
-                <span className="bg-green-50 text-green-800 font-semibold rounded-md px-3 py-1 text-sm">
-                  {section.id}
-                </span>
-                {section.title}
-              </h2>
-              <div className="text-gray-700 leading-relaxed">
-                {section.content}
-              </div>
+          <div className="md:pl-16">
+            <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-6">
+              {section.title}
+            </h2>
+            
+            <div className="text-stone-400 text-base md:text-lg leading-relaxed font-serif italic space-y-4">
+              {/* If section.content is a string, it renders here. 
+                  If it's complex, we treat it with care. */}
+              {section.content}
             </div>
-          ))}
-        </div>
+          </div>
 
-        <footer className="text-center text-gray-500 text-sm mt-12">
-          © {new Date().getFullYear()} Range of Himalayas. All rights reserved.
-        </footer>
+          {/* Background Highlight */}
+          <div className="absolute -inset-x-6 -inset-y-4 bg-white/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+        </motion.div>
+      ))}
+    </div>
+
+    {/* FOOTER: Minimalist Stamp */}
+    <div className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="flex items-center gap-4">
+        <div className="h-2 w-2 rounded-full bg-[#F08C7D]" />
+        <span className="text-[9px] font-black text-stone-600 uppercase tracking-[0.4em]">
+          Range of Himalayas Verification
+        </span>
       </div>
+      
+      <p className="text-[9px] font-black text-stone-700 uppercase tracking-[0.2em]">
+        © 2026 Archive Records. All rights reserved.
+      </p>
+    </div>
+  </div>
+</section>
     </section>
   );
 }
