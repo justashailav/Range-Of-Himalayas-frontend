@@ -402,44 +402,54 @@ export default function Navbar() {
           </nav>
           <div className="flex items-center gap-3 lg:gap-6 h-full">
             <div className="relative group flex items-center h-10 ml-6">
-              {/* The Search Input */}
-              <input
-                placeholder="SEARCH HARVEST..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="w-full pl-4 pr-10 py-2 rounded-full 
-    bg-white/10 backdrop-blur-md border border-white/20
-    text-[10px] tracking-[0.2em] text-white placeholder-white/60
-    focus:outline-none focus:ring-1 focus:ring-white/40
-    transition-all duration-500"
-              />
+  {/* The Search Input */}
+  <input
+    placeholder="SEARCH HARVEST..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    onKeyDown={handleKeyDown}
+    className="
+      /* Layout & Sizing */
+      w-48 lg:w-64 pl-5 pr-12 py-2 rounded-full 
+      
+      /* Editorial Aesthetics */
+      bg-white/5 backdrop-blur-xl border border-white/10
+      text-[9px] font-medium tracking-[0.3em] text-white 
+      placeholder-white/30 uppercase
+      
+      /* Interaction & Transitions */
+      focus:w-60 lg:focus:w-80 focus:outline-none 
+      focus:bg-white/10 focus:border-white/30 focus:ring-0
+      group-hover:border-white/20
+      transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]
+    "
+  />
 
-              {/* The Icon: Centered perfectly using top-1/2 and translate */}
-              <CiSearch
-                className="absolute right-3 text-white text-lg opacity-70 group-hover:opacity-100 transition-opacity cursor-pointer"
-                onClick={handleSearch}
-              />
-            </div>
+  {/* Visual Decorative Line (Optional for a boutique feel) */}
+  <div className="absolute right-10 h-3 w-[1px] bg-white/10 group-focus-within:bg-white/20 transition-colors" />
 
-            {/* {!user && (
-              <Link to="/login" className="flex items-center h-full">
-                <button className="relative group px-5 py-1.5 border border-white/30 rounded-none overflow-hidden transition-all duration-500 hover:border-white">
-                  
-                  <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-white transition-colors duration-500">
-                    Login
-                  </span>
+  {/* The Icon */}
+  <div 
+    className="absolute right-3 p-1 cursor-pointer group/icon"
+    onClick={handleSearch}
+  >
+    <CiSearch
+      className="
+        text-white text-xl opacity-40 
+        group-hover:opacity-100 
+        group-focus-within:opacity-100 
+        group-focus-within:scale-110
+        group-hover/icon:text-[#B23A2E] /* Your brand red */
+        transition-all duration-500
+      "
+    />
+  </div>
 
-                 
-                  <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out" />
+  {/* Subtle Underglow for the 'Active' state */}
+  <div className="absolute inset-0 -z-10 bg-white/5 blur-xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-1000" />
+</div>
 
-                  
-                  <span className="absolute inset-0 z-20 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.4em] text-[#2d3a2d] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    Login
-                  </span>
-                </button>
-              </Link>
-            )} */}
+            
             <div className="relative flex items-center h-full ml-4 lg:ml-6">
               <Link to="/wishlist" className="group relative p-2 outline-none">
                 {/* 1. THE ICON: Thin stroke and consistent height */}
