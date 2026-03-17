@@ -77,23 +77,22 @@ export default function ShoppingCheckout() {
       : grandTotal - (Number(discountAmount) || 0);
 
   useEffect(() => {
-    // We check if isNavigatingToSuccess is true. 
-    // If it is, we ignore the empty cart and let the navigation happen.
-    if (!isNavigatingToSuccess.current) {
-      if ((cartItems.length === 0 && boxes.length === 0) || !user) {
-        // Small delay ensures we don't flash errors during state transitions
-        const timer = setTimeout(() => {
-          if (!isNavigatingToSuccess.current) {
-            toast.error("Your cart is empty or you are not logged in.");
-            navigate("/");
-          }
-        }, 100);
-        return () => clearTimeout(timer);
+  if (isNavigatingToSuccess.current) return; // 🔥 HARD STOP
+
+  if ((cartItems.length === 0 && boxes.length === 0) || !user) {
+    const timer = setTimeout(() => {
+      if (!isNavigatingToSuccess.current) {
+        toast.error("Your cart is empty or you are not logged in.");
+        navigate("/");
       }
-    }
-  }, [cartItems, boxes, navigate, user]);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }
+}, [cartItems, boxes, navigate, user]);
 
   async function handlePlaceOrder() {
+    isNavigatingToSuccess.current = true; 
     if (cartItems.length === 0 && boxes.length === 0)
       return toast.error("Your cart is empty.");
 
