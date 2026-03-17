@@ -1,91 +1,117 @@
 import React from "react";
-import { FaInstagram, FaFacebook, FaWhatsapp, FaYoutube } from "react-icons/fa";
-import { IoLocationSharp, IoMailSharp, IoTimeSharp } from "react-icons/io5";
-import { FaPhoneAlt } from "react-icons/fa";
+import { FaInstagram, FaFacebook} from "react-icons/fa";
+import { IoLocationSharp, IoMailSharp} from "react-icons/io5";
 export default function Footer() {
   return (
-    <footer className="bg-stone-50 text-stone-900 border-t border-stone-200 pt-20 pb-10">
-  <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
-    
-    {/* BRAND COLUMN */}
-    <div className="space-y-6">
-      <div className="space-y-1">
-        <h3 className="text-2xl font-black uppercase tracking-tighter text-stone-900">
-          Range of Himalayas
-        </h3>
-        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B23A2E]">
-          Botanical Origin
-        </p>
-      </div>
-      <p className="text-sm leading-relaxed text-stone-500 font-serif italic">
-        "Cultivating the pristine heights of Kotkhai. We bridge the gap between 
-        ancient Himalayan soil and the modern table with natural, high-altitude harvests."
-      </p>
-    </div>
+    <footer className="bg-[#0D0D0D] text-white border-t border-white/5 pt-24 pb-12">
+      <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-12">
+        
+        {/* BRAND COLUMN: The Signature */}
+        <div className="space-y-8">
+          <div className="space-y-2">
+            <h3 className="text-3xl font-black uppercase tracking-tighter leading-none">
+              Range of <br /> Himalayas
+            </h3>
+            <div className="flex items-center gap-2">
+              <span className="h-px w-4 bg-[#F08C7D]" />
+              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[#F08C7D]">
+                Botanical Origin
+              </p>
+            </div>
+          </div>
+          <p className="text-[13px] leading-relaxed text-stone-400 font-serif italic max-w-xs">
+            "Cultivating the pristine heights of Kotkhai. We bridge the gap
+            between ancient Himalayan soil and the modern table."
+          </p>
+        </div>
 
-    {/* NAVIGATION: COMPANY */}
-    <div className="space-y-6">
-      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-        The Estate
-      </h4>
-      <ul className="space-y-4 text-[11px] font-black uppercase tracking-widest text-stone-600">
-        <li><a href="/about-us" className="hover:text-[#B23A2E] transition-colors">Our Story</a></li>
-        <li><a href="/custombox" className="hover:text-[#B23A2E] transition-colors">Bespoke Crate</a></li>
-        <li><a href="/blog" className="hover:text-[#B23A2E] transition-colors">Field Notes</a></li>
-      </ul>
-    </div>
+        {/* NAVIGATION: THE ESTATE */}
+        <div className="space-y-8">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
+            The Estate
+          </h4>
+          <ul className="space-y-4 text-[12px] font-black uppercase tracking-[0.2em] text-stone-300">
+            {['Our Story', 'Bespoke Crate', 'Field Notes'].map((item) => (
+              <li key={item}>
+                <a href={`/${item.toLowerCase().replace(' ', '')}`} className="hover:text-[#F08C7D] transition-all duration-300 flex items-center group">
+                  <span className="w-0 group-hover:w-4 h-px bg-[#F08C7D] transition-all duration-300 mr-0 group-hover:mr-2" />
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-    {/* NAVIGATION: SUPPORT */}
-    <div className="space-y-6">
-      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-        Concierge
-      </h4>
-      <ul className="space-y-4 text-[11px] font-black uppercase tracking-widest text-stone-600">
-        <li><a href="/faqs" className="hover:text-[#B23A2E] transition-colors">Common Inquiries</a></li>
-        <li><a href="/shipping-policy" className="hover:text-[#B23A2E] transition-colors">Transit & Logistics</a></li>
-        <li><a href="/return-policy" className="hover:text-[#B23A2E] transition-colors">Exchanges</a></li>
-        <li><a href="/privacy-policy" className="hover:text-[#B23A2E] transition-colors">Privacy</a></li>
-      </ul>
-    </div>
+        {/* NAVIGATION: CONCIERGE */}
+        <div className="space-y-8">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
+            Concierge
+          </h4>
+          <ul className="space-y-4 text-[12px] font-black uppercase tracking-[0.2em] text-stone-300">
+             {['FAQS', 'Shipping', 'Exchanges', 'Privacy'].map((item) => (
+              <li key={item}>
+                <a href="#" className="hover:text-[#F08C7D] transition-all duration-300 group flex items-center">
+                  <span className="w-0 group-hover:w-4 h-px bg-[#F08C7D] transition-all duration-300 mr-0 group-hover:mr-2" />
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-    {/* CONTACT & SOCIAL */}
-    <div className="space-y-6">
-      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-        Correspondence
-      </h4>
-      <ul className="space-y-4 text-[11px] font-medium text-stone-600">
-        <li className="flex items-start gap-3">
-          <IoLocationSharp size={14} className="text-[#B23A2E] shrink-0 mt-0.5" />
-          <span className="leading-tight uppercase tracking-wider">
-            Bareon, Kotkhai, Shimla, <br />HP – 171204
-          </span>
-        </li>
-        <li className="flex items-center gap-3">
-          <IoMailSharp size={14} className="text-[#B23A2E]" />
-          <a href="mailto:contactrangeofhimalayas@gmail.com" className="hover:text-[#B23A2E] transition-colors lowercase">
-            hello@rangeofhimalayas.com
-          </a>
-        </li>
-      </ul>
+        {/* CORRESPONDENCE: CONTACT */}
+        <div className="space-y-8">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-500">
+            Correspondence
+          </h4>
+          <div className="space-y-6">
+            <div className="flex items-start gap-4 group">
+              <div className="p-2 bg-white/5 rounded-full group-hover:bg-[#F08C7D]/20 transition-colors">
+                <IoLocationSharp size={14} className="text-[#F08C7D]" />
+              </div>
+              <span className="text-[11px] leading-relaxed uppercase tracking-widest text-stone-400">
+                Bareon, Kotkhai, Shimla, <br />
+                HP – 171204
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-4 group">
+              <div className="p-2 bg-white/5 rounded-full group-hover:bg-[#F08C7D]/20 transition-colors">
+                <IoMailSharp size={14} className="text-[#F08C7D]" />
+              </div>
+              <a href="mailto:contact@rangehimalayas.com" className="text-[11px] lowercase tracking-widest text-stone-400 hover:text-white transition-colors">
+                contactrangeofhimalayas@gmail.com
+              </a>
+            </div>
 
-      <div className="pt-4 space-y-4">
-        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">Connect with the source</p>
-        <div className="flex items-center gap-5 text-stone-900">
-          <a href="#" className="hover:text-[#B23A2E] transition-all hover:-translate-y-1"><FaInstagram size={18} /></a>
-          <a href="#" className="hover:text-[#B23A2E] transition-all hover:-translate-y-1"><FaFacebook size={18} /></a>
-          <a href="#" className="hover:text-[#B23A2E] transition-all hover:-translate-y-1"><FaWhatsapp size={18} /></a>
+            <div className="pt-4 flex items-center gap-6">
+              <a href="https://www.instagram.com/range.of.himalayas" className="text-stone-500 hover:text-[#F08C7D] transition-all hover:-translate-y-1">
+                <FaInstagram size={20} />
+              </a>
+              <a href="https://www.facebook.com/rangeofhimalayas" className="text-stone-500 hover:text-[#F08C7D] transition-all hover:-translate-y-1">
+                <FaFacebook size={20} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  {/* BOTTOM BAR */}
-  <div className="mt-20 max-w-7xl mx-auto px-6 pt-8 border-t border-stone-200/60">
-    <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] font-black uppercase tracking-[0.4em] text-stone-400">
-      <p>© {new Date().getFullYear()} Range of Himalayas Archive</p>
-      <p>Crafted for the Discerning Collector</p>
-    </div>
-  </div>
-</footer>
+      {/* SUB-FOOTER */}
+      <div className="mt-24 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-8 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p className="text-[9px] font-black uppercase tracking-[0.6em] text-stone-600">
+              © {new Date().getFullYear()} Range of Himalayas Archive
+            </p>
+          </div>
+          
+          <div className="h-px w-12 bg-white/10 hidden md:block" />
+          
+          <p className="text-[9px] font-black uppercase tracking-[0.6em] text-stone-600">
+            Crafted for the Discerning Collector
+          </p>
+        </div>
+      </div>
+    </footer>
   );
 }
