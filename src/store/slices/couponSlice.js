@@ -72,7 +72,6 @@ const couponSlice = createSlice({
       state.discountAmount = action.payload.discountAmount;
       state.finalAmount = action.payload.finalPrice;
       state.code = action.payload.code;
-      state.message = action.payload.message;
     },
     applyCouponFailed(state, action) {
       state.loading = false;
