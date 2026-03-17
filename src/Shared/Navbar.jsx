@@ -274,8 +274,6 @@ export default function Navbar() {
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* HAMBURGER MENU: Using a standard h-5/w-5 for consistency */}
             <button
               onClick={toggleMenu}
               className="p-2 flex items-center justify-center active:scale-90 transition-transform"
@@ -295,7 +293,7 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-        <div className="hidden lg:flex items-center justify-between w-full">
+        <div className="hidden lg:flex items-center justify-between w-full mb-2">
           <Link
             to="/"
             className="flex-shrink-0 flex items-center h-full transition-all duration-700 ease-in-out hover:scale-105"
