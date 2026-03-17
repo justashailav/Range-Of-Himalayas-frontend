@@ -300,7 +300,7 @@ export default function Navbar() {
           >
             <img
               src={logo}
-              className="w-20 sm:w-24 lg:w-28 brightness-0 invert opacity-80 hover:opacity-100 transition-all duration-700 ease-in-out object-contain mt-2"
+              className="w-20 sm:w-24 lg:w-28 brightness-0 invert opacity-80 hover:opacity-100 transition-all duration-700 ease-in-out object-contain "
               alt="Range of Himalayas"
             />
           </Link>
