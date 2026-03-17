@@ -275,7 +275,7 @@ export default function Navbar() {
               className="p-2 flex items-center justify-center active:scale-90 transition-transform"
               aria-label="Toggle Menu"
             >
-              <div className="flex flex-col items-end gap-1 group mb-2">
+              <div className="flex flex-col items-end gap-1 group">
                 <span
                   className={`h-[1.5px] bg-white transition-all duration-500 ${isMenu ? "w-6 -rotate-45 translate-y-[5px]" : "w-6"}`}
                 />

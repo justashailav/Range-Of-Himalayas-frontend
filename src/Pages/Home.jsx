@@ -325,7 +325,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
               /* Mobile: Centered grid for touch targets | Desktop: Left-aligned row */
-              className="grid grid-cols-1 gap-y-5 md:flex md:flex-row md:items-center md:gap-x-12 border-t border-white/10 pt-8 md:pt-10"
+              className="grid grid-cols-1 gap-y-5 md:flex md:flex-row md:items-center md:gap-x-12 border-t border-white/10 pt-8 md:pt-10 mt-2"
             >
               {["Red Rice", "Pahadi Rajma", "Apricots"].map((item, i) => (
                 <div
