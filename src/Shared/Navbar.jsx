@@ -92,148 +92,91 @@ export default function Navbar() {
         }
       `}
     >
-      <div className="flex items-center justify-between w-full">
-        <div className="flex items-center justify-between w-full md:flex lg:hidden">
+      <div className="flex items-center justify-between w-full mt-2">
+        <div className="flex items-center justify-between w-full h-14 lg:hidden px-4">
+          {/* 1. LOGO: Scaled down for mobile to keep the bar slim */}
           <Link
             to="/"
-            className="group relative flex items-center justify-center py-4 transition-all duration-500"
+            className="group relative flex items-center transition-all duration-500"
           >
-            {/* Subtle "Light" glow behind logo on hover */}
-            <div className="absolute inset-0 bg-stone-200/20 blur-2xl rounded-full scale-0 group-hover:scale-100 transition-transform duration-700" />
-
             <img
               src={logo}
               alt="Purely Himalayan Logo"
-              className="relative z-10 w-24 sm:w-32 h-auto object-contain 
-               brightness-90 group-hover:brightness-110 
-               group-hover:scale-105 transition-all duration-700 
-               ease-[cubic-bezier(0.23,1,0.32,1)]"
+              className="w-20 sm:w-24 h-auto object-contain brightness-0 invert opacity-90 transition-all duration-700"
             />
-
-            {/* The "Signature" underline that only appears on hover */}
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-[#B23A2E] group-hover:w-8 transition-all duration-500" />
+            {/* Minimalist underline instead of glow for mobile performance */}
+            <div className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-500" />
           </Link>
 
-          <div className="flex items-center gap-4 sm:gap-4 mt-2">
+          {/* 2. ACTION GROUP: Consolidated and balanced */}
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* WISHLIST */}
+            <Link
+              to="/wishlist"
+              className="relative p-2 active:scale-90 transition-transform"
+            >
+              <Heart strokeWidth={1.5} className="w-5 h-5 text-white" />
+              {wishListCount > 0 && (
+                <span className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center bg-[#B23A2E] text-[7px] font-bold text-white rounded-full ring-1 ring-stone-900">
+                  {wishListCount}
+                </span>
+              )}
+            </Link>
+
+            {/* CART */}
             <Sheet open={openCart} onOpenChange={setOpenCart}>
-              <div className="relative group">
-                <Link to="/wishlist" className="flex items-center gap-2">
-                  {/* 1. THE ICON: Thin stroke for a delicate, artisanal feel */}
-                  <div className="relative p-2 transition-transform duration-500 group-hover:scale-110">
-                    <Heart
-                      strokeWidth={1.5}
-                      className="w-5 h-5 text-white transition-colors duration-500 group-hover:text-[#B23A2E]"
-                    />
-
-                    {/* 2. THE NOTIFICATION: Minimalist & Flat */}
-                    {wishListCount > 0 && (
-                      <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
-                      >
-                        {wishListCount}
-                      </motion.span>
-                    )}
-                  </div>
-
-                  {/* 3. OPTIONAL LABEL: Only shows on larger screens for that "Journal" feel */}
-                  <span className="hidden lg:block text-[9px] font-black uppercase tracking-[0.3em] text-white/60 group-hover:text-white transition-colors duration-500">
-                    Saved Records
-                  </span>
-                </Link>
-
-                {/* 4. UNDERLINE ACCENT: A thin red line that grows on hover */}
-                <div className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
-              </div>
-
-              <div className="relative group">
-                <div
-                  onClick={() => setOpenCart(true)}
-                  className="flex items-center gap-2 cursor-pointer"
+              <div
+                onClick={() => setOpenCart(true)}
+                className="relative p-2 cursor-pointer active:scale-90 transition-transform"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  className="transition-colors duration-500"
                 >
-                  {/* 1. THE ICON: Switching to a sleeker 'ShoppingBag' for an artisanal boutique feel */}
-                  <div className="relative p-2 transition-transform duration-500 group-hover:-translate-y-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="transition-colors duration-500 group-hover:text-[#B23A2E]"
-                    >
-                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                      <path d="M3 6h18" />
-                      <path d="M16 10a4 4 0 0 1-8 0" />
-                    </svg>
-
-                    {/* 2. THE COUNT: Refined and balanced */}
-                    {totalCount > 0 && (
-                      <motion.span
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900"
-                      >
-                        {totalCount}
-                      </motion.span>
-                    )}
-                  </div>
-
-                  {/* 3. EDITORIAL LABEL: Adds to the Journal/Catalog aesthetic */}
-                  <div className="hidden xl:flex flex-col items-start leading-none">
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white group-hover:text-[#B23A2E] transition-colors duration-500">
-                      Provisions
-                    </span>
-                    <span className="text-[7px] font-mono text-white/40 uppercase tracking-widest mt-1">
-                      Your Selection
-                    </span>
-                  </div>
-                </div>
-
-                {/* 4. INTERACTION LINE */}
-                <div className="absolute -bottom-1 right-0 w-0 h-[1px] bg-[#B23A2E] group-hover:w-full transition-all duration-700" />
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                  <path d="M3 6h18" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                {totalCount > 0 && (
+                  <span className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center bg-[#B23A2E] text-[7px] font-bold text-white rounded-full ring-1 ring-stone-900">
+                    {totalCount}
+                  </span>
+                )}
               </div>
-              <SheetContent side="right" className="sm:max-w-md">
+              <SheetContent
+                side="right"
+                className="sm:max-w-md bg-[#fdfcf7] p-0"
+              >
                 <UserCartWrapper
                   cartItems={cartItems}
                   setOpenCartSheet={setOpenCart}
                 />
               </SheetContent>
             </Sheet>
+
+            {/* USER AVATAR: Scaled to h-8 for mobile */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="relative group cursor-pointer outline-none">
-                  {/* 1. DECORATIVE OUTER RING (The "Seal") */}
-                  <div className="absolute -inset-1 border border-white/10 rounded-full group-hover:border-[#B23A2E]/50 transition-colors duration-500" />
-
-                  {/* 2. THE AVATAR CONTAINER */}
-                  <Avatar className="h-9 w-9 sm:h-10 sm:w-10 ring-2 ring-stone-900 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-2xl">
+                <div className="relative cursor-pointer outline-none active:scale-95 transition-transform">
+                  <Avatar className="h-8 w-8 ring-1 ring-white/20 shadow-xl">
                     <AvatarImage
                       src={
                         user?.profile?.profilePhoto ||
                         "https://github.com/shadcn.png"
                       }
-                      className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500"
+                      className="object-cover"
                     />
-                    {/* 3. CUSTOM FALLBACK (Initials in Journal Font) */}
-                    <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] font-serif italic text-xs">
+                    <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px]">
                       {user?.name?.charAt(0) || "A"}
                     </AvatarFallback>
                   </Avatar>
-
-                  {/* 4. STATUS INDICATOR (Minimalist dot) */}
-                  <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-stone-900 rounded-full shadow-sm" />
-
-                  {/* 5. HOVER LABEL (Optional, for that "Catalog" feel) */}
-                  <div className="absolute top-full mt-4 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white whitespace-nowrap bg-stone-900 px-3 py-1 rounded-sm">
-                      Account Ledger
-                    </span>
-                  </div>
+                  <span className="absolute bottom-0 right-0 h-2 w-2 bg-[#B23A2E] border border-stone-900 rounded-full" />
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
@@ -242,22 +185,26 @@ export default function Navbar() {
                     {user ? (
                       <>
                         {/* HEADER SECTION */}
+
                         <div className="px-3 py-4 border-b border-stone-100 mb-2">
                           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
                             Member
                           </p>
+
                           <p className="font-serif italic text-stone-900 truncate">
                             {user?.name || "Explorer"}
                           </p>
                         </div>
 
                         {/* NAVIGATION LINKS */}
+
                         <Link to="/profile">
                           <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-stone-100 focus:bg-stone-100 group">
                             <User
                               className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors"
                               strokeWidth={1.5}
                             />
+
                             <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">
                               The Profile
                             </span>
@@ -270,6 +217,7 @@ export default function Navbar() {
                               className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors"
                               strokeWidth={1.5}
                             />
+
                             <span className="text-[11px] font-black uppercase tracking-widest text-stone-700">
                               Account Settings
                             </span>
@@ -277,6 +225,7 @@ export default function Navbar() {
                         </Link>
 
                         {/* TRACK ORDER: Refined as an editorial link rather than a heavy button */}
+
                         <DropdownMenuItem
                           onClick={() => navigate("/order-tracking")}
                           className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-[#2d3a2d] hover:text-white focus:bg-[#2d3a2d] focus:text-white group border-t border-stone-100 mt-2"
@@ -285,12 +234,14 @@ export default function Navbar() {
                             className="w-4 h-4 text-stone-400 group-hover:text-white transition-colors"
                             strokeWidth={1.5}
                           />
+
                           <span className="text-[10px] font-black uppercase tracking-[0.2em]">
                             Track Current Harvest
                           </span>
                         </DropdownMenuItem>
 
                         {/* LOGOUT */}
+
                         <DropdownMenuItem
                           onClick={handleLogout}
                           className="flex items-center gap-3 px-3 py-3 cursor-pointer outline-none transition-colors hover:bg-red-50 group"
@@ -299,6 +250,7 @@ export default function Navbar() {
                             className="w-4 h-4 text-stone-400 group-hover:text-[#B23A2E] transition-colors"
                             strokeWidth={1.5}
                           />
+
                           <span className="text-[11px] font-black uppercase tracking-widest text-stone-400 group-hover:text-[#B23A2E]">
                             Exit Archive
                           </span>
@@ -311,6 +263,7 @@ export default function Navbar() {
                             className="w-4 h-4 text-white/60"
                             strokeWidth={1.5}
                           />
+
                           <span className="text-[11px] font-black uppercase tracking-[0.4em]">
                             Member Login
                           </span>
@@ -322,44 +275,23 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* HAMBURGER MENU: Using a standard h-5/w-5 for consistency */}
             <button
               onClick={toggleMenu}
-              className="relative z-[100] p-2 flex items-center justify-center transition-all duration-300 active:scale-90"
+              className="p-2 flex items-center justify-center active:scale-90 transition-transform"
               aria-label="Toggle Menu"
             >
-              <div className="flex flex-col items-end gap-1.5 group">
-                {/* Top Line */}
+              <div className="flex flex-col items-end gap-1 group">
                 <span
-                  className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
-                    isMenu
-                      ? "w-8 -rotate-45 translate-y-[8px]"
-                      : "w-8 group-hover:w-5"
-                  }`}
+                  className={`h-[1.5px] bg-white transition-all duration-500 ${isMenu ? "w-6 -rotate-45 translate-y-[5px]" : "w-6"}`}
                 />
-
-                {/* Middle Line (Fades out when menu is open) */}
                 <span
-                  className={`h-[1.5px] bg-white transition-all duration-500 ${
-                    isMenu ? "opacity-0 w-0" : "w-5 group-hover:w-8"
-                  }`}
+                  className={`h-[1.5px] bg-white transition-all duration-500 ${isMenu ? "opacity-0 w-0" : "w-4"}`}
                 />
-
-                {/* Bottom Line */}
                 <span
-                  className={`h-[1.5px] bg-white transition-all duration-500 ease-in-out ${
-                    isMenu
-                      ? "w-8 rotate-45 -translate-y-[8px]"
-                      : "w-8 group-hover:w-6"
-                  }`}
+                  className={`h-[1.5px] bg-white transition-all duration-500 ${isMenu ? "w-6 rotate-45 -translate-y-[5px]" : "w-6"}`}
                 />
               </div>
-
-              {/* Optional Label (Hidden on smallest screens) */}
-              <span
-                className={`ml-3 hidden sm:block text-[9px] font-black uppercase tracking-[0.4em] text-white transition-opacity duration-300 ${isMenu ? "opacity-0" : "opacity-60"}`}
-              >
-                Menu
-              </span>
             </button>
           </div>
         </div>
@@ -419,7 +351,6 @@ export default function Navbar() {
               />
             </div>
 
-            
             <div className="relative flex items-center h-full ml-4 lg:ml-6">
               <Link to="/wishlist" className="group relative p-2 outline-none">
                 {/* 1. THE ICON: Thin stroke and consistent height */}
