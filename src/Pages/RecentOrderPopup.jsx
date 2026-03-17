@@ -121,12 +121,19 @@ const RecentOrderToast = () => {
                       {timeAgo(visibleOrder.timeAgo || visibleOrder.createdAt)}
                     </span>
                   </div>
-                  <motion.div 
-                    whileHover={{ x: 2, y: -2 }}
-                    className="flex items-center gap-1 text-[#F08C7D] text-[8px] font-black uppercase tracking-widest cursor-pointer"
-                  >
-                    View <ArrowUpRight size={10} />
-                  </motion.div>
+                  {/* Ensure you import Link from 'next/link' or 'react-router-dom' */}
+<Link href={`/product/${visibleOrder.slug || visibleOrder._id}`}>
+  <motion.div 
+    whileHover={{ x: 2, y: -2 }}
+    whileTap={{ scale: 0.95 }}
+    className="flex items-center gap-1 text-[#F08C7D] text-[8px] font-black uppercase tracking-widest cursor-pointer group/view"
+  >
+    <span className="group-hover/view:underline decoration-[#F08C7D]/40 underline-offset-4">
+      View Archive
+    </span> 
+    <ArrowUpRight size={10} className="transition-transform group-hover/view:translate-x-0.5" />
+  </motion.div>
+</Link>
                 </div>
               </div>
             </div>
