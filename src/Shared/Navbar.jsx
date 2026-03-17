@@ -515,82 +515,106 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      {isMenu && (
-        <div className="fixed inset-0 z-[100] lg:hidden">
-          {/* 1. BLUR OVERLAY: Dims the orchard background when menu is open */}
-          <div
-            className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm"
-            onClick={toggleMenu}
-          />
+      {/* Use AnimatePresence for smooth entry/exit */}
+<AnimatePresence>
+  {isMenu && (
+    <div className="fixed inset-0 z-[100] lg:hidden">
+      {/* 1. BLUR OVERLAY: Animated Fade */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 bg-stone-900/60 backdrop-blur-md"
+        onClick={toggleMenu}
+      />
 
-          {/* 2. THE SIDEBAR: Deep Forest Green with sharp editorial lines */}
-          <div className="absolute top-0 right-0 h-full w-[280px] sm:w-[320px] bg-[#1a241a] shadow-2xl p-8 flex flex-col transition-all duration-500 ease-in-out">
-            {/* HEADER: Close button with label */}
-            <div className="flex justify-between items-center mb-12">
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">
-                Navigation
-              </span>
-              <button onClick={toggleMenu} className="group p-2">
-                <FaTimes className="text-xl text-white/60 group-hover:text-[#B23A2E] group-hover:rotate-90 transition-all duration-500" />
-              </button>
+      {/* 2. SIDEBAR: Animated Slide from Right */}
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+        className="absolute top-0 right-0 h-full w-[280px] sm:w-[350px] bg-[#1a241a] shadow-2xl p-8 flex flex-col"
+      >
+        {/* HEADER */}
+        <div className="flex justify-between items-center mb-16">
+          <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30">
+            Menu / Archive
+          </span>
+          <button 
+            onClick={toggleMenu} 
+            className="group p-2 -mr-2 outline-none"
+          >
+            <div className="relative w-6 h-6 flex items-center justify-center">
+               <span className="absolute w-6 h-[1px] bg-white/60 rotate-45 group-hover:bg-white group-hover:rotate-90 transition-all duration-500" />
+               <span className="absolute w-6 h-[1px] bg-white/60 -rotate-45 group-hover:bg-white group-hover:rotate-0 transition-all duration-500" />
             </div>
+          </button>
+        </div>
 
-            {/* 3. NAVIGATION LINKS: Elegant and Spaced */}
-            <nav className="flex flex-col gap-8">
-              {[
-                { name: "Home", path: "/" },
-                { name: "Our Story", path: "/about-us" },
-                { name: "Create Box", path: "/custombox" },
-                { name: "Journal", path: "/blog" },
-                { name: "Contact", path: "/contact-us" },
-              ].map((link, index) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  onClick={toggleMenu}
-                  className="group flex flex-col gap-1"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[13px] font-black uppercase tracking-[0.5em] text-white/80 group-hover:text-white transition-colors">
-                      {link.name}
-                    </span>
-                    <span className="text-[10px] font-serif italic text-white/20 group-hover:text-[#B23A2E] transition-colors">
-                      0{index + 1}
-                    </span>
-                  </div>
-                  {/* Fine line separator below each link */}
-                  <div className="h-[1px] w-full bg-white/5 group-hover:bg-[#B23A2E]/40 transition-colors duration-500" />
-                </Link>
-              ))}
-            </nav>
+        {/* 3. NAVIGATION: Added staggered animation to links */}
+        <nav className="flex flex-col gap-10">
+          {[
+            { name: "Home", path: "/" },
+            { name: "Our Story", path: "/about-us" },
+            { name: "Create Box", path: "/custombox" },
+            { name: "Journal", path: "/blog" },
+            { name: "Contact", path: "/contact-us" },
+          ].map((link, index) => (
+            <motion.div
+              key={link.name}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index }}
+            >
+              <Link
+                to={link.path}
+                onClick={toggleMenu}
+                className="group flex items-end justify-between pb-2 border-b border-white/5 hover:border-white/20 transition-colors"
+              >
+                <span className="text-16px sm:text-lg font-black uppercase tracking-[0.4em] text-white/80 group-hover:text-white transition-colors">
+                  {link.name}
+                </span>
+                <span className="text-[10px] font-serif italic text-white/20 group-hover:text-[#F08C7D] mb-1 transition-colors">
+                  0{index + 1}
+                </span>
+              </Link>
+            </motion.div>
+          ))}
+        </nav>
 
-            {/* 4. FOOTER: Member Login / Logout */}
-            <div className="mt-auto pt-10">
-              {!user ? (
-                <Link to="/login" onClick={toggleMenu}>
-                  <button className="w-full border border-white/20 py-4 text-[11px] font-black uppercase tracking-[0.4em] text-white hover:bg-white hover:text-[#1a241a] transition-all duration-500">
-                    Member Login
-                  </button>
-                </Link>
-              ) : (
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    toggleMenu();
-                  }}
-                  className="w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors"
-                >
-                  Exit Archive
-                </button>
-              )}
+        {/* 4. FOOTER: Redesigned for visual hierarchy */}
+        <div className="mt-auto">
+          {!user ? (
+            <Link to="/login" onClick={toggleMenu} className="block group">
+              <div className="relative overflow-hidden border border-white/20 py-5 text-center transition-all duration-500 group-hover:border-white">
+                <span className="relative z-10 text-[11px] font-black uppercase tracking-[0.4em] text-white">
+                  Member Login
+                </span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <style jsx>{`.group:hover span { color: #1a241a; }`}</style>
+              </div>
+            </Link>
+          ) : (
+            <button
+              onClick={() => { handleLogout(); toggleMenu(); }}
+              className="w-full py-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors border-t border-white/5"
+            >
+              Exit Account — {user?.name?.split(' ')[0]}
+            </button>
+          )}
 
-              <p className="text-center mt-8 text-[9px] font-black uppercase tracking-[0.5em] text-white/20">
-                Purely Himalayan © 2026
-              </p>
-            </div>
+          <div className="mt-8 flex flex-col items-center gap-2">
+            <div className="h-px w-8 bg-[#F08C7D]/30" />
+            <p className="text-[8px] font-black uppercase tracking-[0.6em] text-white/10">
+              Purely Himalayan
+            </p>
           </div>
         </div>
-      )}
+      </motion.div>
+    </div>
+  )}
+</AnimatePresence>
     </motion.nav>
   );
 }
