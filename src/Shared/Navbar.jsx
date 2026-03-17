@@ -593,11 +593,11 @@ export default function Navbar() {
                     </>
                   ) : (
                     <Link to="/login">
-                      <DropdownMenuItem className="flex items-center justify-center gap-3 px-3 py-4 cursor-pointer outline-none bg-[#2d3a2d] text-white hover:bg-stone-900 transition-colors">
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">
-                          Member Login
-                        </span>
-                      </DropdownMenuItem>
+                      <DropdownMenuItem className="flex items-center justify-center gap-3 px-3 py-4 cursor-pointer outline-none bg-stone-50 border border-stone-200/60 hover:bg-[#B23A2E] hover:border-[#B23A2E] transition-all duration-300 group">
+  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-stone-600 group-hover:text-white transition-colors">
+    Member Login
+  </span>
+</DropdownMenuItem>
                     </Link>
                   )}
                 </DropdownMenuGroup>
