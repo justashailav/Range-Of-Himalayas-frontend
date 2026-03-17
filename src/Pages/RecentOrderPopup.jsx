@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { X, ArrowUpRight } from "lucide-react"; 
 import { motion, AnimatePresence } from "framer-motion";
 import { getRecentOrders } from "@/store/slices/orderSlice";
+import { Link } from "react-router-dom";
 
 const RecentOrderToast = () => {
   const dispatch = useDispatch();
