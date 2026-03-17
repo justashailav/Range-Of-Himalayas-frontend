@@ -30,11 +30,11 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const [finalAmount, setFinalAmount] = useState(0);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   useEffect(() => {
-    if (success) {
-      setDiscount(discountAmount);
-      setIsCouponApplied(true);
-    }
-  }, [success, discountAmount]);
+  if (success) {
+    setDiscount(discountAmount);
+    setIsCouponApplied(true);
+  }
+}, [success, discountAmount]);
   useEffect(() => {
     // 1. Calculate the actual current total of everything in the cart
     const cartTotal = (cartItems || []).reduce((sum, item) => {
@@ -65,48 +65,46 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     }
     
   }, [cartItems, boxes, productList, discountAmount]); 
-
-  // Add this useEffect to sync local state with Redux on component mount
-useEffect(() => {
-  if (discountAmount > 0) {
-    setIsCouponApplied(true);
-    setDiscount(discountAmount);
-    if (code) setCouponCode(code);
-  }
-}, [discountAmount, code]);
+  useEffect(() => {
+  dispatch(resetCoupon()); // 🔥 clear old coupon
+  setIsCouponApplied(false);
+  setDiscount(0);
+  setCouponCode("");
+}, []);
   // removed couponFinal from deps because we calculate it live now
   const handleApplyCoupon = async () => {
-    const trimmedCode = couponCode.trim().toUpperCase();
-    if (!user?._id) {
-      toast.error("Please log in to apply a coupon");
-      return;
-    }
+  const trimmedCode = couponCode.trim().toUpperCase();
 
-    if (isCouponApplied) {
-      toast.info("Coupon already applied");
-      return;
-    }
+  if (!trimmedCode) {
+    toast.error("Enter coupon code");
+    return;
+  }
 
-    try {
-      const data = await dispatch(
-        applyCoupon({
-          code: trimmedCode,
-          orderAmount: finalAmount,
-          userId: user?._id,
-        }),
-      );
+  if (isCouponApplied) {
+    toast.info("Coupon already applied");
+    return;
+  }
 
-      if (data?.success) {
-        setDiscount(Number(data.discountAmount) || 0);
-        setFinalAmount(Number(data.finalPrice) || finalAmount);
-        setIsCouponApplied(true);
-      } else {
-        toast.error(data?.message || "Invalid coupon");
-      }
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong");
+  try {
+    const data = await dispatch(
+      applyCoupon({
+        code: trimmedCode,
+        orderAmount: finalAmount,
+        userId: user?._id,
+      })
+    );
+
+    if (data?.success) {
+      setDiscount(Number(data.discountAmount) || 0);
+      setIsCouponApplied(true);
+      toast.success("Coupon applied");
+    } else {
+      toast.error(data?.message || "Invalid coupon");
     }
-  };
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
+};
   useEffect(() => {
     if (message) toast.info(message);
   }, [message]);
