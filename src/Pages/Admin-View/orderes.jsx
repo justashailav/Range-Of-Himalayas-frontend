@@ -39,25 +39,23 @@ export default function AdminOrders() {
   const [minAmount, setMinAmount] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
 
-  // Trigger fetch whenever any filter changes
   useEffect(() => {
     const fetchOrders = () => {
       const params = new URLSearchParams();
       
-      // Date logic
       if (dateFilter !== "all") params.append("filter", dateFilter);
-      
-      // Other filters
       if (searchOrderId) params.append("orderId", searchOrderId);
       if (customerFilter) params.append("customer", customerFilter);
       if (paymentStatus !== "all") params.append("paymentStatus", paymentStatus);
       if (minAmount) params.append("minAmount", minAmount);
       if (maxAmount) params.append("maxAmount", maxAmount);
       
-      // Hardcoded constant for this view
       params.append("paymentMethod", "Online");
 
-      dispatch(getAllOrdersForAllUsers(params.toString()));
+      const queryString = params.toString();
+      console.log("Fetching with params:", queryString); // DEBUG THIS LINE
+      
+      dispatch(getAllOrdersForAllUsers(queryString));
     };
 
     fetchOrders();
