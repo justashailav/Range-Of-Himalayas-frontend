@@ -107,8 +107,6 @@ export default function AdminOrderDetailsView() {
   const subtotal = itemSubtotal + boxSubtotal;
   const deliveryCharge = Number(orderDetails?.deliveryCharge || 0);
   const grandTotal = Number(orderDetails?.totalAmount || subtotal + deliveryCharge);
-
-  // ✅ Detect if coupon applied (total less than subtotal + delivery)
   const couponApplied = grandTotal < subtotal + deliveryCharge;
 
   const printWindow = window.open("", "", "width=400,height=600");
