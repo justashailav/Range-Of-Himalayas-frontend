@@ -18,7 +18,6 @@ import {
   User,
   Printer,
   Box,
-  ChevronDown,
 } from "lucide-react";
 import QRCode from "qrcode";
 import axios from "axios";
@@ -387,36 +386,28 @@ export default function AdminOrderDetailsView() {
   return (
     <div className="min-h-screen bg-[#FFF8E1] p-6">
       <div className="max-w-5xl mx-auto space-y-8">
-       <div className="flex justify-end mb-8">
+        <div className="flex justify-end">
   <button
     onClick={handlePrint}
-    className="group flex items-center gap-3 bg-stone-900 text-stone-50 px-6 py-3 rounded-full hover:bg-stone-800 transition-all duration-500 shadow-lg active:scale-95"
+    className="group flex items-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-200 px-5 py-2.5 rounded-lg font-medium shadow-sm hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all duration-200 active:scale-95"
   >
-    <Printer size={16} className="text-stone-400 group-hover:text-amber-400 transition-colors" />
-    <span className="text-xs font-bold uppercase tracking-[0.2em]">Generate Invoice</span>
+    <Printer size={18} className="group-hover:animate-bounce" />
+    <span>Print Details</span>
   </button>
 </div>
-
-<section className="bg-white shadow-[0_20px_50px_rgba(0,0,0,0.04)] rounded-[2rem] border border-stone-100 p-10 overflow-hidden relative">
-  {/* Subtle Background Accent */}
-  <div className="absolute top-0 right-0 w-32 h-32 bg-stone-50 rounded-bl-[5rem] -z-10" />
-
-  <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-    <div>
-      <h2 className="text-3xl font-light tracking-tight text-stone-900">
-        Order <span className="font-bold text-amber-600">Summary</span>
-      </h2>
-      <p className="text-stone-400 text-sm mt-1 uppercase tracking-widest font-medium">Transaction Intelligence</p>
-    </div>
-    
-    <div className="flex items-center gap-3 bg-stone-50 px-4 py-2 rounded-2xl border border-stone-100">
-      <span className="text-[10px] font-bold uppercase tracking-tighter text-stone-400">Current Phase</span>
+        <section className="bg-white shadow-sm rounded-2xl border border-gray-200 overflow-hidden">
+  {/* Header Section */}
+  <div className="bg-gray-50/50 px-6 py-4 border-b border-gray-200 flex flex-wrap justify-between items-center gap-4">
+    <h2 className="text-xl font-bold text-gray-800">Order Summary</h2>
+    <div className="flex items-center gap-2">
+      <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Status:</span>
       <Badge
-        className={`shadow-none border-none py-1 px-4 rounded-lg uppercase text-[10px] tracking-widest font-bold ${
-          orderDetails.orderStatus === "confirmed" ? "bg-emerald-100 text-emerald-700" :
-          orderDetails.orderStatus === "delivered" ? "bg-sky-100 text-sky-700" :
-          orderDetails.orderStatus === "cancelled" ? "bg-rose-100 text-rose-700" :
-          "bg-amber-100 text-amber-700"
+        className={`py-1 px-4 rounded-full font-bold text-xs uppercase tracking-tight shadow-sm ${
+          orderDetails.orderStatus === "confirmed" ? "bg-green-100 text-green-700 border border-green-200" :
+          orderDetails.orderStatus === "packed" ? "bg-amber-100 text-amber-700 border border-amber-200" :
+          orderDetails.orderStatus === "cancelled" ? "bg-red-100 text-red-700 border border-red-200" :
+          orderDetails.orderStatus === "delivered" ? "bg-blue-100 text-blue-700 border border-blue-200" :
+          "bg-gray-100 text-gray-600 border border-gray-200"
         }`}
       >
         {orderDetails.orderStatus || "Pending"}
@@ -424,38 +415,41 @@ export default function AdminOrderDetailsView() {
     </div>
   </div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-2">
-    {[
-      ["Order Reference", `#${orderDetails._id}`],
-      ["Placement Date", orderDetails.orderDate?.split("T")[0]],
-      ["Revenue Total", `₹${orderDetails.totalAmount}`],
-      ["Payment Path", orderDetails.paymentMethod],
-      ["Settlement", orderDetails.paymentStatus],
-      ["Cancellation", orderDetails.cancelStatus],
-      ["Return Logic", orderDetails.returnStatus || "None"],
-    ].map(([label, value]) => (
-      <div key={label} className="flex justify-between items-center border-b border-stone-50 py-4 group">
-        <span className="text-sm font-semibold text-stone-400 uppercase tracking-tighter group-hover:text-stone-600 transition-colors">
-          {label}
-        </span>
-        <span className="text-stone-900 font-medium font-mono text-sm tracking-tight">
-          {value || "—"}
-        </span>
-      </div>
-    ))}
-  </div>
+  <div className="p-6">
+    {/* Info Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-3">
+      {[
+        ["Order ID", orderDetails._id, "font-mono text-xs text-blue-600"],
+        ["Order Date", orderDetails.orderDate?.split("T")[0]],
+        ["Order Price", `₹${orderDetails.totalAmount}`, "text-lg font-bold text-gray-900"],
+        ["Payment Method", orderDetails.paymentMethod, "capitalize"],
+        ["Payment Status", orderDetails.paymentStatus, "capitalize font-medium text-orange-600"],
+        ["Cancel Status", orderDetails.cancelStatus],
+        ["Refund Status", orderDetails.refundStatus],
+        ["Return Status", orderDetails.returnStatus || "None"],
+      ].map(([label, value, customClass]) => (
+        <div key={label} className="flex justify-between items-center py-2.5 border-b border-gray-50 last:border-0 sm:border-b">
+          <span className="text-sm font-medium text-gray-500">{label}</span>
+          <span className={`text-sm text-gray-800 ${customClass || "font-semibold"}`}>
+            {value || "—"}
+          </span>
+        </div>
+      ))}
+    </div>
 
-  {/* Update Section */}
-  <div className="mt-12 pt-8 border-t border-stone-100">
-    <form onSubmit={handleUpdateStatus} className="flex flex-col sm:flex-row gap-4 items-center">
-      <div className="relative w-full sm:max-w-xs">
+    {/* Update Status Action Box */}
+    <div className="mt-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
+      <label className="block text-xs font-bold text-gray-500 uppercase mb-3 ml-1">
+        Update Order Progress
+      </label>
+      <form onSubmit={handleUpdateStatus} className="flex flex-col sm:flex-row gap-3">
         <select
           value={formData.status}
           onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-          className="appearance-none w-full bg-stone-50 border border-stone-200 text-stone-900 text-sm rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-stone-900 focus:border-transparent outline-none transition-all cursor-pointer"
+          className="flex-grow block w-full rounded-lg border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
           required
         >
-          <option value="">Update Logistic Stage...</option>
+          <option value="">Select status...</option>
           <option value="confirmed">Confirmed</option>
           <option value="packed">Packed</option>
           <option value="shipped">Shipped</option>
@@ -464,15 +458,11 @@ export default function AdminOrderDetailsView() {
           <option value="rejected">Rejected</option>
           <option value="cancelled">Cancelled</option>
         </select>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400">
-           <ChevronDown size={14} /> 
-        </div>
-      </div>
-      
-      <button className="w-full sm:w-auto bg-stone-900 text-white px-8 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-black transition-all shadow-md active:scale-95">
-        Push Update
-      </button>
-    </form>
+        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors shadow-md shadow-blue-200 active:scale-95">
+          Update
+        </button>
+      </form>
+    </div>
   </div>
 </section>
         <div ref={printRef}>
