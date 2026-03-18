@@ -17,13 +17,12 @@ import { Badge } from "@/components/ui/badge";
 import {
   Loader2,
   Package,
+  Truck,
+  Calendar,
   Search,
   User,
+  CreditCard,
   Filter,
-  ChevronRight,
-  IndianRupee,
-  Activity,
-  ArrowUpRight,
 } from "lucide-react";
 
 export default function AdminOrders() {
@@ -31,237 +30,297 @@ export default function AdminOrders() {
   const navigate = useNavigate();
   const { orderList, isLoading } = useSelector((state) => state.orders);
 
-  // Filters State
+  // Filters
   const [dateFilter, setDateFilter] = useState("all");
+  const [productFilter, setProductFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [searchOrderId, setSearchOrderId] = useState("");
   const [customerFilter, setCustomerFilter] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("all");
   const [minAmount, setMinAmount] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
 
+  // Fetch with filters
   useEffect(() => {
-    const fetchOrders = () => {
-      const params = new URLSearchParams();
-      
-      if (dateFilter !== "all") params.append("filter", dateFilter);
-      if (searchOrderId) params.append("orderId", searchOrderId);
-      if (customerFilter) params.append("customer", customerFilter);
-      if (paymentStatus !== "all") params.append("paymentStatus", paymentStatus);
-      if (minAmount) params.append("minAmount", minAmount);
-      if (maxAmount) params.append("maxAmount", maxAmount);
-      
-      params.append("paymentMethod", "Online");
+    const params = new URLSearchParams();
+    if (dateFilter !== "all") params.append("filter", dateFilter);
+    if (productFilter && productFilter !== "all")
+      params.append("title", productFilter);
+    if (statusFilter !== "all") params.append("status", statusFilter);
+    if (searchOrderId) params.append("orderId", searchOrderId);
+    if (customerFilter) params.append("customer", customerFilter);
+    if (paymentStatus !== "all") params.append("paymentStatus", paymentStatus);
+    if (minAmount) params.append("minAmount", minAmount);
+    if (maxAmount) params.append("maxAmount", maxAmount);
+    params.append("paymentMethod", "Online"); // always online
 
-      const queryString = params.toString();
-      console.log("Fetching with params:", queryString); // DEBUG THIS LINE
-      
-      dispatch(getAllOrdersForAllUsers(queryString));
-    };
-
-    fetchOrders();
-  }, [dispatch, dateFilter, searchOrderId, customerFilter, paymentStatus, minAmount, maxAmount]);
+    dispatch(getAllOrdersForAllUsers(params.toString()));
+  }, [
+    dispatch,
+    dateFilter,
+    productFilter,
+    statusFilter,
+    searchOrderId,
+    customerFilter,
+    paymentStatus,
+    minAmount,
+    maxAmount,
+  ]);
 
   const getStatusBadgeColor = (status) => {
-    const styles = {
-      confirmed: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-      packed: "bg-amber-500/10 text-amber-600 border-amber-500/20",
-      shipping: "bg-blue-500/10 text-blue-600 border-blue-500/20",
-      delivered: "bg-teal-500/10 text-teal-600 border-teal-500/20",
-      cancelled: "bg-rose-500/10 text-rose-600 border-rose-500/20",
-    };
-    return styles[status?.toLowerCase()] || "bg-stone-100 text-stone-500 border-stone-200";
+    switch (status) {
+      case "confirmed":
+        return "bg-green-100 text-green-700 border border-green-200";
+      case "packed":
+        return "bg-yellow-100 text-yellow-700 border border-yellow-200";
+      case "shipping":
+        return "bg-blue-100 text-blue-700 border border-blue-200";
+      case "delivered":
+        return "bg-teal-100 text-teal-700 border border-teal-200";
+      case "cancelled":
+      case "rejected":
+        return "bg-red-100 text-red-700 border border-red-200";
+      default:
+        return "bg-gray-100 text-gray-700 border border-gray-200";
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBFA] p-6 md:p-12 font-sans text-stone-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFF8E1] to-[#FFE0B2] p-6">
       <div className="max-w-7xl mx-auto space-y-10">
-        
-        {/* --- HEADER --- */}
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-200 pb-10">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] text-rose-500 uppercase">
-              <div className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
-              <span>Live Logistics Engine</span>
-            </div>
-            <h1 className="text-5xl font-extralight tracking-tighter text-stone-950">
-              Order <span className="font-serif italic text-stone-400 font-normal">Manifest</span>
-            </h1>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+          <h1 className="text-3xl font-extrabold text-gray-900 flex items-center gap-3">
+            <Package className="text-[#F08C7D]" size={30} />
+            Admin Orders Dashboard
+          </h1>
+          <div className="hidden sm:flex items-center gap-2 text-gray-600">
+            <Filter size={18} />
+            <span className="text-sm">Advanced Filters Enabled</span>
           </div>
-          
-          <div className="flex items-center gap-8">
-            <div className="text-right">
-              <p className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-1">Total Volume</p>
-              <p className="text-3xl font-light tracking-tighter">{orderList?.length || 0}</p>
-            </div>
-            <div className="h-12 w-12 rounded-full border border-stone-200 flex items-center justify-center text-stone-900 shadow-sm">
-              <Package size={20} strokeWidth={1.5} />
-            </div>
-          </div>
-        </header>
-
-        {/* --- FILTER INTERFACE --- */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-4 space-y-8">
-            {/* Horizontal Timeline Filter */}
-            <div className="space-y-4">
-              <h3 className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                <Filter size={12} /> Time Horizon
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {["all", "today", "yesterday", "week", "month"].map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setDateFilter(f)}
-                    className={`px-5 py-2 rounded-full text-[11px] font-bold transition-all duration-500 border tracking-tight ${
-                      dateFilter === f 
-                      ? "bg-stone-950 text-white border-stone-950 shadow-xl translate-y-[-2px]" 
-                      : "bg-white text-stone-400 border-stone-100 hover:border-stone-300"
-                    }`}
-                  >
-                    {f.charAt(0).toUpperCase() + f.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Financial Range */}
-            <div className="space-y-4">
-              <h3 className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Settlement Range</h3>
-              <div className="flex items-center gap-3">
-                <Input
-                  type="number"
-                  placeholder="Min"
-                  className="bg-transparent border-none border-b border-stone-200 rounded-none focus-visible:ring-0 focus-visible:border-rose-500 transition-all px-0"
-                  onChange={(e) => setMinAmount(e.target.value)}
-                />
-                <span className="text-stone-300">/</span>
-                <Input
-                  type="number"
-                  placeholder="Max"
-                  className="bg-transparent border-none border-b border-stone-200 rounded-none focus-visible:ring-0 focus-visible:border-rose-500 transition-all px-0"
-                  onChange={(e) => setMaxAmount(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Search Inputs */}
-          <Card className="lg:col-span-8 border-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.02)] rounded-[2rem] p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Identification</label>
-                <div className="relative group">
-                  <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-stone-300 group-focus-within:text-rose-500 transition-colors" size={16} />
-                  <Input
-                    placeholder="Search by Order ID..."
-                    className="pl-7 bg-transparent border-none border-b border-stone-100 rounded-none focus-visible:ring-0 focus-visible:border-rose-500 transition-all"
-                    onChange={(e) => setSearchOrderId(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Customer Entity</label>
-                <div className="relative group">
-                  <User className="absolute left-0 top-1/2 -translate-y-1/2 text-stone-300 group-focus-within:text-rose-500 transition-colors" size={16} />
-                  <Input
-                    placeholder="Name or Email..."
-                    className="pl-7 bg-transparent border-none border-b border-stone-100 rounded-none focus-visible:ring-0 focus-visible:border-rose-500 transition-all"
-                    onChange={(e) => setCustomerFilter(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-          </Card>
-        </section>
-
-        {/* --- DATA ARCHIVE --- */}
-        <div className="bg-white rounded-[2.5rem] shadow-sm border border-stone-100 overflow-hidden">
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-40 gap-4">
-              <Loader2 className="animate-spin text-stone-200" size={40} strokeWidth={1} />
-              <p className="text-[10px] font-bold tracking-[0.4em] text-stone-400 uppercase">Indexing manifested data</p>
-            </div>
-          ) : orderList?.length > 0 ? (
-            <Table>
-              <TableHeader className="bg-stone-50/40">
-                <TableRow className="hover:bg-transparent border-stone-100">
-                  <TableHead className="h-16 px-10 text-stone-400 font-bold text-[10px] uppercase tracking-[0.2em]">Reference</TableHead>
-                  <TableHead className="text-stone-400 font-bold text-[10px] uppercase tracking-[0.2em]">Temporal Record</TableHead>
-                  <TableHead className="text-stone-400 font-bold text-[10px] uppercase tracking-[0.2em]">Logistics</TableHead>
-                  <TableHead className="text-stone-400 font-bold text-[10px] uppercase tracking-[0.2em] text-right">Revenue</TableHead>
-                  <TableHead className="text-center"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {orderList.map((order) => (
-                  <TableRow key={order._id} className="group hover:bg-stone-50/50 transition-all duration-500 border-stone-50">
-                    <TableCell className="py-8 px-10">
-                      <div className="flex flex-col">
-                        <span className="text-stone-900 font-bold text-sm tracking-tight capitalize">
-                          #{order._id.slice(-8)}
-                        </span>
-                        <span className="text-[9px] text-stone-300 font-mono mt-1 uppercase">Sys-ID: {order._id.slice(0, 8)}...</span>
-                      </div>
-                    </TableCell>
-                    
-                    <TableCell className="py-8">
-                      <div className="flex items-center gap-6 group/date">
-                        <span className="text-4xl font-extralight text-stone-900 tracking-tighter leading-none border-r border-stone-100 pr-6 group-hover/date:border-rose-400 transition-colors duration-500">
-                          {order?.createdAt ? new Date(order.createdAt).getDate().toString().padStart(2, '0') : "--"}
-                        </span>
-                        <div className="flex flex-col -space-y-1">
-                          <span className="text-[10px] font-black text-stone-800 uppercase tracking-[0.3em]">
-                            {order?.createdAt ? new Date(order.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }) : "PENDING"}
-                          </span>
-                          <span className="text-[11px] font-medium text-stone-400 italic font-serif mt-1">
-                            {order?.createdAt ? new Date(order.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }).toLowerCase() : ""}
-                          </span>
-                        </div>
-                      </div>
-                    </TableCell>
-
-                    <TableCell>
-                      <Badge className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border shadow-none ${getStatusBadgeColor(order.orderStatus)}`}>
-                        {order.orderStatus}
-                      </Badge>
-                    </TableCell>
-
-                    <TableCell className="text-right">
-                      <div className="flex flex-col items-end pr-4">
-                        <div className="flex items-center text-stone-950 font-bold text-lg tracking-tighter">
-                          <IndianRupee size={14} className="text-stone-300 mr-0.5" />
-                          {order.totalAmount.toLocaleString('en-IN')}
-                        </div>
-                        <span className="text-[9px] font-bold text-stone-400 uppercase tracking-[0.2em] mt-1">Paid Online</span>
-                      </div>
-                    </TableCell>
-
-                    <TableCell className="text-center pr-10">
-                      <Button
-                        variant="ghost"
-                        onClick={() => navigate(`/admin/order-details/${order._id}`, { state: { orderDetails: order } })}
-                        className="h-12 w-12 rounded-full hover:bg-white hover:shadow-xl transition-all group/btn border border-transparent hover:border-stone-100"
-                      >
-                        <ArrowUpRight className="text-stone-300 group-hover/btn:text-rose-500 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all" size={20} />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
-            <div className="text-center py-48">
-              <div className="h-20 w-20 bg-stone-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-stone-100">
-                <Activity size={32} className="text-stone-200" />
-              </div>
-              <h3 className="text-stone-950 font-serif italic text-2xl">Manifest Clear</h3>
-              <p className="text-stone-400 text-sm mt-2 max-w-xs mx-auto font-light leading-relaxed">
-                No transactions recorded within the selected parameters.
-              </p>
-            </div>
-          )}
         </div>
+
+        {/* Filters Panel */}
+        <Card className="shadow-md rounded-2xl border border-gray-200 backdrop-blur-sm bg-white/80">
+          <CardContent className="p-6 space-y-6">
+            {/* Date Filter */}
+            <div className="flex flex-wrap gap-2">
+              {["all", "today", "yesterday", "week", "month"].map((f) => (
+                <Button
+                  key={f}
+                  onClick={() => setDateFilter(f)}
+                  className={`rounded-full text-sm transition-all px-4 py-2 ${
+                    dateFilter === f
+                      ? "bg-[#F08C7D] text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-[#F08C7D]/10"
+                  }`}
+                >
+                  <Calendar size={14} className="mr-2" />
+                  {f === "all"
+                    ? "All"
+                    : f === "today"
+                    ? "Today"
+                    : f === "yesterday"
+                    ? "Yesterday"
+                    : f === "week"
+                    ? "This Week"
+                    : "This Month"}
+                </Button>
+              ))}
+            </div>
+
+            {/* Product Filter */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                "all",
+                "Royal Delight Apples",
+                "Granny Smith Apples",
+                "Golden Apples",
+                "Spur Apple",
+                "Kiwi",
+              ].map((filter) => (
+                <Button
+                  key={filter}
+                  onClick={() =>
+                    setProductFilter(filter === "all" ? "" : filter)
+                  }
+                  className={`rounded-full text-sm transition-all px-4 py-2 ${
+                    productFilter === filter
+                      ? "bg-[#F08C7D] text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-[#F08C7D]/10"
+                  }`}
+                >
+                  {filter === "all" ? "All Products" : filter}
+                </Button>
+              ))}
+            </div>
+
+            {/* Status + Payment */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                "all",
+                "confirmed",
+                "packed",
+                "shipping",
+                "delivered",
+                "cancelled",
+              ].map((status) => (
+                <Button
+                  key={status}
+                  onClick={() => setStatusFilter(status)}
+                  className={`rounded-full text-sm transition-all px-4 py-2 ${
+                    statusFilter === status
+                      ? "bg-[#F08C7D] text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-[#F08C7D]/10"
+                  }`}
+                >
+                  {status === "all"
+                    ? "All Status"
+                    : status.charAt(0).toUpperCase() + status.slice(1)}
+                </Button>
+              ))}
+            </div>
+
+            {/* Search and Range Inputs */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Order ID */}
+              <div className="relative">
+                <Search className="absolute left-3 top-2.5 text-gray-400" />
+                <Input
+                  placeholder="Search by Order ID"
+                  value={searchOrderId}
+                  onChange={(e) => setSearchOrderId(e.target.value)}
+                  className="pl-10 focus:ring-[#F08C7D]"
+                />
+              </div>
+
+              {/* Customer */}
+              <div className="relative">
+                <User className="absolute left-3 top-2.5 text-gray-400" />
+                <Input
+                  placeholder="Customer name or email"
+                  value={customerFilter}
+                  onChange={(e) => setCustomerFilter(e.target.value)}
+                  className="pl-10 focus:ring-[#F08C7D]"
+                />
+              </div>
+
+              {/* Payment Status */}
+              <select
+                value={paymentStatus}
+                onChange={(e) => setPaymentStatus(e.target.value)}
+                className="rounded-lg border border-gray-300 text-gray-700 px-3 py-2 focus:ring-[#F08C7D]"
+              >
+                <option value="all">All Payment Status</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="failed">Failed</option>
+                <option value="refunded">Refunded</option>
+              </select>
+
+              {/* Amount Range */}
+              <div className="flex gap-2 items-center">
+                <Input
+                  type="number"
+                  placeholder="Min ₹"
+                  value={minAmount}
+                  onChange={(e) => setMinAmount(e.target.value)}
+                  className="focus:ring-[#F08C7D]"
+                />
+                <span className="text-gray-500">-</span>
+                <Input
+                  type="number"
+                  placeholder="Max ₹"
+                  value={maxAmount}
+                  onChange={(e) => setMaxAmount(e.target.value)}
+                  className="focus:ring-[#F08C7D]"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Orders Table */}
+        <Card className="shadow-xl rounded-2xl border border-gray-200 overflow-hidden">
+          <CardContent className="overflow-x-auto p-0">
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-16 text-gray-600">
+                <Loader2 className="animate-spin mb-2" size={32} />
+                <p>Loading orders...</p>
+              </div>
+            ) : orderList?.length > 0 ? (
+              <Table className="min-w-[800px] text-sm">
+                <TableHeader className="bg-[#F08C7D]/20">
+                  <TableRow>
+                    <TableHead className="font-semibold text-gray-700">
+                      Order ID
+                    </TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead>Payment</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {orderList.map((order, idx) => (
+                    <TableRow
+                      key={order._id}
+                      className={`transition ${
+                        idx % 2 === 0 ? "bg-gray-50" : "bg-white"
+                      } hover:bg-[#F08C7D]/10`}
+                    >
+                      <TableCell className="font-medium text-gray-900">
+                        {order._id}
+                      </TableCell>
+                      <TableCell>
+  {order?.orderDate?.split("T")[0] || "No Date"}
+</TableCell>
+                      <TableCell>
+                        <Badge
+                          className={`rounded-full px-3 py-1 font-semibold text-xs ${getStatusBadgeColor(
+                            order.orderStatus
+                          )}`}
+                        >
+                          {order.orderStatus}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-semibold text-gray-900">
+                        ₹{order.totalAmount}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 text-sm text-gray-700">
+                          <CreditCard size={14} className="text-[#F08C7D]" />
+                          Online ({order.paymentStatus || "Paid"})
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() =>
+                            navigate(`/admin/order-details/${order._id}`, {
+                              state: { orderDetails: order },
+                            })
+                          }
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm rounded-lg px-4 py-2"
+                        >
+                          View Details
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <div className="text-center py-16 text-gray-500">
+                <Truck size={40} className="mx-auto mb-3 text-gray-400" />
+                <p className="text-lg font-medium">No orders found</p>
+                <p className="text-sm text-gray-400">
+                  Try adjusting your filters or date range.
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
