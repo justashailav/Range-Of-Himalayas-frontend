@@ -83,7 +83,7 @@ export default function AdminOrderDetailsView() {
 
   const handlePrint = async () => {
   // 1. FIX: Ensure the URL is exactly where your order page lives
-  const orderUrl = `https://www.rangeofhimalayas.co.in/order/${orderDetails._id}`;
+  const orderUrl = `https://www.rangeofhimalayas.co.in/order-tracking`;
   
   const qrDataUrl = await QRCode.toDataURL(orderUrl, {
     margin: 1,
