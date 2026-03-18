@@ -299,7 +299,16 @@ export default function AdminOrderDetailsView() {
                   orderDetails._id,
                   "font-mono text-xs text-blue-600",
                 ],
-                ["Order Date", orderDetails.orderDate?.split("T")[0]],
+                [
+  "Created At", 
+  orderDetails.createdAt 
+    ? new Date(orderDetails.createdAt).toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      })
+    : "Pending"
+],
                 [
                   "Order Price",
                   `₹${orderDetails.totalAmount}`,
