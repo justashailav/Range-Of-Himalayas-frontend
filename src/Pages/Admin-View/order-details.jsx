@@ -82,304 +82,170 @@ export default function AdminOrderDetailsView() {
   };
 
   const handlePrint = async () => {
-    const qrDataUrl = await QRCode.toDataURL(
-      `https://rangeofhimalayas.com/order/${orderDetails._id}`,
-    );
+  // 1. FIX: Ensure the URL is exactly where your order page lives
+  const orderUrl = `https://www.rangeofhimalayas.co.in/order/${orderDetails._id}`;
+  
+  const qrDataUrl = await QRCode.toDataURL(orderUrl, {
+    margin: 1,
+    width: 200,
+    color: {
+      dark: '#2d572c', // Matching your brand color
+      light: '#ffffff'
+    }
+  });
 
-    const itemSubtotal =
-      orderDetails?.cartItems?.reduce(
-        (acc, item) =>
-          acc + Number(item.price || 0) * Number(item.quantity || 0),
-        0,
-      ) || 0;
+  const itemSubtotal = orderDetails?.cartItems?.reduce(
+    (acc, item) => acc + Number(item.price || 0) * Number(item.quantity || 0),
+    0
+  ) || 0;
 
-    const boxSubtotal =
-      orderDetails?.boxes?.reduce((total, box) => {
-        const boxTotal = box.items?.reduce((sum, item) => {
-          const product =
-            productList?.find((p) => p._id === item.productId) || {};
-          const pricePerPiece =
-            (product.customBoxPrices || []).find((p) => p.size === item.size)
-              ?.pricePerPiece || 0;
-          return sum + Number(pricePerPiece) * Number(item.quantity || 0);
-        }, 0);
-        return total + boxTotal;
-      }, 0) || 0;
+  const boxSubtotal = orderDetails?.boxes?.reduce((total, box) => {
+    const boxTotal = box.items?.reduce((sum, item) => {
+      const product = productList?.find((p) => p._id === item.productId) || {};
+      const pricePerPiece = (product.customBoxPrices || []).find((p) => p.size === item.size)?.pricePerPiece || 0;
+      return sum + Number(pricePerPiece) * Number(item.quantity || 0);
+    }, 0);
+    return total + boxTotal;
+  }, 0) || 0;
 
-    const subtotal = itemSubtotal + boxSubtotal;
-    const deliveryCharge = Number(orderDetails?.deliveryCharge || 0);
-    const grandTotal = Number(
-      orderDetails?.totalAmount || subtotal + deliveryCharge,
-    );
-    const couponApplied = grandTotal < subtotal + deliveryCharge;
+  const subtotal = itemSubtotal + boxSubtotal;
+  const deliveryCharge = Number(orderDetails?.deliveryCharge || 0);
+  const grandTotal = Number(orderDetails?.totalAmount || subtotal + deliveryCharge);
+  const couponApplied = grandTotal < (subtotal + deliveryCharge);
 
-    const printWindow = window.open("", "", "width=400,height=600");
-    printWindow.document.write(`
+  const printWindow = window.open("", "", "width=450,height=700");
+  printWindow.document.write(`
   <html>
     <head>
       <title>Order Slip - ${orderDetails._id}</title>
       <style>
-        @page { size: auto; margin: 5mm; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @page { size: auto; margin: 0mm; }
         body {
-          font-family: "Poppins", Arial, sans-serif;
-          font-size: 12px;
-          color: #222;
-          margin: 0;
-          padding: 0;
+          font-family: 'Inter', sans-serif;
+          font-size: 11px;
+          color: #111;
+          margin: 0; padding: 20px;
           background: #fff;
         }
+        .receipt { width: 300px; margin: auto; }
+        .header { text-align: center; border-bottom: 2px solid #2d572c; padding-bottom: 10px; margin-bottom: 10px; }
+        .brand { font-size: 18px; font-weight: 800; color: #2d572c; text-transform: uppercase; letter-spacing: 1px; }
+        .details { font-size: 10px; color: #666; line-height: 1.4; }
+        
+        .section { margin-top: 12px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+        .section h3 { font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 5px; letter-spacing: 0.5px; }
+        
+        .item-row { display: flex; justify-content: space-between; margin: 5px 0; align-items: flex-start; }
+        .item-info { flex: 1; padding-right: 10px; }
+        .item-name { font-weight: 600; display: block; }
+        .item-meta { font-size: 9px; color: #666; }
+        .item-price { font-weight: 700; font-family: monospace; }
 
-        .receipt {
-          width: 280px;
-          margin: auto;
-          padding: 10px;
-        }
+        .box-container { background: #f9f9f9; padding: 5px; border-radius: 4px; margin-top: 5px; }
+        .box-title { font-size: 10px; font-weight: 700; border-bottom: 1px solid #ddd; margin-bottom: 4px; }
 
-        .header {
-          text-align: center;
-          border-bottom: 1px dashed #aaa;
-          padding-bottom: 5px;
-        }
-
-        .header img {
-          width: 60px;
-          margin-bottom: 4px;
-        }
-
-        .brand {
-          font-size: 15px;
-          font-weight: bold;
-          color: #2d572c;
-        }
-
-        .details {
-          text-align: center;
-          font-size: 11px;
-          color: #555;
-          margin-top: 2px;
-        }
-
-        .section {
-          margin-top: 10px;
-          border-bottom: 1px dashed #ccc;
-          padding-bottom: 5px;
-        }
-
-        .section h3 {
-          font-size: 12px;
-          color: #2d572c;
-          margin-bottom: 3px;
-        }
-
-        .item,
-        .box-item {
-          display: flex;
-          justify-content: space-between;
-          margin: 3px 0;
-          font-size: 11px;
-        }
-
-        .item-name,
-        .box-item-name {
-          flex: 1;
-          color: #333;
-        }
-
-        .item-price,
-        .box-item-price {
-          text-align: right;
-        }
-
-        .box-header {
-          font-weight: 600;
-          margin-top: 6px;
-          color: #333;
-          font-size: 12px;
-        }
-
-        .totals {
-          text-align: right;
-          margin-top: 8px;
-          font-size: 11px;
-        }
-
-        .totals p {
-          margin: 1px 0;
-        }
-
-        .coupon-applied {
-          text-align: right;
-          font-size: 11px;
-          color: #2d572c;
-          margin-top: 5px;
-        }
-
-        .qr {
-          text-align: center;
-          margin-top: 10px;
-        }
-
-        .qr img {
-          width: 70px;
-          height: 70px;
-        }
-
-        .thanks {
-          text-align: center;
-          font-size: 11px;
-          color: #777;
-          margin-top: 8px;
-        }
-
-        .signature {
-          text-align: center;
-          margin-top: 10px;
-          font-size: 10px;
-        }
-
-        .signature-line {
-          border-top: 1px solid #333;
-          width: 120px;
-          margin: 10px auto 3px;
-        }
+        .totals { margin-top: 15px; border-top: 2px solid #111; padding-top: 8px; }
+        .total-row { display: flex; justify-content: space-between; margin: 2px 0; }
+        .grand-total { font-size: 14px; font-weight: 800; margin-top: 5px; padding-top: 5px; border-top: 1px double #111; }
+        
+        .qr-section { text-align: center; margin-top: 20px; padding: 10px; border: 1px solid #eee; border-radius: 8px; }
+        .qr-section img { width: 80px; height: 80px; }
+        .footer { text-align: center; margin-top: 20px; font-size: 9px; color: #999; }
       </style>
     </head>
     <body>
       <div class="receipt">
         <div class="header">
-          <img src="${logo}" alt="Logo" />
           <div class="brand">Range of Himalayas</div>
           <div class="details">
             Shimla, Himachal Pradesh<br>
-            +91 6230867344 | contactrangeofhimalayas@gmail.com
+            +91 6230867344<br>
+            www.rangeofhimalayas.co.in
           </div>
         </div>
 
         <div class="section">
-          <h3>Shipping To</h3>
-          <p>${userName || orderDetails?.user?.name || "Customer Name"}</p>
-          <p>${orderDetails?.addressInfo?.address || ""}</p>
-          <p>${orderDetails?.addressInfo?.city || ""}</p>
-          <p>${orderDetails?.addressInfo?.pincode || ""}</p>
-          <p>${orderDetails?.addressInfo?.phone || ""}</p>
-          <p>${orderDetails?.addressInfo?.notes || ""}</p>
+          <h3>Delivery Address</h3>
+          <div style="font-weight:700">${userName || "Customer"}</div>
+          <div>${orderDetails?.addressInfo?.address || ""}</div>
+          <div>${orderDetails?.addressInfo?.city} - ${orderDetails?.addressInfo?.pincode}</div>
+          <div>Phone: ${orderDetails?.addressInfo?.phone || ""}</div>
         </div>
 
         <div class="section">
-          <h3>Items</h3>
-          ${
-            orderDetails?.cartItems
-              ?.map((item) => {
-                const product =
-                  productList?.find((p) => p._id === item.productId) || {};
-                const name = product?.title || "Unknown Product";
-                const total = (
-                  Number(item.price || 0) * Number(item.quantity || 0)
-                ).toFixed(2);
-                return `
-                  <div class="item">
-                    <div class="item-name">${name} (${
-                      item.size || "-"
-                    }) (${item.weight || "-"}) × ${item.quantity}</div>
-                    <div class="item-price">₹${total}</div>
-                  </div>`;
-              })
-              .join("") || "<div>No items</div>"
-          }
+          <h3>Order Items</h3>
+          ${orderDetails?.cartItems?.map((item) => {
+            const product = productList?.find((p) => p._id === item.productId) || {};
+            // Clean logic: only show meta if it's not empty or a dash
+            const hasSize = item.size && item.size !== "-";
+            const hasWeight = item.weight && item.weight !== "-";
+            
+            return `
+              <div class="item-row">
+                <div class="item-info">
+                  <span class="item-name">${product.title || "Product"}</span>
+                  <span class="item-meta">
+                    QTY: ${item.quantity} 
+                    ${hasSize ? `| Size: ${item.size}` : ""} 
+                    ${hasWeight ? `| ${item.weight}` : ""}
+                  </span>
+                </div>
+                <div class="item-price">₹${(Number(item.price) * item.quantity).toFixed(2)}</div>
+              </div>`;
+          }).join("")}
         </div>
 
-        ${
-          orderDetails?.boxes?.length
-            ? `
+        ${orderDetails?.boxes?.length ? `
           <div class="section">
-            <h3>Box Items</h3>
-            ${orderDetails.boxes
-              .map((box) => {
-                const boxTotal = box.items?.reduce((sum, item) => {
-                  const product =
-                    productList?.find((p) => p._id === item.productId) || {};
-                  const pricePerPiece =
-                    (product.customBoxPrices || []).find(
-                      (p) => p.size === item.size,
-                    )?.pricePerPiece || 0;
-                  return sum + pricePerPiece * item.quantity;
-                }, 0);
+            <h3>Packaging (Boxes)</h3>
+            ${orderDetails.boxes.map((box, idx) => {
+              const boxItemsHtml = box.items.map(bi => {
+                const p = productList?.find(prod => prod._id === bi.productId) || {};
+                const ppp = (p.customBoxPrices || []).find(cb => cb.size === bi.size)?.pricePerPiece || 0;
+                return `<div class="item-row" style="font-size:9px">
+                  <span>${p.title} (${bi.size || 'Std'}) x ${bi.quantity}</span>
+                  <span>₹${(ppp * bi.quantity).toFixed(2)}</span>
+                </div>`;
+              }).join("");
 
-                return `
-                    <div class="box-header">${
-                      box.boxName || "Custom Box"
-                    } (Total ₹${boxTotal.toFixed(2)})</div>
-                    ${box.items
-                      .map((item) => {
-                        const product =
-                          productList?.find((p) => p._id === item.productId) ||
-                          {};
-                        const name = product?.title || "Unknown Product";
-                        const pricePerPiece =
-                          (product.customBoxPrices || []).find(
-                            (p) => p.size === item.size,
-                          )?.pricePerPiece || 0;
-                        const total = (pricePerPiece * item.quantity).toFixed(
-                          2,
-                        );
-                        return `
-                          <div class="box-item">
-                            <div class="box-item-name">${name} (${
-                              item.size || "-"
-                            }) × ${item.quantity}</div>
-                            <div class="box-item-price">₹${total}</div>
-                          </div>`;
-                      })
-                      .join("")}`;
-              })
-              .join("")}
-          </div>`
-            : ""
-        }
+              return `
+                <div class="box-container">
+                  <div class="box-title">${box.boxName || `Box #${idx+1}`}</div>
+                  ${boxItemsHtml}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        ` : ""}
 
         <div class="totals">
-          <p><b>Items Total:</b> ₹${itemSubtotal.toFixed(2)}</p>
-          <p><b>Boxes Total:</b> ₹${boxSubtotal.toFixed(2)}</p>
-          <p><b>Delivery:</b> ₹${deliveryCharge.toFixed(2)}</p>
-          ${
-            couponApplied
-              ? `<p><b>Coupon Discount:</b> -₹${(
-                  subtotal +
-                  deliveryCharge -
-                  grandTotal
-                ).toFixed(2)}</p>`
-              : ""
-          }
-          <p><b>Grand Total:</b> ₹${grandTotal.toFixed(2)}</p>
+          <div class="total-row"><span>Subtotal:</span><span>₹${subtotal.toFixed(2)}</span></div>
+          <div class="total-row"><span>Delivery:</span><span>₹${deliveryCharge.toFixed(2)}</span></div>
+          ${couponApplied ? `<div class="total-row" style="color:green"><span>Discount:</span><span>-₹${(subtotal + deliveryCharge - grandTotal).toFixed(2)}</span></div>` : ""}
+          <div class="total-row grand-total"><span>GRAND TOTAL:</span><span>₹${grandTotal.toFixed(2)}</span></div>
         </div>
 
-        ${
-          couponApplied
-            ? `<div class="coupon-applied">✅ Coupon Applied</div>`
-            : ""
-        }
-
-        <div class="qr">
-          <img src="${qrDataUrl}" alt="QR Code" />
-          <div style="font-size:10px;color:#555;">Scan to view your order</div>
+        <div class="qr-section">
+          <img src="${qrDataUrl}" />
+          <div style="margin-top:5px; font-weight:600">SCAN TO TRACK</div>
+          <div style="font-size:8px; color:#888">Order ID: ${orderDetails._id}</div>
         </div>
 
-        <div class="signature">
-          <div class="signature-line"></div>
-          Authorized Signature
-        </div>
-
-        <div class="thanks">
-          Thank you for shopping with <b>Range of Himalayas!</b><br>
-          Visit: www.rangeofhimalayas.co.in
+        <div class="footer">
+          Thank you for your order!<br>
+          Visit again at www.rangeofhimalayas.co.in
         </div>
       </div>
     </body>
   </html>`);
 
-    printWindow.document.close();
+  printWindow.document.close();
+  // Small delay ensures QR image is loaded before print dialog pops up
+  setTimeout(() => {
     printWindow.print();
-  };
+  }, 500);
+};
 
   if (!orderDetails)
     return (
@@ -586,42 +452,42 @@ export default function AdminOrderDetailsView() {
 
                         return (
                           <div
-  key={i}
-  className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0"
->
-  <div className="flex items-center gap-3">
-    {/* Quantity Badge */}
-    <div className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center font-bold text-gray-500 text-xs shadow-sm shrink-0">
-      {item.quantity}x
-    </div>
+                            key={i}
+                            className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0"
+                          >
+                            <div className="flex items-center gap-3">
+                              {/* Quantity Badge */}
+                              <div className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center font-bold text-gray-500 text-xs shadow-sm shrink-0">
+                                {item.quantity}x
+                              </div>
 
-    <div className="flex flex-col">
-      <p className="text-sm font-semibold text-gray-800 line-clamp-1">
-        {product.title}
-      </p>
+                              <div className="flex flex-col">
+                                <p className="text-sm font-semibold text-gray-800 line-clamp-1">
+                                  {product.title}
+                                </p>
 
-      <div className="flex flex-wrap gap-1.5 mt-0.5">
-        {/* Render Size if it exists and isn't a dash */}
-        {item.size && item.size !== "-" && (
-          <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider border border-blue-100">
-            Size: {item.size}
-          </span>
-        )}
+                                <div className="flex flex-wrap gap-1.5 mt-0.5">
+                                  {/* Render Size if it exists and isn't a dash */}
+                                  {item.size && item.size !== "-" && (
+                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider border border-blue-100">
+                                      Size: {item.size}
+                                    </span>
+                                  )}
 
-        {/* Render Weight if it exists and isn't a dash */}
-        {item.weight && item.weight !== "-" && (
-          <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded uppercase tracking-wider border border-purple-100">
-            {item.weight}
-          </span>
-        )}
-      </div>
-    </div>
-  </div>
+                                  {/* Render Weight if it exists and isn't a dash */}
+                                  {item.weight && item.weight !== "-" && (
+                                    <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded uppercase tracking-wider border border-purple-100">
+                                      {item.weight}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
 
-  <span className="text-sm font-mono font-bold text-gray-700">
-    ₹{price}
-  </span>
-</div>
+                            <span className="text-sm font-mono font-bold text-gray-700">
+                              ₹{price}
+                            </span>
+                          </div>
                         );
                       })}
                     </div>
