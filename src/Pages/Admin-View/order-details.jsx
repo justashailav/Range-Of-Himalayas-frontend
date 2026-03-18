@@ -82,39 +82,47 @@ export default function AdminOrderDetailsView() {
   };
 
   const handlePrint = async () => {
-  // 1. FIX: Ensure the URL is exactly where your order page lives
-  const orderUrl = `https://www.rangeofhimalayas.co.in/order-tracking`;
-  
-  const qrDataUrl = await QRCode.toDataURL(orderUrl, {
-    margin: 1,
-    width: 200,
-    color: {
-      dark: '#2d572c', // Matching your brand color
-      light: '#ffffff'
-    }
-  });
+    // 1. FIX: Ensure the URL is exactly where your order page lives
+    const orderUrl = `https://www.rangeofhimalayas.co.in/order-tracking`;
 
-  const itemSubtotal = orderDetails?.cartItems?.reduce(
-    (acc, item) => acc + Number(item.price || 0) * Number(item.quantity || 0),
-    0
-  ) || 0;
+    const qrDataUrl = await QRCode.toDataURL(orderUrl, {
+      margin: 1,
+      width: 200,
+      color: {
+        dark: "#2d572c", // Matching your brand color
+        light: "#ffffff",
+      },
+    });
 
-  const boxSubtotal = orderDetails?.boxes?.reduce((total, box) => {
-    const boxTotal = box.items?.reduce((sum, item) => {
-      const product = productList?.find((p) => p._id === item.productId) || {};
-      const pricePerPiece = (product.customBoxPrices || []).find((p) => p.size === item.size)?.pricePerPiece || 0;
-      return sum + Number(pricePerPiece) * Number(item.quantity || 0);
-    }, 0);
-    return total + boxTotal;
-  }, 0) || 0;
+    const itemSubtotal =
+      orderDetails?.cartItems?.reduce(
+        (acc, item) =>
+          acc + Number(item.price || 0) * Number(item.quantity || 0),
+        0,
+      ) || 0;
 
-  const subtotal = itemSubtotal + boxSubtotal;
-  const deliveryCharge = Number(orderDetails?.deliveryCharge || 0);
-  const grandTotal = Number(orderDetails?.totalAmount || subtotal + deliveryCharge);
-  const couponApplied = grandTotal < (subtotal + deliveryCharge);
+    const boxSubtotal =
+      orderDetails?.boxes?.reduce((total, box) => {
+        const boxTotal = box.items?.reduce((sum, item) => {
+          const product =
+            productList?.find((p) => p._id === item.productId) || {};
+          const pricePerPiece =
+            (product.customBoxPrices || []).find((p) => p.size === item.size)
+              ?.pricePerPiece || 0;
+          return sum + Number(pricePerPiece) * Number(item.quantity || 0);
+        }, 0);
+        return total + boxTotal;
+      }, 0) || 0;
 
-  const printWindow = window.open("", "", "width=450,height=700");
-  printWindow.document.write(`
+    const subtotal = itemSubtotal + boxSubtotal;
+    const deliveryCharge = Number(orderDetails?.deliveryCharge || 0);
+    const grandTotal = Number(
+      orderDetails?.totalAmount || subtotal + deliveryCharge,
+    );
+    const couponApplied = grandTotal < subtotal + deliveryCharge;
+
+    const printWindow = window.open("", "", "width=450,height=700");
+    printWindow.document.write(`
   <html>
     <head>
       <title>Order Slip - ${orderDetails._id}</title>
@@ -175,13 +183,15 @@ export default function AdminOrderDetailsView() {
 
         <div class="section">
           <h3>Order Items</h3>
-          ${orderDetails?.cartItems?.map((item) => {
-            const product = productList?.find((p) => p._id === item.productId) || {};
-            // Clean logic: only show meta if it's not empty or a dash
-            const hasSize = item.size && item.size !== "-";
-            const hasWeight = item.weight && item.weight !== "-";
-            
-            return `
+          ${orderDetails?.cartItems
+            ?.map((item) => {
+              const product =
+                productList?.find((p) => p._id === item.productId) || {};
+              // Clean logic: only show meta if it's not empty or a dash
+              const hasSize = item.size && item.size !== "-";
+              const hasWeight = item.weight && item.weight !== "-";
+
+              return `
               <div class="item-row">
                 <div class="item-info">
                   <span class="item-name">${product.title || "Product"}</span>
@@ -193,31 +203,45 @@ export default function AdminOrderDetailsView() {
                 </div>
                 <div class="item-price">₹${(Number(item.price) * item.quantity).toFixed(2)}</div>
               </div>`;
-          }).join("")}
+            })
+            .join("")}
         </div>
 
-        ${orderDetails?.boxes?.length ? `
+        ${
+          orderDetails?.boxes?.length
+            ? `
           <div class="section">
             <h3>Packaging (Boxes)</h3>
-            ${orderDetails.boxes.map((box, idx) => {
-              const boxItemsHtml = box.items.map(bi => {
-                const p = productList?.find(prod => prod._id === bi.productId) || {};
-                const ppp = (p.customBoxPrices || []).find(cb => cb.size === bi.size)?.pricePerPiece || 0;
-                return `<div class="item-row" style="font-size:9px">
-                  <span>${p.title} (${bi.size || 'Std'}) x ${bi.quantity}</span>
+            ${orderDetails.boxes
+              .map((box, idx) => {
+                const boxItemsHtml = box.items
+                  .map((bi) => {
+                    const p =
+                      productList?.find((prod) => prod._id === bi.productId) ||
+                      {};
+                    const ppp =
+                      (p.customBoxPrices || []).find(
+                        (cb) => cb.size === bi.size,
+                      )?.pricePerPiece || 0;
+                    return `<div class="item-row" style="font-size:9px">
+                  <span>${p.title} (${bi.size || "Std"}) x ${bi.quantity}</span>
                   <span>₹${(ppp * bi.quantity).toFixed(2)}</span>
                 </div>`;
-              }).join("");
+                  })
+                  .join("");
 
-              return `
+                return `
                 <div class="box-container">
-                  <div class="box-title">${box.boxName || `Box #${idx+1}`}</div>
+                  <div class="box-title">${box.boxName || `Box #${idx + 1}`}</div>
                   ${boxItemsHtml}
                 </div>
               `;
-            }).join("")}
+              })
+              .join("")}
           </div>
-        ` : ""}
+        `
+            : ""
+        }
 
         <div class="totals">
           <div class="total-row"><span>Subtotal:</span><span>₹${subtotal.toFixed(2)}</span></div>
@@ -240,12 +264,12 @@ export default function AdminOrderDetailsView() {
     </body>
   </html>`);
 
-  printWindow.document.close();
-  // Small delay ensures QR image is loaded before print dialog pops up
-  setTimeout(() => {
-    printWindow.print();
-  }, 500);
-};
+    printWindow.document.close();
+    // Small delay ensures QR image is loaded before print dialog pops up
+    setTimeout(() => {
+      printWindow.print();
+    }, 500);
+  };
 
   if (!orderDetails)
     return (
@@ -300,15 +324,18 @@ export default function AdminOrderDetailsView() {
                   "font-mono text-xs text-blue-600",
                 ],
                 [
-  "Created At", 
-  orderDetails.createdAt 
-    ? new Date(orderDetails.createdAt).toLocaleDateString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      })
-    : "Pending"
-],
+                  "Order Date",
+                  orderDetails.createdAt
+                    ? new Date(orderDetails.createdAt).toLocaleDateString(
+                        "en-IN",
+                        {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )
+                    : "Pending",
+                ],
                 [
                   "Order Price",
                   `₹${orderDetails.totalAmount}`,

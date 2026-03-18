@@ -36,7 +36,7 @@ const Chatbot = () => {
 
       {/* Chat Window */}
       {open && (
-        <div className="fixed inset-0 z-[60] md:inset-auto md:bottom-28 md:right-8 md:w-[400px] md:h-[600px] flex flex-col bg-white md:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-500 border border-stone-100 mt-6">
+        <div className="fixed inset-0 z-[60] md:inset-auto md:bottom-28 md:right-8 md:w-[400px] md:h-[600px] flex flex-col bg-white md:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden animate-in fade-in slide-in-from-bottom-10 duration-500 border border-stone-100 mt-10">
           
           {/* Header: Cinematic & Responsive */}
           <div className="bg-stone-900 px-6 py-5 md:py-6 text-white flex items-center justify-between shrink-0 mt-8">
