@@ -18,6 +18,7 @@ import {
   User,
   Printer,
   Box,
+  ShoppingBag,
 } from "lucide-react";
 import QRCode from "qrcode";
 import axios from "axios";
