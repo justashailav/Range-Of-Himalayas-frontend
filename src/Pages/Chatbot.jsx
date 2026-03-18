@@ -31,7 +31,7 @@ const Chatbot = () => {
           onClick={() => setOpen(true)}
           className="fixed bottom-6 right-6 md:bottom-10 md:right-10 w-14 h-14 md:w-16 md:h-16 bg-[#B23A2E] rounded-full shadow-2xl z-50 flex items-center justify-center transition-all hover:scale-110 active:scale-95 animate-in zoom-in duration-300"
         >
-          <MessageCircle className="text-white w-6 h-6 md:w-7 md:h-7 mt-4"/>
+          <MessageCircle className="text-white w-6 h-6 md:w-7 md:h-7"/>
         </button>
       )}
 
@@ -47,8 +47,8 @@ const Chatbot = () => {
               /* Mobile: Adjust to 115px to sit below your specific Red Announcement Bar */
               inset-x-0 bottom-0 top-[115px] 
               /* Desktop: Floating dimensions that don't hit the top */
-              md:top-auto md:inset-auto md:bottom-28 md:right-10 md:w-[380px] md:h-[600px] md:rounded-3xl 
-              animate-in fade-in slide-in-from-bottom-10  mt-10
+              md:top-auto md:inset-auto md:bottom-20 md:right-10 md:w-[380px] md:h-[600px] md:rounded-3xl 
+              animate-in fade-in slide-in-from-bottom-10
             `}
           >
             
