@@ -231,20 +231,31 @@ export default function AdminOrders() {
                       </TableCell>
                       
                       <TableCell className="py-8">
-                        <div className="flex items-center gap-6 group/date">
-                          <span className="text-4xl font-extralight text-stone-900 tracking-tighter leading-none border-r border-stone-100 pr-6 group-hover/date:border-rose-400 transition-colors duration-500">
-                            {order?.orderDate ? new Date(order.orderDate).getDate().toString().padStart(2, '0') : "--"}
-                          </span>
-                          <div className="flex flex-col -space-y-1">
-                            <span className="text-[10px] font-black text-stone-800 uppercase tracking-[0.3em]">
-                              {order?.orderDate ? new Date(order.orderDate).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }) : "PENDING"}
-                            </span>
-                            <span className="text-[11px] font-medium text-stone-400 italic font-serif mt-1">
-                               System Entry Verified
-                            </span>
-                          </div>
-                        </div>
-                      </TableCell>
+  <div className="flex items-center gap-6 group/date">
+    {/* Large Date Number using createdAt */}
+    <span className="text-4xl font-extralight text-stone-900 tracking-tighter leading-none border-r border-stone-100 pr-6 group-hover/date:border-rose-400 transition-colors duration-500">
+      {order?.createdAt 
+        ? new Date(order.createdAt).getDate().toString().padStart(2, '0') 
+        : "--"}
+    </span>
+
+    <div className="flex flex-col -space-y-1">
+      {/* Month and Year using createdAt */}
+      <span className="text-[10px] font-black text-stone-800 uppercase tracking-[0.3em]">
+        {order?.createdAt 
+          ? new Date(order.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }) 
+          : "PENDING"}
+      </span>
+      
+      {/* Subtext with dynamic time for that "Logistics" feel */}
+      <span className="text-[11px] font-medium text-stone-400 italic font-serif mt-1">
+        Logged at {order?.createdAt 
+          ? new Date(order.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }).toLowerCase() 
+          : "System Entry"}
+      </span>
+    </div>
+  </div>
+</TableCell>
 
                       <TableCell>
                         <Badge className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border shadow-none ${getStatusBadgeColor(order.orderStatus)}`}>
