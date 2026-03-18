@@ -209,16 +209,38 @@ export default function AdminOrders() {
                               <span className="text-stone-400 text-[10px] tracking-tight truncate max-w-[100px]">{order._id}</span>
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <div className="flex flex-col">
-                              <span className="text-stone-900 font-semibold text-sm">
-                                {order?.orderDate ? new Date(order.orderDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : "Pending"}
-                              </span>
-                              <span className="text-[10px] text-stone-400 font-medium">
-                                {order?.orderDate ? new Date(order.orderDate).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : "--:--"}
-                              </span>
-                            </div>
-                          </TableCell>
+                          <TableCell className="py-8 px-6 group cursor-default">
+  <div className="flex items-center gap-5">
+    {/* Large Minimalist Day Number */}
+    <span className="text-4xl font-extralight text-stone-900 tracking-tighter leading-none border-r border-stone-200 pr-5 group-hover:border-rose-400 transition-colors duration-500">
+      {order?.createdAt ? new Date(order.createdAt).getDate().toString().padStart(2, '0') : "--"}
+    </span>
+
+    <div className="flex flex-col justify-center -space-y-0.5">
+      {/* Month and Year in Wide Letter-Spacing */}
+      <span className="text-[10px] font-black text-stone-800 uppercase tracking-[0.3em]">
+        {order?.createdAt 
+          ? new Date(order.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }) 
+          : "PENDING"}
+      </span>
+      
+      {/* Time as a subtle, elegant subtitle */}
+      <div className="flex items-center gap-2 mt-1">
+        <span className="text-[11px] font-medium text-stone-400 tabular-nums italic font-serif">
+          {order?.createdAt 
+            ? new Date(order.createdAt).toLocaleTimeString('en-IN', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+              }).toLowerCase() 
+            : "awaiting sync"}
+        </span>
+        {/* Subtle status dot */}
+        <span className="h-1 w-1 rounded-full bg-stone-200 group-hover:bg-rose-500 transition-all duration-500" />
+      </div>
+    </div>
+  </div>
+</TableCell>
                           <TableCell>
                             <Badge className={`px-3 py-1 rounded-lg text-[9px] font-bold uppercase tracking-widest border shadow-none ${getStatusBadgeColor(order.orderStatus)}`}>
                               {order.orderStatus}
