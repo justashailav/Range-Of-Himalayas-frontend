@@ -182,6 +182,3 @@
   scrollbar-width: none;
 }
 
-:root {
-  --navbar-height: 120px; /* adjust to your actual navbar + announcement height */
-}
