@@ -465,188 +465,142 @@ export default function AdminOrderDetailsView() {
     </div>
   </div>
 </section>
-        <div ref={printRef}>
-          <section className="bg-[#FDFDFD] shadow-md rounded-2xl border border-gray-200 p-6">
-            <h2 className="text-2xl font-bold mb-5 border-b border-gray-200 pb-3">
-              Shipping Information
-            </h2>
+        <div ref={printRef} className="space-y-8 bg-gray-50 p-4 sm:p-8">
+  {/* Shipping Information */}
+  <section className="bg-white shadow-sm rounded-2xl border border-gray-200 p-6">
+    <h2 className="text-xl font-bold mb-5 border-b border-gray-100 pb-3 text-gray-800 flex items-center gap-2">
+      <MapPin size={20} className="text-blue-600" /> Shipping Information
+    </h2>
 
-            {orderDetails?.addressInfo ? (
-              <div className="space-y-3 text-gray-700">
-                <div className="flex items-center gap-2">
-                  <User size={18} className="text-primary" />
-                  <span className="text-gray-900">
-                    {userName || "Loading..."}
-                  </span>
-                </div>
+    {orderDetails?.addressInfo ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <User size={18} className="text-gray-400" />
+          <span className="font-semibold text-gray-900">{userName || "Loading..."}</span>
+        </div>
 
-                <div className="flex items-center gap-2">
-                  <Phone size={18} className="text-primary" />
-                  <span>{orderDetails.addressInfo.phone}</span>
-                </div>
+        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <Phone size={18} className="text-gray-400" />
+          <span className="text-gray-900">{orderDetails.addressInfo.phone}</span>
+        </div>
 
-                <div className="flex items-center gap-2">
-                  <Home size={18} className="text-primary" />
-                  <span>{orderDetails.addressInfo.address}</span>
-                </div>
+        <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl md:col-span-2">
+          <Home size={18} className="text-gray-400 mt-0.5" />
+          <div className="flex flex-col">
+            <span className="text-gray-900 leading-relaxed">
+              {orderDetails.addressInfo.address}
+            </span>
+            <span className="text-gray-500 font-medium mt-1">
+              {orderDetails.addressInfo.city}, {orderDetails.addressInfo.state} — {orderDetails.addressInfo.pincode}
+            </span>
+          </div>
+        </div>
 
-                <div className="flex items-center gap-2">
-                  <MapPin size={18} className="text-primary" />
-                  <span>
-                    {orderDetails.addressInfo.city} -{" "}
-                    {orderDetails.addressInfo.pincode},{" "}
-                    {orderDetails.addressInfo.state}
-                  </span>
-                </div>
+        {orderDetails.addressInfo.notes && (
+          <div className="flex items-start gap-3 p-3 bg-amber-50 border border-amber-100 rounded-xl md:col-span-2">
+            <FileText size={18} className="text-amber-600 mt-0.5" />
+            <span className="text-amber-800 text-xs italic">{orderDetails.addressInfo.notes}</span>
+          </div>
+        )}
+      </div>
+    ) : (
+      <p className="text-gray-400 italic text-center py-4">No shipping info available.</p>
+    )}
+  </section>
 
-                {orderDetails.addressInfo.notes && (
-                  <div className="flex items-center gap-2">
-                    <FileText size={18} className="text-primary" />
-                    <span>{orderDetails.addressInfo.notes}</span>
+  {/* Boxes Section */}
+  {orderDetails.boxes?.length > 0 && (
+    <section className="bg-white shadow-sm rounded-2xl border border-gray-200 p-6">
+      <h3 className="text-xl font-bold mb-6 border-b border-gray-100 pb-3 flex items-center gap-2 text-gray-800">
+        <Box className="text-orange-500" size={20} /> Packaging Details
+      </h3>
+
+      <div className="space-y-6">
+        {orderDetails.boxes.map((box, boxIndex) => (
+          <div key={boxIndex} className="border border-gray-100 rounded-2xl bg-gray-50/50 overflow-hidden">
+            <div className="bg-gray-100/50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+              <span className="font-bold text-gray-700 text-sm italic">BOX #{boxIndex + 1}</span>
+              <span className="text-xs font-bold text-gray-500 uppercase">{box.boxType || "Custom Box"}</span>
+            </div>
+
+            <div className="p-4 space-y-4">
+              {box.items?.map((item, i) => {
+                const product = productList.find((p) => p._id === item.productId) || {};
+                const price = (product.customBoxPrices?.find((p) => p.size === item.size)?.pricePerPiece || 0) * item.quantity;
+
+                return (
+                  <div key={i} className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center font-bold text-gray-400 text-xs">
+                        {item.quantity}x
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-800 line-clamp-1">{product.title}</p>
+                        {item.size && (
+                          <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase">
+                            Size: {item.size}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <span className="text-sm font-mono font-bold text-gray-600">₹{price}</span>
                   </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* Ordered Items List */}
+  <section className="bg-white shadow-sm rounded-2xl border border-gray-200 p-6">
+    <h3 className="text-xl font-bold mb-5 border-b border-gray-100 pb-3 flex items-center gap-2 text-gray-800">
+      <ShoppingBag className="text-emerald-500" size={20} /> Order Items
+    </h3>
+
+    <div className="space-y-3">
+      {orderDetails.cartItems?.map((item, idx) => {
+        const product = productList.find((p) => p._id === item.productId) || {};
+        return (
+          <div key={idx} className="flex items-center gap-4 p-3 rounded-xl border border-gray-100 hover:border-gray-200 transition-all">
+            <img 
+              src={product.images?.[0] || "/placeholder.png"} 
+              className="w-14 h-14 rounded-lg object-cover bg-gray-50 border border-gray-100" 
+              alt=""
+            />
+            <div className="flex-grow">
+              <h4 className="text-sm font-bold text-gray-900 line-clamp-1">{product.title}</h4>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                  Qty: {item.quantity}
+                </span>
+                
+                {/* CONDITIONAL SIZE BADGE */}
+                {item.size && (
+                  <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                    Size: {item.size}
+                  </span>
+                )}
+
+                {/* CONDITIONAL WEIGHT BADGE */}
+                {item.weight && (
+                  <span className="text-xs font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded">
+                    {item.weight}
+                  </span>
                 )}
               </div>
-            ) : (
-              <p className="text-gray-500 italic">
-                No shipping info available.
-              </p>
-            )}
-          </section>
-          {orderDetails.boxes?.length > 0 && (
-            <section className="bg-white shadow-md rounded-2xl border border-gray-200 p-6 mt-10">
-              <h3 className="text-2xl font-bold mb-6 border-b border-gray-200 pb-3 flex items-center gap-2">
-                <Box className="text-orange-500" /> Boxes in this Order
-              </h3>
-
-              {orderDetails.boxes.map((box, boxIndex) => (
-                <div
-                  key={boxIndex}
-                  className="mb-6 p-4 border border-gray-200 rounded-xl bg-[#FAFAFA] shadow-sm"
-                >
-                  <h4 className="font-semibold text-lg text-gray-800 mb-3 flex items-center gap-2">
-                    📦 Box #{boxIndex + 1} — {box.boxType || "Custom Box"}
-                  </h4>
-
-                  {box.items?.length > 0 ? (
-                    <ul className="divide-y divide-gray-100">
-                      {box.items.map((item, i) => {
-                        const product =
-                          productList.find((p) => p._id === item.productId) ||
-                          {};
-                        const price =
-                          (product.customBoxPrices?.find(
-                            (p) => p.size === item.size
-                          )?.pricePerPiece || 0) * item.quantity;
-
-                        return (
-                          <li
-                            key={item._id || i}
-                            className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 px-2 hover:bg-gray-50 rounded-lg transition-colors gap-3"
-                          >
-                            {/* Product Info */}
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={product.images?.[0] || "/placeholder.png"}
-                                alt={product.title || "Unknown Product"}
-                                className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border border-gray-200"
-                              />
-                              <div className="flex flex-col">
-                                <span className="font-semibold text-gray-900 text-sm sm:text-base truncate max-w-[220px]">
-                                  {product.title || "Unknown Product"}
-                                </span>
-                                <div className="flex flex-wrap gap-2 mt-1">
-                                  <span className="text-gray-700 text-sm">
-                                    Qty:{" "}
-                                    <span className="font-medium">
-                                      {item.quantity}
-                                    </span>
-                                  </span>
-                                  <span className="bg-blue-100 text-blue-800 text-sm px-2 py-0.5 rounded-full font-medium">
-                                    Size: {item.size || "-"}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            {/* Price */}
-                            <span className="mt-2 sm:mt-0 text-gray-900 font-semibold text-sm sm:text-base">
-                              ₹{price}
-                            </span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <p className="text-gray-500 text-sm italic">
-                      No items in this box.
-                    </p>
-                  )}
-                </div>
-              ))}
-            </section>
-          )}
-          <section className="bg-white shadow-sm rounded-2xl border border-gray-200 p-6 mt-10">
-            <h3 className="text-xl font-bold mb-4 border-b border-gray-200 pb-2 flex items-center gap-2">
-              🛒 Ordered Items
-            </h3>
-
-            {orderDetails.cartItems?.length > 0 ? (
-              <ul className="divide-y divide-gray-100">
-                {orderDetails.cartItems.map((item, idx) => {
-                  const product =
-                    productList.find((p) => p._id === item.productId) || {};
-                  return (
-                    <li
-                      key={idx}
-                      className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 px-3 rounded-xl bg-[#FAFAFA] hover:bg-gray-50 transition-all duration-200 mb-2 border border-gray-100"
-                    >
-                      <div className="flex items-center gap-4 w-full sm:w-auto">
-                        {product?.images?.[0] ? (
-                          <img
-                            src={product.images[0]}
-                            alt={product.title}
-                            className="w-16 h-16 rounded-lg object-cover border border-gray-200"
-                          />
-                        ) : (
-                          <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-sm border border-gray-200">
-                            No Img
-                          </div>
-                        )}
-
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-gray-800 text-base line-clamp-1">
-                            {product.title}
-                          </span>
-
-                          <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-gray-600">
-                            <span className="bg-gray-100 px-2 py-0.5 rounded-full text-xs font-medium">
-                              Qty: {item.quantity}
-                            </span>
-                            <span className="bg-gray-100 px-2 py-0.5 rounded-full text-xs font-medium">
-                              Size: {item.size || "-"}
-                            </span>
-                            <span className="bg-gray-100 px-2 py-0.5 rounded-full text-xs font-medium">
-                              Weight: {item.weight ? `${item.weight} ` : "-"}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 sm:mt-0 sm:ml-auto text-right">
-                        <span className="text-lg font-semibold text-green-600">
-                          ₹{item.price}
-                        </span>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <p className="text-gray-500 italic text-center py-4">
-                No items found in this order.
-              </p>
-            )}
-          </section>
-        </div>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-gray-900">₹{item.price}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</div>
         {orderDetails.returnRequests?.length > 0 && (
           <section className="bg-[#FFFDFD] shadow-md rounded-2xl border border-gray-200 p-6">
             <h3 className="text-xl font-bold mb-4 border-b border-gray-200 pb-2">
