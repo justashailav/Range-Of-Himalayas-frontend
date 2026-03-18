@@ -47,7 +47,7 @@ const Chatbot = () => {
               /* Mobile: Adjust to 115px to sit below your specific Red Announcement Bar */
               inset-x-0 bottom-0 top-[115px] 
               /* Desktop: Floating dimensions that don't hit the top */
-              md:top-auto md:inset-auto md:bottom-20 md:right-10 md:w-[380px] md:h-[600px] md:rounded-3xl 
+              md:top-auto md:inset-auto md:bottom-16 md:right-10 md:w-[380px] md:h-[600px] md:rounded-3xl 
               animate-in fade-in slide-in-from-bottom-10
             `}
           >
