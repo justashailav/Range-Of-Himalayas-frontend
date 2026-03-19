@@ -29,7 +29,7 @@ const Chatbot = () => {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 md:bottom-6 md:right-10 w-14 h-14 md:w-16 md:h-16 bg-[#B23A2E] rounded-full shadow-2xl z-50 flex items-center justify-center transition-all hover:scale-110 active:scale-95 animate-in zoom-in duration-300"
+          className="fixed bottom-6 right-6 md:bottom-6 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-[#B23A2E] rounded-full shadow-2xl z-50 flex items-center justify-center transition-all hover:scale-110 active:scale-95 animate-in zoom-in duration-300"
         >
           <MessageCircle className="text-white w-6 h-6 md:w-7 md:h-7"/>
         </button>
