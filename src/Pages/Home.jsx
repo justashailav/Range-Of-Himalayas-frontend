@@ -185,9 +185,7 @@ export default function Home() {
   weight,
 ) {
   if (!user?._id) {
-    toast.error(
-      "Oops! You need to login first to add items to your wishlist.",
-    );
+    toast.error("Oops! You need to login first to add items to your wishlist.");
     return;
   }
 
@@ -196,8 +194,11 @@ export default function Home() {
 
   if (getWishListItems.length) {
     const indexOfCurrentItem = getWishListItems.findIndex((item) => {
+      // 🔥 FIX: Check if productId is an object with an _id inside it
+      const existingProductId = item.productId?._id || item.productId;
+      
       const sameProduct =
-        item.productId.toString() === getCurrentProductId.toString();
+        existingProductId?.toString() === getCurrentProductId?.toString();
 
       const sameSize = (item.size || "") === normalizedSize;
 
@@ -210,29 +211,29 @@ export default function Home() {
       return sameProduct && sameSize && sameWeight;
     });
 
-    // ✅ If already exists → show toast and STOP
     if (indexOfCurrentItem > -1) {
       toast.error("This item is already in your wishlist!");
       return;
     }
   }
 
-  // ✅ Add item if not exists
   dispatch(
     addToWishList({
       userId: user?._id,
       productId: getCurrentProductId,
       quantity: 1,
-      size: normalizedSize, // 🔥 also fix here
+      size: normalizedSize,
       weight,
     }),
   ).then((data) => {
-    if (data?.success) {
+    // 🔥 NOTE: If you use Redux Toolkit, you MUST check data.payload.success
+    const response = data?.payload || data;
+
+    if (response?.success) {
       dispatch(fetchWishListItems(user?._id));
       toast.success("Product added to wishlist");
-      setOpenCartSheet(true);
     } else {
-      toast.error(data?.message || "Failed to add item");
+      toast.error(response?.message || "Failed to add item");
     }
   });
 }
