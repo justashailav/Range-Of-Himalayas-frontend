@@ -872,15 +872,13 @@ export default function ProductsDetailsDialog() {
               </div>
 
               {/* RATING INTERFACE */}
-              <div className="flex items-center gap-6 bg-stone-50 px-6 py-4 rounded-2xl border border-stone-100 w-full sm:w-auto transition-all hover:bg-stone-100/50">
+              <div className="flex items-center gap-6 bg-stone-50 px-8 py-4 rounded-2xl border border-stone-100 w-full sm:w-auto transition-all hover:bg-stone-100/50">
                 <div className="scale-110 origin-left">
                   <StarRatingComponent
                     rating={rating}
                     onChange={handleRatingChange}
                   />
                 </div>
-
-                
               </div>
             </div>
             <div className="space-y-6 mt-6">
