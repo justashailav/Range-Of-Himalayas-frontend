@@ -25,7 +25,10 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
 
   const handleUpdateQuantity = (item, action) => {
     if (!item) return;
-
+    if (!user || !user._id) {
+    toast.error("Please login to manage your cart");
+    return;
+  }
     const normalizedSize = item.size || "";
 
     const index = cartItems.findIndex((i) => {
@@ -78,10 +81,13 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
 
   const handleCartItemDelete = (item) => {
     if (!item) return;
-
+    if (!user || !user._id) {
+    toast.error("Please login to manage your cart");
+    return;
+  }
     const normalizedSize = item.size || "";
 
-    // 1. Trigger the delete API
+    
     dispatch(
       deleteCartItem({
         userId: user._id,

@@ -535,17 +535,6 @@ export default function CustomBoxTile() {
             We're handpicking the finest orchards to bring you a fully customizable 
             fruit box experience. Straight from the mountains to your doorstep.
           </motion.p>
-
-          <motion.div variants={itemUp}>
-            <a 
-              href="https://forms.gle/5M73wYV9Je6SJtow9" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#d97706] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl shadow-orange-200 hover:bg-[#b66104] hover:-translate-y-1 transition-all duration-300"
-            >
-              Notify Me on Launch 🚀
-            </a>
-          </motion.div>
         </motion.div>
       </div>
 
