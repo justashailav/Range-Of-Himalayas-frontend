@@ -460,54 +460,73 @@ export default function ProductsDetailsDialog() {
               </div>
             )}
 
-            {productDetails?.details && (
-              <div className="mt-12 overflow-hidden rounded-[2rem] bg-stone-50/50 border border-stone-100 shadow-sm">
-                {/* HEADER */}
-                <div className="px-8 py-6 border-b border-stone-100 bg-white/50 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-stone-900 flex items-center justify-center">
-                      <ClipboardList size={14} className="text-white" />
-                    </div>
-                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-900">
-                      Harvest Specifications
-                    </h3>
-                  </div>
-                  <span className="text-[10px] font-serif italic text-stone-400">
-                    Ver. 2026.04
-                  </span>
-                </div>
+           {productDetails?.details && (
+  <div className="mt-16 overflow-hidden rounded-[2.5rem] bg-white border border-stone-200/60 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+    {/* HEADER: Archival Style */}
+    <div className="px-10 py-8 border-b border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="flex items-center gap-4">
+        <div className="w-10 h-10 rounded-xl bg-stone-900 flex items-center justify-center shadow-lg rotate-3 group-hover:rotate-0 transition-transform">
+          <ClipboardList size={18} className="text-stone-100" />
+        </div>
+        <div>
+          <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-900">
+            Harvest Specifications
+          </h3>
+          <p className="text-[9px] font-medium text-stone-400 uppercase tracking-widest mt-0.5">
+            Authenticity & Quality Ledger
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 px-3 py-1 bg-stone-50 rounded-full border border-stone-100">
+        <div className="w-1 h-1 rounded-full bg-orange-500 animate-pulse" />
+        <span className="text-[10px] font-mono text-stone-500 uppercase">
+          Batch v.2026.04
+        </span>
+      </div>
+    </div>
 
-                {/* DATA GRID */}
-                <div className="px-8 py-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12">
-                    {Object.entries(productDetails.details)
-                      .filter(
-                        ([key, value]) =>
-                          !["_id", "__v"].includes(key) &&
-                          value !== null &&
-                          value !== undefined &&
-                          value !== "",
-                      )
-                      .map(([key, value]) => (
-                        <div
-                          key={key}
-                          className="flex justify-between items-baseline py-4 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-0"
-                        >
-                          <span className="text-[10px] font-black uppercase tracking-widest text-stone-400">
-                            {key.replace(/_/g, " ")}
-                          </span>
-                          <span className="text-sm font-serif italic text-stone-900 text-right">
-                            {value}
-                          </span>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-
-                {/* FOOTER DECORATION */}
-                <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#B23A2E]/20 to-transparent" />
+    {/* DATA GRID: Clean Manifest Style */}
+    <div className="px-10 py-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
+        {Object.entries(productDetails.details)
+          .filter(
+            ([key, value]) =>
+              !["_id", "__v"].includes(key) &&
+              value !== null &&
+              value !== undefined &&
+              value !== "",
+          )
+          .map(([key, value]) => (
+            <div
+              key={key}
+              className="group flex flex-col py-5 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-b transition-colors hover:bg-stone-50/50 -mx-4 px-4 rounded-xl"
+            >
+              <div className="flex justify-between items-start gap-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 group-hover:text-stone-600 transition-colors">
+                  {key.replace(/_/g, " ")}
+                </span>
+                <span className="text-[13px] md:text-sm font-serif italic text-stone-900 text-right leading-relaxed max-w-[60%]">
+                  {value}
+                </span>
               </div>
-            )}
+            </div>
+          ))}
+      </div>
+    </div>
+
+    {/* FOOTER: Signature Feel */}
+    <div className="bg-stone-50/80 px-10 py-4 flex justify-between items-center border-t border-stone-100">
+      <div className="flex gap-1">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="w-8 h-[1px] bg-stone-200" />
+        ))}
+      </div>
+      <span className="text-[9px] font-black uppercase tracking-widest text-stone-300">
+        Range of Himalayas • Certified Source
+      </span>
+    </div>
+  </div>
+)}
 
             {productDetails?.nutrition && (
               <div className="mt-8 overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
@@ -873,32 +892,40 @@ export default function ProductsDetailsDialog() {
 
               {/* RATING INTERFACE */}
               <div className="relative group overflow-hidden">
-  {/* MAIN CONTAINER */}
-  <div className="flex flex-col sm:flex-row items-center gap-6 bg-white border border-stone-100 px-8 py-5 rounded-[2rem] w-full sm:w-fit transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-orange-100">
-    
-    {/* LABEL (Optional but adds premium feel) */}
-    <div className="hidden lg:block border-r border-stone-100 pr-6 mr-2">
-      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
-        Evaluation
-      </span>
-    </div>
+                {/* MAIN CONTAINER */}
+                <div className="flex flex-col sm:flex-row items-center gap-6 bg-white border border-stone-100 px-8 py-5 rounded-[2rem] w-full sm:w-fit transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-orange-100">
+                  {/* LABEL (Optional but adds premium feel) */}
+                  <div className="hidden lg:block border-r border-stone-100 pr-6 mr-2">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+                      Evaluation
+                    </span>
+                  </div>
 
-    {/* RATING COMPONENT */}
-    <div className="scale-110 sm:scale-100 origin-center sm:origin-left transition-transform duration-500 group-hover:scale-[1.05]">
-      <StarRatingComponent
-        rating={rating}
-        onChange={handleRatingChange}
-      />
-    </div>
+                  {/* RATING COMPONENT */}
+                  <div className="scale-110 sm:scale-100 origin-center sm:origin-left transition-transform duration-500 group-hover:scale-[1.05]">
+                    <StarRatingComponent
+                      rating={rating}
+                      onChange={handleRatingChange}
+                    />
+                  </div>
 
-    {/* DECORATIVE ELEMENT */}
-    <div className="absolute top-0 right-0 p-2 opacity-10">
-       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-orange-500">
-         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
-       </svg>
-    </div>
-  </div>
-</div>
+                  {/* DECORATIVE ELEMENT */}
+                  <div className="absolute top-0 right-0 p-2 opacity-10">
+                    <svg
+                      width="40"
+                      height="40"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="text-orange-500"
+                    >
+                      <path
+                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="space-y-6 mt-6">
               {/* REVIEW TEXTAREA */}
