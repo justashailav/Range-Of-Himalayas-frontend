@@ -462,10 +462,10 @@ export default function ProductsDetailsDialog() {
 
            {productDetails?.details && (
   <div className="mt-16 overflow-hidden rounded-[2.5rem] bg-white border border-stone-200/60 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-    {/* HEADER: Archival Style */}
+    {/* HEADER */}
     <div className="px-10 py-8 border-b border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-xl bg-stone-900 flex items-center justify-center shadow-lg rotate-3 group-hover:rotate-0 transition-transform">
+        <div className="w-10 h-10 rounded-xl bg-stone-900 flex items-center justify-center shadow-lg rotate-3">
           <ClipboardList size={18} className="text-stone-100" />
         </div>
         <div>
@@ -485,7 +485,7 @@ export default function ProductsDetailsDialog() {
       </div>
     </div>
 
-    {/* DATA GRID: Clean Manifest Style */}
+    {/* DATA GRID */}
     <div className="px-10 py-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
         {Object.entries(productDetails.details)
@@ -499,13 +499,19 @@ export default function ProductsDetailsDialog() {
           .map(([key, value]) => (
             <div
               key={key}
-              className="group flex flex-col py-5 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-b transition-colors hover:bg-stone-50/50 -mx-4 px-4 rounded-xl"
+              className="group flex flex-col py-6 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-b transition-colors hover:bg-stone-50/50 -mx-4 px-4 rounded-xl"
             >
-              <div className="flex justify-between items-start gap-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 group-hover:text-stone-600 transition-colors">
+              {/* Changed items-start to flex-col on small screens to prevent clipping */}
+              <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-2 sm:gap-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 group-hover:text-stone-600 transition-colors shrink-0">
                   {key.replace(/_/g, " ")}
                 </span>
-                <span className="text-[13px] md:text-sm font-serif italic text-stone-900 text-right leading-relaxed max-w-[60%]">
+                
+                {/* 1. Removed max-w-[60%] to give text room to wrap
+                   2. Added break-words for long certification numbers 
+                   3. Changed text alignment for mobile 
+                */}
+                <span className="text-[13px] md:text-sm font-serif italic text-stone-900 text-left sm:text-right leading-relaxed break-words overflow-hidden">
                   {value}
                 </span>
               </div>
@@ -514,7 +520,7 @@ export default function ProductsDetailsDialog() {
       </div>
     </div>
 
-    {/* FOOTER: Signature Feel */}
+    {/* FOOTER */}
     <div className="bg-stone-50/80 px-10 py-4 flex justify-between items-center border-t border-stone-100">
       <div className="flex gap-1">
         {[...Array(3)].map((_, i) => (
@@ -527,7 +533,6 @@ export default function ProductsDetailsDialog() {
     </div>
   </div>
 )}
-
             {productDetails?.nutrition && (
               <div className="mt-8 overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
                 {/* HEADER */}
