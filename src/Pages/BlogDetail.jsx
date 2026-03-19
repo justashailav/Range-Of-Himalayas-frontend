@@ -25,7 +25,7 @@ import {
   FaTelegram,
   FaTwitter,
 } from "react-icons/fa";
-import {AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 export default function BlogDetail() {
   const { slug } = useParams();
   const dispatch = useDispatch();
@@ -198,158 +198,179 @@ export default function BlogDetail() {
 
       {/* Main Blog Content */}
       <motion.div
-  className="max-w-4xl mx-auto px-6 md:px-12 py-16 bg-white rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.04)] mt-[-80px] relative z-20 border border-stone-100"
-  variants={fadeUp}
-  initial="hidden"
-  animate="visible"
->
-  {blog && (
-    <>
-      {/* ARTICLE CONTENT */}
-      <motion.div
+        className="max-w-4xl mx-auto px-6 md:px-12 py-16 bg-white rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.04)] mt-[-80px] relative z-20 border border-stone-100 mt-4"
         variants={fadeUp}
-        custom={0.1}
-        className="prose prose-stone prose-lg max-w-none 
+        initial="hidden"
+        animate="visible"
+      >
+        {blog && (
+          <>
+            {/* ARTICLE CONTENT */}
+            <motion.div
+              variants={fadeUp}
+              custom={0.1}
+              className="prose prose-stone prose-lg max-w-none 
                    prose-p:text-stone-600 prose-p:leading-[1.8] prose-p:font-medium
                    prose-headings:text-stone-900 prose-headings:tracking-tighter prose-headings:font-black
                    prose-strong:text-stone-900 prose-em:text-[#B23A2E]
                    prose-img:rounded-[2rem] prose-img:shadow-xl"
-        dangerouslySetInnerHTML={{ __html: blog.content }}
-      />
+              dangerouslySetInnerHTML={{ __html: blog.content }}
+            />
 
-      {/* TAGS: Minimalist Aesthetic */}
-      {blog.tags?.length > 0 && (
-        <motion.div
-          variants={fadeUp}
-          custom={0.15}
-          className="flex flex-wrap items-center gap-3 mt-12 pt-8 border-t border-stone-50"
-        >
-          <span className="text-[10px] font-black uppercase tracking-widest text-stone-400 mr-2">Tagged:</span>
-          {blog.tags.map((tag, i) => (
-            <span
-              key={i}
-              className="bg-stone-50 text-stone-600 px-4 py-1.5 rounded-full text-[11px] font-bold border border-stone-100 hover:bg-stone-900 hover:text-white transition-all duration-300"
-            >
-              #{tag}
-            </span>
-          ))}
-        </motion.div>
-      )}
-
-      {/* SHARE SECTION: Cinematic Footer */}
-      <motion.div
-        variants={fadeUp}
-        custom={0.2}
-        className="mt-16 p-8 rounded-[2.5rem] bg-stone-50 border border-stone-100 flex flex-col md:flex-row items-center justify-between gap-6"
-      >
-        <div className="space-y-1">
-          <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">Pass it on</p>
-          <h4 className="text-xl font-black text-stone-900 tracking-tighter">Share this story</h4>
-        </div>
-
-        <div className="flex gap-3 flex-wrap justify-center">
-          {[
-            { href: `fb-link`, icon: <FaFacebook size={18} />, color: "hover:bg-blue-600" },
-            { href: `tw-link`, icon: <FaTwitter size={18} />, color: "hover:bg-sky-500" },
-            { href: `li-link`, icon: <FaLinkedin size={18} />, color: "hover:bg-blue-700" },
-            { href: `pt-link`, icon: <FaPinterest size={18} />, color: "hover:bg-red-600" },
-          ].map((btn, i) => (
-            <motion.a
-              key={i}
-              href={btn.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -4 }}
-              className={`w-12 h-12 flex items-center justify-center rounded-2xl bg-white text-stone-400 shadow-sm border border-stone-100 transition-all ${btn.color} hover:text-white hover:shadow-lg`}
-            >
-              {btn.icon}
-            </motion.a>
-          ))}
-
-          <motion.button
-            whileHover={{ y: -4 }}
-            onClick={handleCopyLink}
-            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-stone-900 text-white shadow-xl relative group"
-          >
-            {copied ? <Check size={18} /> : <Copy size={18} />}
-            <AnimatePresence>
-              {copied && (
-                <motion.span
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute -top-10 bg-stone-900 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-lg"
-                >
-                  Copied
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.button>
-        </div>
-      </motion.div>
-
-      {/* COMMENTS: The Conversation */}
-      <motion.section
-        variants={fadeUp}
-        custom={0.25}
-        className="mt-20"
-      >
-        <div className="flex items-center gap-4 mb-10">
-          <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-stone-900">
-            The Conversation <span className="text-stone-300 ml-2">({blog.comments?.length || 0})</span>
-          </h3>
-          <div className="h-px flex-1 bg-stone-100" />
-        </div>
-
-        <div className="space-y-6 mb-12">
-          {blog.comments?.length > 0 ? (
-            blog.comments.map((c, i) => (
+            {/* TAGS: Minimalist Aesthetic */}
+            {blog.tags?.length > 0 && (
               <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                className="group relative pl-6 border-l-2 border-stone-100 hover:border-[#B23A2E] transition-colors"
+                variants={fadeUp}
+                custom={0.15}
+                className="flex flex-wrap items-center gap-3 mt-12 pt-8 border-t border-stone-50"
               >
-                <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-1 group-hover:text-stone-900 transition-colors">
-                  {c.username}
-                </p>
-                <p className="text-stone-600 text-[15px] leading-relaxed italic">
-                  "{c.comment}"
-                </p>
+                <span className="text-[10px] font-black uppercase tracking-widest text-stone-400 mr-2">
+                  Tagged:
+                </span>
+                {blog.tags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="bg-stone-50 text-stone-600 px-4 py-1.5 rounded-full text-[11px] font-bold border border-stone-100 hover:bg-stone-900 hover:text-white transition-all duration-300"
+                  >
+                    #{tag}
+                  </span>
+                ))}
               </motion.div>
-            ))
-          ) : (
-            <div className="py-10 text-center border-2 border-dashed border-stone-100 rounded-[2rem]">
-              <p className="text-stone-400 text-xs font-black uppercase tracking-widest">
-                No voices here yet — start the discussion.
-              </p>
-            </div>
-          )}
-        </div>
+            )}
 
-        {/* ADD COMMENT: Clean & Premium */}
-        <div className="bg-stone-50 p-6 rounded-[2.5rem] border border-stone-100 flex flex-col sm:flex-row gap-4">
-          <input
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Share your thoughts..."
-            className="flex-1 bg-transparent border-none px-4 py-2 text-sm font-medium focus:ring-0 placeholder:text-stone-400"
-          />
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleAddComment}
-            disabled={posting}
-            className="bg-stone-900 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:bg-[#B23A2E] disabled:opacity-40 transition-all"
-          >
-            {posting ? "Publishing..." : "Post Comment"}
-          </motion.button>
-        </div>
-      </motion.section>
-    </>
-  )}
-</motion.div>
+            {/* SHARE SECTION: Cinematic Footer */}
+            <motion.div
+              variants={fadeUp}
+              custom={0.2}
+              className="mt-16 p-8 rounded-[2.5rem] bg-stone-50 border border-stone-100 flex flex-col md:flex-row items-center justify-between gap-6"
+            >
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
+                  Pass it on
+                </p>
+                <h4 className="text-xl font-black text-stone-900 tracking-tighter">
+                  Share this story
+                </h4>
+              </div>
+
+              <div className="flex gap-3 flex-wrap justify-center">
+                {[
+                  {
+                    href: `fb-link`,
+                    icon: <FaFacebook size={18} />,
+                    color: "hover:bg-blue-600",
+                  },
+                  {
+                    href: `tw-link`,
+                    icon: <FaTwitter size={18} />,
+                    color: "hover:bg-sky-500",
+                  },
+                  {
+                    href: `li-link`,
+                    icon: <FaLinkedin size={18} />,
+                    color: "hover:bg-blue-700",
+                  },
+                  {
+                    href: `pt-link`,
+                    icon: <FaPinterest size={18} />,
+                    color: "hover:bg-red-600",
+                  },
+                ].map((btn, i) => (
+                  <motion.a
+                    key={i}
+                    href={btn.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -4 }}
+                    className={`w-12 h-12 flex items-center justify-center rounded-2xl bg-white text-stone-400 shadow-sm border border-stone-100 transition-all ${btn.color} hover:text-white hover:shadow-lg`}
+                  >
+                    {btn.icon}
+                  </motion.a>
+                ))}
+
+                <motion.button
+                  whileHover={{ y: -4 }}
+                  onClick={handleCopyLink}
+                  className="w-12 h-12 flex items-center justify-center rounded-2xl bg-stone-900 text-white shadow-xl relative group"
+                >
+                  {copied ? <Check size={18} /> : <Copy size={18} />}
+                  <AnimatePresence>
+                    {copied && (
+                      <motion.span
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute -top-10 bg-stone-900 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-lg"
+                      >
+                        Copied
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              </div>
+            </motion.div>
+
+            {/* COMMENTS: The Conversation */}
+            <motion.section variants={fadeUp} custom={0.25} className="mt-20">
+              <div className="flex items-center gap-4 mb-10">
+                <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-stone-900">
+                  The Conversation{" "}
+                  <span className="text-stone-300 ml-2">
+                    ({blog.comments?.length || 0})
+                  </span>
+                </h3>
+                <div className="h-px flex-1 bg-stone-100" />
+              </div>
+
+              <div className="space-y-6 mb-12">
+                {blog.comments?.length > 0 ? (
+                  blog.comments.map((c, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      className="group relative pl-6 border-l-2 border-stone-100 hover:border-[#B23A2E] transition-colors"
+                    >
+                      <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-1 group-hover:text-stone-900 transition-colors">
+                        {c.username}
+                      </p>
+                      <p className="text-stone-600 text-[15px] leading-relaxed italic">
+                        "{c.comment}"
+                      </p>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="py-10 text-center border-2 border-dashed border-stone-100 rounded-[2rem]">
+                    <p className="text-stone-400 text-xs font-black uppercase tracking-widest">
+                      No voices here yet — start the discussion.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* ADD COMMENT: Clean & Premium */}
+              <div className="bg-stone-50 p-6 rounded-[2.5rem] border border-stone-100 flex flex-col sm:flex-row gap-4">
+                <input
+                  type="text"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Share your thoughts..."
+                  className="flex-1 bg-transparent border-none px-4 py-2 text-sm font-medium focus:ring-0 placeholder:text-stone-400"
+                />
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleAddComment}
+                  disabled={posting}
+                  className="bg-stone-900 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:bg-[#B23A2E] disabled:opacity-40 transition-all"
+                >
+                  {posting ? "Publishing..." : "Post Comment"}
+                </motion.button>
+              </div>
+            </motion.section>
+          </>
+        )}
+      </motion.div>
     </div>
   );
 }
