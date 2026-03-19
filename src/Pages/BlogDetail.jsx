@@ -198,7 +198,7 @@ export default function BlogDetail() {
 
       {/* Main Blog Content */}
       <motion.div
-        className="max-w-4xl mx-auto px-6 md:px-12 py-16 bg-white rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.04)] mt-[-80px] relative z-20 border border-stone-100 mt-4"
+        className="max-w-4xl mx-auto px-6 md:px-12 py-16 bg-white rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.04)] mt-[-50px] relative z-20 border border-stone-100 mt"
         variants={fadeUp}
         initial="hidden"
         animate="visible"
