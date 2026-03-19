@@ -883,19 +883,27 @@ export default function ProductsDetailsDialog() {
                 {/* VERTICAL DIVIDER */}
                 <div className="h-6 w-[1px] bg-stone-200" />
 
-                <span className="text-[11px] font-black uppercase tracking-widest text-stone-900 min-w-[100px] flex flex-col sm:flex-row sm:items-center">
-  {rating > 0 ? (
-    <motion.span
-      initial={{ opacity: 0, x: -5 }}
-      animate={{ opacity: 1, x: 0 }}
-      className="block" // Ensures it treats the line break correctly
-    >
-      {rating} / 5 Score
-    </motion.span>
-  ) : (
-    <span className="text-stone-400">Select Grade</span>
-  )}
-</span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full">
+  {/* 1. This would be your Star Component Container */}
+  <div className="flex gap-2">
+    {/* Your stars go here */}
+  </div>
+
+  {/* 2. Your Rating Text Container */}
+  <div className="text-[11px] font-black uppercase tracking-widest text-stone-900 leading-none">
+    {rating > 0 ? (
+      <motion.span
+        initial={{ opacity: 0, x: -5 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="block"
+      >
+        {rating} / 5 Score
+      </motion.span>
+    ) : (
+      <span className="text-stone-400 block">Select Grade</span>
+    )}
+  </div>
+</div>
               </div>
             </div>
             <div className="space-y-6 mt-6">
