@@ -880,21 +880,7 @@ export default function ProductsDetailsDialog() {
                   />
                 </div>
 
-                {/* VERTICAL DIVIDER */}
-                <div className="h-6 w-[1px] bg-stone-200" />
-
-                <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-4 flex items-center min-h-[20px]">
-  {rating > 0 && (
-    <motion.span
-      key={rating}
-      initial={{ opacity: 0, x: -5 }}
-      animate={{ opacity: 1, x: 0 }}
-      className="text-[11px] font-black uppercase tracking-widest text-stone-900 leading-tight inline-block"
-    >
-      {rating} / 5 Score
-    </motion.span>
-  )}
-</div>
+                
               </div>
             </div>
             <div className="space-y-6 mt-6">
