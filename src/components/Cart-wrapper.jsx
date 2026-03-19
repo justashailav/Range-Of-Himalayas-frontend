@@ -173,11 +173,11 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
               <p className="text-stone-400 font-serif italic">
                 Your basket is waiting to be filled.
               </p>
-              <SheetClose asChild>
+              <Link to="/viewproducts">
                 <button className="mt-4 text-[#B23A2E] text-[10px] font-bold tracking-[0.2em] uppercase border-b border-[#B23A2E] pb-0.5">
                   Explore Collection
                 </button>
-              </SheetClose>
+              </Link>
             </div>
           )}
         </div>
