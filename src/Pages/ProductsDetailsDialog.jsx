@@ -872,14 +872,33 @@ export default function ProductsDetailsDialog() {
               </div>
 
               {/* RATING INTERFACE */}
-              <div className="flex items-center gap-6 bg-stone-50 px-10 py-4 rounded-2xl border border-stone-100 w-full sm:w-auto transition-all hover:bg-stone-100/50">
-                <div className="scale-110 origin-left">
-                  <StarRatingComponent
-                    rating={rating}
-                    onChange={handleRatingChange}
-                  />
-                </div>
-              </div>
+              <div className="relative group overflow-hidden">
+  {/* MAIN CONTAINER */}
+  <div className="flex flex-col sm:flex-row items-center gap-6 bg-white border border-stone-100 px-8 py-5 rounded-[2rem] w-full sm:w-fit transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-orange-100">
+    
+    {/* LABEL (Optional but adds premium feel) */}
+    <div className="hidden lg:block border-r border-stone-100 pr-6 mr-2">
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+        Evaluation
+      </span>
+    </div>
+
+    {/* RATING COMPONENT */}
+    <div className="scale-110 sm:scale-100 origin-center sm:origin-left transition-transform duration-500 group-hover:scale-[1.05]">
+      <StarRatingComponent
+        rating={rating}
+        onChange={handleRatingChange}
+      />
+    </div>
+
+    {/* DECORATIVE ELEMENT */}
+    <div className="absolute top-0 right-0 p-2 opacity-10">
+       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-orange-500">
+         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+       </svg>
+    </div>
+  </div>
+</div>
             </div>
             <div className="space-y-6 mt-6">
               {/* REVIEW TEXTAREA */}
