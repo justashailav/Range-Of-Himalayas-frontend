@@ -217,7 +217,7 @@ export default function Home() {
           );
           return;
         }
-        toast.warning("This item is already in your wishlist!");
+        toast.error("This item is already in your wishlist!");
         return;
       }
     }
