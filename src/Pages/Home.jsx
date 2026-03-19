@@ -179,67 +179,63 @@ export default function Home() {
   }
 
   function handleAddToWishList(
-    getCurrentProductId,
-    getTotalStock,
-    size,
-    weight,
-  ) {
-    if (!user?._id) {
-      toast.error(
-        "Oops! You need to login first to add items to your wishlist.",
-      );
+  getCurrentProductId,
+  getTotalStock,
+  size,
+  weight,
+) {
+  if (!user?._id) {
+    toast.error(
+      "Oops! You need to login first to add items to your wishlist.",
+    );
+    return;
+  }
+
+  const normalizedSize = size || "";
+  const getWishListItems = wishListItems?.items || [];
+
+  if (getWishListItems.length) {
+    const indexOfCurrentItem = getWishListItems.findIndex((item) => {
+      const sameProduct =
+        item.productId.toString() === getCurrentProductId.toString();
+
+      const sameSize = item.normalizedSize === normalizedSize;
+
+      const sameWeight =
+        (item.weight &&
+          weight &&
+          item.weight.toString() === weight.toString()) ||
+        (!item.weight && !weight);
+
+      return sameProduct && sameSize && sameWeight;
+    });
+
+    // ✅ If already exists → show toast and STOP
+    if (indexOfCurrentItem > -1) {
+      toast.error("This item is already in your wishlist!");
       return;
     }
-    const normalizedSize = size || "";
-    const getWishListItems = wishListItems?.items || [];
-
-    if (getWishListItems.length) {
-      const indexOfCurrentItem = getWishListItems.findIndex((item) => {
-        const sameProduct =
-          item.productId.toString() === getCurrentProductId.toString();
-        const sameSize = item.normalizedSize === normalizedSize;
-        const sameWeight =
-          (item.weight &&
-            weight &&
-            item.weight.toString() === weight.toString()) ||
-          (!item.weight && !weight);
-        return sameProduct && sameSize && sameWeight;
-      });
-
-      if (indexOfCurrentItem > -1) {
-        
-        const currentQuantity = getWishListItems[indexOfCurrentItem].quantity;
-        if (currentQuantity + 1 > getTotalStock) {
-          toast.error(
-            `Only ${getTotalStock} quantity available for this size${
-              weight ? " and weight" : ""
-            }`,
-          );
-          return;
-        }
-        toast.error("This item is already in your wishlist!");
-        return;
-      }
-    }
-
-    dispatch(
-      addToWishList({
-        userId: user?._id,
-        productId: getCurrentProductId,
-        quantity: 1,
-        normalizedSize,
-        weight,
-      }),
-    ).then((data) => {
-      if (data?.success) {
-        dispatch(fetchWishListItems(user?._id));
-        toast.success("Product added to wishlist");
-        setOpenCartSheet(true);
-      } else {
-        toast.error(data?.message || "Failed to add item");
-      }
-    });
   }
+
+  // ✅ Add item if not exists
+  dispatch(
+    addToWishList({
+      userId: user?._id,
+      productId: getCurrentProductId,
+      quantity: 1,
+      normalizedSize,
+      weight,
+    }),
+  ).then((data) => {
+    if (data?.success) {
+      dispatch(fetchWishListItems(user?._id));
+      toast.success("Product added to wishlist");
+      setOpenCartSheet(true);
+    } else {
+      toast.error(data?.message || "Failed to add item");
+    }
+  });
+}
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
