@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, SlidersHorizontal, ChevronDown, Leaf } from "lucide-react";
+import { Search, ChevronDown, Leaf, Sparkles, ArrowUpDown } from "lucide-react";
 
 const himalayanBg = "https://images.unsplash.com/photo-1549880181-56a44cf4a9a1?q=80&w=2000&auto=format&fit=crop";
 
@@ -18,41 +18,38 @@ export default function Viewallproducts() {
   const { wishListItems } = useSelector((state) => state.wishList);
   const dispatch = useDispatch();
 
-  // --- LOCAL STATES FOR FILTERING/SORTING ---
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = ["All", ...new Set(productList?.map((p) => p.category).filter(Boolean))];
 
-  // --- REFINED FILTER & SORT LOGIC ---
+  // --- FIXED SORTING & FILTERING LOGIC ---
   const filteredAndSortedProducts = useMemo(() => {
     let result = [...(productList || [])];
 
-    // 1. Filter by Search
     if (searchTerm) {
-      result = result.filter((p) =>
-        p.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      result = result.filter((p) => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
     }
 
-    // 2. Filter by Category
     if (activeCategory !== "All") {
       result = result.filter((p) => p.category === activeCategory);
     }
 
-    // 3. Sort
-    switch (sortBy) {
-      case "price-low": result.sort((a, b) => a.price - b.price); break;
-      case "price-high": result.sort((a, b) => b.price - a.price); break;
-      case "title-az": result.sort((a, b) => a.title.localeCompare(b.title)); break;
-      default: break;
-    }
+    // FIXED: Ensure we are comparing numbers, not strings
+    result.sort((a, b) => {
+      const priceA = Number(a.salePrice || a.price || 0);
+      const priceB = Number(b.salePrice || b.price || 0);
+
+      if (sortBy === "price-low") return priceA - priceB;
+      if (sortBy === "price-high") return priceB - priceA;
+      if (sortBy === "title-az") return a.title.localeCompare(b.title);
+      return 0; // Default: Featured/No sort
+    });
 
     return result;
   }, [productList, searchTerm, sortBy, activeCategory]);
 
-  // --- HANDLERS (Same logic as before, ensuring toasts work) ---
   function handleAddToCart(productId, stock, size) {
     if (!user?._id) return toast.error("Please login first");
     dispatch(addToCart({ userId: user._id, productId, quantity: 1, size }))
@@ -69,47 +66,68 @@ export default function Viewallproducts() {
   }
 
   return (
-    <div className="bg-[#fdfcf6] min-h-screen pb-20 bg-cover bg-center bg-fixed relative" style={{ backgroundImage: `url(${himalayanBg})` }}>
-      <div className="absolute inset-0 bg-white/80 backdrop-blur-[3px]" />
-      <Helmet><title>Fresh Himalayan Produce | Range Of Himalayas</title></Helmet>
+    <div className="bg-[#FAF9F6] min-h-screen pb-24 relative overflow-x-hidden">
+      <Helmet><title>Shop Our Collection | Range Of Himalayas</title></Helmet>
 
-      {/* --- HERO SECTION --- */}
-      <div className="relative z-10 pt-24 pb-12 px-6 text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex justify-center mb-4">
-          <Leaf className="text-[#d97706]" size={32} />
-        </motion.div>
-        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-5xl md:text-7xl font-serif font-black text-slate-950 tracking-tighter">
-          The <span className="text-[#d97706] italic">Pahadi</span> Pantry
-        </motion.h1>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-slate-600 mt-4 text-lg font-medium">
-          Pure. Organic. From the heart of the peaks.
-        </motion.p>
+      {/* --- LUXURY PARALLAX HERO --- */}
+      <div className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <motion.div 
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2 }}
+          className="absolute inset-0 bg-cover bg-center bg-fixed z-0" 
+          style={{ backgroundImage: `url(${himalayanBg})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#FAF9F6] z-1" />
+        
+        <div className="relative z-10 text-center px-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center gap-3 mb-6">
+            <span className="h-[1px] w-12 bg-white/60 self-center" />
+            <Leaf className="text-orange-300" size={20} />
+            <span className="h-[1px] w-12 bg-white/60 self-center" />
+          </motion.div>
+          <motion.h1 
+            initial={{ y: 30, opacity: 0 }} 
+            animate={{ y: 0, opacity: 1 }}
+            className="text-6xl md:text-9xl font-serif font-black text-white tracking-tighter drop-shadow-2xl"
+          >
+            The <span className="italic font-light text-orange-200">Harvest</span>
+          </motion.h1>
+          <motion.p 
+             initial={{ opacity: 0 }} 
+             animate={{ opacity: 1 }} 
+             transition={{ delay: 0.5 }}
+             className="text-white/90 mt-4 text-xs md:text-sm font-black uppercase tracking-[0.5em]"
+          >
+            Sourced at 8,000ft • Organic • Direct to Home
+          </motion.p>
+        </div>
       </div>
 
-      {/* --- UTILITY BAR (Search & Sort) --- */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 mb-12">
-        <div className="bg-white/40 backdrop-blur-xl border border-white/60 p-4 rounded-[2rem] shadow-xl shadow-black/5 flex flex-col lg:flex-row gap-4 items-center justify-between">
+      {/* --- DASHBOARD FILTER BAR --- */}
+      <div className="sticky top-0 z-40 -mt-16 px-4 md:px-10">
+        <div className="max-w-7xl mx-auto bg-white/70 backdrop-blur-2xl border border-white shadow-2xl rounded-[2.5rem] p-3 md:p-5 flex flex-col lg:flex-row gap-5 items-center">
           
-          {/* Search */}
-          <div className="relative w-full lg:w-96">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          {/* Search Section */}
+          <div className="relative w-full lg:w-1/3">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
             <input 
               type="text" 
-              placeholder="Search apples, salts, pulses..." 
-              className="w-full pl-12 pr-4 py-3 bg-white/50 border-none rounded-2xl focus:ring-2 focus:ring-orange-200 transition-all placeholder:text-slate-400 text-sm font-bold"
+              placeholder="Search our pantry..." 
+              className="w-full pl-14 pr-6 py-4 bg-stone-100/50 border-none rounded-3xl focus:ring-2 focus:ring-orange-200/50 transition-all text-sm font-bold placeholder:text-stone-400"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-          {/* Categories */}
-          <div className="flex gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar">
+          {/* Category Scroller */}
+          <div className="flex flex-1 gap-3 overflow-x-auto no-scrollbar w-full py-1">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                  activeCategory === cat ? "bg-slate-950 text-white shadow-lg" : "bg-white/50 text-slate-500 hover:bg-white"
+                className={`whitespace-nowrap px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
+                  activeCategory === cat ? "bg-stone-900 text-white shadow-lg" : "bg-white text-stone-500 hover:bg-orange-50"
                 }`}
               >
                 {cat}
@@ -117,58 +135,72 @@ export default function Viewallproducts() {
             ))}
           </div>
 
-          {/* Sort Dropdown */}
-          <div className="relative group w-full lg:w-auto">
+          {/* Sort Menu */}
+          <div className="relative w-full lg:w-auto min-w-[200px]">
+            <ArrowUpDown className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" size={14} />
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full lg:w-48 appearance-none pl-4 pr-10 py-3 bg-white/50 border-none rounded-2xl text-[10px] font-black uppercase tracking-widest cursor-pointer focus:ring-2 focus:ring-orange-200"
+              className="w-full appearance-none pl-12 pr-10 py-4 bg-stone-900 text-white rounded-3xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-stone-800 transition-colors"
             >
-              <option value="default">Sort By: Featured</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="title-az">Alphabetical: A-Z</option>
+              <option value="default">Sort: Featured</option>
+              <option value="price-low">Price: Low → High</option>
+              <option value="price-high">Price: High → Low</option>
+              <option value="title-az">A - Z</option>
             </select>
-            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" size={16} />
+            <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-white/50" size={16} />
           </div>
         </div>
       </div>
 
       {/* --- PRODUCT GRID --- */}
-      <div className="relative z-10 max-w-[95rem] mx-auto px-6">
+      <div className="max-w-[100rem] mx-auto px-6 md:px-12 mt-20">
         <AnimatePresence mode="popLayout">
           {filteredAndSortedProducts.length > 0 ? (
             <motion.div 
               layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+              className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
             >
               {filteredAndSortedProducts.map((item) => (
                 <motion.div
                   layout
                   key={item._id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
+                  className="group relative"
                 >
-                  <div className="group relative h-full bg-white/40 backdrop-blur-md border border-white/50 rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:shadow-orange-900/10">
-                    <Link to={`/product/${item._id}`} className="block h-full">
-                      <TopSelections
-                        product={item}
-                        handleAddToCart={handleAddToCart}
-                        handleAddToWishList={handleAddToWishList}
-                      />
-                    </Link>
-                  </div>
+                  <Link to={`/product/${item._id}`} className="block">
+                    <div className="relative rounded-[3rem] overflow-hidden bg-white border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-700 group-hover:shadow-[0_40px_80px_rgba(217,119,6,0.15)] group-hover:-translate-y-4">
+                      {/* Sale Badge */}
+                      {item.salePrice < item.price && (
+                        <div className="absolute top-6 left-6 z-10 bg-orange-500 text-white text-[9px] font-black uppercase tracking-tighter px-3 py-1 rounded-full flex items-center gap-1">
+                          <Sparkles size={10} /> Limited Offer
+                        </div>
+                      )}
+                      
+                      <div className="p-2">
+                        <TopSelections
+                          product={item}
+                          handleAddToCart={handleAddToCart}
+                          handleAddToWishList={handleAddToWishList}
+                        />
+                      </div>
+                    </div>
+                  </Link>
                 </motion.div>
               ))}
             </motion.div>
           ) : (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-40 bg-white/20 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-white/50">
-              <p className="text-slate-400 font-serif italic text-2xl">No items found matching your search.</p>
-              <button onClick={() => {setSearchTerm(""); setActiveCategory("All");}} className="mt-4 text-[#d97706] text-xs font-black uppercase tracking-widest underline underline-offset-4">Clear All Filters</button>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-40 border-2 border-dashed border-stone-200 rounded-[4rem]">
+              <div className="bg-stone-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-stone-300">
+                <Search size={32} />
+              </div>
+              <p className="text-stone-400 font-serif italic text-2xl px-6">We couldn't find any treasures matching that search.</p>
+              <button onClick={() => {setSearchTerm(""); setActiveCategory("All");}} className="mt-6 px-10 py-4 bg-stone-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-colors">
+                Show All Products
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
