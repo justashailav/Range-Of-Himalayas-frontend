@@ -199,7 +199,7 @@ export default function Home() {
       const sameProduct =
         item.productId.toString() === getCurrentProductId.toString();
 
-      const sameSize = item.normalizedSize === normalizedSize;
+      const sameSize = (item.size || "") === normalizedSize;
 
       const sameWeight =
         (item.weight &&
@@ -223,7 +223,7 @@ export default function Home() {
       userId: user?._id,
       productId: getCurrentProductId,
       quantity: 1,
-      normalizedSize,
+      size: normalizedSize, // 🔥 also fix here
       weight,
     }),
   ).then((data) => {
