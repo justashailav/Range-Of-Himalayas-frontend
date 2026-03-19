@@ -16,8 +16,7 @@ import TopSelections from "./TopSelections";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation, Pagination } from "swiper/modules";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Navigation} from "swiper/modules";
 import {
   addToWishList,
   fetchWishListItems,
@@ -208,6 +207,7 @@ export default function Home() {
       });
 
       if (indexOfCurrentItem > -1) {
+        
         const currentQuantity = getWishListItems[indexOfCurrentItem].quantity;
         if (currentQuantity + 1 > getTotalStock) {
           toast.error(
@@ -217,6 +217,8 @@ export default function Home() {
           );
           return;
         }
+        toast.info("This item is already in your wishlist!");
+        return;
       }
     }
 
