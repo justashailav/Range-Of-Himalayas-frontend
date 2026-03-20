@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import Address from "@/Pages/Address";
@@ -77,130 +77,147 @@ export default function ShoppingCheckout() {
       : grandTotal - (Number(discountAmount) || 0);
 
   useEffect(() => {
-  if (isNavigatingToSuccess.current) return; // 🔥 HARD STOP
+    if (isNavigatingToSuccess.current) return; // 🔥 HARD STOP
 
-  if ((cartItems.length === 0 && boxes.length === 0) || !user) {
-    const timer = setTimeout(() => {
-      if (!isNavigatingToSuccess.current) {
-        toast.error("Your cart is empty or you are not logged in.");
-        navigate("/");
-      }
-    }, 100);
+    if ((cartItems.length === 0 && boxes.length === 0) || !user) {
+      const timer = setTimeout(() => {
+        if (!isNavigatingToSuccess.current) {
+          toast.error("Your cart is empty or you are not logged in.");
+          navigate("/");
+        }
+      }, 100);
 
-    return () => clearTimeout(timer);
-  }
-}, [cartItems, boxes, navigate, user]);
+      return () => clearTimeout(timer);
+    }
+  }, [cartItems, boxes, navigate, user]);
 
   async function handlePlaceOrder() {
-    if (cartItems.length === 0 && boxes.length === 0)
-      return toast.error("Your cart is empty.");
+  if (cartItems.length === 0 && boxes.length === 0)
+    return toast.error("Your cart is empty.");
 
-    if (!currentSelectedAddress)
-      return toast.error("Please select a delivery address.");
+  if (!currentSelectedAddress)
+    return toast.error("Please select a delivery address.");
 
-    if (!paymentMethod) return toast.error("Please select payment method.");
+  if (!paymentMethod)
+    return toast.error("Please select payment method.");
 
-    const orderData = {
-      userId: user?._id,
-      cartItems: cartItems.map((item) => ({
-        productId: item.productId,
-        title: item.title,
-        image: item.image,
-        price: item.salesPrice > 0 ? item.salesPrice : item.price,
-        quantity: item.quantity,
-        size: item.size,
-        weight: item.weight || item.productWeight,
-      })),
-      boxes,
-      addressInfo: {
-        addressId: currentSelectedAddress?._id,
-        address: currentSelectedAddress?.address,
-        city: currentSelectedAddress?.city,
-        pincode: currentSelectedAddress?.pincode,
-        phone: currentSelectedAddress?.phone,
-        notes: currentSelectedAddress?.notes,
-      },
-      paymentMethod,
-      totalAmount: payableAmount,
-      ...(code ? { code } : {}),
-    };
+  // ✅ COD restriction
+  if (paymentMethod === "cod" && payableAmount < 200) {
+    return toast.error("COD is available only for orders above ₹200");
+  }
 
-    try {
-      setIsProcessing(true);
+  const orderData = {
+    userId: user?._id,
+    cartItems: cartItems.map((item) => ({
+      productId: item.productId,
+      title: item.title,
+      image: item.image,
+      price: item.salesPrice > 0 ? item.salesPrice : item.price,
+      quantity: item.quantity,
+      size: item.size,
+      weight: item.weight || item.productWeight,
+    })),
+    boxes,
+    addressInfo: {
+      addressId: currentSelectedAddress?._id,
+      address: currentSelectedAddress?.address,
+      city: currentSelectedAddress?.city,
+      pincode: currentSelectedAddress?.pincode,
+      phone: currentSelectedAddress?.phone,
+      notes: currentSelectedAddress?.notes,
+    },
+    paymentMethod,
+    totalAmount: payableAmount,
+    ...(code ? { code } : {}),
+  };
 
-      const response = await dispatch(createNewOrder(orderData));
+  try {
+    setIsProcessing(true);
 
-      // 🔥 Razorpay Flow
-      if (response.razorpayOrderId) {
-        if (!window.Razorpay) {
-          toast.error("Payment gateway failed to load. Refresh page.");
-          setIsProcessing(false);
-          return;
-        }
+    const response = await dispatch(createNewOrder(orderData));
 
-        const options = {
-          key: response.key,
-          amount: response.amount,
-          currency: response.currency,
-          order_id: response.razorpayOrderId,
-          name: "Range of Himalayas",
-          description: paymentMethod === "cod" ? "₹200 COD Advance" : "Secure Payment",
-
-          handler: async function (rzpResponse) {
-            try {
-              // ✅ Set the ref to true IMMEDIATELY when the user pays
-              isNavigatingToSuccess.current = true; 
-
-              await dispatch(
-                capturePayment({
-                  orderId: response.orderId,
-                  razorpay_order_id: rzpResponse.razorpay_order_id,
-                  razorpay_payment_id: rzpResponse.razorpay_payment_id,
-                  razorpay_signature: rzpResponse.razorpay_signature,
-                }),
-              );
-
-              toast.success("Payment successful!");
-              // Now navigate safely
-              navigate("/order-success");
-            } catch (err) {
-              // If verification fails, allow the redirect logic to work again
-              isNavigatingToSuccess.current = false;
-              toast.error("Payment verification failed");
-              setIsProcessing(false);
-            }
-          },
-
-          prefill: {
-            name: user?.name,
-            email: user?.email,
-            contact: currentSelectedAddress?.phone,
-          },
-          theme: { color: "#16a34a" },
-        };
-
-        const rzp = new window.Razorpay(options);
-        rzp.on("payment.failed", function () {
-          isNavigatingToSuccess.current = false;
-          toast.error("Payment failed. Please try again.");
-        });
-
-        rzp.open();
-        // Note: We don't set setIsProcessing(false) here because 
-        // the Razorpay modal is open and we are still "processing" the result.
+    // 🔥 Razorpay Flow
+    if (response.razorpayOrderId) {
+      if (!window.Razorpay) {
+        toast.error("Payment gateway failed to load. Refresh page.");
+        setIsProcessing(false);
         return;
       }
 
-      // ✅ Flow for non-Razorpay (if any)
-      isNavigatingToSuccess.current = true;
-      toast.success(response.message || "Order placed successfully");
-      navigate("/order-success");
+      const options = {
+        key: response.key,
+        amount: response.amount,
+        currency: response.currency,
+        order_id: response.razorpayOrderId,
+        name: "Range of Himalayas",
+        description:
+          paymentMethod === "cod"
+            ? "₹200 COD Advance"
+            : "Secure Payment",
 
-    } catch (err) {
-      toast.error(err.message || "Order failed");
-      setIsProcessing(false);
+        handler: async function (rzpResponse) {
+          try {
+            isNavigatingToSuccess.current = true;
+
+            await dispatch(
+              capturePayment({
+                orderId: response.orderId,
+                razorpay_order_id: rzpResponse.razorpay_order_id,
+                razorpay_payment_id: rzpResponse.razorpay_payment_id,
+                razorpay_signature: rzpResponse.razorpay_signature,
+              }),
+            );
+
+            toast.success("Payment successful!");
+            navigate("/order-success");
+          } catch (err) {
+            isNavigatingToSuccess.current = false;
+            toast.error("Payment verification failed");
+            setIsProcessing(false);
+          }
+        },
+
+        // ✅ FIX: handle user closing popup
+        modal: {
+          ondismiss: function () {
+            isNavigatingToSuccess.current = false;
+            setIsProcessing(false);
+            toast.error("Payment cancelled.");
+          },
+        },
+
+        prefill: {
+          name: user?.name,
+          email: user?.email,
+          contact: currentSelectedAddress?.phone,
+        },
+
+        theme: { color: "#16a34a" },
+      };
+
+      const rzp = new window.Razorpay(options);
+
+      // ✅ FIX: failure case
+      rzp.on("payment.failed", function () {
+        isNavigatingToSuccess.current = false;
+        toast.error("Payment failed. Please try again.");
+        setIsProcessing(false);
+      });
+
+      rzp.open();
+      return;
     }
+
+    // ✅ Non-Razorpay flow
+    isNavigatingToSuccess.current = true;
+    toast.success(response.message || "Order placed successfully");
+    navigate("/order-success");
+
+  } catch (err) {
+    toast.error(err.message || "Order failed");
+    setIsProcessing(false);
   }
+}
   // Step 2 → Address selected
   useEffect(() => {
     if (currentSelectedAddress) {
@@ -214,7 +231,7 @@ export default function ShoppingCheckout() {
       setCurrentStep(3);
     }
   }, [paymentMethod]);
-
+  const isCODDisabled = payableAmount < 200;
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <Helmet>
@@ -436,7 +453,7 @@ export default function ShoppingCheckout() {
                                   {item.size} · {item.quantity} Units
                                 </p>
                                 <p className="text-[9px] text-stone-400 font-bold uppercase tracking-tighter mt-0.5">
-                                  {item.weight} 
+                                  {item.weight}
                                 </p>
                               </div>
                             </div>
@@ -456,127 +473,174 @@ export default function ShoppingCheckout() {
 
         {/* ================= RIGHT SUMMARY ================= */}
         <div className="rounded-[2.5rem] p-8 h-fit sticky top-6 bg-white border border-stone-100 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)]">
-  
-  {/* HEADER */}
-  <div className="flex items-center gap-3 mb-8">
-    <div className="w-8 h-8 rounded-full bg-stone-900 flex items-center justify-center">
-      <CreditCard className="w-4 h-4 text-white" />
-    </div>
-    <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.3em]">Payment Summary</h2>
-  </div>
+          {/* HEADER */}
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-8 rounded-full bg-stone-900 flex items-center justify-center">
+              <CreditCard className="w-4 h-4 text-white" />
+            </div>
+            <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.3em]">
+              Payment Summary
+            </h2>
+          </div>
 
-  {/* BREAKDOWN */}
-  <div className="space-y-4 text-[11px] font-bold uppercase tracking-widest text-stone-400">
-    <div className="flex justify-between items-center">
-      <span>Artisan Harvest</span>
-      <span className="text-stone-900 font-black tracking-tighter text-sm">₹{totalCartAmount.toFixed(0)}</span>
-    </div>
-    <div className="flex justify-between items-center">
-      <span>Curated Boxes</span>
-      <span className="text-stone-900 font-black tracking-tighter text-sm">₹{boxesTotal.toFixed(0)}</span>
-    </div>
+          {/* BREAKDOWN */}
+          <div className="space-y-4 text-[11px] font-bold uppercase tracking-widest text-stone-400">
+            <div className="flex justify-between items-center">
+              <span>Artisan Harvest</span>
+              <span className="text-stone-900 font-black tracking-tighter text-sm">
+                ₹{totalCartAmount.toFixed(0)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span>Curated Boxes</span>
+              <span className="text-stone-900 font-black tracking-tighter text-sm">
+                ₹{boxesTotal.toFixed(0)}
+              </span>
+            </div>
 
-    {discountAmount > 0 && (
-      <div className="flex justify-between items-center text-[#B23A2E]">
-        <span className="italic">Seasonal Offer ({code})</span>
-        <span className="font-black tracking-tighter text-sm">-₹{discountAmount.toFixed(0)}</span>
-      </div>
-    )}
+            {discountAmount > 0 && (
+              <div className="flex justify-between items-center text-[#B23A2E]">
+                <span className="italic">Seasonal Offer ({code})</span>
+                <span className="font-black tracking-tighter text-sm">
+                  -₹{discountAmount.toFixed(0)}
+                </span>
+              </div>
+            )}
 
-    <div className="h-px bg-stone-50 w-full my-4" />
-  </div>
+            <div className="h-px bg-stone-50 w-full my-4" />
+          </div>
 
-  {/* FINAL PAYABLE */}
-  <div className="mt-6 p-6 rounded-3xl bg-stone-50 border border-stone-100 relative overflow-hidden">
-    <div className="relative z-10 flex justify-between items-end">
-      <div>
-        <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">Final Amount</p>
-        <p className="text-3xl font-black text-stone-900 tracking-tighter">
-          ₹{payableAmount.toFixed(0)}
-        </p>
-      </div>
-      <div className="text-right">
-        <p className="text-[9px] text-green-600 font-black uppercase tracking-tighter">Free Shipping</p>
-      </div>
-    </div>
-    {/* Subtle decorative mountain-like curve or texture could go here */}
-  </div>
+          {/* FINAL PAYABLE */}
+          <div className="mt-6 p-6 rounded-3xl bg-stone-50 border border-stone-100 relative overflow-hidden">
+            <div className="relative z-10 flex justify-between items-end">
+              <div>
+                <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">
+                  Final Amount
+                </p>
+                <p className="text-3xl font-black text-stone-900 tracking-tighter">
+                  ₹{payableAmount.toFixed(0)}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[9px] text-green-600 font-black uppercase tracking-tighter">
+                  Free Shipping
+                </p>
+              </div>
+            </div>
+            {/* Subtle decorative mountain-like curve or texture could go here */}
+          </div>
 
-  {/* PAYMENT METHODS */}
-  <div className="mt-8 space-y-3">
-    <h3 className="text-[9px] font-black text-stone-400 uppercase tracking-[0.2em] mb-4 ml-1">Select Method</h3>
-    
-    {/* ONLINE */}
-    <label
-      onClick={() => setPaymentMethod("razorpay")}
-      className={`group flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300
-        ${paymentMethod === "razorpay" 
-          ? "border-stone-900 bg-stone-900 text-white" 
-          : "border-stone-50 bg-stone-50 text-stone-600 hover:border-stone-200"
+          {/* PAYMENT METHODS */}
+          <div className="mt-8 space-y-3">
+            <h3 className="text-[9px] font-black text-stone-400 uppercase tracking-[0.2em] mb-4 ml-1">
+              Select Method
+            </h3>
+
+            {/* ONLINE */}
+            <label
+              onClick={() => setPaymentMethod("razorpay")}
+              className={`group flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300
+        ${
+          paymentMethod === "razorpay"
+            ? "border-stone-900 bg-stone-900 text-white"
+            : "border-stone-50 bg-stone-50 text-stone-600 hover:border-stone-200"
         }`}
-    >
-      <div className="flex items-center gap-3">
-        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors
-          ${paymentMethod === "razorpay" ? "border-white" : "border-stone-300"}`}>
-          {paymentMethod === "razorpay" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-        </div>
-        <span className="text-xs font-black uppercase tracking-widest">Secure Online Pay</span>
-      </div>
-      <ShieldCheck className={`w-4 h-4 ${paymentMethod === "razorpay" ? "text-white/50" : "text-stone-300"}`} />
-    </label>
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors
+          ${paymentMethod === "razorpay" ? "border-white" : "border-stone-300"}`}
+                >
+                  {paymentMethod === "razorpay" && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                  )}
+                </div>
+                <span className="text-xs font-black uppercase tracking-widest">
+                  Secure Online Pay
+                </span>
+              </div>
+              <ShieldCheck
+                className={`w-4 h-4 ${paymentMethod === "razorpay" ? "text-white/50" : "text-stone-300"}`}
+              />
+            </label>
 
-    {/* COD */}
-    <label
-      onClick={() => setPaymentMethod("cod")}
-      className={`group flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300
-        ${paymentMethod === "cod" 
-          ? "border-stone-900 bg-stone-900 text-white" 
-          : "border-stone-50 bg-stone-50 text-stone-600 hover:border-stone-200"
-        }`}
-    >
-      <div className="flex items-center gap-3">
-        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors
-          ${paymentMethod === "cod" ? "border-white" : "border-stone-300"}`}>
-          {paymentMethod === "cod" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-        </div>
-        <div>
-          <span className="text-xs font-black uppercase tracking-widest block">Partial COD</span>
-          <span className={`text-[8px] font-bold uppercase tracking-tighter opacity-60
-            ${paymentMethod === "cod" ? "text-white" : "text-stone-400"}`}>₹200 Advance Required</span>
-        </div>
-      </div>
-      <Truck className={`w-4 h-4 ${paymentMethod === "cod" ? "text-white/50" : "text-stone-300"}`} />
-    </label>
-  </div>
+            {/* COD */}
+            <label
+              onClick={() => {
+    if (!isCODDisabled) setPaymentMethod("cod");
+  }}
+  className={`group flex items-center justify-between p-4 rounded-2xl border-2 transition-all duration-300
+    ${isCODDisabled
+      ? "cursor-not-allowed opacity-50 bg-stone-100 border-stone-100"
+      : paymentMethod === "cod"
+      ? "border-stone-900 bg-stone-900 text-white cursor-pointer"
+      : "border-stone-50 bg-stone-50 text-stone-600 hover:border-stone-200 cursor-pointer"
+    }`}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors
+          ${paymentMethod === "cod" ? "border-white" : "border-stone-300"}`}
+                >
+                  {paymentMethod === "cod" && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                  )}
+                </div>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-widest block">
+                    Partial COD
+                  </span>
+                  <span
+  className={`text-[8px] font-bold uppercase tracking-tighter opacity-60
+    ${paymentMethod === "cod" ? "text-white" : "text-stone-400"}`}
+>
+  {isCODDisabled ? "COD available above ₹200" : "₹200 Advance Required"}
+</span>
+                </div>
+              </div>
+              <Truck
+                className={`w-4 h-4 ${paymentMethod === "cod" ? "text-white/50" : "text-stone-300"}`}
+              />
+            </label>
+          </div>
 
-  {/* ACTION BUTTON */}
-  <button
-    onClick={handlePlaceOrder}
-    disabled={currentStep < 3 || isProcessing}
-    className={`group relative w-full mt-8 py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase overflow-hidden transition-all duration-500
-      ${currentStep < 3 || isProcessing
-        ? "bg-stone-100 text-stone-300 cursor-not-allowed"
-        : "bg-[#B23A2E] text-white hover:bg-stone-900 shadow-[0_20px_40px_rgba(178,58,46,0.3)] active:scale-95"
+          {/* ACTION BUTTON */}
+          <button
+            onClick={handlePlaceOrder}
+            disabled={currentStep < 3 || isProcessing}
+            className={`group relative w-full mt-8 py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase overflow-hidden transition-all duration-500
+      ${
+        currentStep < 3 || isProcessing
+          ? "bg-stone-100 text-stone-300 cursor-not-allowed"
+          : "bg-[#B23A2E] text-white hover:bg-stone-900 shadow-[0_20px_40px_rgba(178,58,46,0.3)] active:scale-95"
       }`}
-  >
-    <span className="relative z-10">
-      {isProcessing ? "Authenticating..." : paymentMethod === "cod" ? "Pay Deposit & Order" : "Complete Purchase"}
-    </span>
-    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-  </button>
+          >
+            <span className="relative z-10">
+              {isProcessing
+                ? "Authenticating..."
+                : paymentMethod === "cod"
+                  ? "Pay Deposit & Order"
+                  : "Complete Purchase"}
+            </span>
+            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+          </button>
 
-  {/* TRUST FOOTER */}
-  <div className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-2">
-    <div className="flex items-center gap-1 opacity-40">
-      <Lock size={10} />
-      <span className="text-[8px] font-black uppercase tracking-widest">SSL Encrypted</span>
-    </div>
-    <div className="flex items-center gap-1 opacity-40">
-      <Star size={10} />
-      <span className="text-[8px] font-black uppercase tracking-widest">Himalayan Quality</span>
-    </div>
-  </div>
-</div>
+          {/* TRUST FOOTER */}
+          <div className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-2">
+            <div className="flex items-center gap-1 opacity-40">
+              <Lock size={10} />
+              <span className="text-[8px] font-black uppercase tracking-widest">
+                SSL Encrypted
+              </span>
+            </div>
+            <div className="flex items-center gap-1 opacity-40">
+              <Star size={10} />
+              <span className="text-[8px] font-black uppercase tracking-widest">
+                Himalayan Quality
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

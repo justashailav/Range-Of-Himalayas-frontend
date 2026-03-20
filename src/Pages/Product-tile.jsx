@@ -3,7 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
-export default function ShoppingProductTile({
+export default function 
+
+ShoppingProductTile({
   product,
   handleAddToCart,
   handleAddToWishList,
