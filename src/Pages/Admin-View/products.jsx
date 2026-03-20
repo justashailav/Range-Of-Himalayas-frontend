@@ -1339,7 +1339,7 @@ import {
   editProduct,
 } from "@/store/slices/productSlice";
 import { Button } from "@/components/ui/button";
-import { Plus, X } from "lucide-react";
+import { Plus, Upload, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
