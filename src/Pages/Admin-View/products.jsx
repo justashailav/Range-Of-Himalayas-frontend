@@ -1808,10 +1808,26 @@ export default function Adminproducts() {
                             onChange={(e) => handleVariantChange(e, index)}
                             className="bg-white border border-stone-100 rounded-xl px-3 py-2 text-xs outline-none focus:border-[#B23A2E]/30 transition-all"
                           >
+                            <option value="50g">50g</option>
+                            <option value="100g">100g</option>
                             <option value="120g">120g</option>
+                            <option value="150g">150g</option>
+                            <option value="170g">175g</option>
+                            <option value="200g">200g</option>
                             <option value="250g">250g</option>
                             <option value="500g">500g</option>
-                            {/* ... other options */}
+                            <option value="750g">750g</option>
+                            <option value="500g">500g</option>
+                            <option value="1kg">1kg</option>
+                            <option value="2kg">2kg</option>
+                            <option value="3kg">3kg</option>
+                            <option value="5kg">5kg</option>
+                            <option value="10kg">10kg</option>
+                            <option value="12kg">12kg</option>
+                            <option value="15kg">15kg</option>
+                            <option value="200ml">200ml</option>
+                            <option value="500ml">500ml</option>
+                            <option value="1L">1L</option>
                           </select>
                         </div>
 
