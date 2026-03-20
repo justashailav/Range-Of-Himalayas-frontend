@@ -1359,13 +1359,22 @@ export default function Adminproducts() {
     description: "",
     nutrition: {
       calories: "",
+      energy: "",
+      calcium: "",
+      iron: "",
+      magnesium: "",
+      sodium: "",
       carbohydrates: "",
       fiber: "",
       sugar: "",
       vitaminC: "",
+      vitaminE: "",
       potassium: "",
       protein: "",
       fat: "",
+      fulvicacid: "",
+      humicacid: "",
+      minerals: "",
     },
     details: {
       origin: "",
@@ -1399,7 +1408,7 @@ export default function Adminproducts() {
 
   const dispatch = useDispatch();
   const { productList, error, message } = useSelector(
-    (state) => state.products
+    (state) => state.products,
   );
 
   useEffect(() => {
@@ -1423,13 +1432,22 @@ export default function Adminproducts() {
       description: "",
       nutrition: {
         calories: "",
+        energy: "",
+        calcium: "",
+        iron: "",
+        magnesium: "",
+        sodium: "",
         carbohydrates: "",
         fiber: "",
         sugar: "",
         vitaminC: "",
+        vitaminE: "",
         potassium: "",
         protein: "",
         fat: "",
+        fulvicacid: "",
+        humicacid: "",
+        minerals: "",
       },
       details: {
         origin: "",
@@ -1489,7 +1507,7 @@ export default function Adminproducts() {
               ? Number(value)
               : value,
           }
-        : v
+        : v,
     );
     setProduct({ ...product, variants: updated });
   };
@@ -1692,6 +1710,12 @@ export default function Adminproducts() {
                         onChange={(e) => handleVariantChange(e, index)}
                         className="border rounded-md px-3 py-2"
                       >
+                        <option value="50g">50g</option>
+                        <option value="100g">100g</option>
+                        <option value="120g">120g</option>
+                        <option value="150g">150g</option>
+                        <option value="175g">175g</option>
+                        <option value="200g">200g</option>
                         <option value="250g">250g</option>
                         <option value="500g">500g</option>
                         <option value="750g">750g</option>
@@ -1702,6 +1726,9 @@ export default function Adminproducts() {
                         <option value="10kg">10kg</option>
                         <option value="12kg">12kg</option>
                         <option value="15kg">15kg</option>
+                        <option value="200ml">200ml</option>
+                        <option value="500ml">500ml</option>
+                        <option value="1L">1L</option>
                       </select>
 
                       <input
