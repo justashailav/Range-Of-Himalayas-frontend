@@ -367,20 +367,31 @@ export default function ShoppingCheckout() {
                         />
                       </div>
                       <div className="flex flex-col justify-center">
-                        <p className="text-xs font-black text-stone-900 uppercase tracking-tight">
-                          {item.title}
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          {item.size && (
-                            <span className="text-[9px] font-bold text-stone-400 uppercase bg-stone-50 px-2 py-0.5 rounded-md">
-                              {item.size}
-                            </span>
-                          )}
-                          <span className="text-[9px] font-bold text-stone-400 uppercase tracking-widest">
-                            Qty: {item.quantity}
-                          </span>
-                        </div>
-                      </div>
+  <p className="text-xs font-black text-stone-900 uppercase tracking-tight">
+    {item.title}
+  </p>
+
+  <div className="flex items-center gap-2 mt-1">
+    {/* SIZE */}
+    {item.size && (
+      <span className="text-[9px] font-bold text-stone-400 uppercase bg-stone-50 px-2 py-0.5 rounded-md">
+        {item.size}
+      </span>
+    )}
+
+    {/* WEIGHT */}
+    {(item.weight || item.productWeight) && (
+      <span className="text-[9px] font-bold text-stone-400 uppercase bg-stone-50 px-2 py-0.5 rounded-md">
+        {item.weight || item.productWeight}
+      </span>
+    )}
+
+    {/* QUANTITY */}
+    <span className="text-[9px] font-bold text-stone-400 uppercase tracking-widest">
+      Qty: {item.quantity}
+    </span>
+  </div>
+</div>
                     </div>
 
                     <p className="text-sm font-black text-stone-900 tracking-tighter">
