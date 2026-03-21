@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "../assets/BannerImage.png";
-import foundersImage from "../assets/foundersLetter.png";
+import bgImage from "../assets/HeroImage.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaInstagram,
@@ -16,7 +15,7 @@ import TopSelections from "./TopSelections";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation} from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import {
   addToWishList,
   fetchWishListItems,
@@ -179,64 +178,66 @@ export default function Home() {
   }
 
   function handleAddToWishList(
-  getCurrentProductId,
-  getTotalStock,
-  size,
-  weight,
-) {
-  if (!user?._id) {
-    toast.error("Oops! You need to login first to add items to your wishlist.");
-    return;
-  }
-
-  const normalizedSize = size || "";
-  const getWishListItems = wishListItems?.items || [];
-
-  if (getWishListItems.length) {
-    const indexOfCurrentItem = getWishListItems.findIndex((item) => {
-      // 🔥 FIX: Check if productId is an object with an _id inside it
-      const existingProductId = item.productId?._id || item.productId;
-      
-      const sameProduct =
-        existingProductId?.toString() === getCurrentProductId?.toString();
-
-      const sameSize = (item.size || "") === normalizedSize;
-
-      const sameWeight =
-        (item.weight &&
-          weight &&
-          item.weight.toString() === weight.toString()) ||
-        (!item.weight && !weight);
-
-      return sameProduct && sameSize && sameWeight;
-    });
-
-    if (indexOfCurrentItem > -1) {
-      toast.error("This item is already in your wishlist!");
+    getCurrentProductId,
+    getTotalStock,
+    size,
+    weight,
+  ) {
+    if (!user?._id) {
+      toast.error(
+        "Oops! You need to login first to add items to your wishlist.",
+      );
       return;
     }
-  }
 
-  dispatch(
-    addToWishList({
-      userId: user?._id,
-      productId: getCurrentProductId,
-      quantity: 1,
-      size: normalizedSize,
-      weight,
-    }),
-  ).then((data) => {
-    // 🔥 NOTE: If you use Redux Toolkit, you MUST check data.payload.success
-    const response = data?.payload || data;
+    const normalizedSize = size || "";
+    const getWishListItems = wishListItems?.items || [];
 
-    if (response?.success) {
-      dispatch(fetchWishListItems(user?._id));
-      toast.success("Product added to wishlist");
-    } else {
-      toast.error(response?.message || "Failed to add item");
+    if (getWishListItems.length) {
+      const indexOfCurrentItem = getWishListItems.findIndex((item) => {
+        // 🔥 FIX: Check if productId is an object with an _id inside it
+        const existingProductId = item.productId?._id || item.productId;
+
+        const sameProduct =
+          existingProductId?.toString() === getCurrentProductId?.toString();
+
+        const sameSize = (item.size || "") === normalizedSize;
+
+        const sameWeight =
+          (item.weight &&
+            weight &&
+            item.weight.toString() === weight.toString()) ||
+          (!item.weight && !weight);
+
+        return sameProduct && sameSize && sameWeight;
+      });
+
+      if (indexOfCurrentItem > -1) {
+        toast.error("This item is already in your wishlist!");
+        return;
+      }
     }
-  });
-}
+
+    dispatch(
+      addToWishList({
+        userId: user?._id,
+        productId: getCurrentProductId,
+        quantity: 1,
+        size: normalizedSize,
+        weight,
+      }),
+    ).then((data) => {
+      // 🔥 NOTE: If you use Redux Toolkit, you MUST check data.payload.success
+      const response = data?.payload || data;
+
+      if (response?.success) {
+        dispatch(fetchWishListItems(user?._id));
+        toast.success("Product added to wishlist");
+      } else {
+        toast.error(response?.message || "Failed to add item");
+      }
+    });
+  }
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
@@ -287,63 +288,96 @@ export default function Home() {
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden bg-stone-950">
         {/* 1. THE IMAGE */}
-        <div className="absolute inset-0 z-0">
-          <motion.img
-            initial={{ scale: 1.1, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.8 }}
-            transition={{ duration: 1.8, ease: "easeOut" }}
-            src={bgImage}
-            /* On mobile, we center the image object so the product bowl stays visible */
-            className="w-full h-full object-cover object-center md:object-right"
-            alt="Himalayan Harvest"
-          />
+        <div className="relative h-screen w-full overflow-hidden">
+          {/* 1. BACKGROUND IMAGE */}
+          <div className="absolute inset-0 z-0">
+            <motion.img
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.85 }}
+              transition={{ duration: 1.6, ease: "easeOut" }}
+              src={bgImage}
+              className="w-full h-full object-cover object-center md:object-right"
+              alt="Himalayan Products"
+            />
 
-          {/* Responsive Gradient: Top-to-bottom on mobile, Left-to-right on desktop */}
-          <div className="absolute inset-0 bg-gradient-to-b from-stone-950/80 via-transparent to-stone-950 md:bg-gradient-to-r md:from-stone-950 md:via-stone-950/20 md:to-transparent" />
-        </div>
+            {/* Premium Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+          </div>
 
-        {/* 2. THE CONTENT LAYER */}
-        <div className="relative z-10 flex flex-col justify-between h-full px-8 py-16 md:px-20 md:py-20 lg:px-32">
-          {/* TOP: Status Label (Centered on mobile for balance) */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex items-center justify-center md:justify-start gap-3"
-          >
-            <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse" />
-            <p className="text-white/80 text-[9px] md:text-xs tracking-[0.3em] md:tracking-[0.5em] uppercase font-bold">
-              Volume 01 • Harvest 2026
-            </p>
-          </motion.div>
-
-          {/* BOTTOM: Product Navigation */}
-          <div className="flex flex-col gap-8 md:gap-10">
+          {/* 2. CONTENT */}
+          <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
+            {/* TOP TAG */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              /* Mobile: Centered grid for touch targets | Desktop: Left-aligned row */
-              className="grid grid-cols-1 gap-y-5 md:flex md:flex-row md:items-center md:gap-x-12 border-t border-white/10 pt-8 md:pt-10 mt-4"
+              transition={{ delay: 0.5 }}
+              className="flex items-center justify-center md:justify-start gap-3"
             >
-              {["Red Rice", "Pahadi Rajma", "Apricots"].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-center md:justify-start gap-3 group cursor-pointer"
-                >
-                  <span className="text-[#B23A2E] text-[8px] md:text-[11px] font-mono font-bold">
-                    0{i + 1}
-                  </span>
-                  <span className="text-white/60 group-hover:text-white text-[12px] md:text-[13px] uppercase tracking-[0.2em] md:tracking-[0.3em] transition-colors duration-300">
-                    {item}
-                  </span>
-                </div>
-              ))}
+              <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse" />
+              <p className="text-white/70 text-[10px] md:text-xs tracking-[0.4em] uppercase font-semibold">
+                Harvest 2026 • Himalayan Origin
+              </p>
             </motion.div>
 
-            {/* Boutique Scroll Indicator (Centered on mobile, hidden if preferred) */}
-            <div className="flex justify-center md:justify-start">
-              <div className="w-[1px] h-10 md:h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+            {/* CENTER HERO TEXT */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 1 }}
+              className="max-w-2xl text-center md:text-left mx-auto md:mx-0"
+            >
+              <h1 className="text-white text-3xl sm:text-4xl md:text-6xl font-light leading-tight tracking-tight">
+                Pure Goodness <br />
+                <span className="font-semibold">From the Himalayas</span>
+              </h1>
+
+              <p className="mt-4 text-white/70 text-sm md:text-base leading-relaxed">
+                Discover nature’s finest — from cold-pressed oils to
+                mineral-rich salts, crafted with purity and tradition.
+              </p>
+
+              {/* CTA */}
+             <Link to="/viewproducts">
+                            <div className="mt-6">
+                <button className="px-6 py-3 bg-[#B23A2E] hover:bg-[#922f26] text-white text-xs tracking-[0.2em] uppercase rounded-full transition-all duration-300">
+                  Shop Now
+                </button>
+              </div>
+             </Link>
+            </motion.div>
+
+            {/* BOTTOM PRODUCTS */}
+            <div className="flex flex-col gap-8 md:gap-10">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 }}
+                className="grid grid-cols-1 gap-y-5 md:flex md:items-center md:gap-x-12 border-t border-white/10 pt-8"
+              >
+                {[
+                  "Apricot Oil",
+                  "Himalayan Rock Salt",
+                  "Sea Buckthorn Pulp",
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-center md:justify-start gap-3 group cursor-pointer"
+                  >
+                    <span className="text-[#B23A2E] text-[10px] font-mono">
+                      0{i + 1}
+                    </span>
+
+                    <span className="text-white/60 group-hover:text-white text-[12px] uppercase tracking-[0.25em] transition duration-300">
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </motion.div>
+
+              {/* SCROLL INDICATOR */}
+              <div className="flex justify-center md:justify-start">
+                <div className="w-[1px] h-12 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+              </div>
             </div>
           </div>
         </div>
@@ -727,20 +761,46 @@ export default function Home() {
 
                 <div className="space-y-4">
                   <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
-                    This is where you can write your own story. Whether it's
-                    about your vision, the process, or the people behind the
-                    harvest, this space is designed to scale beautifully. The
-                    text will wrap naturally on mobile devices, ensuring that
-                    not a single word is cut off.
+                    Our journey at Range of Himalayas began with a deep
+                    connection to the land we call home. Surrounded by the
+                    untouched beauty of the mountains, we grew up witnessing
+                    nature in its purest form—simple, powerful, and abundant.
+                    The air, the soil, and the traditions of the people here
+                    have always inspired us to preserve and share this natural
+                    richness with the world.
                   </p>
 
                   <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
-                    Add a second paragraph here to share more depth. The
-                    stone-washed background keeps the focus on your message
-                    while maintaining a premium, boutique aesthetic.
+                    What started as a small vision soon became a purpose—to
+                    bring authentic Himalayan products to every home while
+                    staying true to their origin. We work closely with local
+                    farmers and communities who have nurtured these resources
+                    for generations. Their knowledge, care, and dedication are
+                    at the heart of everything we create.
+                  </p>
+
+                  <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
+                    Every bottle, every grain, and every drop reflects our
+                    promise of purity. From cold-pressed oils to naturally
+                    sourced ingredients, we ensure that the goodness of the
+                    Himalayas remains untouched. We believe in minimal
+                    processing, honest practices, and delivering products that
+                    you can trust without question.
+                  </p>
+
+                  <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
+                    This is more than just a brand—it is a story of roots,
+                    resilience, and respect for nature. With every product you
+                    choose, you become a part of this journey. A journey that
+                    brings the essence of the mountains closer to you, while
+                    supporting the communities that make it possible.
+                  </p>
+
+                  <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed">
+                    Thank you for trusting us and for being a part of Range of
+                    Himalayas.
                   </p>
                 </div>
-
                 {/* Signature / Footer */}
                 <div className="mt-10 pt-8 border-t border-stone-200/60">
                   <p className="font-serif italic text-xl text-stone-800">
