@@ -5,113 +5,171 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import logo from "../assets/logo-himalayas.png"
 import { Helmet } from 'react-helmet';
-export default function ResetPassword() {
-  const dispatch=useDispatch();
-  const[password,setPassword]=useState("");
-  const[confirmPassword,setConfirmPassword]=useState("");
+import { ArrowLeft, Lock, ShieldCheck } from 'lucide-react'; // Added icons
 
-  const{token}=useParams();
+export default function ResetPassword() {
+  const dispatch = useDispatch();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const { token } = useParams();
   const { loading, error, message, isAuthencated } = useSelector(
     (state) => state.auth
   );
-  const handleResetPassword=(e)=>{
+
+  const handleResetPassword = (e) => {
     e.preventDefault();
-    const data=new FormData();
-    data.append("password",password);
-    data.append("confirmPassword",confirmPassword);
-    dispatch(resetPassword(data,token))
+    if (password !== confirmPassword) {
+      return toast.error("Passwords do not match");
+    }
+    const data = new FormData();
+    data.append("password", password);
+    data.append("confirmPassword", confirmPassword);
+    dispatch(resetPassword(data, token))
   }
+
   useEffect(() => {
     if (message) {
-      toast.success(message)
-      dispatch(resetAuthSlice())
-    }
-    if (error) {
-      toast.error(message)
+      toast.success(message);
       dispatch(resetAuthSlice());
     }
-  }, [dispatch, isAuthencated, error, loading]);
+    if (error) {
+      toast.error(error); // Fixed: should be error, not message
+      dispatch(resetAuthSlice());
+    }
+  }, [dispatch, message, error]);
+
   if (isAuthencated) {
     return <Navigate to="/" />;
   }
+
   return (
-    <div>
-    <Helmet>
+    <div className="min-h-screen bg-white flex overflow-hidden">
+      <Helmet>
         <title>Reset Password - Range of Himalayas</title>
-        <meta
-          name="description"
-          content="Reset your account password securely at Range of Himalayas. Enter your new password to continue."
-        />
-        <meta property="og:title" content="Reset Password - Range of Himalayas" />
-        <meta
-          property="og:description"
-          content="Reset your password and regain access to your Range of Himalayas account."
-        />
       </Helmet>
-    <div className="flex flex-col justify-center bg-[#FFECE8]  md:flex-row h-screen">
-      <div className="hidden w-full md:w-1/2 bg-[#F7B6A7] text-white md:flex flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
-        <div className="text-center h-[376px]">
+
+      {/* LEFT SIDE: Heritage Visual */}
+      <div className="hidden lg:flex lg:w-1/2 bg-stone-50 relative flex-col items-center justify-center p-12 overflow-hidden border-r border-stone-100">
+        {/* Subtle decorative elements */}
+        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-[#F08C7D]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-5%] right-[-5%] w-64 h-64 bg-stone-200/40 rounded-full blur-2xl" />
+        
+        <div className="relative z-10 text-center space-y-8">
           <div className="flex justify-center">
-            <img src={logo} alt="logo" className="h-44 w-auto" />
+            <img src={logo} alt="logo" className="h-32 w-auto grayscale contrast-125 opacity-80" />
           </div>
-          <h3 className="text-gray-300 mb-12 max-w-[320px] mx-auto text-3xl front-medium leading-10">
-            
-          </h3>
+          <div className="space-y-4">
+            <h2 className="text-[11px] font-black uppercase tracking-[0.5em] text-stone-400">
+              Security Protocol
+            </h2>
+            <p className="font-serif italic text-3xl text-stone-800 max-w-sm mx-auto leading-relaxed">
+              Restoring access to your artisan harvest collection.
+            </p>
+          </div>
+        </div>
+        
+        {/* Archival Badge */}
+        <div className="absolute bottom-12 left-12 flex items-center gap-3 opacity-30">
+          <div className="w-8 h-8 rounded-lg border border-stone-900 flex items-center justify-center">
+            <span className="text-[10px] font-black">H</span>
+          </div>
+          <span className="text-[9px] font-black uppercase tracking-widest text-stone-900">
+            Est. 2024 / Himalayas
+          </span>
         </div>
       </div>
-      <div className="w-full md:w-1/2 bg-[#FFECE8] flex items-center justify-center p-8">
+
+      {/* RIGHT SIDE: Reset Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 bg-white relative">
+        
+        {/* Floating Back Link */}
         <Link
           to="/password/forgot"
-          className="border-2 border-[#D86A5D] text-[#F08C7D] rounded-3xl font-bold w-52 py-2 px-4 fixed top-10 -left-28  transition duration-300 text-end"
+          className="absolute top-10 left-10 lg:left-12 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-stone-400 hover:text-[#B23A2E] transition-colors group"
         >
+          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
           Back
         </Link>
-        <div className="w-full max-w-sm">
-          <div className="flex justify-center mb-12">
-            {/* <div className="rounded-full flex items-center justify-center">
-              <img
-                src={black_logo}
-                alt="logo"
-                className="h-auto w-24 object-cover"
-              />
-            </div> */}
+
+        <div className="w-full max-w-sm space-y-10">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-black text-stone-900 tracking-tighter uppercase">
+              New <br />Credentials
+            </h1>
+            <p className="text-[11px] font-bold text-stone-400 uppercase tracking-[0.2em]">
+              Please define your secure access keys
+            </p>
           </div>
-          <h1 className=" text-center text-[#F08C7D]  text-4xl font-medium mb-5 ">
-            Reset Password
-          </h1>
-          <p className="text-[#F08C7D] text-center mb-12">
-            Please enter your new password
-          </p>
-          <form onSubmit={handleResetPassword}>
-            <div className="mb-4">
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-[#F08C7D] text-[#333] placeholder-[#B97A6C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08C7D]"
-              />
+
+          <form onSubmit={handleResetPassword} className="space-y-6">
+            <div className="space-y-4">
+              {/* PASSWORD INPUT */}
+              <div className="group space-y-1.5">
+                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1 group-focus-within:text-[#B23A2E] transition-colors">
+                  New Password
+                </label>
+                <div className="relative">
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full px-5 py-4 bg-stone-50 border border-stone-100 rounded-2xl text-stone-900 text-sm outline-none focus:bg-white focus:border-[#B23A2E]/30 focus:ring-4 focus:ring-[#B23A2E]/5 transition-all duration-300"
+                  />
+                  <Lock className="absolute right-5 top-1/2 -translate-y-1/2 text-stone-300 w-4 h-4 group-focus-within:text-[#B23A2E]/40" />
+                </div>
+              </div>
+
+              {/* CONFIRM PASSWORD INPUT */}
+              <div className="group space-y-1.5">
+                <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-1 group-focus-within:text-[#B23A2E] transition-colors">
+                  Confirm Access Key
+                </label>
+                <div className="relative">
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="w-full px-5 py-4 bg-stone-50 border border-stone-100 rounded-2xl text-stone-900 text-sm outline-none focus:bg-white focus:border-[#B23A2E]/30 focus:ring-4 focus:ring-[#B23A2E]/5 transition-all duration-300"
+                  />
+                  <ShieldCheck className="absolute right-5 top-1/2 -translate-y-1/2 text-stone-300 w-4 h-4 group-focus-within:text-[#B23A2E]/40" />
+                </div>
+              </div>
             </div>
-            <div className="mb-4">
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-[#F08C7D] text-[#333] placeholder-[#B97A6C] rounded-md focus:outline-none focus:ring-2 focus:ring-[#F08C7D]"
-              />
-            </div>
+
             <button
               type="submit"
-              className="mt-5 w-full font-semibold bg-[#F08C7D] text-white py-2 rounded-lg hover:bg-white hover:text-[#F08C7D] border-2 border-[#F08C7D] transition"
-              disabled={loading?true:false}
+              disabled={loading}
+              className={`w-full py-5 rounded-2xl font-black text-[11px] tracking-[0.3em] uppercase transition-all duration-500 flex items-center justify-center gap-3
+                ${loading 
+                  ? "bg-stone-100 text-stone-400 cursor-not-allowed" 
+                  : "bg-stone-900 text-white hover:bg-[#B23A2E] shadow-xl shadow-stone-200 active:scale-[0.98]"
+                }`}
             >
-              RESET PASSWORD
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <div className="w-3 h-3 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  Updating...
+                </span>
+              ) : (
+                "Commit Changes"
+              )}
             </button>
           </form>
+
+          {/* SECURITY NOTICE */}
+          <div className="pt-8 border-t border-stone-50">
+            <p className="text-[9px] leading-relaxed text-stone-400 font-medium text-center uppercase tracking-widest">
+              By updating your password, you authorize all existing <br /> 
+              sessions to be terminated for your security.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   )
 }

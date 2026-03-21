@@ -235,410 +235,470 @@ export default function ShoppingCheckout() {
       </Helmet>
 
       <div className="max-w-2xl mx-auto mb-12 px-4 sm:px-6">
-  <div className="relative flex items-start justify-between">
-    
-    {/* STATIC BACKGROUND TRACK */}
-    <div className="absolute top-[18px] left-0 w-full h-[1px] bg-stone-100 z-0" />
+        <div className="relative flex items-start justify-between">
+          {/* STATIC BACKGROUND TRACK */}
+          <div className="absolute top-[18px] left-0 w-full h-[1px] bg-stone-100 z-0" />
 
-    {/* DYNAMIC PROGRESS LINE */}
-    <div
-      className="absolute top-[18px] left-0 h-[1.5px] bg-stone-900 transition-all duration-700 ease-in-out z-0"
-      style={{
-        width: `${((currentStep - 1) / 2) * 100}%`,
-      }}
-    />
-
-    {/* STEPS */}
-    {[
-      { id: 1, label: "Shipping", sub: "Address" },
-      { id: 2, label: "Review", sub: "Details" },
-      { id: 3, label: "Payment", sub: "Checkout" },
-    ].map((step) => {
-      const isActive = currentStep >= step.id;
-      const isCompleted = currentStep > step.id;
-
-      return (
-        <div key={step.id} className="relative z-10 flex flex-col items-center group">
-          {/* STEP CIRCLE */}
+          {/* DYNAMIC PROGRESS LINE */}
           <div
-            className={`
+            className="absolute top-[18px] left-0 h-[1.5px] bg-stone-900 transition-all duration-700 ease-in-out z-0"
+            style={{
+              width: `${((currentStep - 1) / 2) * 100}%`,
+            }}
+          />
+
+          {/* STEPS */}
+          {[
+            { id: 1, label: "Shipping", sub: "Address" },
+            { id: 2, label: "Review", sub: "Details" },
+            { id: 3, label: "Payment", sub: "Checkout" },
+          ].map((step) => {
+            const isActive = currentStep >= step.id;
+            const isCompleted = currentStep > step.id;
+
+            return (
+              <div
+                key={step.id}
+                className="relative z-10 flex flex-col items-center group"
+              >
+                {/* STEP CIRCLE */}
+                <div
+                  className={`
               w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-500 border-2
-              ${isActive 
-                ? "bg-stone-900 border-stone-900 text-white shadow-[0_10px_20px_rgba(0,0,0,0.1)] scale-110" 
-                : "bg-white border-stone-200 text-stone-300"
+              ${
+                isActive
+                  ? "bg-stone-900 border-stone-900 text-white shadow-[0_10px_20px_rgba(0,0,0,0.1)] scale-110"
+                  : "bg-white border-stone-200 text-stone-300"
               }
             `}
-          >
-            {isCompleted ? (
-              <Check className="w-4 h-4 stroke-[3px]" />
-            ) : (
-              <span className="text-[10px] font-black tracking-tighter">
-                0{step.id}
-              </span>
-            )}
-            
-            {/* Active Pulsing Glow */}
-            {currentStep === step.id && (
-              <div className="absolute inset-0 rounded-2xl bg-stone-900 animate-ping opacity-20" />
-            )}
-          </div>
+                >
+                  {isCompleted ? (
+                    <Check className="w-4 h-4 stroke-[3px]" />
+                  ) : (
+                    <span className="text-[10px] font-black tracking-tighter">
+                      0{step.id}
+                    </span>
+                  )}
 
-          {/* TEXT LABELS */}
-          <div className="mt-4 flex flex-col items-center">
-            <span
-              className={`text-[9px] font-black uppercase tracking-[0.3em] transition-colors duration-500
+                  {/* Active Pulsing Glow */}
+                  {currentStep === step.id && (
+                    <div className="absolute inset-0 rounded-2xl bg-stone-900 animate-ping opacity-20" />
+                  )}
+                </div>
+
+                {/* TEXT LABELS */}
+                <div className="mt-4 flex flex-col items-center">
+                  <span
+                    className={`text-[9px] font-black uppercase tracking-[0.3em] transition-colors duration-500
               ${isActive ? "text-stone-900" : "text-stone-300"}`}
-            >
-              {step.label}
-            </span>
-            {/* Hidden on very small screens to keep UI clean */}
-            <span className="hidden sm:block text-[8px] font-serif italic text-stone-400 mt-0.5">
-              {step.sub}
-            </span>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-</div>
-
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* ================= LEFT SECTION ================= */}
-       <div className="lg:col-span-2 space-y-10">
-  {/* ADDRESS SECTION */}
-  <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-    <div className="flex items-center justify-between mb-8">
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200">
-          <MapPin className="w-5 h-5 text-stone-100" />
-        </div>
-        <div>
-          <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.25em]">
-            Shipping Destination
-          </h2>
-          <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
-            Logistics & Final Delivery
-          </p>
-        </div>
-      </div>
-      {/* Visual Indicator of Step Completion */}
-      <div className={`w-2 h-2 rounded-full ${currentSelectedAddress ? 'bg-green-500' : 'bg-orange-400 animate-pulse'}`} />
-    </div>
-
-    <div className="pl-0 sm:pl-2">
-      <Address
-        selectedId={currentSelectedAddress}
-        setCurrentSelectedAddress={setCurrentSelectedAddress}
-      />
-    </div>
-  </section>
-
-  {/* CART ITEMS SECTION */}
-  {cartItems.length > 0 && (
-    <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
-      <div className="flex items-center gap-4 mb-10">
-        <div className="w-12 h-12 rounded-2xl bg-stone-50 flex items-center justify-center border border-stone-100">
-          <ShoppingBag className="w-5 h-5 text-stone-900" />
-        </div>
-        <div>
-          <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.25em]">
-            Harvest Manifest
-          </h2>
-          <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
-             {cartItems.length} Individual Items Selected
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-6 max-h-[500px] overflow-y-auto no-scrollbar pr-2">
-        {cartItems.map((item) => (
-          <div
-            key={`${item.productId}-${item.size || "default"}`}
-            className="group flex items-center justify-between bg-stone-50/30 p-4 rounded-3xl border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-300"
-          >
-            <div className="flex gap-5">
-              <div className="relative w-20 h-20 rounded-[1.25rem] overflow-hidden bg-white border border-stone-100 shadow-sm">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div className="flex flex-col justify-center">
-                <p className="text-[11px] font-black text-stone-900 uppercase tracking-tight italic font-serif">
-                  {item.title}
-                </p>
-
-                <div className="flex flex-wrap items-center gap-2 mt-2">
-                  {item.size && (
-                    <span className="text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2.5 py-1 rounded-lg">
-                      {item.size}
-                    </span>
-                  )}
-                  {(item.weight || item.productWeight) && (
-                    <span className="text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2.5 py-1 rounded-lg">
-                      {item.weight || item.productWeight}
-                    </span>
-                  )}
-                  <span className="text-[8px] font-black text-[#B23A2E] uppercase tracking-widest ml-1">
-                    Qty: {item.quantity}
+                  >
+                    {step.label}
+                  </span>
+                  {/* Hidden on very small screens to keep UI clean */}
+                  <span className="hidden sm:block text-[8px] font-serif italic text-stone-400 mt-0.5">
+                    {step.sub}
                   </span>
                 </div>
               </div>
-            </div>
-
-            <div className="text-right">
-              <p className="text-xs font-black text-stone-900 tracking-tighter">
-                ₹{((item.salesPrice > 0 ? item.salesPrice : item.price) * item.quantity).toFixed(0)}
-              </p>
-              <p className="text-[8px] font-bold text-stone-300 uppercase tracking-widest mt-1">
-                incl. tax
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  )}
-
-  {/* CUSTOM BOXES SECTION */}
-  {boxes.length > 0 && (
-    <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
-      <div className="flex items-center gap-4 mb-10">
-        <div className="w-12 h-12 rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200">
-          <Box className="w-5 h-5 text-stone-100" />
-        </div>
-        <div>
-          <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.25em]">
-            Curated Collections
-          </h2>
-          <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
-            Bespoke Gift Boxes
-          </p>
+            );
+          })}
         </div>
       </div>
 
-      <div className="grid gap-8">
-        {boxes.map((box) => (
-          <div
-            key={box._id || box.boxId}
-            className="bg-stone-50/50 rounded-[2.5rem] border border-stone-100 p-8 relative overflow-hidden"
-          >
-            {/* Elegant Header for the Box */}
-            <div className="flex justify-between items-center mb-8 relative z-10">
-              <div className="px-4 py-1.5 bg-white rounded-full border border-stone-100 shadow-sm">
-                 <h3 className="text-[10px] font-black text-[#B23A2E] uppercase tracking-[0.3em]">
-                  {box.boxName || "Custom Collection"}
-                </h3>
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* ================= LEFT SECTION ================= */}
+        <div className="lg:col-span-2 space-y-10">
+          {/* ADDRESS SECTION */}
+          <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200">
+                  <MapPin className="w-5 h-5 text-stone-100" />
+                </div>
+                <div>
+                  <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.25em]">
+                    Shipping Destination
+                  </h2>
+                  <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
+                    Logistics & Final Delivery
+                  </p>
+                </div>
               </div>
-              <div className="h-[1px] flex-1 mx-6 bg-stone-200" />
-              <span className="text-[10px] font-serif italic text-stone-400">Pack of {box.items.length}</span>
+              {/* Visual Indicator of Step Completion */}
+              <div
+                className={`w-2 h-2 rounded-full ${currentSelectedAddress ? "bg-green-500" : "bg-orange-400 animate-pulse"}`}
+              />
             </div>
 
-            <ul className="space-y-5">
-              {box.items.map((item, idx) => {
-                const product = productList.find((p) => p._id === item.productId) || {};
-                const sizePrice = (product.customBoxPrices || []).find((p) => p.size === item.size);
-                const price = sizePrice ? Number(sizePrice.pricePerPiece) : 0;
+            <div className="pl-0 sm:pl-2">
+              <Address
+                selectedId={currentSelectedAddress}
+                setCurrentSelectedAddress={setCurrentSelectedAddress}
+              />
+            </div>
+          </section>
 
-                return (
-                  <li key={`${item.productId}-${idx}`} className="flex justify-between items-center group">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-white border border-stone-100 shadow-sm group-hover:scale-105 transition-transform">
+          {/* CART ITEMS SECTION */}
+          {cartItems.length > 0 && (
+            <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-12 h-12 rounded-2xl bg-stone-50 flex items-center justify-center border border-stone-100">
+                  <ShoppingBag className="w-5 h-5 text-stone-900" />
+                </div>
+                <div>
+                  <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.25em]">
+                    Harvest Manifest
+                  </h2>
+                  <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
+                    {cartItems.length} Individual Items Selected
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-6 max-h-[500px] overflow-y-auto no-scrollbar pr-2">
+                {cartItems.map((item) => (
+                  <div
+                    key={`${item.productId}-${item.size || "default"}`}
+                    className="group flex items-center justify-between bg-stone-50/30 p-4 rounded-3xl border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-300"
+                  >
+                    <div className="flex gap-5">
+                      <div className="relative w-20 h-20 rounded-[1.25rem] overflow-hidden bg-white border border-stone-100 shadow-sm">
                         <img
-                          src={product.image || "/placeholder.png"}
-                          alt=""
-                          className="w-full h-full object-cover"
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                       </div>
-                      <div>
-                        <p className="text-[10px] font-black text-stone-900 uppercase leading-tight">
-                          {product.title}
+                      <div className="flex flex-col justify-center">
+                        <p className="text-[11px] font-black text-stone-900 uppercase tracking-tight italic font-serif">
+                          {item.title}
                         </p>
-                        <div className="flex gap-2 mt-1">
-                          <span className="text-[8px] text-stone-400 font-bold uppercase tracking-tighter">
-                            {item.size} · {item.quantity} Units
-                          </span>
-                          <span className="text-[8px] text-stone-300">•</span>
-                          <span className="text-[8px] text-stone-400 font-bold uppercase tracking-tighter">
-                            {item.weight}
+
+                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                          {item.size && (
+                            <span className="text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2.5 py-1 rounded-lg">
+                              {item.size}
+                            </span>
+                          )}
+                          {(item.weight || item.productWeight) && (
+                            <span className="text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2.5 py-1 rounded-lg">
+                              {item.weight || item.productWeight}
+                            </span>
+                          )}
+                          <span className="text-[8px] font-black text-[#B23A2E] uppercase tracking-widest ml-1">
+                            Qty: {item.quantity}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <span className="text-[11px] font-black text-stone-900 tracking-tighter">
-                      ₹{(price * item.quantity).toFixed(0)}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </section>
-  )}
-</div>
+
+                    <div className="text-right">
+                      <p className="text-xs font-black text-stone-900 tracking-tighter">
+                        ₹
+                        {(
+                          (item.salesPrice > 0 ? item.salesPrice : item.price) *
+                          item.quantity
+                        ).toFixed(0)}
+                      </p>
+                      <p className="text-[8px] font-bold text-stone-300 uppercase tracking-widest mt-1">
+                        incl. tax
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* CUSTOM BOXES SECTION */}
+          {boxes.length > 0 && (
+            <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-12 h-12 rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200">
+                  <Box className="w-5 h-5 text-stone-100" />
+                </div>
+                <div>
+                  <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.25em]">
+                    Curated Collections
+                  </h2>
+                  <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
+                    Bespoke Gift Boxes
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-8">
+                {boxes.map((box) => (
+                  <div
+                    key={box._id || box.boxId}
+                    className="bg-stone-50/50 rounded-[2.5rem] border border-stone-100 p-8 relative overflow-hidden"
+                  >
+                    {/* Elegant Header for the Box */}
+                    <div className="flex justify-between items-center mb-8 relative z-10">
+                      <div className="px-4 py-1.5 bg-white rounded-full border border-stone-100 shadow-sm">
+                        <h3 className="text-[10px] font-black text-[#B23A2E] uppercase tracking-[0.3em]">
+                          {box.boxName || "Custom Collection"}
+                        </h3>
+                      </div>
+                      <div className="h-[1px] flex-1 mx-6 bg-stone-200" />
+                      <span className="text-[10px] font-serif italic text-stone-400">
+                        Pack of {box.items.length}
+                      </span>
+                    </div>
+
+                    <ul className="space-y-5">
+                      {box.items.map((item, idx) => {
+                        const product =
+                          productList.find((p) => p._id === item.productId) ||
+                          {};
+                        const sizePrice = (product.customBoxPrices || []).find(
+                          (p) => p.size === item.size,
+                        );
+                        const price = sizePrice
+                          ? Number(sizePrice.pricePerPiece)
+                          : 0;
+
+                        return (
+                          <li
+                            key={`${item.productId}-${idx}`}
+                            className="flex justify-between items-center group"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 rounded-xl overflow-hidden bg-white border border-stone-100 shadow-sm group-hover:scale-105 transition-transform">
+                                <img
+                                  src={product.image || "/placeholder.png"}
+                                  alt=""
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div>
+                                <p className="text-[10px] font-black text-stone-900 uppercase leading-tight">
+                                  {product.title}
+                                </p>
+                                <div className="flex gap-2 mt-1">
+                                  <span className="text-[8px] text-stone-400 font-bold uppercase tracking-tighter">
+                                    {item.size} · {item.quantity} Units
+                                  </span>
+                                  <span className="text-[8px] text-stone-300">
+                                    •
+                                  </span>
+                                  <span className="text-[8px] text-stone-400 font-bold uppercase tracking-tighter">
+                                    {item.weight}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <span className="text-[11px] font-black text-stone-900 tracking-tighter">
+                              ₹{(price * item.quantity).toFixed(0)}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
 
         {/* ================= RIGHT SUMMARY ================= */}
         <div className="rounded-[2.5rem] p-8 h-fit sticky top-10 bg-white border border-stone-100 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden">
-  
-  {/* TOP DECORATIVE ACCENT */}
-  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-100 via-stone-900 to-stone-100 opacity-20" />
+          {/* TOP DECORATIVE ACCENT */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-100 via-stone-900 to-stone-100 opacity-20" />
 
-  {/* HEADER */}
-  <div className="flex items-center justify-between mb-10">
-    <div className="flex items-center gap-3">
-      <div className="w-10 h-10 rounded-2xl bg-stone-50 flex items-center justify-center border border-stone-100 shadow-sm">
-        <CreditCard className="w-5 h-5 text-stone-900" />
-      </div>
-      <div>
-        <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em] leading-none">
-          Settlement
-        </h2>
-        <p className="text-[8px] font-bold text-stone-400 uppercase tracking-widest mt-1.5">
-          Order Summary & Payment
-        </p>
-      </div>
-    </div>
-  </div>
-
-  {/* BREAKDOWN */}
-  <div className="space-y-5 mb-8">
-    <div className="flex justify-between items-center group">
-      <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-stone-600 transition-colors">Artisan Harvest</span>
-      <span className="text-stone-900 font-black tracking-tighter text-sm">
-        ₹{totalCartAmount.toFixed(0)}
-      </span>
-    </div>
-    
-    <div className="flex justify-between items-center group">
-      <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-stone-600 transition-colors">Curated Boxes</span>
-      <span className="text-stone-900 font-black tracking-tighter text-sm">
-        ₹{boxesTotal.toFixed(0)}
-      </span>
-    </div>
-
-    {discountAmount > 0 && (
-      <div className="flex justify-between items-center bg-green-50/50 p-3 rounded-xl border border-green-100/50">
-        <span className="text-[10px] font-black uppercase tracking-widest text-green-700 italic">
-          Gift Code: {code}
-        </span>
-        <span className="text-green-700 font-black tracking-tighter text-sm">
-          -₹{discountAmount.toFixed(0)}
-        </span>
-      </div>
-    )}
-
-    <div className="h-px bg-stone-100 w-full opacity-50" />
-  </div>
-
-  {/* FINAL PAYABLE BOX */}
-  <div className="p-7 rounded-[2rem] bg-stone-900 relative overflow-hidden shadow-xl shadow-stone-200">
-    {/* Subtle Glassmorphism Texture */}
-    <div className="absolute top-[-20%] right-[-10%] w-40 h-40 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-    
-    <div className="relative z-10 flex justify-between items-center">
-      <div>
-        <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1.5">
-          Total Payable
-        </p>
-        <p className="text-4xl font-black text-white tracking-tighter">
-          ₹{payableAmount.toFixed(0)}
-        </p>
-      </div>
-      <div className="bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-md border border-white/10">
-        <p className="text-[8px] text-white font-black uppercase tracking-tighter">
-          Complimentary <br/> Shipping
-        </p>
-      </div>
-    </div>
-  </div>
-
-  {/* PAYMENT METHODS */}
-  <div className="mt-10 space-y-4">
-    <h3 className="text-[10px] font-black text-stone-900 uppercase tracking-[0.25em] mb-4 text-center">
-      Select Gateway
-    </h3>
-
-    <div className="grid grid-cols-1 gap-3">
-      {/* ONLINE */}
-      <div
-        onClick={() => setPaymentMethod("razorpay")}
-        className={`group relative flex items-center justify-between p-5 rounded-[1.5rem] border-2 cursor-pointer transition-all duration-500
-          ${paymentMethod === "razorpay" 
-            ? "border-stone-900 bg-stone-50" 
-            : "border-stone-100 bg-white hover:border-stone-300"}`}
-      >
-        <div className="flex items-center gap-4">
-          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-500
-            ${paymentMethod === "razorpay" ? "border-stone-900 scale-110" : "border-stone-200"}`}>
-            {paymentMethod === "razorpay" && <div className="w-2.5 h-2.5 rounded-full bg-stone-900 animate-in zoom-in" />}
+          {/* HEADER */}
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-stone-50 flex items-center justify-center border border-stone-100 shadow-sm">
+                <CreditCard className="w-5 h-5 text-stone-900" />
+              </div>
+              <div>
+                <h2 className="text-[11px] font-black text-stone-900 uppercase tracking-[0.3em] leading-none">
+                  Settlement
+                </h2>
+                <p className="text-[8px] font-bold text-stone-400 uppercase tracking-widest mt-1.5">
+                  Order Summary & Payment
+                </p>
+              </div>
+            </div>
           </div>
-          <div>
-            <span className="text-[11px] font-black uppercase tracking-widest block text-stone-900">Online Secure</span>
-            <span className="text-[8px] font-bold text-stone-400 uppercase tracking-tighter">Cards, UPI, Netbanking</span>
-          </div>
-        </div>
-        <ShieldCheck className={`w-5 h-5 transition-colors ${paymentMethod === "razorpay" ? "text-stone-900" : "text-stone-200"}`} />
-      </div>
 
-      {/* COD */}
-      <div
-        onClick={() => !isCODDisabled && setPaymentMethod("cod")}
-        className={`group relative flex items-center justify-between p-5 rounded-[1.5rem] border-2 transition-all duration-500
-          ${isCODDisabled 
-            ? "opacity-40 grayscale cursor-not-allowed bg-stone-50 border-stone-100" 
-            : paymentMethod === "cod"
-              ? "border-stone-900 bg-stone-50 cursor-pointer"
-              : "border-stone-100 bg-white hover:border-stone-300 cursor-pointer"}`}
-      >
-        <div className="flex items-center gap-4">
-          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-500
-            ${paymentMethod === "cod" ? "border-stone-900 scale-110" : "border-stone-200"}`}>
-            {paymentMethod === "cod" && <div className="w-2.5 h-2.5 rounded-full bg-stone-900 animate-in zoom-in" />}
-          </div>
-          <div>
-            <span className="text-[11px] font-black uppercase tracking-widest block text-stone-900">Partial COD</span>
-            <span className={`text-[8px] font-bold uppercase tracking-tighter ${paymentMethod === "cod" ? "text-[#B23A2E]" : "text-stone-400"}`}>
-              {isCODDisabled ? "Available on orders > ₹200" : "₹200 Pre-payment Required"}
-            </span>
-          </div>
-        </div>
-        <Truck className={`w-5 h-5 transition-colors ${paymentMethod === "cod" ? "text-stone-900" : "text-stone-200"}`} />
-      </div>
-    </div>
-  </div>
+          {/* BREAKDOWN */}
+          <div className="space-y-5 mb-8">
+            <div className="flex justify-between items-center group">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-stone-600 transition-colors">
+                Artisan Harvest
+              </span>
+              <span className="text-stone-900 font-black tracking-tighter text-sm">
+                ₹{totalCartAmount.toFixed(0)}
+              </span>
+            </div>
 
-  {/* ACTION BUTTON */}
-  <button
-    onClick={handlePlaceOrder}
-    disabled={currentStep < 3 || isProcessing}
-    className={`group relative w-full mt-10 py-6 rounded-[2rem] font-black text-[11px] tracking-[0.4em] uppercase overflow-hidden transition-all duration-700
-      ${currentStep < 3 || isProcessing
-        ? "bg-stone-100 text-stone-300 cursor-not-allowed"
-        : "bg-[#B23A2E] text-white hover:bg-stone-900 shadow-[0_30px_60px_-15px_rgba(178,58,46,0.4)] hover:shadow-stone-400 active:scale-95"
+            <div className="flex justify-between items-center group">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-stone-600 transition-colors">
+                Curated Boxes
+              </span>
+              <span className="text-stone-900 font-black tracking-tighter text-sm">
+                ₹{boxesTotal.toFixed(0)}
+              </span>
+            </div>
+
+            {discountAmount > 0 && (
+              <div className="flex justify-between items-center bg-green-50/50 p-3 rounded-xl border border-green-100/50">
+                <span className="text-[10px] font-black uppercase tracking-widest text-green-700 italic">
+                  Gift Code: {code}
+                </span>
+                <span className="text-green-700 font-black tracking-tighter text-sm">
+                  -₹{discountAmount.toFixed(0)}
+                </span>
+              </div>
+            )}
+
+            <div className="h-px bg-stone-100 w-full opacity-50" />
+          </div>
+
+          {/* FINAL PAYABLE BOX */}
+          <div className="p-7 rounded-[2rem] bg-stone-900 relative overflow-hidden shadow-xl shadow-stone-200">
+            {/* Subtle Glassmorphism Texture */}
+            <div className="absolute top-[-20%] right-[-10%] w-40 h-40 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 flex justify-between items-center">
+              <div>
+                <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1.5">
+                  Total Payable
+                </p>
+                <p className="text-4xl font-black text-white tracking-tighter">
+                  ₹{payableAmount.toFixed(0)}
+                </p>
+              </div>
+              <div className="bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-md border border-white/10">
+                <p className="text-[8px] text-white font-black uppercase tracking-tighter">
+                  Complimentary <br /> Shipping
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* PAYMENT METHODS */}
+          <div className="mt-10 space-y-4">
+            <h3 className="text-[10px] font-black text-stone-900 uppercase tracking-[0.25em] mb-4 text-center">
+              Select Gateway
+            </h3>
+
+            <div className="grid grid-cols-1 gap-3">
+              {/* ONLINE */}
+              <div
+                onClick={() => setPaymentMethod("razorpay")}
+                className={`group relative flex items-center justify-between p-5 rounded-[1.5rem] border-2 cursor-pointer transition-all duration-500
+          ${
+            paymentMethod === "razorpay"
+              ? "border-stone-900 bg-stone-50"
+              : "border-stone-100 bg-white hover:border-stone-300"
+          }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-500
+            ${paymentMethod === "razorpay" ? "border-stone-900 scale-110" : "border-stone-200"}`}
+                  >
+                    {paymentMethod === "razorpay" && (
+                      <div className="w-2.5 h-2.5 rounded-full bg-stone-900 animate-in zoom-in" />
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-black uppercase tracking-widest block text-stone-900">
+                      Online Secure
+                    </span>
+                    <span className="text-[8px] font-bold text-stone-400 uppercase tracking-tighter">
+                      Cards, UPI, Netbanking
+                    </span>
+                  </div>
+                </div>
+                <ShieldCheck
+                  className={`w-5 h-5 transition-colors ${paymentMethod === "razorpay" ? "text-stone-900" : "text-stone-200"}`}
+                />
+              </div>
+
+              {/* COD */}
+              <div
+                onClick={() => !isCODDisabled && setPaymentMethod("cod")}
+                className={`group relative flex items-center justify-between p-5 rounded-[1.5rem] border-2 transition-all duration-500
+          ${
+            isCODDisabled
+              ? "opacity-40 grayscale cursor-not-allowed bg-stone-50 border-stone-100"
+              : paymentMethod === "cod"
+                ? "border-stone-900 bg-stone-50 cursor-pointer"
+                : "border-stone-100 bg-white hover:border-stone-300 cursor-pointer"
+          }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-500
+            ${paymentMethod === "cod" ? "border-stone-900 scale-110" : "border-stone-200"}`}
+                  >
+                    {paymentMethod === "cod" && (
+                      <div className="w-2.5 h-2.5 rounded-full bg-stone-900 animate-in zoom-in" />
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-black uppercase tracking-widest block text-stone-900">
+                      Partial COD
+                    </span>
+                    <span
+                      className={`text-[8px] font-bold uppercase tracking-tighter ${paymentMethod === "cod" ? "text-[#B23A2E]" : "text-stone-400"}`}
+                    >
+                      {isCODDisabled
+                        ? "Available on orders > ₹200"
+                        : "₹200 Pre-payment Required"}
+                    </span>
+                  </div>
+                </div>
+                <Truck
+                  className={`w-5 h-5 transition-colors ${paymentMethod === "cod" ? "text-stone-900" : "text-stone-200"}`}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ACTION BUTTON */}
+          <button
+            onClick={handlePlaceOrder}
+            disabled={currentStep < 3 || isProcessing}
+            className={`group relative w-full mt-10 py-6 rounded-[2rem] font-black text-[11px] tracking-[0.4em] uppercase overflow-hidden transition-all duration-700
+      ${
+        currentStep < 3 || isProcessing
+          ? "bg-stone-100 text-stone-300 cursor-not-allowed"
+          : "bg-[#B23A2E] text-white hover:bg-stone-900 shadow-[0_30px_60px_-15px_rgba(178,58,46,0.4)] hover:shadow-stone-400 active:scale-95"
       }`}
-  >
-    <span className="relative z-10">
-      {isProcessing ? "Validating Ledger..." : paymentMethod === "cod" ? "Secure Deposit & Order" : "Authorize Purchase"}
-    </span>
-    {/* Animated Shine Effect */}
-    <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
-  </button>
+          >
+            <span className="relative z-10">
+              {isProcessing
+                ? "Validating Ledger..."
+                : paymentMethod === "cod"
+                  ? "Secure Deposit & Order"
+                  : "Authorize Purchase"}
+            </span>
+            {/* Animated Shine Effect */}
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+          </button>
 
-  {/* TRUST FOOTER */}
-  <div className="mt-8 pt-6 border-t border-stone-50 flex items-center justify-center gap-8 text-stone-300">
-    <div className="flex items-center gap-2">
-      <Lock size={12} className="opacity-50" />
-      <span className="text-[9px] font-black uppercase tracking-widest">256-bit SSL</span>
-    </div>
-    <div className="flex items-center gap-2">
-      <Star size={12} className="opacity-50" />
-      <span className="text-[9px] font-black uppercase tracking-widest">Quality Guaranteed</span>
-    </div>
-  </div>
-</div>
+          {/* TRUST FOOTER */}
+          <div className="mt-8 pt-6 border-t border-stone-50 flex items-center justify-center gap-8 text-stone-300">
+            <div className="flex items-center gap-2">
+              <Lock size={12} className="opacity-50" />
+              <span className="text-[9px] font-black uppercase tracking-widest">
+                256-bit SSL
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Star size={12} className="opacity-50" />
+              <span className="text-[9px] font-black uppercase tracking-widest">
+                Quality Guaranteed
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
