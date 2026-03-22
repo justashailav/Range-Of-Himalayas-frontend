@@ -286,130 +286,110 @@ export default function Home() {
           <span>🚚 Fast delivery from our orchards directly to you!</span>
         </div>
       </div>
-      <section className="relative w-full h-[100dvh] overflow-hidden bg-stone-950 font-sans">
-      {/* 1. BACKGROUND LAYER */}
+      <section className="relative w-full h-[100dvh] overflow-hidden bg-[#0a0a0a]">
+      {/* 1. THE IMAGE LAYER */}
       <div className="absolute inset-0 z-0">
-        <motion.div
-          initial={{ scale: 1.15, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.6 }} // Lowered opacity for better text legibility
-          transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full h-full"
-        >
-          <img
-            src={bgImage}
-            className="w-full h-full object-cover object-center scale-105"
-            alt="Himalayan Landscape"
-          />
-        </motion.div>
+        <motion.img
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.7 }}
+          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          src={bgImage}
+          // Focus the image to the right so bottles don't overlap text on desktop
+          className="w-full h-full object-cover object-center md:object-[right_35%]"
+          alt="Himalayan Products"
+        />
 
-        {/* Multi-layered Vignette for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950/20" />
+        {/* 2. ADVANCED GRADIENT SYSTEM (The Scrim) */}
+        {/* Deep shadow on the left for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
+        {/* Bottom fade for the product list */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+        {/* Mobile overlay (darker overall) */}
+        <div className="absolute inset-0 bg-black/50 md:hidden" />
       </div>
 
-      {/* 2. CONTENT LAYER */}
-      <div className="relative z-10 flex flex-col justify-between h-full px-8 py-12 md:px-20 md:py-16 lg:px-32">
+      {/* 3. CONTENT LAYER */}
+      <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
         
-        {/* TOP TAG: Subtle & Refined */}
+        {/* TOP TAG */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.8 }}
-          className="flex items-center gap-4"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm"
         >
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-            <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full shadow-[0_0_8px_#B23A2E]" />
-            <p className="text-white/80 text-[10px] tracking-[0.3em] uppercase font-medium">
-              Harvest 2026 • Origin: Ladakh
-            </p>
-          </div>
+          <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
+          <p className="text-white/60 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
+            Harvest 2026 • Himalayan Origin
+          </p>
         </motion.div>
 
-        {/* CENTER HERO TEXT: Modern Serif/Sans Mix */}
-        <div className="max-w-3xl">
+        {/* CENTER HERO TEXT */}
+        <div className="max-w-4xl">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.7, duration: 1 }}
           >
-            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-extralight leading-[1.1] tracking-tight">
+            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
               Pure Goodness <br />
-              <span className="font-serif italic text-stone-300">from the Himalayas</span>
+              <span className="font-serif italic text-[#B23A2E]">From the Himalayas</span>
             </h1>
 
-            <p className="mt-8 max-w-lg text-stone-400 text-base md:text-lg leading-relaxed font-light">
-              We source rare, high-altitude ingredients crafted by mountain 
-              communities using centuries-old traditions.
+            <p className="mt-6 max-w-md text-white/50 text-base md:text-lg leading-relaxed font-light">
+              Rare, high-altitude ingredients crafted with <br className="hidden md:block" /> 
+              centuries of tradition and zero compromise.
             </p>
 
-            {/* CTA: Animated Border/Hover */}
-            <motion.div 
-              className="mt-10"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Link to="/viewproducts" className="inline-flex items-center gap-6 group">
-                <button className="relative overflow-hidden px-10 py-4 bg-[#B23A2E] text-white text-xs tracking-[0.3em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(178,58,46,0.3)]">
-                  <span className="relative z-10">Shop Collection</span>
-                  <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            {/* CTA GROUP */}
+            <div className="mt-10 flex flex-wrap items-center gap-8">
+              <Link to="/viewproducts">
+                <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
+                  Shop Collection
                 </button>
-                <span className="text-white/40 group-hover:text-white transition-colors duration-300 text-sm border-b border-white/20 pb-1">
-                   Explore Story
+              </Link>
+              
+              <Link to="/story" className="group flex items-center gap-3">
+                <span className="w-8 h-[1px] bg-white/30 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
+                <span className="text-white/40 group-hover:text-white text-[11px] tracking-[0.2em] uppercase transition-colors">
+                  Explore Story
                 </span>
               </Link>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
 
-        {/* BOTTOM PRODUCTS: Modern Grid with Hover State */}
-        <div className="space-y-12">
+        {/* BOTTOM SECTION */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
+          {/* PRODUCT LIST */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-white/10 pt-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="flex flex-wrap md:flex-nowrap gap-x-12 gap-y-4 border-t border-white/10 pt-8"
           >
-            {[
-              { name: "Apricot Oil", note: "Cold Pressed" },
-              { name: "Rock Salt", note: "Mineral Rich" },
-              { name: "Buckthorn", note: "Wild Harvest" },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="group cursor-pointer space-y-2"
-              >
+            {["Apricot Oil", "Rock Salt", "Buckthorn"].map((item, i) => (
+              <div key={i} className="group cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <span className="text-[#B23A2E] text-[10px] font-mono opacity-60 group-hover:opacity-100 transition-opacity">
-                    0{i + 1}
-                  </span>
-                  <span className="text-white/50 group-hover:text-white text-[13px] uppercase tracking-[0.2em] transition-all duration-300 group-hover:translate-x-1">
-                    {item.name}
+                  <span className="text-[#B23A2E] text-[10px] font-mono">0{i + 1}</span>
+                  <span className="text-white/40 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
+                    {item}
                   </span>
                 </div>
-                <p className="text-[10px] text-stone-600 uppercase tracking-widest pl-7">
-                  {item.note}
-                </p>
               </div>
             ))}
           </motion.div>
 
-          {/* SCROLL INDICATOR: Animated */}
-          <div className="flex justify-between items-end">
-            <div className="relative w-[1px] h-16 bg-white/10 overflow-hidden">
-               <motion.div 
-                animate={{ y: [0, 64] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="w-full h-1/2 bg-[#B23A2E]" 
-               />
-            </div>
-            <p className="text-stone-700 text-[10px] tracking-widest uppercase rotate-90 origin-right translate-y-[-20px]">
-              Scroll to Explore
-            </p>
+          {/* SCROLL INDICATOR */}
+          <div className="hidden md:flex flex-col items-end gap-4">
+             <p className="text-white/20 text-[9px] tracking-[0.5em] uppercase vertical-text">
+                Scroll to explore
+             </p>
+             <div className="w-[1px] h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
           </div>
         </div>
       </div>
     </section>
-
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
           <motion.span
