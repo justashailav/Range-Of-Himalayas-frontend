@@ -286,106 +286,113 @@ export default function Home() {
           <span>🚚 Fast delivery from our orchards directly to you!</span>
         </div>
       </div>
-      <section className="relative w-full h-[100dvh] overflow-hidden bg-[#0a0a0a]">
-      {/* 1. THE IMAGE LAYER */}
+      <section className="relative w-full h-[100dvh] overflow-hidden bg-[#050505] font-sans">
+      {/* 1. THE IMAGE LAYER - Shifted right to create a 'Text Corridor' on the left */}
       <div className="absolute inset-0 z-0">
         <motion.img
           initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.7 }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          animate={{ scale: 1, opacity: 0.6 }}
+          transition={{ duration: 2.5, ease: [0.19, 1, 0.22, 1] }}
           src={bgImage}
-          // Focus the image to the right so bottles don't overlap text on desktop
-          className="w-full h-full object-cover object-center md:object-[right_35%]"
+          className="w-full h-full object-cover object-[center_right] md:object-[70%_center]"
           alt="Himalayan Products"
         />
 
-        {/* 2. ADVANCED GRADIENT SYSTEM (The Scrim) */}
-        {/* Deep shadow on the left for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
-        {/* Bottom fade for the product list */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-        {/* Mobile overlay (darker overall) */}
-        <div className="absolute inset-0 bg-black/50 md:hidden" />
+        {/* 2. THE SCRIM SYSTEM - Heavier on the left for text pop */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/80 to-transparent w-full md:w-[60%] z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-10" />
       </div>
 
       {/* 3. CONTENT LAYER */}
-      <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
+      <div className="relative z-20 flex flex-col justify-between h-full px-8 py-12 md:px-24 md:py-20">
         
-        {/* TOP TAG */}
+        {/* TOP: Minimalist Branding/Tag */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="flex items-center gap-6"
         >
-          <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
-          <p className="text-white/60 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
-            Harvest 2026 • Himalayan Origin
+          <div className="h-[1px] w-12 bg-[#B23A2E]" />
+          <p className="text-white/40 text-[10px] tracking-[0.5em] uppercase font-bold">
+            Est. 2026 • High Altitude Organic
           </p>
         </motion.div>
 
-        {/* CENTER HERO TEXT */}
-        <div className="max-w-4xl">
+        {/* CENTER: Editorial Typography */}
+        <div className="max-w-4xl space-y-8">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7, duration: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
           >
-            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
-              Pure Goodness <br />
-              <span className="font-serif italic text-[#B23A2E]">From the Himalayas</span>
+            <h1 className="text-white text-6xl md:text-8xl lg:text-[10rem] font-extralight leading-[0.9] tracking-tighter">
+              Pure <br /> 
+              <span className="font-serif italic text-white/90">Goodness</span>
             </h1>
+            
+            <div className="mt-6 flex items-center gap-4">
+               <div className="w-2 h-2 rounded-full bg-[#B23A2E] shadow-[0_0_15px_#B23A2E]" />
+               <h2 className="text-[#B23A2E] text-xl md:text-2xl font-serif italic tracking-wide">
+                 From the heart of the Himalayas
+               </h2>
+            </div>
 
-            <p className="mt-6 max-w-md text-white/50 text-base md:text-lg leading-relaxed font-light">
-              Rare, high-altitude ingredients crafted with <br className="hidden md:block" /> 
-              centuries of tradition and zero compromise.
+            <p className="mt-8 max-w-sm text-white/40 text-sm md:text-base leading-relaxed font-light border-l border-white/10 pl-6">
+              Sustainably harvested at 4,000m. Experience the untamed purity of 
+              earth’s highest peaks in every drop.
             </p>
 
-            {/* CTA GROUP */}
-            <div className="mt-10 flex flex-wrap items-center gap-8">
+            {/* BUTTONS: High Contrast */}
+            <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-8">
               <Link to="/viewproducts">
-                <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  className="px-12 py-5 bg-white text-black text-[10px] tracking-[0.3em] uppercase font-bold rounded-full transition-colors hover:bg-[#B23A2E] hover:text-white"
+                >
                   Shop Collection
-                </button>
+                </motion.button>
               </Link>
               
-              <Link to="/story" className="group flex items-center gap-3">
-                <span className="w-8 h-[1px] bg-white/30 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
-                <span className="text-white/40 group-hover:text-white text-[11px] tracking-[0.2em] uppercase transition-colors">
-                  Explore Story
+              <Link to="/story" className="group flex items-center gap-4">
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#B23A2E] transition-colors duration-500">
+                    <div className="w-1 h-1 bg-white group-hover:bg-[#B23A2E] rounded-full" />
+                  </div>
+                </div>
+                <span className="text-white/60 group-hover:text-white text-[10px] tracking-[0.3em] uppercase transition-all">
+                  Our Legacy
                 </span>
               </Link>
             </div>
           </motion.div>
         </div>
 
-        {/* BOTTOM SECTION */}
-        <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
-          {/* PRODUCT LIST */}
+        {/* BOTTOM: Product Navigation Card */}
+        <div className="flex flex-col md:flex-row justify-between items-end gap-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2 }}
-            className="flex flex-wrap md:flex-nowrap gap-x-12 gap-y-4 border-t border-white/10 pt-8"
+            className="w-full md:w-auto grid grid-cols-1 sm:grid-cols-3 gap-1 px-1 py-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-full"
           >
             {["Apricot Oil", "Rock Salt", "Buckthorn"].map((item, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <span className="text-[#B23A2E] text-[10px] font-mono">0{i + 1}</span>
-                  <span className="text-white/40 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
-                    {item}
-                  </span>
-                </div>
-              </div>
+              <button 
+                key={i} 
+                className="px-8 py-4 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-all duration-300 group flex items-center gap-3"
+              >
+                <span className="text-[9px] font-mono text-[#B23A2E]">0{i + 1}</span>
+                <span className="text-[11px] uppercase tracking-[0.2em]">{item}</span>
+              </button>
             ))}
           </motion.div>
 
-          {/* SCROLL INDICATOR */}
-          <div className="hidden md:flex flex-col items-end gap-4">
-             <p className="text-white/20 text-[9px] tracking-[0.5em] uppercase vertical-text">
-                Scroll to explore
-             </p>
-             <div className="w-[1px] h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+          {/* INDICATOR */}
+          <div className="hidden md:flex flex-col items-center gap-6">
+             <span className="text-white/20 text-[9px] tracking-[0.5em] uppercase [writing-mode:vertical-lr]">
+                Discover
+             </span>
+             <div className="w-[1px] h-20 bg-gradient-to-b from-[#B23A2E] via-[#B23A2E] to-transparent" />
           </div>
         </div>
       </div>
