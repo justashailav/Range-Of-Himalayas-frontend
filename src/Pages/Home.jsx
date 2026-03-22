@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "../assets/HeroImage.png";
+import bgImage from "../assets/Banner.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaInstagram,
@@ -286,102 +286,129 @@ export default function Home() {
           <span>🚚 Fast delivery from our orchards directly to you!</span>
         </div>
       </div>
-      <section className="relative w-full h-[100dvh] overflow-hidden bg-stone-950">
-        {/* 1. THE IMAGE */}
-        <div className="relative h-screen w-full overflow-hidden">
-          {/* 1. BACKGROUND IMAGE */}
-          <div className="absolute inset-0 z-0">
-            <motion.img
-              initial={{ scale: 1.1, opacity: 0 }}
-              animate={{ scale: 1, opacity: 0.85 }}
-              transition={{ duration: 1.6, ease: "easeOut" }}
-              src={bgImage}
-              className="w-full h-full object-cover object-center md:object-right"
-              alt="Himalayan Products"
-            />
+      <section className="relative w-full h-[100dvh] overflow-hidden bg-stone-950 font-sans">
+      {/* 1. BACKGROUND LAYER */}
+      <div className="absolute inset-0 z-0">
+        <motion.div
+          initial={{ scale: 1.15, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.6 }} // Lowered opacity for better text legibility
+          transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full h-full"
+        >
+          <img
+            src={bgImage}
+            className="w-full h-full object-cover object-center scale-105"
+            alt="Himalayan Landscape"
+          />
+        </motion.div>
 
-            {/* Premium Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        {/* Multi-layered Vignette for depth */}
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950/20" />
+      </div>
+
+      {/* 2. CONTENT LAYER */}
+      <div className="relative z-10 flex flex-col justify-between h-full px-8 py-12 md:px-20 md:py-16 lg:px-32">
+        
+        {/* TOP TAG: Subtle & Refined */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8 }}
+          className="flex items-center gap-4"
+        >
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+            <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full shadow-[0_0_8px_#B23A2E]" />
+            <p className="text-white/80 text-[10px] tracking-[0.3em] uppercase font-medium">
+              Harvest 2026 • Origin: Ladakh
+            </p>
           </div>
+        </motion.div>
 
-          {/* 2. CONTENT */}
-          <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
-            {/* TOP TAG */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex items-center justify-center md:justify-start gap-3"
+        {/* CENTER HERO TEXT: Modern Serif/Sans Mix */}
+        <div className="max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-extralight leading-[1.1] tracking-tight">
+              Pure Goodness <br />
+              <span className="font-serif italic text-stone-300">from the Himalayas</span>
+            </h1>
+
+            <p className="mt-8 max-w-lg text-stone-400 text-base md:text-lg leading-relaxed font-light">
+              We source rare, high-altitude ingredients crafted by mountain 
+              communities using centuries-old traditions.
+            </p>
+
+            {/* CTA: Animated Border/Hover */}
+            <motion.div 
+              className="mt-10"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse" />
-              <p className="text-white/70 text-[10px] md:text-xs tracking-[0.4em] uppercase font-semibold">
-                Harvest 2026 • Himalayan Origin
-              </p>
-            </motion.div>
-
-            {/* CENTER HERO TEXT */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 1 }}
-              className="max-w-2xl text-center md:text-left mx-auto md:mx-0"
-            >
-              <h1 className="text-white text-3xl sm:text-4xl md:text-6xl font-light leading-tight tracking-tight">
-                Pure Goodness <br />
-                <span className="font-semibold">From the Himalayas</span>
-              </h1>
-
-              <p className="mt-4 text-white/70 text-sm md:text-base leading-relaxed">
-                Discover nature’s finest — from cold-pressed oils to
-                mineral-rich salts, crafted with purity and tradition.
-              </p>
-
-              {/* CTA */}
-             <Link to="/viewproducts">
-                            <div className="mt-6">
-                <button className="px-6 py-3 bg-[#B23A2E] hover:bg-[#922f26] text-white text-xs tracking-[0.2em] uppercase rounded-full transition-all duration-300">
-                  Shop Now
+              <Link to="/viewproducts" className="inline-flex items-center gap-6 group">
+                <button className="relative overflow-hidden px-10 py-4 bg-[#B23A2E] text-white text-xs tracking-[0.3em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_0_30px_rgba(178,58,46,0.3)]">
+                  <span className="relative z-10">Shop Collection</span>
+                  <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                 </button>
-              </div>
-             </Link>
+                <span className="text-white/40 group-hover:text-white transition-colors duration-300 text-sm border-b border-white/20 pb-1">
+                   Explore Story
+                </span>
+              </Link>
             </motion.div>
+          </motion.div>
+        </div>
 
-            {/* BOTTOM PRODUCTS */}
-            <div className="flex flex-col gap-8 md:gap-10">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
-                className="grid grid-cols-1 gap-y-5 md:flex md:items-center md:gap-x-12 border-t border-white/10 pt-8"
+        {/* BOTTOM PRODUCTS: Modern Grid with Hover State */}
+        <div className="space-y-12">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-white/10 pt-10"
+          >
+            {[
+              { name: "Apricot Oil", note: "Cold Pressed" },
+              { name: "Rock Salt", note: "Mineral Rich" },
+              { name: "Buckthorn", note: "Wild Harvest" },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="group cursor-pointer space-y-2"
               >
-                {[
-                  "Apricot Oil",
-                  "Himalayan Rock Salt",
-                  "Sea Buckthorn Pulp",
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-center md:justify-start gap-3 group cursor-pointer"
-                  >
-                    <span className="text-[#B23A2E] text-[10px] font-mono">
-                      0{i + 1}
-                    </span>
-
-                    <span className="text-white/60 group-hover:text-white text-[12px] uppercase tracking-[0.25em] transition duration-300">
-                      {item}
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* SCROLL INDICATOR */}
-              <div className="flex justify-center md:justify-start">
-                <div className="w-[1px] h-12 bg-gradient-to-b from-[#B23A2E] to-transparent" />
+                <div className="flex items-center gap-3">
+                  <span className="text-[#B23A2E] text-[10px] font-mono opacity-60 group-hover:opacity-100 transition-opacity">
+                    0{i + 1}
+                  </span>
+                  <span className="text-white/50 group-hover:text-white text-[13px] uppercase tracking-[0.2em] transition-all duration-300 group-hover:translate-x-1">
+                    {item.name}
+                  </span>
+                </div>
+                <p className="text-[10px] text-stone-600 uppercase tracking-widest pl-7">
+                  {item.note}
+                </p>
               </div>
+            ))}
+          </motion.div>
+
+          {/* SCROLL INDICATOR: Animated */}
+          <div className="flex justify-between items-end">
+            <div className="relative w-[1px] h-16 bg-white/10 overflow-hidden">
+               <motion.div 
+                animate={{ y: [0, 64] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-full h-1/2 bg-[#B23A2E]" 
+               />
             </div>
+            <p className="text-stone-700 text-[10px] tracking-widest uppercase rotate-90 origin-right translate-y-[-20px]">
+              Scroll to Explore
+            </p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       <div>
         <div className="flex flex-col items-center mt-12 mb-8">
