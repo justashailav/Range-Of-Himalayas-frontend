@@ -27,7 +27,6 @@ import { Helmet } from "react-helmet";
 import HomeBlog from "./HomeBlogs";
 import { motion, AnimatePresence } from "framer-motion";
 import HimalayanLoader from "./HimalayanLoader";
-import TrendingProductSkeleton from "./TrendingProductSkeleton";
 import GallerySkeleton from "./GallerySkeleton";
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
@@ -276,51 +275,77 @@ export default function Home() {
         />
       </Helmet>
       <div className="relative w-full overflow-hidden bg-[#B23A2E]/90 backdrop-blur-md border-y border-white/5 py-3">
-      {/* Subtle Shine Effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
-      
-      <motion.div 
-        animate={{ x: [0, -1000] }}
-        transition={{ 
-          duration: 25, 
-          repeat: Infinity, 
-          ease: "linear" 
-        }}
-        className="flex whitespace-nowrap items-center gap-16"
-      >
-        {/* We repeat the content to ensure a seamless infinite loop */}
-        {[1, 2, 3].map((_, index) => (
-          <div key={index} className="flex items-center gap-16 text-white/90">
-            <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">Offer</span>
-              <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                Use code <span className="font-bold text-white border-b border-white/30 pb-0.5">HIMALAYA10</span> for 10% off
-              </p>
+        {/* Subtle Shine Effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
+
+        <motion.div
+          animate={{ x: [0, -1000] }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          className="flex whitespace-nowrap items-center gap-16"
+        >
+          {[1, 2, 3].map((_, index) => (
+            <div key={index} className="flex items-center gap-16 text-white/90">
+              {/* Offer */}
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+                  Offer
+                </span>
+                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+                  Use code{" "}
+                  <span className="font-bold text-white border-b border-white/30 pb-0.5">
+                    HIMALAYAN10
+                  </span>{" "}
+                  for 10% off
+                </p>
+              </div>
+
+              <div className="w-1 h-1 bg-white/30 rounded-full" />
+
+              {/* Reward */}
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+                  Reward
+                </span>
+                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+                  Complimentary gift on orders above{" "}
+                  <span className="font-semibold">₹500</span>
+                </p>
+              </div>
+
+              <div className="w-1 h-1 bg-white/30 rounded-full" />
+
+              {/* Logistics */}
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+                  Logistics
+                </span>
+                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+                  Directly from Himalayan Orchards to your doorstep
+                </p>
+              </div>
+
+              <div className="w-1 h-1 bg-white/30 rounded-full" />
+
+              {/* NEW: Dispatch */}
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+                  Dispatch
+                </span>
+                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+                  Orders will be dispatched from{" "}
+                  <span className="font-semibold text-white">18 April</span>
+                </p>
+              </div>
+
+              <div className="w-1 h-1 bg-white/30 rounded-full" />
             </div>
-
-            <div className="w-1 h-1 bg-white/30 rounded-full" />
-
-            <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">Reward</span>
-              <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                Complimentary gift on orders above <span className="font-semibold">₹500</span>
-              </p>
-            </div>
-
-            <div className="w-1 h-1 bg-white/30 rounded-full" />
-
-            <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">Logistics</span>
-              <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                Directly from Himalayan Orchards to your doorstep
-              </p>
-            </div>
-            
-            <div className="w-1 h-1 bg-white/30 rounded-full" />
-          </div>
-        ))}
-      </motion.div>
-    </div>
+          ))}
+        </motion.div>
+      </div>
       <section className="relative w-full h-[100dvh] overflow-hidden bg-[#0a0a0a]">
         {/* 1. THE IMAGE LAYER */}
         <div className="absolute inset-0 z-0">
@@ -386,7 +411,7 @@ export default function Home() {
                   </button>
                 </Link>
 
-                <Link to="/story" className="group flex items-center gap-3">
+                <Link to="/about-us" className="group flex items-center gap-3">
                   <span className="w-8 h-[1px] bg-white/30 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
                   <span className="text-white/40 group-hover:text-white text-[11px] tracking-[0.2em] uppercase transition-colors">
                     Explore Story
@@ -395,10 +420,7 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
-
-          {/* BOTTOM SECTION */}
           <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
-            {/* PRODUCT LIST */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -418,14 +440,6 @@ export default function Home() {
                 </div>
               ))}
             </motion.div>
-
-            {/* SCROLL INDICATOR */}
-            <div className="hidden md:flex flex-col items-end gap-4">
-              <p className="text-white/20 text-[9px] tracking-[0.5em] uppercase vertical-text">
-                Scroll to explore
-              </p>
-              <div className="w-[1px] h-16 bg-gradient-to-b from-[#B23A2E] to-transparent" />
-            </div>
           </div>
         </div>
       </section>
@@ -530,14 +544,6 @@ export default function Home() {
           </motion.div>
         </section>
       </div>
-      <div className="overflow-hidden relative bg-red-600 py-2 mt-4">
-        <div className="animate-marquee whitespace-nowrap text-white font-semibold text-lg flex gap-8">
-          <span>🍎 Fresh Himalayan Apples – Direct from Orchard to You 🍏</span>
-          <span>🍎 Organic, Wax-Free, Handpicked with Love 🌿</span>
-          <span>🍎 Premium Quality Apples – Taste the Himalayas 🏔</span>
-        </div>
-      </div>
-
       <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           {/* Title Section */}
@@ -577,13 +583,9 @@ export default function Home() {
                 <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-gray-900 group-hover:text-[#D84C3C] transition-colors duration-300">
                   View All Collections
                 </span>
-
-                {/* Circle Icon: Scaled down for mobile */}
                 <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-gray-200 group-hover:border-[#D84C3C] transition-all duration-500 overflow-hidden">
                   {/* Background fill effect on hover */}
                   <div className="absolute inset-0 bg-[#D84C3C] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-
-                  {/* Arrow icon: Responsive size */}
                   <svg
                     className="w-4 h-4 md:w-5 md:h-5 relative z-10 text-gray-900 group-hover:text-white transition-colors duration-300"
                     fill="none"
@@ -644,13 +646,9 @@ export default function Home() {
                 </SwiperSlide>
               ))}
             </Swiper>
-
-            {/* BOUTIQUE FRACTION PAGINATION */}
             <div className="mt-4 flex flex-col items-center justify-center space-y-2">
               <div className="flex items-center gap-4">
-                {/* Left Decorative Line */}
                 <span className="h-[1px] w-8 bg-gray-200" />
-
                 <div className="flex items-baseline font-mono text-[11px] tracking-widest text-gray-900">
                   <span className="text-[#d84c3c] font-bold">
                     {activeIndex.toString().padStart(2, "0")}
@@ -671,7 +669,6 @@ export default function Home() {
             </div>
           </motion.div>
         ) : (
-          /* Empty state instead of skeleton - just a quiet spacer */
           <div className="h-[400px] flex items-center justify-center">
             <span className="text-[10px] uppercase tracking-widest text-gray-300 animate-pulse">
               Loading Collection...
