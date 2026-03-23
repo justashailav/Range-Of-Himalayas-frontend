@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TopSelections from "./TopSelections";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
