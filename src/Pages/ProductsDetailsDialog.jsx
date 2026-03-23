@@ -460,79 +460,79 @@ export default function ProductsDetailsDialog() {
               </div>
             )}
 
-           {productDetails?.details && (
-  <div className="mt-16 overflow-hidden rounded-[2.5rem] bg-white border border-stone-200/60 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-    {/* HEADER */}
-    <div className="px-10 py-8 border-b border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-xl bg-stone-900 flex items-center justify-center shadow-lg rotate-3">
-          <ClipboardList size={18} className="text-stone-100" />
-        </div>
-        <div>
-          <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-900">
-            Harvest Specifications
-          </h3>
-          <p className="text-[9px] font-medium text-stone-400 uppercase tracking-widest mt-0.5">
-            Authenticity & Quality Ledger
-          </p>
-        </div>
-      </div>
-      <div className="flex items-center gap-2 px-3 py-1 bg-stone-50 rounded-full border border-stone-100">
-        <div className="w-1 h-1 rounded-full bg-orange-500 animate-pulse" />
-        <span className="text-[10px] font-mono text-stone-500 uppercase">
-          Batch v.2026.04
-        </span>
-      </div>
-    </div>
+            {productDetails?.details && (
+              <div className="mt-16 overflow-hidden rounded-[2.5rem] bg-white border border-stone-200/60 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+                {/* HEADER */}
+                <div className="px-10 py-8 border-b border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-stone-900 flex items-center justify-center shadow-lg rotate-3">
+                      <ClipboardList size={18} className="text-stone-100" />
+                    </div>
+                    <div>
+                      <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-stone-900">
+                        Harvest Specifications
+                      </h3>
+                      <p className="text-[9px] font-medium text-stone-400 uppercase tracking-widest mt-0.5">
+                        Authenticity & Quality Ledger
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1 bg-stone-50 rounded-full border border-stone-100">
+                    <div className="w-1 h-1 rounded-full bg-orange-500 animate-pulse" />
+                    <span className="text-[10px] font-mono text-stone-500 uppercase">
+                      Batch v.2026.04
+                    </span>
+                  </div>
+                </div>
 
-    {/* DATA GRID */}
-    <div className="px-10 py-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
-        {Object.entries(productDetails.details)
-          .filter(
-            ([key, value]) =>
-              !["_id", "__v"].includes(key) &&
-              value !== null &&
-              value !== undefined &&
-              value !== "",
-          )
-          .map(([key, value]) => (
-            <div
-              key={key}
-              className="group flex flex-col py-6 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-b transition-colors hover:bg-stone-50/50 -mx-4 px-4 rounded-xl"
-            >
-              {/* Changed items-start to flex-col on small screens to prevent clipping */}
-              <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-2 sm:gap-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 group-hover:text-stone-600 transition-colors shrink-0">
-                  {key.replace(/_/g, " ")}
-                </span>
-                
-                {/* 1. Removed max-w-[60%] to give text room to wrap
+                {/* DATA GRID */}
+                <div className="px-10 py-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
+                    {Object.entries(productDetails.details)
+                      .filter(
+                        ([key, value]) =>
+                          !["_id", "__v"].includes(key) &&
+                          value !== null &&
+                          value !== undefined &&
+                          value !== "",
+                      )
+                      .map(([key, value]) => (
+                        <div
+                          key={key}
+                          className="group flex flex-col py-6 border-b border-stone-100 last:border-0 md:[&:nth-last-child(2)]:border-b transition-colors hover:bg-stone-50/50 -mx-4 px-4 rounded-xl"
+                        >
+                          {/* Changed items-start to flex-col on small screens to prevent clipping */}
+                          <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-2 sm:gap-4">
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 group-hover:text-stone-600 transition-colors shrink-0">
+                              {key.replace(/_/g, " ")}
+                            </span>
+
+                            {/* 1. Removed max-w-[60%] to give text room to wrap
                    2. Added break-words for long certification numbers 
                    3. Changed text alignment for mobile 
                 */}
-                <span className="text-[13px] md:text-sm font-serif italic text-stone-900 text-left sm:text-right leading-relaxed break-words overflow-hidden">
-                  {value}
-                </span>
-              </div>
-            </div>
-          ))}
-      </div>
-    </div>
+                            <span className="text-[13px] md:text-sm font-serif italic text-stone-900 text-left sm:text-right leading-relaxed break-words overflow-hidden">
+                              {value}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
 
-    {/* FOOTER */}
-    <div className="bg-stone-50/80 px-10 py-4 flex justify-between items-center border-t border-stone-100">
-      <div className="flex gap-1">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="w-8 h-[1px] bg-stone-200" />
-        ))}
-      </div>
-      <span className="text-[9px] font-black uppercase tracking-widest text-stone-300">
-        Range of Himalayas • Certified Source
-      </span>
-    </div>
-  </div>
-)}
+                {/* FOOTER */}
+                <div className="bg-stone-50/80 px-10 py-4 flex justify-between items-center border-t border-stone-100">
+                  <div className="flex gap-1">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="w-8 h-[1px] bg-stone-200" />
+                    ))}
+                  </div>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-stone-300">
+                    Range of Himalayas • Certified Source
+                  </span>
+                </div>
+              </div>
+            )}
             {productDetails?.nutrition && (
               <div className="mt-8 overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
                 {/* HEADER */}
@@ -787,50 +787,54 @@ export default function ProductsDetailsDialog() {
 
             {/* Price & Stock */}
             <div className="flex flex-col gap-1 py-4">
-              <div className="flex items-baseline gap-4">
-                {selectedVariant?.salesPrice > 0 ? (
-                  <>
-                    {/* Main Sale Price */}
-                    <p className="text-4xl font-black text-stone-900 tracking-tighter">
-                      ₹
-                      {selectedVariant.salesPrice.toLocaleString("en-IN", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </p>
+  <div className="flex items-baseline gap-4">
+    {selectedVariant?.salesPrice > 0 ? (
+      <>
+        {/* Main Sale Price */}
+        <p className="text-4xl font-black text-stone-900 tracking-tighter">
+          ₹
+          {selectedVariant.salesPrice.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+          })}
+        </p>
 
-                    {/* Original Price */}
-                    <p className="text-lg font-medium text-stone-300 line-through decoration-stone-300">
-                      ₹
-                      {selectedVariant.price.toLocaleString("en-IN", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </p>
+        {/* Original Price */}
+        <p className="text-lg font-medium text-stone-300 line-through decoration-stone-300">
+          ₹
+          {selectedVariant.price.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+          })}
+        </p>
 
-                    {/* Minimalist Savings Tag */}
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-1 rounded-full border border-[#B23A2E]/20">
-                      {Math.round(
-                        100 -
-                          (selectedVariant.salesPrice / selectedVariant.price) *
-                            100,
-                      )}
-                      % Rare Discovery
-                    </span>
-                  </>
-                ) : (
-                  <p className="text-4xl font-black text-stone-900 tracking-tighter">
-                    ₹
-                    {selectedVariant?.price.toLocaleString("en-IN", {
-                      minimumFractionDigits: 2,
-                    })}
-                  </p>
-                )}
-              </div>
+        {/* Minimalist Savings Tag */}
+        <span className="text-[10px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-1 rounded-full border border-[#B23A2E]/20">
+          {Math.round(
+            100 -
+              (selectedVariant.salesPrice / selectedVariant.price) * 100,
+          )}
+          % Rare Discovery
+        </span>
+      </>
+    ) : (
+      <p className="text-4xl font-black text-stone-900 tracking-tighter">
+        ₹
+        {selectedVariant?.price.toLocaleString("en-IN", {
+          minimumFractionDigits: 2,
+        })}
+      </p>
+    )}
+  </div>
 
-              {/* Subtext for Tax/Logistics */}
-              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">
-                Inclusive of all botanical duties & taxes
-              </p>
-            </div>
+  {/* Tax Text */}
+  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">
+    Inclusive of all botanical duties & taxes
+  </p>
+
+  {/* NEW: Dispatch Info */}
+  <p className="text-[10px] font-semibold tracking-wide text-[#B23A2E] ml-1 mt-1">
+    🚚 Dispatch starts from <span className="font-bold">18 April</span>
+  </p>
+</div>
 
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
               {/* STOCK STATUS */}
