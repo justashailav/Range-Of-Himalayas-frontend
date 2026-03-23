@@ -211,28 +211,35 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
         {/* PRICING TABLE */}
         <div className="space-y-2 mb-10 px-1">
-          {isCouponApplied && (
-            <div className="flex justify-between text-[10px] font-bold text-green-600 uppercase tracking-tight">
-              <span>Seasonal Discount Applied</span>
-              <span>-₹{discount}</span>
-            </div>
-          )}
-          <div className="flex justify-between items-end">
-            <div>
-              <span className="text-[9px] text-stone-400 font-black uppercase tracking-widest">
-                Total Amount
-              </span>
-              <p className="text-2xl font-black text-stone-900 leading-none mt-1">
-                ₹{finalAmount.toFixed(2)}
-              </p>
-            </div>
-            <div className="text-right">
-              <p className="text-[9px] text-stone-300 font-medium italic">
-                Incl. all mountain taxes
-              </p>
-            </div>
-          </div>
-        </div>
+
+  {/* NEW: Dispatch Info */}
+  <div className="text-[10px] font-semibold text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-2 rounded-lg border border-[#B23A2E]/20">
+    🚚 Orders will be dispatched from <span className="font-bold">18 April</span>
+  </div>
+
+  {isCouponApplied && (
+    <div className="flex justify-between text-[10px] font-bold text-green-600 uppercase tracking-tight">
+      <span>Seasonal Discount Applied</span>
+      <span>-₹{discount}</span>
+    </div>
+  )}
+
+  <div className="flex justify-between items-end">
+    <div>
+      <span className="text-[9px] text-stone-400 font-black uppercase tracking-widest">
+        Total Amount
+      </span>
+      <p className="text-2xl font-black text-stone-900 leading-none mt-1">
+        ₹{finalAmount.toFixed(2)}
+      </p>
+    </div>
+    <div className="text-right">
+      <p className="text-[9px] text-stone-300 font-medium italic">
+        Incl. all mountain taxes
+      </p>
+    </div>
+  </div>
+</div>
 
         {/* CTA BUTTON */}
         <Link
