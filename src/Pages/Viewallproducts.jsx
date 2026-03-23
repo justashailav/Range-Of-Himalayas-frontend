@@ -19,6 +19,10 @@ export default function Viewallproducts() {
   // --- LOCAL STATE FOR SEARCH ---
   const [searchTerm, setSearchTerm] = useState("");
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+
   // --- SEARCH FILTER LOGIC ---
   const filteredProducts = useMemo(() => {
     if (!productList) return [];
