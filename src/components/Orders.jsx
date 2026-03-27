@@ -63,13 +63,6 @@ export default function ShoppingOrders() {
             </p>
           </div>
         </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 p-4 rounded-xl text-red-600">
-            {error}
-          </div>
-        )}
-
         {/* EMPTY STATE */}
         {orderList?.length === 0 && (
           <div className="mt-12 py-24 px-10 text-center bg-stone-50 rounded-[3rem] border border-dashed border-stone-200">
@@ -168,61 +161,64 @@ export default function ShoppingOrders() {
                   </div>
 
                   {/* STATUS TIMELINE */}
-                 {statusSteps.includes(order.orderStatus) && (
-  <div className="mt-12 mb-16 px-4 md:px-2">
-    <div className="flex flex-col md:flex-row items-stretch md:items-center">
-      {statusSteps.map((step, idx) => (
-        <div
-          key={step}
-          className="flex-1 relative flex flex-row md:flex-col items-start md:items-center min-h-[70px] md:min-h-0"
-        >
-          {/* THE TRACKING LINE */}
-          {idx !== statusSteps.length - 1 && (
-            <div
-              className={`absolute 
+                  {statusSteps.includes(order.orderStatus) && (
+                    <div className="mt-12 mb-16 px-4 md:px-2">
+                      <div className="flex flex-col md:flex-row items-stretch md:items-center">
+                        {statusSteps.map((step, idx) => (
+                          <div
+                            key={step}
+                            className="flex-1 relative flex flex-row md:flex-col items-start md:items-center min-h-[70px] md:min-h-0"
+                          >
+                            {/* THE TRACKING LINE */}
+                            {idx !== statusSteps.length - 1 && (
+                              <div
+                                className={`absolute 
                 /* Desktop: Horizontal */
                 md:top-[6px] md:left-[50%] md:w-full md:h-[1px] 
                 /* Mobile: Vertical */
                 top-[12px] left-[6px] w-[1px] h-full 
                 transition-colors duration-1000 
                 ${idx < currentIndex ? "bg-stone-900" : "bg-stone-200"}`}
-            />
-          )}
+                              />
+                            )}
 
-          {/* THE NODE (POINT) */}
-          <div className="relative z-10 flex flex-col items-center">
-            <div
-              className={`w-3 h-3 rounded-full border-2 transition-all duration-700 
-                ${idx <= currentIndex
-                  ? "bg-stone-900 border-stone-900 shadow-[0_0_10px_rgba(0,0,0,0.1)]"
-                  : "bg-white border-stone-200"
+                            {/* THE NODE (POINT) */}
+                            <div className="relative z-10 flex flex-col items-center">
+                              <div
+                                className={`w-3 h-3 rounded-full border-2 transition-all duration-700 
+                ${
+                  idx <= currentIndex
+                    ? "bg-stone-900 border-stone-900 shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+                    : "bg-white border-stone-200"
                 } ${idx === currentIndex ? "animate-pulse ring-4 ring-stone-900/10" : ""}`}
-            />
-          </div>
+                              />
+                            </div>
 
-          {/* STEP LABEL & INDICATOR */}
-          <div className="ml-6 md:ml-0 md:absolute md:top-6 flex flex-col items-start md:items-center min-w-[80px]">
-            <span
-              className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${
-                idx <= currentIndex ? "text-stone-900" : "text-stone-300"
-              }`}
-            >
-              {step}
-            </span>
+                            {/* STEP LABEL & INDICATOR */}
+                            <div className="ml-6 md:ml-0 md:absolute md:top-6 flex flex-col items-start md:items-center min-w-[80px]">
+                              <span
+                                className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-500 ${
+                                  idx <= currentIndex
+                                    ? "text-stone-900"
+                                    : "text-stone-300"
+                                }`}
+                              >
+                                {step}
+                              </span>
 
-            {/* INDICATOR DOT FOR CURRENT STEP */}
-            {idx === currentIndex && (
-              <motion.div
-                layoutId="active-dot"
-                className="w-1 h-1 bg-[#B23A2E] rounded-full mt-1"
-              />
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+                              {/* INDICATOR DOT FOR CURRENT STEP */}
+                              {idx === currentIndex && (
+                                <motion.div
+                                  layoutId="active-dot"
+                                  className="w-1 h-1 bg-[#B23A2E] rounded-full mt-1"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   {/* ACTION */}
                   <div className="mt-8 flex justify-end">
                     <button
