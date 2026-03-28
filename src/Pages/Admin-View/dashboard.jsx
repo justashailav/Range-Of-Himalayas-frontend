@@ -5,7 +5,6 @@ import {
   ShoppingBag, 
   TrendingUp, 
   Users, 
-  Package, 
   Calendar, 
   DollarSign 
 } from "lucide-react";
@@ -28,42 +27,36 @@ export default function AdminDashboard() {
         <p className="text-gray-500 mt-1">Monitor your store's performance and growth.</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         <StatCard 
           title="Orders Today" 
           value={stats.ordersToday} 
-          icon={<ShoppingBag className="w-6 h-6 text-blue-600" />}
+          icon={<ShoppingBag className="w-5 h-5 text-blue-600" />}
           bgColor="bg-blue-50"
         />
         <StatCard 
           title="Revenue Today" 
           value={`₹${stats.revenueToday.toLocaleString()}`} 
-          icon={<DollarSign className="w-6 h-6 text-emerald-600" />}
+          icon={<DollarSign className="w-5 h-5 text-emerald-600" />}
           bgColor="bg-emerald-50"
         />
         <StatCard 
           title="Total Users" 
           value={stats.totalUsers} 
-          icon={<Users className="w-6 h-6 text-purple-600" />}
+          icon={<Users className="w-5 h-5 text-purple-600" />}
           bgColor="bg-purple-50"
         />
         <StatCard 
           title="Orders This Week" 
           value={stats.ordersThisWeek} 
-          icon={<Calendar className="w-6 h-6 text-orange-600" />}
+          icon={<Calendar className="w-5 h-5 text-orange-600" />}
           bgColor="bg-orange-50"
         />
         <StatCard 
           title="Revenue This Month" 
           value={`₹${stats.revenueThisMonth.toLocaleString()}`} 
-          icon={<TrendingUp className="w-6 h-6 text-rose-600" />}
+          icon={<TrendingUp className="w-5 h-5 text-rose-600" />}
           bgColor="bg-rose-50"
-        />
-        <StatCard 
-          title="Total Stock" 
-          value={stats.totalStock} 
-          icon={<Package className="w-6 h-6 text-amber-600" />}
-          bgColor="bg-amber-50"
         />
       </div>
     </div>
@@ -72,18 +65,19 @@ export default function AdminDashboard() {
 
 function StatCard({ title, value, icon, bgColor }) {
   return (
-    <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200">
-      <div className="flex items-center justify-between">
+    <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200">
+      <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{title}</p>
-          <h3 className="text-2xl font-bold text-gray-900 mt-1">{value}</h3>
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{title}</p>
+          <h3 className="text-2xl font-bold text-gray-900 mt-2">{value}</h3>
         </div>
         <div className={`p-3 rounded-xl ${bgColor}`}>
           {icon}
         </div>
       </div>
       <div className="mt-4 flex items-center text-xs font-medium text-green-600">
-        <span>+4.5% from last period</span>
+        <span className="bg-green-100 px-1.5 py-0.5 rounded mr-2">↑ 12%</span>
+        <span className="text-gray-400 font-normal">vs last month</span>
       </div>
     </div>
   );
