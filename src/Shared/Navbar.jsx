@@ -424,7 +424,6 @@ export default function Navbar() {
                       <AvatarImage
                         src={
                           user?.profile?.profilePhoto
-                          
                         }
                         className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
                       />

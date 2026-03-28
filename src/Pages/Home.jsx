@@ -279,72 +279,72 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
 
         <motion.div
-          animate={{ x: [0, -1000] }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="flex whitespace-nowrap items-center gap-16"
-        >
-          {[1, 2, 3].map((_, index) => (
-            <div key={index} className="flex items-center gap-16 text-white/90">
-              {/* Offer */}
-              <div className="flex items-center gap-4">
-                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
-                  Offer
-                </span>
-                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                  Use code{" "}
-                  <span className="font-bold text-white border-b border-white/30 pb-0.5">
-                    HIMALAYAN10
-                  </span>{" "}
-                  for 10% off
-                </p>
-              </div>
+  animate={{ x: ["0%", "-100%"] }}
+  transition={{
+    duration: 30, // Slightly slower for better readability
+    repeat: Infinity,
+    ease: "linear",
+  }}
+  className="flex whitespace-nowrap items-center gap-16"
+>
+  {[1, 2, 3].map((_, index) => (
+    <div key={index} className="flex items-center gap-16 text-white/90">
+      {/* Offer */}
+      <div className="flex items-center gap-4">
+        <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+          Offer
+        </span>
+        <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+          Use code{" "}
+          <span className="font-bold text-white border-b border-white/30 pb-0.5">
+            HIMALAYAN10
+          </span>{" "}
+          for 10% off
+        </p>
+      </div>
 
-              <div className="w-1 h-1 bg-white/30 rounded-full" />
+      <div className="w-1 h-1 bg-white/30 rounded-full" />
 
-              {/* Reward */}
-              <div className="flex items-center gap-4">
-                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
-                  Reward
-                </span>
-                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                  Complimentary gift on orders above{" "}
-                  <span className="font-semibold">₹500</span>
-                </p>
-              </div>
+      {/* Reward - UPDATED */}
+      <div className="flex items-center gap-4">
+        <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+          Reward
+        </span>
+        <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+          Coupons applicable on orders above{" "}
+          <span className="font-semibold text-white">₹500</span>
+        </p>
+      </div>
 
-              <div className="w-1 h-1 bg-white/30 rounded-full" />
+      <div className="w-1 h-1 bg-white/30 rounded-full" />
 
-              {/* Logistics */}
-              <div className="flex items-center gap-4">
-                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
-                  Logistics
-                </span>
-                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                  Directly from Himalayan Orchards to your doorstep
-                </p>
-              </div>
+      {/* Logistics */}
+      <div className="flex items-center gap-4">
+        <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+          Logistics
+        </span>
+        <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+          Directly from Himalayan Orchards to your doorstep
+        </p>
+      </div>
 
-              <div className="w-1 h-1 bg-white/30 rounded-full" />
+      <div className="w-1 h-1 bg-white/30 rounded-full" />
 
-              {/* NEW: Dispatch */}
-              <div className="flex items-center gap-4">
-                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
-                  Dispatch
-                </span>
-                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                  Orders will be dispatched from{" "}
-                  <span className="font-semibold text-white">18 April</span>
-                </p>
-              </div>
+      {/* Dispatch */}
+      <div className="flex items-center gap-4">
+        <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
+          Dispatch
+        </span>
+        <p className="text-xs md:text-sm tracking-[0.1em] font-light">
+          Orders will be dispatched from{" "}
+          <span className="font-semibold text-white">18 April</span>
+        </p>
+      </div>
 
-              <div className="w-1 h-1 bg-white/30 rounded-full" />
-            </div>
-          ))}
-        </motion.div>
+      <div className="w-1 h-1 bg-white/30 rounded-full" />
+    </div>
+  ))}
+</motion.div>
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden bg-[#0a0a0a]">
         {/* 1. THE IMAGE LAYER */}
