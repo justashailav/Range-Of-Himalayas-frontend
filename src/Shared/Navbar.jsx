@@ -423,8 +423,8 @@ export default function Navbar() {
                     <Avatar className="h-8 w-8 lg:h-9 lg:w-9 ring-2 ring-stone-900 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-2xl">
                       <AvatarImage
                         src={
-                          user?.profile?.profilePhoto ||
-                          "https://github.com/shadcn.png"
+                          user?.profile?.profilePhoto
+                          
                         }
                         className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
                       />
