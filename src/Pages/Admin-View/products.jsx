@@ -47,7 +47,6 @@ export default function Adminproducts() {
     comboNutrition: [
       {
         name: "",
-        unit: "",
         nutrition: {
           calories: "",
           energy: "",
@@ -127,7 +126,6 @@ export default function Adminproducts() {
       comboNutrition: [
         {
           name: "",
-          unit: "",
           nutrition: {
             calories: "",
             energy: "",
@@ -452,9 +450,35 @@ export default function Adminproducts() {
                     <input
                       type="checkbox"
                       checked={product.isCombo}
-                      onChange={(e) =>
-                        setProduct({ ...product, isCombo: e.target.checked })
-                      }
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+
+                        setProduct((prev) => ({
+                          ...prev,
+                          isCombo: checked,
+
+                          // 👉 IMPORTANT: control variants based on combo
+                          variants: checked
+                            ? [
+                                {
+                                  size: "",
+                                  weight: "500g",
+                                  stock: 0,
+                                  price: 0,
+                                  salesPrice: 0,
+                                },
+                              ] // 🔥 only 1 variant for combo
+                            : [
+                                {
+                                  size: "",
+                                  weight: "250g",
+                                  stock: 0,
+                                  price: 0,
+                                  salesPrice: 0,
+                                },
+                              ], // 🟢 reset normal
+                        }));
+                      }}
                     />
                   </div>
                   {!product.isCombo ? (
@@ -487,20 +511,6 @@ export default function Adminproducts() {
                               });
                             }}
                           />
-
-                          <input
-                            placeholder="Unit (per 100g / 100ml)"
-                            value={item.unit}
-                            onChange={(e) => {
-                              const updated = [...product.comboNutrition];
-                              updated[index].unit = e.target.value;
-                              setProduct({
-                                ...product,
-                                comboNutrition: updated,
-                              });
-                            }}
-                          />
-
                           <div className="grid grid-cols-2 gap-2">
                             {Object.keys(item.nutrition).map((key) => (
                               <input
@@ -523,41 +533,40 @@ export default function Adminproducts() {
                       ))}
 
                       <button
-  type="button"
-  onClick={() =>
-    setProduct({
-      ...product,
-      comboNutrition: [
-        ...product.comboNutrition,
-        {
-          name: "",
-          unit: "",
-          nutrition: {
-            calories: "",
-            energy: "",
-            calcium: "",
-            iron: "",
-            magnesium: "",
-            sodium: "",
-            carbohydrates: "",
-            fiber: "",
-            sugar: "",
-            vitaminC: "",
-            vitaminE: "",
-            potassium: "",
-            protein: "",
-            fat: "",
-            fulvicacid: "",
-            humicacid: "",
-            minerals: "",
-          },
-        },
-      ],
-    })
-  }
->
-  + Add Combo Item
-</button>
+                        type="button"
+                        onClick={() =>
+                          setProduct({
+                            ...product,
+                            comboNutrition: [
+                              ...product.comboNutrition,
+                              {
+                                name: "",
+                                nutrition: {
+                                  calories: "",
+                                  energy: "",
+                                  calcium: "",
+                                  iron: "",
+                                  magnesium: "",
+                                  sodium: "",
+                                  carbohydrates: "",
+                                  fiber: "",
+                                  sugar: "",
+                                  vitaminC: "",
+                                  vitaminE: "",
+                                  potassium: "",
+                                  protein: "",
+                                  fat: "",
+                                  fulvicacid: "",
+                                  humicacid: "",
+                                  minerals: "",
+                                },
+                              },
+                            ],
+                          })
+                        }
+                      >
+                        + Add Combo Item
+                      </button>
                     </div>
                   )}
                 </div>
@@ -566,13 +575,15 @@ export default function Adminproducts() {
                     <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-stone-900">
                       Product Variants
                     </h3>
-                    <button
-                      type="button"
-                      onClick={addVariantField}
-                      className="text-[10px] font-bold uppercase tracking-widest text-[#B23A2E] hover:text-[#d9746a] transition-colors flex items-center gap-2"
-                    >
-                      <Plus size={14} /> Add Row
-                    </button>
+                    {!product.isCombo && (
+  <button
+    type="button"
+    onClick={addVariantField}
+    className="text-[10px] font-bold uppercase tracking-widest text-[#B23A2E] hover:text-[#d9746a] transition-colors flex items-center gap-2"
+  >
+    <Plus size={14} /> Add Row
+  </button>
+)}
                   </div>
 
                   <div className="space-y-3">
