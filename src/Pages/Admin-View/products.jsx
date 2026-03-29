@@ -273,7 +273,8 @@ export default function Adminproducts() {
           "variants",
           "nutrition",
           "details",
-          "customBoxPrices,comboNutrition",
+          "customBoxPrices",
+          "comboNutrition"
         ].includes(key)
       ) {
         formData.append(key, JSON.stringify(product[key]));
