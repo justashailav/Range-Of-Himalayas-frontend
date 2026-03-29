@@ -533,64 +533,74 @@ export default function ProductsDetailsDialog() {
                 </div>
               </div>
             )}
-            {productDetails?.nutrition && (
-              <div className="mt-8 overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
-                {/* HEADER */}
-                <div className="px-8 py-8 border-b border-stone-800 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-[#B23A2E] flex items-center justify-center shadow-lg shadow-[#B23A2E]/20">
-                      <Leaf size={18} className="text-white" />
+            {/* ---------------- NORMAL PRODUCT ---------------- */}
+            {!productDetails?.isCombo && productDetails?.nutrition && (
+              <div className="mt-8">
+                {/* EXISTING NORMAL NUTRITION UI (no change) */}
+                <div className="overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
+                  {/* keep your same code */}
+                  <div className="px-8 py-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+                      {Object.entries(productDetails.nutrition)
+                        .filter(
+                          ([key, value]) =>
+                            !["_id", "__v"].includes(key) &&
+                            value !== null &&
+                            value !== undefined &&
+                            value !== "",
+                        )
+                        .map(([key, value]) => (
+                          <div key={key}>
+                            <p className="text-[9px] uppercase">{key}</p>
+                            <p>{value}</p>
+                          </div>
+                        ))}
                     </div>
-                    <div>
-                      <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">
-                        Nutritional Values
-                      </h3>
-                      <p className="text-lg font-serif italic text-white leading-none mt-1">
-                        Per 100g serving
-                      </p>
-                    </div>
                   </div>
-                  <div className="hidden sm:block px-4 py-1 border border-stone-700 rounded-full text-[8px] font-black uppercase tracking-widest text-stone-500">
-                    Lab Verified
-                  </div>
-                </div>
-
-                {/* NUTRITION GRID */}
-                <div className="px-8 py-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-                    {Object.entries(productDetails.nutrition)
-                      .filter(
-                        ([key, value]) =>
-                          !["_id", "__v"].includes(key) &&
-                          value !== null &&
-                          value !== undefined &&
-                          value !== "",
-                      )
-                      .map(([key, value]) => (
-                        <div key={key} className="space-y-1 group">
-                          <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 group-hover:text-[#B23A2E] transition-colors">
-                            {key.replace(/_/g, " ")}
-                          </p>
-                          <p className="text-2xl font-light tracking-tighter text-white">
-                            {value}
-                          </p>
-                          {/* Subtle underline decoration */}
-                          <div className="h-[1px] w-full bg-stone-800 group-hover:bg-stone-700 transition-colors" />
-                        </div>
-                      ))}
-                  </div>
-                </div>
-
-                {/* FOOTER NOTE */}
-                <div className="px-8 py-4 bg-stone-800/50 flex items-center gap-2">
-                  <div className="w-1 h-1 bg-[#B23A2E] rounded-full animate-pulse" />
-                  <p className="text-[9px] font-medium text-stone-500 italic tracking-wider">
-                    Pure Himalayan produce. Values may vary with seasonal
-                    harvest.
-                  </p>
                 </div>
               </div>
             )}
+
+            {/* ---------------- COMBO PRODUCT ---------------- */}
+            {productDetails?.isCombo &&
+              productDetails?.comboNutrition?.length > 0 && (
+                <div className="mt-8 space-y-6">
+                  {productDetails.comboNutrition.map((item, index) => (
+                    <div
+                      key={index}
+                      className="overflow-hidden rounded-[2rem] bg-stone-900 text-white border border-stone-800 shadow-xl"
+                    >
+                      {/* HEADER (NAME OF PRODUCT IN COMBO) */}
+                      <div className="px-6 py-4 border-b border-stone-800 flex items-center gap-3">
+                        <Leaf size={16} className="text-[#B23A2E]" />
+                        <h3 className="text-sm font-bold uppercase tracking-wider">
+                          {item.name}
+                        </h3>
+                      </div>
+
+                      {/* NUTRITION GRID */}
+                      <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-3 gap-6">
+                        {Object.entries(item.nutrition || {})
+                          .filter(
+                            ([key, value]) =>
+                              !["_id", "__v"].includes(key) &&
+                              value !== null &&
+                              value !== undefined &&
+                              value !== "",
+                          )
+                          .map(([key, value]) => (
+                            <div key={key}>
+                              <p className="text-[9px] uppercase text-stone-400">
+                                {key}
+                              </p>
+                              <p className="text-lg">{value}</p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
           </div>
           <div className="flex flex-col gap-6">
             <motion.div
@@ -787,54 +797,56 @@ export default function ProductsDetailsDialog() {
 
             {/* Price & Stock */}
             <div className="flex flex-col gap-1 py-4">
-  <div className="flex items-baseline gap-4">
-    {selectedVariant?.salesPrice > 0 ? (
-      <>
-        {/* Main Sale Price */}
-        <p className="text-4xl font-black text-stone-900 tracking-tighter">
-          ₹
-          {selectedVariant.salesPrice.toLocaleString("en-IN", {
-            minimumFractionDigits: 2,
-          })}
-        </p>
+              <div className="flex items-baseline gap-4">
+                {selectedVariant?.salesPrice > 0 ? (
+                  <>
+                    {/* Main Sale Price */}
+                    <p className="text-4xl font-black text-stone-900 tracking-tighter">
+                      ₹
+                      {selectedVariant.salesPrice.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                      })}
+                    </p>
 
-        {/* Original Price */}
-        <p className="text-lg font-medium text-stone-300 line-through decoration-stone-300">
-          ₹
-          {selectedVariant.price.toLocaleString("en-IN", {
-            minimumFractionDigits: 2,
-          })}
-        </p>
+                    {/* Original Price */}
+                    <p className="text-lg font-medium text-stone-300 line-through decoration-stone-300">
+                      ₹
+                      {selectedVariant.price.toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                      })}
+                    </p>
 
-        {/* Minimalist Savings Tag */}
-        <span className="text-[10px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-1 rounded-full border border-[#B23A2E]/20">
-          {Math.round(
-            100 -
-              (selectedVariant.salesPrice / selectedVariant.price) * 100,
-          )}
-          % Rare Discovery
-        </span>
-      </>
-    ) : (
-      <p className="text-4xl font-black text-stone-900 tracking-tighter">
-        ₹
-        {selectedVariant?.price.toLocaleString("en-IN", {
-          minimumFractionDigits: 2,
-        })}
-      </p>
-    )}
-  </div>
+                    {/* Minimalist Savings Tag */}
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-1 rounded-full border border-[#B23A2E]/20">
+                      {Math.round(
+                        100 -
+                          (selectedVariant.salesPrice / selectedVariant.price) *
+                            100,
+                      )}
+                      % Rare Discovery
+                    </span>
+                  </>
+                ) : (
+                  <p className="text-4xl font-black text-stone-900 tracking-tighter">
+                    ₹
+                    {selectedVariant?.price.toLocaleString("en-IN", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </p>
+                )}
+              </div>
 
-  {/* Tax Text */}
-  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">
-    Inclusive of all botanical duties & taxes
-  </p>
+              {/* Tax Text */}
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 ml-1">
+                Inclusive of all botanical duties & taxes
+              </p>
 
-  {/* NEW: Dispatch Info */}
-  <p className="text-[10px] font-semibold tracking-wide text-[#B23A2E] ml-1 mt-1">
-    🚚 Dispatch starts from <span className="font-bold">18 April</span>
-  </p>
-</div>
+              {/* NEW: Dispatch Info */}
+              <p className="text-[10px] font-semibold tracking-wide text-[#B23A2E] ml-1 mt-1">
+                🚚 Dispatch starts from{" "}
+                <span className="font-bold">18 April</span>
+              </p>
+            </div>
 
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
               {/* STOCK STATUS */}
