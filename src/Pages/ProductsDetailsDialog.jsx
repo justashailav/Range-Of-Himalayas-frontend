@@ -534,73 +534,85 @@ export default function ProductsDetailsDialog() {
               </div>
             )}
             {/* ---------------- NORMAL PRODUCT ---------------- */}
-            {!productDetails?.isCombo && productDetails?.nutrition && (
-              <div className="mt-8">
-                {/* EXISTING NORMAL NUTRITION UI (no change) */}
-                <div className="overflow-hidden rounded-[2.5rem] bg-stone-900 text-stone-100 border border-stone-800 shadow-2xl">
-                  {/* keep your same code */}
-                  <div className="px-8 py-6">
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-                      {Object.entries(productDetails.nutrition)
-                        .filter(
-                          ([key, value]) =>
-                            !["_id", "__v"].includes(key) &&
-                            value !== null &&
-                            value !== undefined &&
-                            value !== "",
-                        )
-                        .map(([key, value]) => (
-                          <div key={key}>
-                            <p className="text-[9px] uppercase">{key}</p>
-                            <p>{value}</p>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
+            {/* ---------------- NUTRITION SECTION ---------------- */}
+<div className="mt-12">
+  {/* SECTION TITLE */}
+  <div className="flex items-center gap-3 mb-6">
+    <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-stone-800"></div>
+    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500">
+      Nutritional Information
+    </span>
+    <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-stone-800"></div>
+  </div>
+
+  {/* SINGLE PRODUCT NUTRITION */}
+  {!productDetails?.isCombo && productDetails?.nutrition && (
+    <div className="relative group">
+      {/* Subtle Background Glow */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-stone-800 to-stone-700 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+      
+      <div className="relative overflow-hidden rounded-[2.5rem] bg-stone-900/80 backdrop-blur-sm border border-stone-800 shadow-2xl">
+        <div className="px-10 py-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
+            {Object.entries(productDetails.nutrition)
+              .filter(([key, value]) => !["_id", "__v"].includes(key) && value)
+              .map(([key, value]) => (
+                <div key={key} className="flex flex-col gap-1">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500">
+                    {key.replace(/_/g, ' ')}
+                  </p>
+                  <p className="text-xl font-medium text-stone-100 leading-none">
+                    {value}
+                  </p>
                 </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {/* COMBO PRODUCT NUTRITION */}
+  {productDetails?.isCombo && productDetails?.comboNutrition?.length > 0 && (
+    <div className="space-y-4">
+      {productDetails.comboNutrition.map((item, index) => (
+        <div
+          key={index}
+          className="group overflow-hidden rounded-[1.5rem] bg-stone-900 border border-stone-800/60 hover:border-stone-700 transition-colors shadow-xl"
+        >
+          {/* HEADER */}
+          <div className="px-6 py-3 bg-stone-950/50 border-b border-stone-800/50 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-full bg-[#B23A2E]/10">
+                <Leaf size={14} className="text-[#B23A2E]" />
               </div>
-            )}
+              <h3 className="text-[11px] font-black uppercase tracking-tighter text-stone-200">
+                {item.name}
+              </h3>
+            </div>
+            <div className="text-[9px] font-medium px-2 py-0.5 rounded border border-stone-800 text-stone-500 uppercase">
+              Part {index + 1}
+            </div>
+          </div>
 
-            {/* ---------------- COMBO PRODUCT ---------------- */}
-            {productDetails?.isCombo &&
-              productDetails?.comboNutrition?.length > 0 && (
-                <div className="mt-8 space-y-6">
-                  {productDetails.comboNutrition.map((item, index) => (
-                    <div
-                      key={index}
-                      className="overflow-hidden rounded-[2rem] bg-stone-900 text-white border border-stone-800 shadow-xl"
-                    >
-                      {/* HEADER (NAME OF PRODUCT IN COMBO) */}
-                      <div className="px-6 py-4 border-b border-stone-800 flex items-center gap-3">
-                        <Leaf size={16} className="text-[#B23A2E]" />
-                        <h3 className="text-sm font-bold uppercase tracking-wider">
-                          {item.name}
-                        </h3>
-                      </div>
-
-                      {/* NUTRITION GRID */}
-                      <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-3 gap-6">
-                        {Object.entries(item.nutrition || {})
-                          .filter(
-                            ([key, value]) =>
-                              !["_id", "__v"].includes(key) &&
-                              value !== null &&
-                              value !== undefined &&
-                              value !== "",
-                          )
-                          .map(([key, value]) => (
-                            <div key={key}>
-                              <p className="text-[9px] uppercase text-stone-400">
-                                {key}
-                              </p>
-                              <p className="text-lg">{value}</p>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                  ))}
+          {/* NUTRITION GRID */}
+          <div className="px-6 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6">
+            {Object.entries(item.nutrition || {})
+              .filter(([key, value]) => !["_id", "__v"].includes(key) && value)
+              .map(([key, value]) => (
+                <div key={key} className="space-y-0.5">
+                  <p className="text-[9px] font-semibold uppercase tracking-widest text-stone-500">
+                    {key}
+                  </p>
+                  <p className="text-base font-medium text-stone-200">{value}</p>
                 </div>
-              )}
+              ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
           </div>
           <div className="flex flex-col gap-6">
             <motion.div
