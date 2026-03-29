@@ -274,7 +274,7 @@ export default function Adminproducts() {
           "nutrition",
           "details",
           "customBoxPrices",
-          "comboNutrition"
+          "comboNutrition",
         ].includes(key)
       ) {
         formData.append(key, JSON.stringify(product[key]));
@@ -445,126 +445,221 @@ export default function Adminproducts() {
                   </div>
 
                   <div className="max-w-5xl mx-auto space-y-8">
-  {/* --- COMBO TOGGLE SECTION --- */}
-  <div className="flex items-center justify-between p-6 bg-stone-50 rounded-2xl border border-stone-200">
-    <div className="space-y-1">
-      <h3 className="text-sm font-bold text-stone-900">Product Structure</h3>
-      <p className="text-xs text-stone-500">Is this a single item or a collection of multiple products?</p>
-    </div>
-    <div className="flex items-center gap-3">
-      <span className={`text-xs font-bold uppercase tracking-wider ${!product.isCombo ? 'text-stone-900' : 'text-stone-400'}`}>Single</span>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          className="sr-only peer"
-          checked={product.isCombo}
-          onChange={(e) => {
-            const checked = e.target.checked;
-            setProduct((prev) => ({
-              ...prev,
-              isCombo: checked,
-              variants: checked
-                ? [{ size: "", weight: "500g", stock: 0, price: 0, salesPrice: 0 }]
-                : [{ size: "", weight: "250g", stock: 0, price: 0, salesPrice: 0 }],
-            }));
-          }}
-        />
-        <div className="w-12 h-6 bg-stone-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#B23A2E]"></div>
-      </label>
-      <span className={`text-xs font-bold uppercase tracking-wider ${product.isCombo ? 'text-[#B23A2E]' : 'text-stone-400'}`}>Combo</span>
-    </div>
-  </div>
+                    {/* --- COMBO TOGGLE SECTION --- */}
+                    <div className="flex items-center justify-between p-6 bg-stone-50 rounded-2xl border border-stone-200">
+                      <div className="space-y-1">
+                        <h3 className="text-sm font-bold text-stone-900">
+                          Product Structure
+                        </h3>
+                        <p className="text-xs text-stone-500">
+                          Is this a single item or a collection of multiple
+                          products?
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`text-xs font-bold uppercase tracking-wider ${!product.isCombo ? "text-stone-900" : "text-stone-400"}`}
+                        >
+                          Single
+                        </span>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={product.isCombo}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              setProduct((prev) => ({
+                                ...prev,
+                                isCombo: checked,
+                                variants: checked
+                                  ? [
+                                      {
+                                        size: "",
+                                        weight: "500g",
+                                        stock: 0,
+                                        price: 0,
+                                        salesPrice: 0,
+                                      },
+                                    ]
+                                  : [
+                                      {
+                                        size: "",
+                                        weight: "250g",
+                                        stock: 0,
+                                        price: 0,
+                                        salesPrice: 0,
+                                      },
+                                    ],
+                              }));
+                            }}
+                          />
+                          <div className="w-12 h-6 bg-stone-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#B23A2E]"></div>
+                        </label>
+                        <span
+                          className={`text-xs font-bold uppercase tracking-wider ${product.isCombo ? "text-[#B23A2E]" : "text-stone-400"}`}
+                        >
+                          Combo
+                        </span>
+                      </div>
+                    </div>
 
-  {!product.isCombo ? (
-    /* --- NORMAL PRODUCT NUTRITION --- */
-    <div className="p-6 bg-white rounded-2xl border border-stone-200 shadow-sm">
-      <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-6">Standard Nutrition Facts (per 100g)</h4>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {Object.keys(product.nutrition).map((key) => (
-          <div key={key} className="space-y-1">
-            <label className="text-[10px] font-bold text-stone-500 uppercase ml-1">{key}</label>
-            <input
-              name={key}
-              value={product.nutrition[key]}
-              onChange={handleNutritionChange}
-              placeholder="--"
-              className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-stone-900 focus:bg-white transition-all outline-none text-sm"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  ) : (
-    /* --- COMBO NUTRITION SECTION --- */
-    <div className="space-y-6">
-      <div className="flex items-center justify-between px-2">
-        <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">Combo Components</h4>
-        <button
-          type="button"
-          onClick={() => setProduct({
-            ...product,
-            comboNutrition: [...product.comboNutrition, { name: "", nutrition: { calories: "", energy: "", calcium: "", iron: "", magnesium: "", sodium: "", carbohydrates: "", fiber: "", sugar: "", vitaminC: "", vitaminE: "", potassium: "", protein: "", fat: "", fulvicacid: "", humicacid: "", minerals: "" } }]
-          })}
-          className="text-xs font-bold text-[#B23A2E] hover:bg-[#B23A2E]/5 px-4 py-2 rounded-lg transition-colors"
-        >
-          + Add New Component
-        </button>
-      </div>
+                    {!product.isCombo ? (
+                      /* --- NORMAL PRODUCT NUTRITION --- */
+                      <div className="p-6 bg-white rounded-2xl border border-stone-200 shadow-sm">
+                        <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-6">
+                          Standard Nutrition Facts (per 100g)
+                        </h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {Object.keys(product.nutrition).map((key) => (
+                            <div key={key} className="space-y-1">
+                              <label className="text-[10px] font-bold text-stone-500 uppercase ml-1">
+                                {key}
+                              </label>
+                              <input
+                                name={key}
+                                value={product.nutrition[key]}
+                                onChange={handleNutritionChange}
+                                placeholder="--"
+                                className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-stone-900 focus:bg-white transition-all outline-none text-sm"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      /* --- COMBO NUTRITION SECTION --- */
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between px-2">
+                          <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">
+                            Combo Components
+                          </h4>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setProduct({
+                                ...product,
+                                comboNutrition: [
+                                  ...product.comboNutrition,
+                                  {
+                                    name: "",
+                                    nutrition: {
+                                      calories: "",
+                                      energy: "",
+                                      calcium: "",
+                                      iron: "",
+                                      magnesium: "",
+                                      sodium: "",
+                                      carbohydrates: "",
+                                      fiber: "",
+                                      sugar: "",
+                                      vitaminC: "",
+                                      vitaminE: "",
+                                      potassium: "",
+                                      protein: "",
+                                      fat: "",
+                                      fulvicacid: "",
+                                      humicacid: "",
+                                      minerals: "",
+                                    },
+                                  },
+                                ],
+                              })
+                            }
+                            className="text-xs font-bold text-[#B23A2E] hover:bg-[#B23A2E]/5 px-4 py-2 rounded-lg transition-colors"
+                          >
+                            + Add New Component
+                          </button>
+                        </div>
 
-      <div className="grid gap-6">
-        {product.comboNutrition.map((item, index) => (
-          <div key={index} className="group relative bg-white border border-stone-200 rounded-2xl p-6 shadow-sm hover:border-stone-300 transition-all">
-            {/* Header / Remove Button */}
-            <div className="flex items-center gap-4 mb-6">
-              <div className="flex-1">
-                <input
-                  placeholder="Component Name (e.g. Organic Shilajit)"
-                  value={item.name}
-                  onChange={(e) => {
-                    const updated = [...product.comboNutrition];
-                    updated[index].name = e.target.value;
-                    setProduct({ ...product, comboNutrition: updated });
-                  }}
-                  className="w-full text-lg font-bold text-stone-900 border-b border-stone-100 focus:border-[#B23A2E] outline-none pb-1 transition-colors"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const updated = product.comboNutrition.filter((_, i) => i !== index);
-                  setProduct({ ...product, comboNutrition: updated });
-                }}
-                className="p-2 text-stone-300 hover:text-red-500 transition-colors"
-                title="Remove Item"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-              </button>
-            </div>
+                        <div className="grid gap-6">
+                          {product.comboNutrition.map((item, index) => (
+                            <div
+                              key={index}
+                              className="group relative bg-white border border-stone-200 rounded-2xl p-6 shadow-sm hover:border-stone-300 transition-all"
+                            >
+                              {/* Header / Remove Button */}
+                              <div className="flex items-center gap-4 mb-6">
+                                <div className="flex-1">
+                                  <input
+                                    placeholder="Component Name (e.g. Organic Shilajit)"
+                                    value={item.name}
+                                    onChange={(e) => {
+                                      const updated = [
+                                        ...product.comboNutrition,
+                                      ];
+                                      updated[index].name = e.target.value;
+                                      setProduct({
+                                        ...product,
+                                        comboNutrition: updated,
+                                      });
+                                    }}
+                                    className="w-full text-lg font-bold text-stone-900 border-b border-stone-100 focus:border-[#B23A2E] outline-none pb-1 transition-colors"
+                                  />
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const updated =
+                                      product.comboNutrition.filter(
+                                        (_, i) => i !== index,
+                                      );
+                                    setProduct({
+                                      ...product,
+                                      comboNutrition: updated,
+                                    });
+                                  }}
+                                  className="p-2 text-stone-300 hover:text-red-500 transition-colors"
+                                  title="Remove Item"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                  </svg>
+                                </button>
+                              </div>
 
-            {/* Nutrition Grid for Combo Item */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {Object.keys(item.nutrition).map((key) => (
-                <div key={key} className="space-y-1">
-                  <label className="text-[9px] font-bold text-stone-400 uppercase tracking-tight truncate block">{key}</label>
-                  <input
-                    placeholder="0"
-                    value={item.nutrition[key]}
-                    onChange={(e) => {
-                      const updated = [...product.comboNutrition];
-                      updated[index].nutrition[key] = e.target.value;
-                      setProduct({ ...product, comboNutrition: updated });
-                    }}
-                    className="w-full px-3 py-1.5 bg-stone-50 border border-stone-100 rounded-lg focus:bg-white focus:border-stone-900 transition-all outline-none text-xs"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-</div>
+                              {/* Nutrition Grid for Combo Item */}
+                              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                                {Object.keys(item.nutrition).map((key) => (
+                                  <div key={key} className="space-y-1">
+                                    <label className="text-[9px] font-bold text-stone-400 uppercase tracking-tight truncate block">
+                                      {key}
+                                    </label>
+                                    <input
+                                      placeholder="0"
+                                      value={item.nutrition[key]}
+                                      onChange={(e) => {
+                                        const updated = [
+                                          ...product.comboNutrition,
+                                        ];
+                                        updated[index].nutrition[key] =
+                                          e.target.value;
+                                        setProduct({
+                                          ...product,
+                                          comboNutrition: updated,
+                                        });
+                                      }}
+                                      className="w-full px-3 py-1.5 bg-stone-50 border border-stone-100 rounded-lg focus:bg-white focus:border-stone-900 transition-all outline-none text-xs"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="mt-10 pt-8 border-t border-stone-100">
                   <div className="flex items-center justify-between mb-6">
@@ -636,7 +731,12 @@ export default function Adminproducts() {
                             <option value="200ml">200ml</option>
                             <option value="500ml">500ml</option>
                             <option value="1L">1L</option>
-                            <option value="500ml (Honey) 100ml (Apricot Oil)">500ml (Honey) 100ml (Apricot Oil)</option>
+                            <option value="500ml (Honey) 100ml (Apricot Oil)">
+                              500ml (Honey) 100ml (Apricot Oil)
+                            </option>
+                            <option value="500ml (Honey) 200ml (Sea Buckthorn Pulp)">
+                              500ml (Honey) 200ml (Sea Buckthorn Pulp)
+                            </option>
                           </select>
                         </div>
 
