@@ -444,108 +444,117 @@ export default function Adminproducts() {
                     </div>
                   </div>
 
-                  <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-sm border border-stone-200">
-  {/* --- COMBO TOGGLE --- */}
-  <div className="flex items-center justify-between mb-8 p-4 bg-stone-50 rounded-xl border border-stone-100">
-    <div className="flex flex-col">
-      <label className="text-sm font-bold text-stone-800">Combo Configuration</label>
-      <p className="text-xs text-stone-500">Enable this if the product contains multiple separate items.</p>
+                  <div className="max-w-5xl mx-auto space-y-8">
+  {/* --- COMBO TOGGLE SECTION --- */}
+  <div className="flex items-center justify-between p-6 bg-stone-50 rounded-2xl border border-stone-200">
+    <div className="space-y-1">
+      <h3 className="text-sm font-bold text-stone-900">Product Structure</h3>
+      <p className="text-xs text-stone-500">Is this a single item or a collection of multiple products?</p>
     </div>
-    <label className="relative inline-flex items-center cursor-pointer">
-      <input
-        type="checkbox"
-        className="sr-only peer"
-        checked={product.isCombo}
-        onChange={(e) => {
-          const checked = e.target.checked;
-          setProduct((prev) => ({
-            ...prev,
-            isCombo: checked,
-            variants: checked
-              ? [{ size: "", weight: "500g", stock: 0, price: 0, salesPrice: 0 }]
-              : [{ size: "", weight: "250g", stock: 0, price: 0, salesPrice: 0 }],
-          }));
-        }}
-      />
-      <div className="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-stone-900"></div>
-    </label>
+    <div className="flex items-center gap-3">
+      <span className={`text-xs font-bold uppercase tracking-wider ${!product.isCombo ? 'text-stone-900' : 'text-stone-400'}`}>Single</span>
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          className="sr-only peer"
+          checked={product.isCombo}
+          onChange={(e) => {
+            const checked = e.target.checked;
+            setProduct((prev) => ({
+              ...prev,
+              isCombo: checked,
+              variants: checked
+                ? [{ size: "", weight: "500g", stock: 0, price: 0, salesPrice: 0 }]
+                : [{ size: "", weight: "250g", stock: 0, price: 0, salesPrice: 0 }],
+            }));
+          }}
+        />
+        <div className="w-12 h-6 bg-stone-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#B23A2E]"></div>
+      </label>
+      <span className={`text-xs font-bold uppercase tracking-wider ${product.isCombo ? 'text-[#B23A2E]' : 'text-stone-400'}`}>Combo</span>
+    </div>
   </div>
 
   {!product.isCombo ? (
     /* --- NORMAL PRODUCT NUTRITION --- */
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="h-2 w-2 rounded-full bg-green-500"></div>
-        <h3 className="text-sm font-bold uppercase tracking-wider text-stone-600">Standard Nutrition Facts</h3>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="p-6 bg-white rounded-2xl border border-stone-200 shadow-sm">
+      <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-6">Standard Nutrition Facts (per 100g)</h4>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {Object.keys(product.nutrition).map((key) => (
-          <div key={key} className="flex flex-col gap-1">
-            <label className="text-[10px] font-bold text-stone-400 uppercase ml-1">{key}</label>
+          <div key={key} className="space-y-1">
+            <label className="text-[10px] font-bold text-stone-500 uppercase ml-1">{key}</label>
             <input
               name={key}
-              className="w-full px-4 py-2 bg-white border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-900 focus:border-transparent outline-none transition-all text-sm"
               value={product.nutrition[key]}
               onChange={handleNutritionChange}
-              placeholder="e.g. 10g"
+              placeholder="--"
+              className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-stone-900 focus:bg-white transition-all outline-none text-sm"
             />
           </div>
         ))}
       </div>
     </div>
   ) : (
-    /* --- COMBO NUTRITION --- */
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-2 w-2 rounded-full bg-[#B23A2E]"></div>
-          <h3 className="text-sm font-bold uppercase tracking-wider text-stone-600">Combo Components</h3>
-        </div>
+    /* --- COMBO NUTRITION SECTION --- */
+    <div className="space-y-6">
+      <div className="flex items-center justify-between px-2">
+        <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400">Combo Components</h4>
         <button
           type="button"
-          onClick={() => {
-            /* Your Add logic */
-          }}
-          className="text-xs font-bold py-2 px-4 rounded-full border border-stone-200 hover:bg-stone-50 transition-colors flex items-center gap-2"
+          onClick={() => setProduct({
+            ...product,
+            comboNutrition: [...product.comboNutrition, { name: "", nutrition: { calories: "", energy: "", calcium: "", iron: "", magnesium: "", sodium: "", carbohydrates: "", fiber: "", sugar: "", vitaminC: "", vitaminE: "", potassium: "", protein: "", fat: "", fulvicacid: "", humicacid: "", minerals: "" } }]
+          })}
+          className="text-xs font-bold text-[#B23A2E] hover:bg-[#B23A2E]/5 px-4 py-2 rounded-lg transition-colors"
         >
-          <span>+</span> Add Product
+          + Add New Component
         </button>
       </div>
 
       <div className="grid gap-6">
         {product.comboNutrition.map((item, index) => (
-          <div key={index} className="relative group bg-stone-50/50 rounded-2xl border border-stone-200 p-6 transition-all hover:shadow-md">
-            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+          <div key={index} className="group relative bg-white border border-stone-200 rounded-2xl p-6 shadow-sm hover:border-stone-300 transition-all">
+            {/* Header / Remove Button */}
+            <div className="flex items-center gap-4 mb-6">
               <div className="flex-1">
-                <label className="text-[10px] font-black text-stone-400 uppercase block mb-1">Product Component Name</label>
                 <input
-                  className="w-full text-lg font-bold bg-transparent border-b border-stone-300 focus:border-stone-900 outline-none pb-1 placeholder:text-stone-300"
-                  placeholder="e.g. Pure Honey"
+                  placeholder="Component Name (e.g. Organic Shilajit)"
                   value={item.name}
                   onChange={(e) => {
                     const updated = [...product.comboNutrition];
                     updated[index].name = e.target.value;
                     setProduct({ ...product, comboNutrition: updated });
                   }}
+                  className="w-full text-lg font-bold text-stone-900 border-b border-stone-100 focus:border-[#B23A2E] outline-none pb-1 transition-colors"
                 />
               </div>
-              {/* Optional: Remove Button */}
-             
+              <button
+                type="button"
+                onClick={() => {
+                  const updated = product.comboNutrition.filter((_, i) => i !== index);
+                  setProduct({ ...product, comboNutrition: updated });
+                }}
+                className="p-2 text-stone-300 hover:text-red-500 transition-colors"
+                title="Remove Item"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {/* Nutrition Grid for Combo Item */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {Object.keys(item.nutrition).map((key) => (
-                <div key={key} className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold text-stone-500 uppercase">{key}</label>
+                <div key={key} className="space-y-1">
+                  <label className="text-[9px] font-bold text-stone-400 uppercase tracking-tight truncate block">{key}</label>
                   <input
                     placeholder="0"
-                    className="w-full px-3 py-1.5 bg-white border border-stone-200 rounded-md focus:border-stone-900 outline-none text-sm transition-colors"
                     value={item.nutrition[key]}
                     onChange={(e) => {
                       const updated = [...product.comboNutrition];
                       updated[index].nutrition[key] = e.target.value;
                       setProduct({ ...product, comboNutrition: updated });
                     }}
+                    className="w-full px-3 py-1.5 bg-stone-50 border border-stone-100 rounded-lg focus:bg-white focus:border-stone-900 transition-all outline-none text-xs"
                   />
                 </div>
               ))}
