@@ -2,7 +2,7 @@ import React from "react";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import ourImage from "../assets/meandyug.png";
-import farmImage from "../assets/royal-3.jpg";
+import farmImage from "../assets/SeaBuckthorn.png";
 import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
 import {
