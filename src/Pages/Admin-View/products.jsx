@@ -473,7 +473,7 @@ export default function Adminproducts() {
                   ) : (
                     // 🔥 COMBO NUTRITION
                     <div className="space-y-6">
-                      {product.comboNutrition.map((item, index) => (
+                      {(product.comboNutrition?.items || []).map((item, index) => (
                         <div key={index} className="border p-4 rounded-xl">
                           <input
                             placeholder="Product Name (e.g. Honey)"
