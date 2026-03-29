@@ -576,14 +576,14 @@ export default function Adminproducts() {
                       Product Variants
                     </h3>
                     {!product.isCombo && (
-  <button
-    type="button"
-    onClick={addVariantField}
-    className="text-[10px] font-bold uppercase tracking-widest text-[#B23A2E] hover:text-[#d9746a] transition-colors flex items-center gap-2"
-  >
-    <Plus size={14} /> Add Row
-  </button>
-)}
+                      <button
+                        type="button"
+                        onClick={addVariantField}
+                        className="text-[10px] font-bold uppercase tracking-widest text-[#B23A2E] hover:text-[#d9746a] transition-colors flex items-center gap-2"
+                      >
+                        <Plus size={14} /> Add Row
+                      </button>
+                    )}
                   </div>
 
                   <div className="space-y-3">
@@ -640,6 +640,7 @@ export default function Adminproducts() {
                             <option value="200ml">200ml</option>
                             <option value="500ml">500ml</option>
                             <option value="1L">1L</option>
+                            <option value="500ml (Honey) 100ml (Apricot Oil)">500ml (Honey) 100ml (Apricot Oil)</option>
                           </select>
                         </div>
 
