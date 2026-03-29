@@ -473,7 +473,7 @@ export default function Adminproducts() {
                   ) : (
                     // 🔥 COMBO NUTRITION
                     <div className="space-y-6">
-                      {(product.comboNutrition?.items || []).map((item, index) => (
+                      {product.comboNutrition.map((item, index) => (
                         <div key={index} className="border p-4 rounded-xl">
                           <input
                             placeholder="Product Name (e.g. Honey)"
@@ -523,41 +523,41 @@ export default function Adminproducts() {
                       ))}
 
                       <button
-                        type="button"
-                        onClick={() =>
-                          setProduct({
-                            ...product,
-                            comboNutrition: [
-                              ...product.comboNutrition,
-                              {
-                                name: "",
-                                unit: "",
-                                nutrition: {
-                                  calories: "",
-                                  energy: "",
-                                  calcium: "",
-                                  iron: "",
-                                  magnesium: "",
-                                  sodium: "",
-                                  carbohydrates: "",
-                                  fiber: "",
-                                  sugar: "",
-                                  vitaminC: "",
-                                  vitaminE: "",
-                                  potassium: "",
-                                  protein: "",
-                                  fat: "",
-                                  fulvicacid: "",
-                                  humicacid: "",
-                                  minerals: "",
-                                },
-                              },
-                            ],
-                          })
-                        }
-                      >
-                        + Add Combo Item
-                      </button>
+  type="button"
+  onClick={() =>
+    setProduct({
+      ...product,
+      comboNutrition: [
+        ...product.comboNutrition,
+        {
+          name: "",
+          unit: "",
+          nutrition: {
+            calories: "",
+            energy: "",
+            calcium: "",
+            iron: "",
+            magnesium: "",
+            sodium: "",
+            carbohydrates: "",
+            fiber: "",
+            sugar: "",
+            vitaminC: "",
+            vitaminE: "",
+            potassium: "",
+            protein: "",
+            fat: "",
+            fulvicacid: "",
+            humicacid: "",
+            minerals: "",
+          },
+        },
+      ],
+    })
+  }
+>
+  + Add Combo Item
+</button>
                     </div>
                   )}
                 </div>
