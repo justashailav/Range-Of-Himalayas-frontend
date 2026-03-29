@@ -444,132 +444,118 @@ export default function Adminproducts() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <label className="text-sm font-bold">
-                      Is Combo Product?
-                    </label>
-                    <input
-                      type="checkbox"
-                      checked={product.isCombo}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
+                  <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-sm border border-stone-200">
+  {/* --- COMBO TOGGLE --- */}
+  <div className="flex items-center justify-between mb-8 p-4 bg-stone-50 rounded-xl border border-stone-100">
+    <div className="flex flex-col">
+      <label className="text-sm font-bold text-stone-800">Combo Configuration</label>
+      <p className="text-xs text-stone-500">Enable this if the product contains multiple separate items.</p>
+    </div>
+    <label className="relative inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        className="sr-only peer"
+        checked={product.isCombo}
+        onChange={(e) => {
+          const checked = e.target.checked;
+          setProduct((prev) => ({
+            ...prev,
+            isCombo: checked,
+            variants: checked
+              ? [{ size: "", weight: "500g", stock: 0, price: 0, salesPrice: 0 }]
+              : [{ size: "", weight: "250g", stock: 0, price: 0, salesPrice: 0 }],
+          }));
+        }}
+      />
+      <div className="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-stone-900"></div>
+    </label>
+  </div>
 
-                        setProduct((prev) => ({
-                          ...prev,
-                          isCombo: checked,
+  {!product.isCombo ? (
+    /* --- NORMAL PRODUCT NUTRITION --- */
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 mb-2">
+        <div className="h-2 w-2 rounded-full bg-green-500"></div>
+        <h3 className="text-sm font-bold uppercase tracking-wider text-stone-600">Standard Nutrition Facts</h3>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {Object.keys(product.nutrition).map((key) => (
+          <div key={key} className="flex flex-col gap-1">
+            <label className="text-[10px] font-bold text-stone-400 uppercase ml-1">{key}</label>
+            <input
+              name={key}
+              className="w-full px-4 py-2 bg-white border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-900 focus:border-transparent outline-none transition-all text-sm"
+              value={product.nutrition[key]}
+              onChange={handleNutritionChange}
+              placeholder="e.g. 10g"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : (
+    /* --- COMBO NUTRITION --- */
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-2 w-2 rounded-full bg-[#B23A2E]"></div>
+          <h3 className="text-sm font-bold uppercase tracking-wider text-stone-600">Combo Components</h3>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            /* Your Add logic */
+          }}
+          className="text-xs font-bold py-2 px-4 rounded-full border border-stone-200 hover:bg-stone-50 transition-colors flex items-center gap-2"
+        >
+          <span>+</span> Add Product
+        </button>
+      </div>
 
-                          // 👉 IMPORTANT: control variants based on combo
-                          variants: checked
-                            ? [
-                                {
-                                  size: "",
-                                  weight: "500g",
-                                  stock: 0,
-                                  price: 0,
-                                  salesPrice: 0,
-                                },
-                              ] // 🔥 only 1 variant for combo
-                            : [
-                                {
-                                  size: "",
-                                  weight: "250g",
-                                  stock: 0,
-                                  price: 0,
-                                  salesPrice: 0,
-                                },
-                              ], // 🟢 reset normal
-                        }));
-                      }}
-                    />
-                  </div>
-                  {!product.isCombo ? (
-                    // 🟢 NORMAL PRODUCT NUTRITION
-                    <div className="grid grid-cols-2 gap-4">
-                      {Object.keys(product.nutrition).map((key) => (
-                        <input
-                          key={key}
-                          name={key}
-                          value={product.nutrition[key]}
-                          onChange={handleNutritionChange}
-                          placeholder={key}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    // 🔥 COMBO NUTRITION
-                    <div className="space-y-6">
-                      {product.comboNutrition.map((item, index) => (
-                        <div key={index} className="border p-4 rounded-xl">
-                          <input
-                            placeholder="Product Name (e.g. Honey)"
-                            value={item.name}
-                            onChange={(e) => {
-                              const updated = [...product.comboNutrition];
-                              updated[index].name = e.target.value;
-                              setProduct({
-                                ...product,
-                                comboNutrition: updated,
-                              });
-                            }}
-                          />
-                          <div className="grid grid-cols-2 gap-2">
-                            {Object.keys(item.nutrition).map((key) => (
-                              <input
-                                key={key}
-                                placeholder={key}
-                                value={item.nutrition[key]}
-                                onChange={(e) => {
-                                  const updated = [...product.comboNutrition];
-                                  updated[index].nutrition[key] =
-                                    e.target.value;
-                                  setProduct({
-                                    ...product,
-                                    comboNutrition: updated,
-                                  });
-                                }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      ))}
+      <div className="grid gap-6">
+        {product.comboNutrition.map((item, index) => (
+          <div key={index} className="relative group bg-stone-50/50 rounded-2xl border border-stone-200 p-6 transition-all hover:shadow-md">
+            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+              <div className="flex-1">
+                <label className="text-[10px] font-black text-stone-400 uppercase block mb-1">Product Component Name</label>
+                <input
+                  className="w-full text-lg font-bold bg-transparent border-b border-stone-300 focus:border-stone-900 outline-none pb-1 placeholder:text-stone-300"
+                  placeholder="e.g. Pure Honey"
+                  value={item.name}
+                  onChange={(e) => {
+                    const updated = [...product.comboNutrition];
+                    updated[index].name = e.target.value;
+                    setProduct({ ...product, comboNutrition: updated });
+                  }}
+                />
+              </div>
+              {/* Optional: Remove Button */}
+             
+            </div>
 
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setProduct({
-                            ...product,
-                            comboNutrition: [
-                              ...product.comboNutrition,
-                              {
-                                name: "",
-                                nutrition: {
-                                  calories: "",
-                                  energy: "",
-                                  calcium: "",
-                                  iron: "",
-                                  magnesium: "",
-                                  sodium: "",
-                                  carbohydrates: "",
-                                  fiber: "",
-                                  sugar: "",
-                                  vitaminC: "",
-                                  vitaminE: "",
-                                  potassium: "",
-                                  protein: "",
-                                  fat: "",
-                                  fulvicacid: "",
-                                  humicacid: "",
-                                  minerals: "",
-                                },
-                              },
-                            ],
-                          })
-                        }
-                      >
-                        + Add Combo Item
-                      </button>
-                    </div>
-                  )}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {Object.keys(item.nutrition).map((key) => (
+                <div key={key} className="flex flex-col gap-1">
+                  <label className="text-[9px] font-bold text-stone-500 uppercase">{key}</label>
+                  <input
+                    placeholder="0"
+                    className="w-full px-3 py-1.5 bg-white border border-stone-200 rounded-md focus:border-stone-900 outline-none text-sm transition-colors"
+                    value={item.nutrition[key]}
+                    onChange={(e) => {
+                      const updated = [...product.comboNutrition];
+                      updated[index].nutrition[key] = e.target.value;
+                      setProduct({ ...product, comboNutrition: updated });
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
                 </div>
                 <div className="mt-10 pt-8 border-t border-stone-100">
                   <div className="flex items-center justify-between mb-6">
