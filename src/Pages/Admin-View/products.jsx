@@ -6,7 +6,6 @@ import {
   deleteProduct,
   editProduct,
 } from "@/store/slices/productSlice";
-import { Button } from "@/components/ui/button";
 import { Plus, Upload, X } from "lucide-react";
 import {
   Dialog,
@@ -25,6 +24,7 @@ export default function Adminproducts() {
   const [product, setProduct] = useState({
     title: "",
     description: "",
+    isCombo: false,
     nutrition: {
       calories: "",
       energy: "",
@@ -44,6 +44,31 @@ export default function Adminproducts() {
       humicacid: "",
       minerals: "",
     },
+    comboNutrition: [
+      {
+        name: "",
+        unit: "",
+        nutrition: {
+          calories: "",
+          energy: "",
+          calcium: "",
+          iron: "",
+          magnesium: "",
+          sodium: "",
+          carbohydrates: "",
+          fiber: "",
+          sugar: "",
+          vitaminC: "",
+          vitaminE: "",
+          potassium: "",
+          protein: "",
+          fat: "",
+          fulvicacid: "",
+          humicacid: "",
+          minerals: "",
+        },
+      },
+    ],
     details: {
       origin: "",
       variety: "",
@@ -60,7 +85,7 @@ export default function Adminproducts() {
     view360: "",
     variants: [
       {
-        size: "", // ✅ empty = dry fruits supported
+        size: "",
         weight: "250g",
         stock: 0,
         price: 0,
@@ -98,6 +123,32 @@ export default function Adminproducts() {
     setProduct({
       title: "",
       description: "",
+      isCombo: false,
+      comboNutrition: [
+        {
+          name: "",
+          unit: "",
+          nutrition: {
+            calories: "",
+            energy: "",
+            calcium: "",
+            iron: "",
+            magnesium: "",
+            sodium: "",
+            carbohydrates: "",
+            fiber: "",
+            sugar: "",
+            vitaminC: "",
+            vitaminE: "",
+            potassium: "",
+            protein: "",
+            fat: "",
+            fulvicacid: "",
+            humicacid: "",
+            minerals: "",
+          },
+        },
+      ],
       nutrition: {
         calories: "",
         energy: "",
@@ -147,9 +198,6 @@ export default function Adminproducts() {
       ],
     });
   };
-
-  /* ---------------- HANDLERS ---------------- */
-
   const handleProductChange = (e) =>
     setProduct({ ...product, [e.target.name]: e.target.value });
 
@@ -223,7 +271,12 @@ export default function Adminproducts() {
 
     Object.keys(product).forEach((key) => {
       if (
-        ["variants", "nutrition", "details", "customBoxPrices"].includes(key)
+        [
+          "variants",
+          "nutrition",
+          "details",
+          "customBoxPrices,comboNutrition",
+        ].includes(key)
       ) {
         formData.append(key, JSON.stringify(product[key]));
       } else if (key === "images") {
@@ -237,13 +290,9 @@ export default function Adminproducts() {
       ? dispatch(editProduct({ id: currentEditedId, formData }))
       : dispatch(addProduct(formData));
   };
-
-  /* ---------------- JSX ---------------- */
-
   return (
     <Fragment>
       <div className="mb-10 w-full flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-stone-100 pb-8">
-        {/* Left Side: Contextual Info */}
         <div>
           <h1 className="text-2xl font-serif font-bold text-stone-900 italic">
             Inventory Overview
@@ -252,8 +301,6 @@ export default function Adminproducts() {
             Manage your Himalayan Harvest Catalog
           </p>
         </div>
-
-        {/* The Button */}
         <button
           onClick={() => {
             setCurrentEditedId(null);
@@ -398,37 +445,104 @@ export default function Adminproducts() {
                     </div>
                   </div>
 
-                  {/* NUTRITION GRID */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    {Object.keys(product.nutrition).map((key) => (
-                      <div key={key} className="group flex flex-col gap-1.5">
-                        <label className="text-[9px] font-black uppercase tracking-[0.2em] text-stone-400 ml-1 group-focus-within:text-[#B23A2E] transition-colors">
-                          {key}
-                        </label>
-
-                        <div className="relative">
-                          <input
-                            type="text"
-                            name={key}
-                            value={product.nutrition[key]}
-                            onChange={handleNutritionChange}
-                            placeholder="0.00"
-                            className="w-full pl-4 pr-10 py-2.5 bg-stone-50 border border-stone-100 rounded-xl text-stone-900 text-[13px] font-mono outline-none focus:bg-white focus:border-[#B23A2E]/30 focus:ring-4 focus:ring-[#B23A2E]/5 transition-all duration-300"
-                          />
-                          {/* Subtle unit indicator - e.g. 'g' or 'mg' based on standard labels */}
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] font-bold text-stone-300 pointer-events-none group-focus-within:text-[#B23A2E]/40 transition-colors uppercase">
-                            {key.toLowerCase().includes("energy") ||
-                            key.toLowerCase().includes("calories")
-                              ? "kcal"
-                              : "g"}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="flex items-center gap-3">
+                    <label className="text-sm font-bold">
+                      Is Combo Product?
+                    </label>
+                    <input
+                      type="checkbox"
+                      checked={product.isCombo}
+                      onChange={(e) =>
+                        setProduct({ ...product, isCombo: e.target.checked })
+                      }
+                    />
                   </div>
+                  {!product.isCombo ? (
+                    // 🟢 NORMAL PRODUCT NUTRITION
+                    <div className="grid grid-cols-2 gap-4">
+                      {Object.keys(product.nutrition).map((key) => (
+                        <input
+                          key={key}
+                          name={key}
+                          value={product.nutrition[key]}
+                          onChange={handleNutritionChange}
+                          placeholder={key}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    // 🔥 COMBO NUTRITION
+                    <div className="space-y-6">
+                      {product.comboNutrition.map((item, index) => (
+                        <div key={index} className="border p-4 rounded-xl">
+                          <input
+                            placeholder="Product Name (e.g. Honey)"
+                            value={item.name}
+                            onChange={(e) => {
+                              const updated = [...product.comboNutrition];
+                              updated[index].name = e.target.value;
+                              setProduct({
+                                ...product,
+                                comboNutrition: updated,
+                              });
+                            }}
+                          />
+
+                          <input
+                            placeholder="Unit (per 100g / 100ml)"
+                            value={item.unit}
+                            onChange={(e) => {
+                              const updated = [...product.comboNutrition];
+                              updated[index].unit = e.target.value;
+                              setProduct({
+                                ...product,
+                                comboNutrition: updated,
+                              });
+                            }}
+                          />
+
+                          <div className="grid grid-cols-2 gap-2">
+                            {Object.keys(item.nutrition).map((key) => (
+                              <input
+                                key={key}
+                                placeholder={key}
+                                value={item.nutrition[key]}
+                                onChange={(e) => {
+                                  const updated = [...product.comboNutrition];
+                                  updated[index].nutrition[key] =
+                                    e.target.value;
+                                  setProduct({
+                                    ...product,
+                                    comboNutrition: updated,
+                                  });
+                                }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProduct({
+                            ...product,
+                            comboNutrition: [
+                              ...product.comboNutrition,
+                              {
+                                name: "",
+                                unit: "",
+                                nutrition: {},
+                              },
+                            ],
+                          })
+                        }
+                      >
+                        + Add Combo Item
+                      </button>
+                    </div>
+                  )}
                 </div>
-                {/* VARIANTS */}
-                {/* ---------- VARIANTS SECTION ---------- */}
                 <div className="mt-10 pt-8 border-t border-stone-100">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-stone-900">
