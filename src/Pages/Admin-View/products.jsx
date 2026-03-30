@@ -710,6 +710,8 @@ export default function Adminproducts() {
                             onChange={(e) => handleVariantChange(e, index)}
                             className="bg-white border border-stone-100 rounded-xl px-3 py-2 text-xs outline-none focus:border-[#B23A2E]/30 transition-all"
                           >
+                            <option value="10g">10g</option>
+                            <option value="20g">20g</option>
                             <option value="50g">50g</option>
                             <option value="100g">100g</option>
                             <option value="120g">120g</option>
