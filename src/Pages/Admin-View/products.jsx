@@ -264,33 +264,58 @@ export default function Adminproducts() {
   };
 
   const handleProductSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
+  e.preventDefault();
 
-    Object.keys(product).forEach((key) => {
-      if (
-        ["variants", "nutrition", "details", "customBoxPrices"].includes(key)
-      ) {
-        formData.append(key, JSON.stringify(product[key]));
-      }
+  const formData = new FormData();
 
-      // ✅ ONLY send comboNutrition if isCombo is TRUE
-      if (key === "comboNutrition" && product.isCombo) {
+  Object.keys(product).forEach((key) => {
+    // 🟢 IMAGES (files)
+    if (key === "images") {
+      product.images.forEach((img) => {
+        formData.append("images", img);
+      });
+    }
+
+    // 🟣 COMBO NUTRITION (only if combo)
+    else if (key === "comboNutrition") {
+      if (product.isCombo) {
         const cleaned = product.comboNutrition.filter(
-          (item) => item.name && item.name.trim() !== "",
+          (item) => item.name && item.name.trim() !== ""
         );
-        formData.append("comboNutrition", JSON.stringify(cleaned));
-      } else if (key === "images") {
-        product.images.forEach((img) => formData.append("images", img));
-      } else {
-        formData.append(key, product[key]);
-      }
-    });
 
-    currentEditedId
-      ? dispatch(editProduct({ id: currentEditedId, formData }))
-      : dispatch(addProduct(formData));
-  };
+        formData.append("comboNutrition", JSON.stringify(cleaned));
+      }
+      // ❌ skip completely if not combo
+    }
+
+    // 🔵 OBJECTS → stringify
+    else if (
+      ["variants", "nutrition", "details", "customBoxPrices"].includes(key)
+    ) {
+      formData.append(key, JSON.stringify(product[key]));
+    }
+
+    // ⚪ NORMAL FIELDS
+    else {
+      formData.append(key, product[key]);
+    }
+  });
+
+  // 🧪 DEBUG (optional)
+  // for (let pair of formData.entries()) {
+  //   console.log(pair[0], pair[1]);
+  // }
+
+  try {
+    if (currentEditedId) {
+      await dispatch(editProduct({ id: currentEditedId, formData }));
+    } else {
+      await dispatch(addProduct(formData));
+    }
+  } catch (err) {
+    console.error("Submit error:", err);
+  }
+};
   return (
     <Fragment>
       <div className="mb-10 w-full flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-stone-100 pb-8">
