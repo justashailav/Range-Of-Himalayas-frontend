@@ -300,12 +300,6 @@ export default function Adminproducts() {
       formData.append(key, product[key]);
     }
   });
-
-  // 🧪 DEBUG (optional)
-  // for (let pair of formData.entries()) {
-  //   console.log(pair[0], pair[1]);
-  // }
-
   try {
     if (currentEditedId) {
       await dispatch(editProduct({ id: currentEditedId, formData }));
@@ -765,6 +759,9 @@ export default function Adminproducts() {
                             </option>
                             <option value="500ml (Honey) 200ml (Sea Buckthorn Pulp)">
                               500ml (Honey) 200ml (Sea Buckthorn Pulp)
+                            </option>
+                            <option value="500ml (Honey) 10g (Himalayan Shilajit)">
+                              500ml (Honey) 10g (Himalayan Shilajit)
                             </option>
                           </select>
                         </div>
