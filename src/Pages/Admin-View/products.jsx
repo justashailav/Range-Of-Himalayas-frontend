@@ -269,15 +269,17 @@ export default function Adminproducts() {
 
     Object.keys(product).forEach((key) => {
       if (
-        [
-          "variants",
-          "nutrition",
-          "details",
-          "customBoxPrices",
-          "comboNutrition",
-        ].includes(key)
+        ["variants", "nutrition", "details", "customBoxPrices"].includes(key)
       ) {
         formData.append(key, JSON.stringify(product[key]));
+      }
+
+      // ✅ ONLY send comboNutrition if isCombo is TRUE
+      if (key === "comboNutrition" && product.isCombo) {
+        const cleaned = product.comboNutrition.filter(
+          (item) => item.name && item.name.trim() !== "",
+        );
+        formData.append("comboNutrition", JSON.stringify(cleaned));
       } else if (key === "images") {
         product.images.forEach((img) => formData.append("images", img));
       } else {
