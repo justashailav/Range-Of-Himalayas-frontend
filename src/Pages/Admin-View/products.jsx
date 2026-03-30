@@ -687,15 +687,13 @@ export default function Adminproducts() {
                     <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-stone-900">
                       Product Variants
                     </h3>
-                    {!product.isCombo && (
-                      <button
+                    <button
                         type="button"
                         onClick={addVariantField}
                         className="text-[10px] font-bold uppercase tracking-widest text-[#B23A2E] hover:text-[#d9746a] transition-colors flex items-center gap-2"
                       >
                         <Plus size={14} /> Add Row
                       </button>
-                    )}
                   </div>
 
                   <div className="space-y-3">
@@ -762,6 +760,9 @@ export default function Adminproducts() {
                             </option>
                             <option value="500ml (Honey) 10g (Himalayan Shilajit)">
                               500ml (Honey) 10g (Himalayan Shilajit)
+                            </option>
+                            <option value="500ml (Honey) 20g (Himalayan Shilajit)">
+                              500ml (Honey) 20g (Himalayan Shilajit)
                             </option>
                           </select>
                         </div>
