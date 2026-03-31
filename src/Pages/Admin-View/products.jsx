@@ -758,6 +758,9 @@ export default function Adminproducts() {
                             <option value="500ml (Honey) 200ml (Sea Buckthorn Pulp)">
                               500ml (Honey) 200ml (Sea Buckthorn Pulp)
                             </option>
+                            <option value="500ml (Honey) 500ml (Sea Buckthorn Pulp)">
+                              500ml (Honey) 500ml (Sea Buckthorn Pulp)
+                            </option>
                             <option value="500ml (Honey) 10g (Himalayan Shilajit)">
                               500ml (Honey) 10g (Himalayan Shilajit)
                             </option>
