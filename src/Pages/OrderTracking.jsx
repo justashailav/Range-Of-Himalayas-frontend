@@ -53,7 +53,7 @@ export default function OrderTracking() {
   const dispatch = useDispatch();
 
   // 🔥 REDUX STATE
-  const { tracking } = useSelector((state) => state.order);
+  const { tracking } = useSelector((state) => state.orders);
 
   // ===============================
   // 🚀 FETCH ORDER + TRACKING
