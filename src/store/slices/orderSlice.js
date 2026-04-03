@@ -14,6 +14,7 @@ const orderSlice = createSlice({
     orderDetails: null,
     popupMessage: null,
     recentOrders: [],
+    tracking:null
   },
   reducers: {
     showPopup(state, action) {
@@ -201,7 +202,6 @@ const orderSlice = createSlice({
       state.successMessage = null;
     },
 
-    
     requestReturnStart(state) {
       state.isLoading = true;
       state.error = null;
@@ -211,7 +211,8 @@ const orderSlice = createSlice({
       state.isLoading = false;
       state.error = null;
       state.success = true;
-      state.successMessage = action.payload.message || "Return requested successfully";
+      state.successMessage =
+        action.payload.message || "Return requested successfully";
       state.orderDetails = action.payload.data || state.orderDetails;
     },
     requestReturnFailed(state, action) {
@@ -231,7 +232,9 @@ const orderSlice = createSlice({
       state.isLoading = false;
       state.success = true;
       state.error = null;
-      state.successMessage = action.payload.message || "Return approved and refund processed successfully";
+      state.successMessage =
+        action.payload.message ||
+        "Return approved and refund processed successfully";
       state.orderDetails = action.payload.data || state.orderDetails;
     },
     approveReturnFailed(state, action) {
@@ -241,53 +244,67 @@ const orderSlice = createSlice({
       state.error = action.payload || "Failed to approve return";
     },
     getRecentOrdersStart(state) {
-  state.isLoading = true;
-  state.error = null;
-  // Clear previous data while loading
-  state.recentOrders = [];
-  state.successMessage = null;
-},
+      state.isLoading = true;
+      state.error = null;
+      // Clear previous data while loading
+      state.recentOrders = [];
+      state.successMessage = null;
+    },
 
-getRecentOrdersSuccess(state, action) {
-  state.isLoading = false;
-  state.error = null;
+    getRecentOrdersSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
 
-  // Force replace old data (not merge)
-  state.recentOrders = Array.isArray(action.payload?.data)
-    ? action.payload.data
-    : [];
+      // Force replace old data (not merge)
+      state.recentOrders = Array.isArray(action.payload?.data)
+        ? action.payload.data
+        : [];
 
-  state.successMessage = "Recent orders fetched successfully";
-},
+      state.successMessage = "Recent orders fetched successfully";
+    },
 
-getRecentOrdersFailed(state, action) {
-  state.isLoading = false;
-  state.error = action.payload || "Failed to fetch recent orders";
-  // Ensure data is cleared on error
-  state.recentOrders = [];
-  state.successMessage = null;
-},
-
-    
+    getRecentOrdersFailed(state, action) {
+      state.isLoading = false;
+      state.error = action.payload || "Failed to fetch recent orders";
+      // Ensure data is cleared on error
+      state.recentOrders = [];
+      state.successMessage = null;
+    },
+    getTrackingStart: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    getTrackingSuccess: (state, action) => {
+      state.isLoading = false;
+      state.tracking = action.payload.data; // ICC response inside data
+    },
+    getTrackingFailed: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
 export const createNewOrder = (orderData) => (dispatch) => {
   dispatch(orderSlice.actions.createNewOrderStart());
   return axios
-    .post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/order/create`, orderData, {
-      headers: {
-        "Content-Type": "application/json",
+    .post(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/create`,
+      orderData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
       },
-      withCredentials: true,
-    })
+    )
     .then((res) => {
       dispatch(orderSlice.actions.createNewOrderSuccess(res.data));
       return res.data;
     })
     .catch((error) => {
       dispatch(
-        orderSlice.actions.createNewOrderFailed(error.response?.data?.message)
+        orderSlice.actions.createNewOrderFailed(error.response?.data?.message),
       );
     });
 };
@@ -309,19 +326,16 @@ export const capturePayment =
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-        }
+        },
       );
 
       dispatch(orderSlice.actions.capturePaymentSuccess(res.data));
       dispatch(getRecentOrders());
 
       return res.data; // ✅ IMPORTANT
-
     } catch (error) {
       dispatch(
-        orderSlice.actions.capturePaymentFailed(
-          error.response?.data?.message
-        )
+        orderSlice.actions.capturePaymentFailed(error.response?.data?.message),
       );
 
       throw error; // ✅ VERY IMPORTANT
@@ -339,11 +353,10 @@ export const getAllOrdersByUserId = (userId) => (dispatch) => {
     })
     .then((res) => {
       dispatch(orderSlice.actions.getAllOrdersSuccessId(res.data));
-      
     })
     .catch((error) => {
       dispatch(
-        orderSlice.actions.getAllOrdersFailedId(error.response?.data?.message)
+        orderSlice.actions.getAllOrdersFailedId(error.response?.data?.message),
       );
     });
 };
@@ -362,35 +375,37 @@ export const getAllOrderDetails = (id) => (dispatch) => {
     })
     .catch((error) => {
       dispatch(
-        orderSlice.actions.getOrderDetailsFailed(error.response?.data?.message)
+        orderSlice.actions.getOrderDetailsFailed(error.response?.data?.message),
       );
     });
 };
 
-export const getAllOrdersForAllUsers = (filters = {}) => (dispatch) => {
-  dispatch(orderSlice.actions.getAllOrdersStart());
+export const getAllOrdersForAllUsers =
+  (filters = {}) =>
+  (dispatch) => {
+    dispatch(orderSlice.actions.getAllOrdersStart());
 
-  const queryParams = new URLSearchParams(filters).toString();
-  const url = `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/getallorders${queryParams ? `?${queryParams}` : ""}`;
+    const queryParams = new URLSearchParams(filters).toString();
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/getallorders${queryParams ? `?${queryParams}` : ""}`;
 
-  return axios
-    .get(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    })
-    .then((res) => {
-      console.log("getAllOrdersForAllUsers response:", res.data);
-      dispatch(orderSlice.actions.getAllOrdersSuccess(res.data));
-    })
-    .catch((error) => {
-      console.error("Error in getAllOrdersForAllUsers:", error);
-      dispatch(
-        orderSlice.actions.getAllOrdersFailed(error.response?.data?.message)
-      );
-    });
-};
+    return axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log("getAllOrdersForAllUsers response:", res.data);
+        dispatch(orderSlice.actions.getAllOrdersSuccess(res.data));
+      })
+      .catch((error) => {
+        console.error("Error in getAllOrdersForAllUsers:", error);
+        dispatch(
+          orderSlice.actions.getAllOrdersFailed(error.response?.data?.message),
+        );
+      });
+  };
 
 export const getOrderDetailsForAdmin = (id) => (dispatch) => {
   dispatch(orderSlice.actions.getOrderDetailsAdminStart());
@@ -407,8 +422,8 @@ export const getOrderDetailsForAdmin = (id) => (dispatch) => {
     .catch((error) => {
       dispatch(
         orderSlice.actions.getOrderDetailsAdminFailed(
-          error.response?.data?.message
-        )
+          error.response?.data?.message,
+        ),
       );
     });
 };
@@ -426,7 +441,7 @@ export const updateOrderStatus =
             "Content-Type": "application/json",
           },
           withCredentials: true,
-        }
+        },
       )
       .then((res) => {
         dispatch(orderSlice.actions.updateOrderStatusSuccess(res.data));
@@ -435,26 +450,29 @@ export const updateOrderStatus =
       .catch((error) => {
         dispatch(
           orderSlice.actions.updateOrderStatusFailed(
-            error.response?.data?.message
-          )
+            error.response?.data?.message,
+          ),
         );
       });
   };
 export const cancelOrder = (id) => (dispatch) => {
   dispatch(orderSlice.actions.cancelOrderStart());
   return axios
-    .post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/order/cancel/full/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
+    .post(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/cancel/full/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
       },
-      withCredentials: true,
-    })
+    )
     .then((res) => {
       dispatch(orderSlice.actions.cancelOrderSuccess(res.data));
     })
     .catch((error) => {
       dispatch(
-        orderSlice.actions.cancelOrderFailed(error.response?.data?.message)
+        orderSlice.actions.cancelOrderFailed(error.response?.data?.message),
       );
     });
 };
@@ -465,47 +483,77 @@ export const requestReturnItems = (orderId, payload) => (dispatch) => {
     .post(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/return/${orderId}`,
       payload,
-      { withCredentials: true }
+      { withCredentials: true },
     )
     .then((res) => {
       dispatch(orderSlice.actions.requestReturnSuccess(res.data));
       return res.data;
     })
     .catch((error) => {
-      dispatch(orderSlice.actions.requestReturnFailed(error.response?.data?.message));
+      dispatch(
+        orderSlice.actions.requestReturnFailed(error.response?.data?.message),
+      );
       throw error;
     });
 };
 
+export const approveReturnRequest =
+  (orderId, requestIndex, approve) => (dispatch) => {
+    dispatch(orderSlice.actions.approveReturnStart());
 
-export const approveReturnRequest = ( orderId, requestIndex, approve ) => (dispatch) => {
-  dispatch(orderSlice.actions.approveReturnStart());
+    return axios
+      .post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/return/approve/${orderId}`,
+        { requestIndex, approve },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        dispatch(orderSlice.actions.approveReturnSuccess(res.data));
+        return res.data;
+      })
+      .catch((error) => {
+        dispatch(
+          orderSlice.actions.approveReturnFailed(error.response?.data?.message),
+        );
+        throw error;
+      });
+  };
 
-  return axios
-    .post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/return/approve/${orderId}`,
-      { requestIndex, approve },
-      { withCredentials: true }
-    )
-    .then((res) => {
-      dispatch(orderSlice.actions.approveReturnSuccess(res.data));
-      return res.data;
-    })
-    .catch((error) => {
-      dispatch(orderSlice.actions.approveReturnFailed(error.response?.data?.message));
-      throw error;
-    });
+export const getTrackingByOrderId = (orderId) => async (dispatch) => {
+  dispatch(orderSlice.actions.getTrackingStart());
+
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/tracking/${orderId}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    dispatch(orderSlice.actions.getTrackingSuccess(res.data));
+  } catch (error) {
+    dispatch(
+      orderSlice.actions.getTrackingFailed(
+        error.response?.data?.message || "Tracking failed"
+      )
+    );
+  }
 };
+
+
 export const getRecentOrders = () => async (dispatch) => {
   dispatch(orderSlice.actions.getRecentOrdersStart());
   try {
-    const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/order/recent`, {
-      withCredentials: true,
-    });
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/order/recent`,
+      {
+        withCredentials: true,
+      },
+    );
     dispatch(orderSlice.actions.getRecentOrdersSuccess(res.data));
   } catch (error) {
     dispatch(
-      orderSlice.actions.getRecentOrdersFailed(error.response?.data?.message)
+      orderSlice.actions.getRecentOrdersFailed(error.response?.data?.message),
     );
   }
 };
