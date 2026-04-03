@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import io from "socket.io-client";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -31,7 +30,7 @@ const ORDER_STAGES = [
   { key: "Delivered", label: "Delivered", icon: Home },
 ];
 
-// 🔥 ICC STATUS MAPPING
+// 🔥 STATUS MAPPING
 const mapICCStatus = (status) => {
   if (!status) return "Confirmed";
 
@@ -55,6 +54,9 @@ export default function OrderTracking() {
   // 🔥 REDUX STATE
   const { tracking } = useSelector((state) => state.orders);
 
+  const trackingType = tracking?.type;
+  const trackingData = tracking?.data;
+
   // ===============================
   // 🚀 FETCH ORDER + TRACKING
   // ===============================
@@ -77,7 +79,6 @@ export default function OrderTracking() {
 
         socket.emit("joinOrderRoom", id);
 
-        // 🔥 CALL REDUX TRACKING
         dispatch(getTrackingByOrderId(id));
       } else {
         setError("Order not found!");
@@ -106,7 +107,7 @@ export default function OrderTracking() {
                   { status: data.status, updatedAt: data.updatedAt },
                 ],
               }
-            : prev,
+            : prev
         );
       }
     });
@@ -115,17 +116,20 @@ export default function OrderTracking() {
   }, [orderId]);
 
   // ===============================
-  // 🔥 USE LIVE STATUS
+  // 🔥 STATUS LOGIC
   // ===============================
-  const liveStatusMapped = mapICCStatus(tracking?.currentStatus);
+  const displayStatus =
+    trackingData?.currentStatus || order?.orderStatus;
+
+  const liveStatusMapped = mapICCStatus(displayStatus);
 
   const getCurrentStageIndex = (status) =>
     ORDER_STAGES.findIndex(
-      (stage) => stage.key.toLowerCase() === status?.toLowerCase(),
+      (stage) => stage.key.toLowerCase() === status?.toLowerCase()
     );
 
   const currentIndex = getCurrentStageIndex(
-    liveStatusMapped || order?.orderStatus || "Confirmed",
+    liveStatusMapped || "Confirmed"
   );
 
   return (
@@ -135,7 +139,7 @@ export default function OrderTracking() {
       </Helmet>
 
       <motion.div className="w-full max-w-3xl backdrop-blur-xl bg-white/70 shadow-xl rounded-3xl p-6 md:p-10 mt-10">
-        
+
         {/* INPUT */}
         <div className="flex gap-4 mb-10">
           <input
@@ -150,7 +154,7 @@ export default function OrderTracking() {
             onClick={() => fetchOrder(orderId)}
             className="bg-black text-white px-6 rounded-xl"
           >
-            Track
+            {loading ? "..." : "Track"}
           </button>
         </div>
 
@@ -161,19 +165,22 @@ export default function OrderTracking() {
         =============================== */}
         {order && (
           <>
-            {/* 🔥 STATUS */}
+            {/* STATUS */}
             <h2 className="text-lg font-bold mb-4">
-              Status:{" "}
-              {tracking?.currentStatus || order.orderStatus}
+              Status: {displayStatus}
             </h2>
 
-            {/* ===============================
-                TIMELINE
-            =============================== */}
+            {/* 🔥 PRE-SHIP MESSAGE */}
+            {trackingType === "manual" && (
+              <p className="text-yellow-600 text-sm mb-4">
+                🚀 Your order is being prepared. It will be shipped soon.
+              </p>
+            )}
+
+            {/* TIMELINE */}
             <div className="flex justify-between mb-10">
               {ORDER_STAGES.map((stage, index) => {
                 const Icon = stage.icon;
-
                 const completed = index <= currentIndex;
 
                 return (
@@ -185,7 +192,11 @@ export default function OrderTracking() {
                           : "bg-gray-200"
                       }`}
                     >
-                      {completed ? <Check size={16} /> : <Icon size={16} />}
+                      {completed ? (
+                        <Check size={16} />
+                      ) : (
+                        <Icon size={16} />
+                      )}
                     </div>
 
                     <p className="text-xs mt-2">{stage.label}</p>
@@ -194,35 +205,41 @@ export default function OrderTracking() {
               })}
             </div>
 
-            {/* ===============================
-                TRACKING EVENTS
-            =============================== */}
-            {tracking?.trackingEvents && (
+            {/* TRACKING EVENTS */}
+            {(trackingData?.trackingEvents ||
+              order?.statusHistory) && (
               <div className="space-y-3">
                 <h3 className="font-semibold">Tracking History</h3>
 
-                {tracking.trackingEvents.map((event, i) => (
+                {(trackingData?.trackingEvents ||
+                  order?.statusHistory).map((event, i) => (
                   <div
                     key={i}
                     className="border p-3 rounded-lg text-sm"
                   >
-                    <p className="font-semibold">{event.status}</p>
-                    <p className="text-gray-500">{event.location}</p>
+                    <p className="font-semibold">
+                      {event.status || event.statusText}
+                    </p>
+
+                    {event.location && (
+                      <p className="text-gray-500">
+                        {event.location}
+                      </p>
+                    )}
+
                     <p className="text-xs text-gray-400">
-                      {new Date(event.date).toLocaleString()}
+                      {new Date(
+                        event.updatedAt || event.date
+                      ).toLocaleString()}
                     </p>
                   </div>
                 ))}
               </div>
             )}
 
-            {/* ===============================
-                FINAL STATUS
-            =============================== */}
+            {/* FINAL STATUS */}
             <div className="mt-8 text-center font-bold">
-              {tracking?.currentStatus
-                ?.toLowerCase()
-                .includes("delivered")
+              {displayStatus?.toLowerCase().includes("delivered")
                 ? "✅ Delivered"
                 : "🚚 In Transit"}
             </div>
