@@ -7,8 +7,6 @@ import {
   Truck,
   Home,
   Clock,
-  Search,
-  Fingerprint,
   Check,
 } from "lucide-react";
 import { Helmet } from "react-helmet";
@@ -30,7 +28,7 @@ const ORDER_STAGES = [
   { key: "Delivered", label: "Delivered", icon: Home },
 ];
 
-// 🔥 STATUS MAPPING
+// 🔥 BETTER STATUS MAPPING
 const mapICCStatus = (status) => {
   if (!status) return "Confirmed";
 
@@ -38,7 +36,9 @@ const mapICCStatus = (status) => {
 
   if (status.includes("delivered")) return "Delivered";
   if (status.includes("out")) return "Out for Delivery";
-  if (status.includes("transit")) return "Shipped";
+  if (status.includes("transit") || status.includes("shipped"))
+    return "Shipped";
+  if (status.includes("pack")) return "Packed";
 
   return "Confirmed";
 };
@@ -50,8 +50,6 @@ export default function OrderTracking() {
   const [error, setError] = useState("");
 
   const dispatch = useDispatch();
-
-  // 🔥 REDUX STATE
   const { tracking } = useSelector((state) => state.orders);
 
   // ===============================
@@ -73,9 +71,9 @@ export default function OrderTracking() {
         const orderData = res.data.data;
 
         setOrder(orderData);
-
         socket.emit("joinOrderRoom", id);
 
+        // 🔥 FETCH TRACKING
         dispatch(getTrackingByOrderId(id));
       } else {
         setError("Order not found!");
@@ -113,34 +111,32 @@ export default function OrderTracking() {
   }, [orderId]);
 
   // ===============================
-  // 🔥 STATUS LOGIC
+  // 🔥 TRACKING DATA (NEW FORMAT)
   // ===============================
-  // 🔥 ADD THIS AFTER REDUX STATE
-  const trackingType = tracking?.type;
   const trackingData = tracking?.data;
 
-  // 🚨 HANDLE ICC ERROR FALLBACK
-  const isICCFailed =
-    tracking?.error?.code === "NOT_FOUND" ||
-    tracking?.error?.message === "Shipment not found";
+  const isTrackingAvailable =
+    tracking?.success && trackingData && !tracking?.message;
 
-  // 🔥 FINAL SAFE TRACKING DATA
-  const safeTrackingData = isICCFailed ? null : trackingData;
+  // 🔥 FINAL STATUS
+  const displayStatus = isTrackingAvailable
+    ? trackingData.status
+    : order?.orderStatus;
 
-  // ===============================
-  // 🔥 STATUS LOGIC
-  // ===============================
-  const displayStatus = safeTrackingData?.currentStatus || order?.orderStatus;
-
-  // ===============================
-  const liveStatusMapped = mapICCStatus(displayStatus);
+  const mappedStatus = mapICCStatus(displayStatus);
 
   const getCurrentStageIndex = (status) =>
     ORDER_STAGES.findIndex(
       (stage) => stage.key.toLowerCase() === status?.toLowerCase(),
     );
 
-  const currentIndex = getCurrentStageIndex(liveStatusMapped || "Confirmed");
+  const currentIndex = getCurrentStageIndex(mappedStatus || "Confirmed");
+
+  // ===============================
+  // 🔥 TRACKING EVENTS
+  // ===============================
+  const trackingEvents =
+    trackingData?.activities || order?.statusHistory || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-100 via-white to-pink-50 flex justify-center items-start md:items-center px-4 py-10 md:py-20">
@@ -169,16 +165,16 @@ export default function OrderTracking() {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        {/* ===============================
-            ORDER DATA
-        =============================== */}
+        {/* =============================== */}
         {order && (
           <>
             {/* STATUS */}
-            <h2 className="text-lg font-bold mb-4">Status: {displayStatus}</h2>
+            <h2 className="text-lg font-bold mb-4">
+              Status: {displayStatus || "Processing"}
+            </h2>
 
             {/* 🔥 PRE-SHIP MESSAGE */}
-            {trackingType === "manual" && (
+            {!isTrackingAvailable && (
               <p className="text-yellow-600 text-sm mb-4">
                 🚀 Your order is being prepared. It will be shipped soon.
               </p>
@@ -207,35 +203,33 @@ export default function OrderTracking() {
             </div>
 
             {/* TRACKING EVENTS */}
-            {(safeTrackingData?.trackingEvents || order?.statusHistory) && (
+            {trackingEvents.length > 0 && (
               <div className="space-y-3">
                 <h3 className="font-semibold">Tracking History</h3>
 
-                {(safeTrackingData?.trackingEvents || order?.statusHistory).map(
-                  (event, i) => (
-                    <div key={i} className="border p-3 rounded-lg text-sm">
-                      <p className="font-semibold">
-                        {event.status || event.statusText}
-                      </p>
+                {trackingEvents.map((event, i) => (
+                  <div key={i} className="border p-3 rounded-lg text-sm">
+                    <p className="font-semibold">
+                      {event.status || event.statusText || "Update"}
+                    </p>
 
-                      {event.location && (
-                        <p className="text-gray-500">{event.location}</p>
-                      )}
+                    {event.location && (
+                      <p className="text-gray-500">{event.location}</p>
+                    )}
 
-                      <p className="text-xs text-gray-400">
-                        {new Date(
-                          event.updatedAt || event.date,
-                        ).toLocaleString()}
-                      </p>
-                    </div>
-                  ),
-                )}
+                    <p className="text-xs text-gray-400">
+                      {new Date(
+                        event.updatedAt || event.date || Date.now(),
+                      ).toLocaleString()}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
 
             {/* FINAL STATUS */}
             <div className="mt-8 text-center font-bold">
-              {displayStatus?.toLowerCase().includes("delivered")
+              {mappedStatus === "Delivered"
                 ? "✅ Delivered"
                 : "🚚 In Transit"}
             </div>
