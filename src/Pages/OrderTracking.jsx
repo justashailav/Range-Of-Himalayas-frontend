@@ -54,9 +54,6 @@ export default function OrderTracking() {
   // 🔥 REDUX STATE
   const { tracking } = useSelector((state) => state.orders);
 
-  const trackingType = tracking?.type;
-  const trackingData = tracking?.data;
-
   // ===============================
   // 🚀 FETCH ORDER + TRACKING
   // ===============================
@@ -107,7 +104,7 @@ export default function OrderTracking() {
                   { status: data.status, updatedAt: data.updatedAt },
                 ],
               }
-            : prev
+            : prev,
         );
       }
     });
@@ -118,19 +115,32 @@ export default function OrderTracking() {
   // ===============================
   // 🔥 STATUS LOGIC
   // ===============================
-  const displayStatus =
-    trackingData?.currentStatus || order?.orderStatus;
+  // 🔥 ADD THIS AFTER REDUX STATE
+  const trackingType = tracking?.type;
+  const trackingData = tracking?.data;
 
+  // 🚨 HANDLE ICC ERROR FALLBACK
+  const isICCFailed =
+    tracking?.error?.code === "NOT_FOUND" ||
+    tracking?.error?.message === "Shipment not found";
+
+  // 🔥 FINAL SAFE TRACKING DATA
+  const safeTrackingData = isICCFailed ? null : trackingData;
+
+  // ===============================
+  // 🔥 STATUS LOGIC
+  // ===============================
+  const displayStatus = safeTrackingData?.currentStatus || order?.orderStatus;
+
+  // ===============================
   const liveStatusMapped = mapICCStatus(displayStatus);
 
   const getCurrentStageIndex = (status) =>
     ORDER_STAGES.findIndex(
-      (stage) => stage.key.toLowerCase() === status?.toLowerCase()
+      (stage) => stage.key.toLowerCase() === status?.toLowerCase(),
     );
 
-  const currentIndex = getCurrentStageIndex(
-    liveStatusMapped || "Confirmed"
-  );
+  const currentIndex = getCurrentStageIndex(liveStatusMapped || "Confirmed");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-100 via-white to-pink-50 flex justify-center items-start md:items-center px-4 py-10 md:py-20">
@@ -139,7 +149,6 @@ export default function OrderTracking() {
       </Helmet>
 
       <motion.div className="w-full max-w-3xl backdrop-blur-xl bg-white/70 shadow-xl rounded-3xl p-6 md:p-10 mt-10">
-
         {/* INPUT */}
         <div className="flex gap-4 mb-10">
           <input
@@ -166,9 +175,7 @@ export default function OrderTracking() {
         {order && (
           <>
             {/* STATUS */}
-            <h2 className="text-lg font-bold mb-4">
-              Status: {displayStatus}
-            </h2>
+            <h2 className="text-lg font-bold mb-4">Status: {displayStatus}</h2>
 
             {/* 🔥 PRE-SHIP MESSAGE */}
             {trackingType === "manual" && (
@@ -187,16 +194,10 @@ export default function OrderTracking() {
                   <div key={stage.key} className="text-center">
                     <div
                       className={`w-10 h-10 mx-auto flex items-center justify-center rounded-full ${
-                        completed
-                          ? "bg-black text-white"
-                          : "bg-gray-200"
+                        completed ? "bg-black text-white" : "bg-gray-200"
                       }`}
                     >
-                      {completed ? (
-                        <Check size={16} />
-                      ) : (
-                        <Icon size={16} />
-                      )}
+                      {completed ? <Check size={16} /> : <Icon size={16} />}
                     </div>
 
                     <p className="text-xs mt-2">{stage.label}</p>
@@ -206,34 +207,29 @@ export default function OrderTracking() {
             </div>
 
             {/* TRACKING EVENTS */}
-            {(trackingData?.trackingEvents ||
-              order?.statusHistory) && (
+            {(safeTrackingData?.trackingEvents || order?.statusHistory) && (
               <div className="space-y-3">
                 <h3 className="font-semibold">Tracking History</h3>
 
-                {(trackingData?.trackingEvents ||
-                  order?.statusHistory).map((event, i) => (
-                  <div
-                    key={i}
-                    className="border p-3 rounded-lg text-sm"
-                  >
-                    <p className="font-semibold">
-                      {event.status || event.statusText}
-                    </p>
-
-                    {event.location && (
-                      <p className="text-gray-500">
-                        {event.location}
+                {(safeTrackingData?.trackingEvents || order?.statusHistory).map(
+                  (event, i) => (
+                    <div key={i} className="border p-3 rounded-lg text-sm">
+                      <p className="font-semibold">
+                        {event.status || event.statusText}
                       </p>
-                    )}
 
-                    <p className="text-xs text-gray-400">
-                      {new Date(
-                        event.updatedAt || event.date
-                      ).toLocaleString()}
-                    </p>
-                  </div>
-                ))}
+                      {event.location && (
+                        <p className="text-gray-500">{event.location}</p>
+                      )}
+
+                      <p className="text-xs text-gray-400">
+                        {new Date(
+                          event.updatedAt || event.date,
+                        ).toLocaleString()}
+                      </p>
+                    </div>
+                  ),
+                )}
               </div>
             )}
 
