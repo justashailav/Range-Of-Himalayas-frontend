@@ -18,8 +18,6 @@ import { getTrackingByOrderId } from "@/store/slices/orderSlice";
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/order`;
 
-const socket = io(SOCKET_URL, { withCredentials: true });
-
 const ORDER_STAGES = [
   { key: "Confirmed", label: "Order Placed", icon: Clock },
   { key: "Packed", label: "Packed", icon: Package },
@@ -48,9 +46,20 @@ export default function OrderTracking() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [socketInstance, setSocketInstance] = useState(null);
 
   const dispatch = useDispatch();
   const { tracking } = useSelector((state) => state.orders);
+
+  // ===============================
+  // 🔌 SOCKET INIT
+  // ===============================
+  useEffect(() => {
+    const socket = io(SOCKET_URL, { withCredentials: true });
+    setSocketInstance(socket);
+
+    return () => socket.disconnect();
+  }, []);
 
   // ===============================
   // 🚀 FETCH ORDER + TRACKING
@@ -71,9 +80,14 @@ export default function OrderTracking() {
         const orderData = res.data.data;
 
         setOrder(orderData);
-        socket.emit("joinOrderRoom", id);
 
-        dispatch(getTrackingByOrderId(id));
+        // join socket room
+        socketInstance?.emit("joinOrderRoom", id);
+
+        // ONLY fetch tracking if shipped
+        if (orderData.orderStatus === "shipped") {
+          dispatch(getTrackingByOrderId(id));
+        }
       } else {
         setError("Order not found!");
       }
@@ -89,7 +103,9 @@ export default function OrderTracking() {
   // 🔁 SOCKET LIVE UPDATE
   // ===============================
   useEffect(() => {
-    socket.on("orderStatusUpdated", (data) => {
+    if (!socketInstance) return;
+
+    socketInstance.on("orderStatusUpdated", (data) => {
       if (data.orderId === orderId) {
         setOrder((prev) =>
           prev
@@ -103,34 +119,45 @@ export default function OrderTracking() {
               }
             : prev,
         );
+
+        // 🔥 trigger tracking when shipped
+        if (data.status === "shipped") {
+          dispatch(getTrackingByOrderId(orderId));
+        }
       }
     });
 
-    return () => socket.off("orderStatusUpdated");
-  }, [orderId]);
+    return () => socketInstance.off("orderStatusUpdated");
+  }, [socketInstance, orderId]);
 
   // ===============================
-  // 🔁 AUTO REFRESH TRACKING
+  // 🔁 AUTO TRACKING (ONLY WHEN SHIPPED)
   // ===============================
   useEffect(() => {
-    if (!orderId) return;
+    if (!orderId || order?.orderStatus !== "shipped") return;
 
     const interval = setInterval(() => {
       dispatch(getTrackingByOrderId(orderId));
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [orderId]);
+  }, [orderId, order?.orderStatus]);
 
   // ===============================
-  // 🔥 TRACKING LOGIC
+  // 🔥 TRACKING LOGIC (FIXED)
   // ===============================
   const trackingData = tracking?.data;
 
-  const displayStatus =
-    order?.orderStatus !== "shipped"
-      ? order?.orderStatus
-      : trackingData?.status || order?.orderStatus;
+  let displayStatus = order?.orderStatus;
+
+  // ONLY override when real ICC data exists
+  if (
+    order?.orderStatus === "shipped" &&
+    trackingData?.awb &&
+    trackingData?.status
+  ) {
+    displayStatus = trackingData.status;
+  }
 
   const mappedStatus = mapICCStatus(displayStatus);
 
@@ -195,7 +222,7 @@ export default function OrderTracking() {
             )}
 
             {/* WAITING FOR ICC */}
-            {order?.orderStatus === "shipped" && !trackingData?.status && (
+            {order?.orderStatus === "shipped" && !trackingData?.awb && (
               <p className="text-blue-600 text-sm mb-4">
                 🚚 Shipment created. Tracking will be available shortly.
               </p>
