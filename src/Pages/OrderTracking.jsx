@@ -10,8 +10,8 @@ import {
   Check,
 } from "lucide-react";
 import { Helmet } from "react-helmet";
-import {AnimatePresence } from "framer-motion";
-import {Search, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, Package, Truck, Home, Search, Loader2 } from "lucide-react";
 
 // 🔥 REDUX
 import { useDispatch, useSelector } from "react-redux";
@@ -147,139 +147,120 @@ export default function OrderTracking() {
     trackingData?.activities || order?.statusHistory || [];
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-rose-50 via-orange-50/20 to-slate-50 flex justify-center items-start md:items-center px-4 py-10">
-    <Helmet>
-      <title>Track Order | Range Of Himalayas</title>
-    </Helmet>
+    <div className="min-h-screen bg-gradient-to-br from-rose-100 via-white to-pink-50 flex justify-center items-start md:items-center px-4 py-10 md:py-20">
+      <Helmet>
+        <title>Track Order - Range Of Himalayas</title>
+      </Helmet>
 
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-2xl backdrop-blur-2xl bg-white/80 border border-white/50 shadow-[0_20px_50px_rgba(0,0,0,0.05)] rounded-[2.5rem] p-8 md:p-12"
-    >
-      {/* HEADER */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-light tracking-tight text-slate-900 mb-2">Track Your Journey</h1>
-        <p className="text-slate-500 text-sm italic">Bringing the Himalayas to your doorstep</p>
-      </div>
+      <motion.div className="w-full max-w-3xl backdrop-blur-xl bg-white/70 shadow-xl rounded-3xl p-6 md:p-10 mt-10">
 
-      {/* INPUT SECTION */}
-      <div className="relative flex items-center gap-3 mb-12">
-        <div className="relative flex-1 group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black transition-colors" size={18} />
+        {/* INPUT */}
+        <div className="flex gap-4 mb-10">
           <input
             type="text"
-            placeholder="Enter Order ID (e.g. ROH-1234)"
+            placeholder="Enter Order ID"
             value={orderId}
             onChange={(e) => setOrderId(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-rose-500/5 focus:border-rose-200 transition-all text-slate-800 placeholder:text-slate-300"
+            className="flex-1 p-4 rounded-xl border"
           />
+
+          <button
+            onClick={() => fetchOrder(orderId)}
+            className="bg-black text-white px-6 rounded-xl"
+          >
+            {loading ? "..." : "Track"}
+          </button>
         </div>
 
-        <button
-          onClick={() => fetchOrder(orderId)}
-          disabled={loading}
-          className="bg-slate-900 hover:bg-black text-white px-8 py-4 rounded-2xl font-medium transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center min-w-[100px]"
-        >
-          {loading ? <Loader2 className="animate-spin" size={20} /> : "Track"}
-        </button>
-      </div>
+        {error && <p className="text-red-500">{error}</p>}
 
-      <AnimatePresence mode="wait">
-        {error && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-500 text-center mb-6 text-sm bg-red-50 py-2 rounded-lg">
-            {error}
-          </motion.p>
-        )}
-
+        {/* =============================== */}
         {order && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="space-y-10"
-          >
-            {/* STATUS BADGE & AWB */}
-            <div className="flex flex-col items-center text-center">
-              <span className="px-4 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-bold uppercase tracking-widest mb-3">
-                {displayStatus || "Processing"}
-              </span>
-              {trackingData?.awb && (
-                <p className="text-[10px] text-slate-400 font-mono tracking-tighter">
-                  TRACKING ID: {trackingData.awb}
-                </p>
-              )}
-            </div>
+          <>
+            {/* STATUS */}
+            <h2 className="text-lg font-bold mb-2">
+              Status: {displayStatus || "Processing"}
+            </h2>
 
-            {/* MODERN TIMELINE */}
-            <div className="relative flex justify-between items-start px-2">
-              {/* Background Line */}
-              <div className="absolute top-5 left-0 w-full h-[2px] bg-slate-100 -z-0" />
-              <div 
-                className="absolute top-5 left-0 h-[2px] bg-black transition-all duration-1000 -z-0" 
-                style={{ width: `${(currentIndex / (ORDER_STAGES.length - 1)) * 100}%` }}
-              />
+            {/* AWB */}
+            {trackingData?.awb && (
+              <p className="text-sm text-gray-600 mb-2">
+                AWB: {trackingData.awb}
+              </p>
+            )}
 
+            {/* PRE SHIPPED */}
+            {order?.orderStatus !== "shipped" && (
+              <p className="text-yellow-600 text-sm mb-4">
+                🚀 Your order is {order?.orderStatus}. It will be shipped soon.
+              </p>
+            )}
+
+            {/* WAITING FOR ICC */}
+            {order?.orderStatus === "shipped" && !trackingData?.status && (
+              <p className="text-blue-600 text-sm mb-4">
+                🚚 Shipment created. Tracking will be available shortly.
+              </p>
+            )}
+
+            {/* TIMELINE */}
+            <div className="flex justify-between mb-10">
               {ORDER_STAGES.map((stage, index) => {
                 const Icon = stage.icon;
-                const isCompleted = index <= currentIndex;
-                const isCurrent = index === currentIndex;
+                const completed = index <= currentIndex;
 
                 return (
-                  <div key={stage.key} className="relative z-10 flex flex-col items-center">
+                  <div key={stage.key} className="text-center">
                     <div
-                      className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-500 shadow-sm ${
-                        isCompleted ? "bg-black text-white" : "bg-white border border-slate-100 text-slate-300"
-                      } ${isCurrent ? "ring-4 ring-rose-100 scale-110" : ""}`}
+                      className={`w-10 h-10 mx-auto flex items-center justify-center rounded-full ${
+                        completed ? "bg-black text-white" : "bg-gray-200"
+                      }`}
                     >
-                      {isCompleted ? <Check size={16} /> : <Icon size={16} />}
+                      {completed ? <Check size={16} /> : <Icon size={16} />}
                     </div>
-                    <p className={`text-[10px] md:text-xs mt-4 font-medium tracking-tight ${isCompleted ? "text-black" : "text-slate-400"}`}>
-                      {stage.label}
-                    </p>
+
+                    <p className="text-xs mt-2">{stage.label}</p>
                   </div>
                 );
               })}
             </div>
 
-            {/* PRE-SHIPPED INFO */}
-            {order?.orderStatus !== "shipped" && (
-              <div className="bg-orange-50/50 border border-orange-100 p-4 rounded-2xl flex items-center gap-3">
-                <Package className="text-orange-500" size={18} />
-                <p className="text-orange-800 text-sm">
-                  Handcrafting your order. It will be dispatched from our Himalayan facility shortly.
-                </p>
+            {/* TRACKING EVENTS */}
+            {trackingEvents.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="font-semibold">Tracking History</h3>
+
+                {trackingEvents.map((event, i) => (
+                  <div key={i} className="border p-3 rounded-lg text-sm">
+                    <p className="font-semibold">
+                      {event.status || event.statusText || "Update"}
+                    </p>
+
+                    {event.location && (
+                      <p className="text-gray-500">{event.location}</p>
+                    )}
+
+                    <p className="text-xs text-gray-400">
+                      {new Date(
+                        event.updatedAt || event.date || Date.now(),
+                      ).toLocaleString()}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
 
-            {/* TRACKING HISTORY LIST */}
-            {trackingEvents.length > 0 && (
-              <div className="pt-6 border-t border-slate-50">
-                <h3 className="text-sm font-semibold text-slate-900 mb-4">Journey Updates</h3>
-                <div className="space-y-4">
-                  {trackingEvents.map((event, i) => (
-                    <div key={i} className="flex gap-4 group">
-                      <div className="flex flex-col items-center">
-                        <div className="w-2 h-2 rounded-full bg-slate-300 mt-1.5 group-first:bg-rose-500 group-first:ring-4 group-first:ring-rose-100" />
-                        <div className="w-[1px] h-full bg-slate-100 group-last:hidden" />
-                      </div>
-                      <div className="pb-4">
-                        <p className="text-sm font-medium text-slate-800">
-                          {event.status || event.statusText}
-                        </p>
-                        {event.location && <p className="text-xs text-slate-500 italic">{event.location}</p>}
-                        <p className="text-[10px] text-slate-400 mt-1">
-                          {new Date(event.updatedAt || event.date).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </motion.div>
+            {/* FINAL STATUS */}
+            <div className="mt-8 text-center font-bold">
+              {order?.orderStatus !== "shipped"
+                ? "📦 Preparing Order"
+                : mappedStatus === "Delivered"
+                ? "✅ Delivered"
+                : "🚚 In Transit"}
+            </div>
+          </>
         )}
-      </AnimatePresence>
-    </motion.div>
-  </div>
+      </motion.div>
+    </div>
   );
 }
