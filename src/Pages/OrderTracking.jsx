@@ -9,6 +9,8 @@ import {
   Clock,
   Check,
   ChevronRight,
+  Search,
+  Info,
 } from "lucide-react";
 import { Helmet } from "react-helmet";
 
