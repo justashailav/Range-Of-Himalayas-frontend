@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { Helmet } from "react-helmet";
 
-// 🔥 REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { getTrackingByOrderId } from "@/store/slices/orderSlice";
 
@@ -26,7 +25,9 @@ const ORDER_STAGES = [
   { key: "Delivered", label: "Delivered", icon: Home },
 ];
 
-// ✅ NORMALIZE BACKEND STATUS
+// ===============================
+// ✅ NORMALIZE STATUS
+// ===============================
 const normalizeStatus = (status) => {
   if (!status) return "Confirmed";
 
@@ -41,7 +42,9 @@ const normalizeStatus = (status) => {
   return "Confirmed";
 };
 
+// ===============================
 // ✅ ICC STATUS MAP
+// ===============================
 const mapICCStatus = (status) => {
   if (!status) return "Shipped";
 
@@ -71,7 +74,6 @@ export default function OrderTracking() {
   useEffect(() => {
     const socket = io(SOCKET_URL, { withCredentials: true });
     setSocketInstance(socket);
-
     return () => socket.disconnect();
   }, []);
 
@@ -90,7 +92,7 @@ export default function OrderTracking() {
         withCredentials: true,
       });
 
-      console.log("ORDER API:", res.data.data); // 🔥 DEBUG
+      console.log("ORDER API:", res.data.data);
 
       if (res.data.success && res.data.data) {
         const orderData = res.data.data;
@@ -98,9 +100,8 @@ export default function OrderTracking() {
         setOrder(orderData);
         socketInstance?.emit("joinOrderRoom", id);
 
-        if (orderData.orderStatus === "shipped") {
-          dispatch(getTrackingByOrderId(id));
-        }
+        // 🔥 always fetch tracking
+        dispatch(getTrackingByOrderId(id));
       } else {
         setError("Order not found!");
       }
@@ -113,7 +114,7 @@ export default function OrderTracking() {
   };
 
   // ===============================
-  // 🔁 SOCKET LIVE UPDATE
+  // 🔁 SOCKET UPDATE
   // ===============================
   useEffect(() => {
     if (!socketInstance) return;
@@ -124,18 +125,19 @@ export default function OrderTracking() {
           prev
             ? {
                 ...prev,
-                orderStatus: data.status,
+                orderStatus: data.status?.toLowerCase(),
                 statusHistory: [
                   ...(prev.statusHistory || []),
-                  { status: data.status, updatedAt: data.updatedAt },
+                  {
+                    status: data.status?.toLowerCase(),
+                    updatedAt: data.updatedAt,
+                  },
                 ],
               }
             : prev,
         );
 
-        if (data.status === "shipped") {
-          dispatch(getTrackingByOrderId(orderId));
-        }
+        dispatch(getTrackingByOrderId(orderId));
       }
     });
 
@@ -143,10 +145,10 @@ export default function OrderTracking() {
   }, [socketInstance, orderId]);
 
   // ===============================
-  // 🔁 AUTO TRACKING (ONLY SHIPPED)
+  // 🔁 AUTO TRACKING
   // ===============================
   useEffect(() => {
-    if (!orderId || order?.orderStatus !== "shipped") return;
+    if (!orderId || normalizeStatus(order?.orderStatus) !== "Shipped") return;
 
     const interval = setInterval(() => {
       dispatch(getTrackingByOrderId(orderId));
@@ -160,10 +162,20 @@ export default function OrderTracking() {
   // ===============================
   const trackingData = tracking?.data;
 
-  let displayStatus = normalizeStatus(order?.orderStatus);
+  let displayStatus = "Confirmed";
 
+  // 🔥 always use latest history
+  if (order?.statusHistory?.length > 0) {
+    const latest =
+      order.statusHistory[order.statusHistory.length - 1];
+    displayStatus = normalizeStatus(latest.status);
+  } else {
+    displayStatus = normalizeStatus(order?.orderStatus);
+  }
+
+  // 🔥 ICC override
   if (
-    order?.orderStatus === "shipped" &&
+    normalizeStatus(order?.orderStatus) === "Shipped" &&
     trackingData?.awb &&
     trackingData?.status
   ) {
@@ -223,18 +235,19 @@ export default function OrderTracking() {
             )}
 
             {/* PRE SHIPPED */}
-            {order?.orderStatus !== "shipped" && (
+            {normalizeStatus(order?.orderStatus) !== "Shipped" && (
               <p className="text-yellow-600 text-sm mb-4">
                 🚀 Your order is {displayStatus}. It will be shipped soon.
               </p>
             )}
 
             {/* WAITING FOR ICC */}
-            {order?.orderStatus === "shipped" && !trackingData?.awb && (
-              <p className="text-blue-600 text-sm mb-4">
-                🚚 Shipment created. Tracking will be available shortly.
-              </p>
-            )}
+            {normalizeStatus(order?.orderStatus) === "Shipped" &&
+              !trackingData?.awb && (
+                <p className="text-blue-600 text-sm mb-4">
+                  🚚 Shipment created. Tracking will be available shortly.
+                </p>
+              )}
 
             {/* TIMELINE */}
             <div className="flex justify-between mb-10">
@@ -285,7 +298,7 @@ export default function OrderTracking() {
 
             {/* FINAL STATUS */}
             <div className="mt-8 text-center font-bold">
-              {order?.orderStatus !== "shipped"
+              {normalizeStatus(order?.orderStatus) !== "Shipped"
                 ? "📦 Preparing Order"
                 : displayStatus === "Delivered"
                 ? "✅ Delivered"
