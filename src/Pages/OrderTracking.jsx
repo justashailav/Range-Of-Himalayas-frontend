@@ -26,9 +26,24 @@ const ORDER_STAGES = [
   { key: "Delivered", label: "Delivered", icon: Home },
 ];
 
-// 🔥 STATUS MAPPING
-const mapICCStatus = (status) => {
+// ✅ NORMALIZE BACKEND STATUS
+const normalizeStatus = (status) => {
   if (!status) return "Confirmed";
+
+  status = status.toLowerCase();
+
+  if (status === "confirmed") return "Confirmed";
+  if (status === "packed") return "Packed";
+  if (status === "shipped") return "Shipped";
+  if (status === "out_for_delivery") return "Out for Delivery";
+  if (status === "delivered") return "Delivered";
+
+  return "Confirmed";
+};
+
+// ✅ ICC STATUS MAP
+const mapICCStatus = (status) => {
+  if (!status) return "Shipped";
 
   status = status.toLowerCase();
 
@@ -36,9 +51,8 @@ const mapICCStatus = (status) => {
   if (status.includes("out")) return "Out for Delivery";
   if (status.includes("transit") || status.includes("shipped"))
     return "Shipped";
-  if (status.includes("pack")) return "Packed";
 
-  return "Confirmed";
+  return "Shipped";
 };
 
 export default function OrderTracking() {
@@ -62,7 +76,7 @@ export default function OrderTracking() {
   }, []);
 
   // ===============================
-  // 🚀 FETCH ORDER + TRACKING
+  // 🚀 FETCH ORDER
   // ===============================
   const fetchOrder = async (id) => {
     if (!id.trim()) return;
@@ -76,15 +90,14 @@ export default function OrderTracking() {
         withCredentials: true,
       });
 
+      console.log("ORDER API:", res.data.data); // 🔥 DEBUG
+
       if (res.data.success && res.data.data) {
         const orderData = res.data.data;
 
         setOrder(orderData);
-
-        // join socket room
         socketInstance?.emit("joinOrderRoom", id);
 
-        // ONLY fetch tracking if shipped
         if (orderData.orderStatus === "shipped") {
           dispatch(getTrackingByOrderId(id));
         }
@@ -120,7 +133,6 @@ export default function OrderTracking() {
             : prev,
         );
 
-        // 🔥 trigger tracking when shipped
         if (data.status === "shipped") {
           dispatch(getTrackingByOrderId(orderId));
         }
@@ -131,7 +143,7 @@ export default function OrderTracking() {
   }, [socketInstance, orderId]);
 
   // ===============================
-  // 🔁 AUTO TRACKING (ONLY WHEN SHIPPED)
+  // 🔁 AUTO TRACKING (ONLY SHIPPED)
   // ===============================
   useEffect(() => {
     if (!orderId || order?.orderStatus !== "shipped") return;
@@ -144,29 +156,26 @@ export default function OrderTracking() {
   }, [orderId, order?.orderStatus]);
 
   // ===============================
-  // 🔥 TRACKING LOGIC (FIXED)
+  // 🔥 FINAL STATUS LOGIC
   // ===============================
   const trackingData = tracking?.data;
 
-  let displayStatus = order?.orderStatus;
+  let displayStatus = normalizeStatus(order?.orderStatus);
 
-  // ONLY override when real ICC data exists
   if (
     order?.orderStatus === "shipped" &&
     trackingData?.awb &&
     trackingData?.status
   ) {
-    displayStatus = trackingData.status;
+    displayStatus = mapICCStatus(trackingData.status);
   }
-
-  const mappedStatus = mapICCStatus(displayStatus);
 
   const getCurrentStageIndex = (status) =>
     ORDER_STAGES.findIndex(
-      (stage) => stage.key.toLowerCase() === status?.toLowerCase(),
+      (stage) => stage.key.toLowerCase() === status.toLowerCase(),
     );
 
-  const currentIndex = getCurrentStageIndex(mappedStatus || "Confirmed");
+  const currentIndex = getCurrentStageIndex(displayStatus);
 
   const trackingEvents =
     trackingData?.activities || order?.statusHistory || [];
@@ -199,12 +208,11 @@ export default function OrderTracking() {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        {/* =============================== */}
         {order && (
           <>
             {/* STATUS */}
             <h2 className="text-lg font-bold mb-2">
-              Status: {displayStatus || "Processing"}
+              Status: {displayStatus}
             </h2>
 
             {/* AWB */}
@@ -217,7 +225,7 @@ export default function OrderTracking() {
             {/* PRE SHIPPED */}
             {order?.orderStatus !== "shipped" && (
               <p className="text-yellow-600 text-sm mb-4">
-                🚀 Your order is {order?.orderStatus}. It will be shipped soon.
+                🚀 Your order is {displayStatus}. It will be shipped soon.
               </p>
             )}
 
@@ -279,7 +287,7 @@ export default function OrderTracking() {
             <div className="mt-8 text-center font-bold">
               {order?.orderStatus !== "shipped"
                 ? "📦 Preparing Order"
-                : mappedStatus === "Delivered"
+                : displayStatus === "Delivered"
                 ? "✅ Delivered"
                 : "🚚 In Transit"}
             </div>
