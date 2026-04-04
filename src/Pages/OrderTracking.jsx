@@ -28,7 +28,7 @@ const ORDER_STAGES = [
   { key: "Delivered", label: "Delivered", icon: Home },
 ];
 
-// 🔥 BETTER STATUS MAPPING
+// 🔥 STATUS MAPPING
 const mapICCStatus = (status) => {
   if (!status) return "Confirmed";
 
@@ -73,7 +73,6 @@ export default function OrderTracking() {
         setOrder(orderData);
         socket.emit("joinOrderRoom", id);
 
-        // 🔥 FETCH TRACKING
         dispatch(getTrackingByOrderId(id));
       } else {
         setError("Order not found!");
@@ -111,17 +110,27 @@ export default function OrderTracking() {
   }, [orderId]);
 
   // ===============================
-  // 🔥 TRACKING DATA (NEW FORMAT)
+  // 🔁 AUTO REFRESH TRACKING
+  // ===============================
+  useEffect(() => {
+    if (!orderId) return;
+
+    const interval = setInterval(() => {
+      dispatch(getTrackingByOrderId(orderId));
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [orderId]);
+
+  // ===============================
+  // 🔥 TRACKING LOGIC
   // ===============================
   const trackingData = tracking?.data;
 
-  const isTrackingAvailable =
-    tracking?.success && trackingData && !tracking?.message;
-
-  // 🔥 FINAL STATUS
-  const displayStatus = isTrackingAvailable
-    ? trackingData.status
-    : order?.orderStatus;
+  const displayStatus =
+    order?.orderStatus !== "shipped"
+      ? order?.orderStatus
+      : trackingData?.status || order?.orderStatus;
 
   const mappedStatus = mapICCStatus(displayStatus);
 
@@ -132,9 +141,6 @@ export default function OrderTracking() {
 
   const currentIndex = getCurrentStageIndex(mappedStatus || "Confirmed");
 
-  // ===============================
-  // 🔥 TRACKING EVENTS
-  // ===============================
   const trackingEvents =
     trackingData?.activities || order?.statusHistory || [];
 
@@ -145,6 +151,7 @@ export default function OrderTracking() {
       </Helmet>
 
       <motion.div className="w-full max-w-3xl backdrop-blur-xl bg-white/70 shadow-xl rounded-3xl p-6 md:p-10 mt-10">
+
         {/* INPUT */}
         <div className="flex gap-4 mb-10">
           <input
@@ -169,14 +176,28 @@ export default function OrderTracking() {
         {order && (
           <>
             {/* STATUS */}
-            <h2 className="text-lg font-bold mb-4">
+            <h2 className="text-lg font-bold mb-2">
               Status: {displayStatus || "Processing"}
             </h2>
 
-            {/* 🔥 PRE-SHIP MESSAGE */}
-            {!isTrackingAvailable && (
+            {/* AWB */}
+            {trackingData?.awb && (
+              <p className="text-sm text-gray-600 mb-2">
+                AWB: {trackingData.awb}
+              </p>
+            )}
+
+            {/* PRE SHIPPED */}
+            {order?.orderStatus !== "shipped" && (
               <p className="text-yellow-600 text-sm mb-4">
-                🚀 Your order is being prepared. It will be shipped soon.
+                🚀 Your order is {order?.orderStatus}. It will be shipped soon.
+              </p>
+            )}
+
+            {/* WAITING FOR ICC */}
+            {order?.orderStatus === "shipped" && !trackingData?.status && (
+              <p className="text-blue-600 text-sm mb-4">
+                🚚 Shipment created. Tracking will be available shortly.
               </p>
             )}
 
@@ -229,7 +250,9 @@ export default function OrderTracking() {
 
             {/* FINAL STATUS */}
             <div className="mt-8 text-center font-bold">
-              {mappedStatus === "Delivered"
+              {order?.orderStatus !== "shipped"
+                ? "📦 Preparing Order"
+                : mappedStatus === "Delivered"
                 ? "✅ Delivered"
                 : "🚚 In Transit"}
             </div>
