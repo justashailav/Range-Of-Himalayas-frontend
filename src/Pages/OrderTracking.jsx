@@ -10,8 +10,6 @@ import {
   Check,
 } from "lucide-react";
 import { Helmet } from "react-helmet";
-import { motion, AnimatePresence } from "framer-motion";
-import { Check, Package, Truck, Home, Search, Loader2 } from "lucide-react";
 
 // 🔥 REDUX
 import { useDispatch, useSelector } from "react-redux";
