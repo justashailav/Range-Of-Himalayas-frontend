@@ -21,7 +21,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getBatchById } from "@/store/slices/batchSlice";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 export default function BatchDetail() {
   const { batchId } = useParams();
   const navigate = useNavigate();
@@ -303,6 +304,48 @@ export default function BatchDetail() {
                 </div>
               </div>
             </div>
+            {/* 🌍 MAP VIEW */}
+{batch.origin?.lat && batch.origin?.lng && (
+  <div className="bg-white border border-slate-200 rounded-[2.5rem] p-4 shadow-sm overflow-hidden">
+    
+    <div className="flex items-center gap-3 mb-4 px-2">
+      <Navigation className="text-slate-400" size={18} />
+      <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400">
+        Farm Location Map
+      </h3>
+    </div>
+
+    <div className="rounded-2xl overflow-hidden border">
+      <MapContainer
+        center={[batch.origin.lat, batch.origin.lng]}
+        zoom={12}
+        style={{ height: "250px", width: "100%" }}
+      >
+        <TileLayer
+          attribution="© OpenStreetMap"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        <Marker position={[batch.origin.lat, batch.origin.lng]}>
+          <Popup>
+            🌿 {batch.productName} <br />
+            {batch.origin.location}
+          </Popup>
+        </Marker>
+      </MapContainer>
+    </div>
+
+    {/* Open in Google Maps */}
+    <a
+      href={`https://www.google.com/maps?q=${batch.origin.lat},${batch.origin.lng}`}
+      target="_blank"
+      className="flex items-center gap-2 text-xs font-bold text-blue-600 mt-3 px-2 hover:underline"
+    >
+      Open in Google Maps <ExternalLink size={14} />
+    </a>
+
+  </div>
+)}
 
             {/* SPECS LIST */}
             <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-sm">
