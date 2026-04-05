@@ -7,14 +7,14 @@ import {
   ImageIcon,
   Tag,
   BookOpenText,
-  Boxes, // Consistent icon set
+  Boxes, 
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 
 export default function Adminsidebar({ open, setOpen }) {
   const navigate = useNavigate();
-  const location = useLocation(); // Hook to check current path
+  const location = useLocation(); 
 
   const menuItems = [
     { icon: <LayoutDashboard size={20} />, label: "Dashboard", path: "/admin/dashboard" },
@@ -53,7 +53,6 @@ export default function Adminsidebar({ open, setOpen }) {
 
   return (
     <Fragment>
-      {/* 📱 Mobile Drawer */}
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="w-72 p-0 border-r-0">
           <div className="flex flex-col h-full bg-white">

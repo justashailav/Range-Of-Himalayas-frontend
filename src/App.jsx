@@ -48,6 +48,7 @@ import FAQSection from "./Pages/FAQ";
 import PrivacyPolicy from "./Pages/privacyPolicy";
 import Chatbot from "./Pages/Chatbot";
 import WhatsAppSupport from "./Pages/WhatsAppSupport";
+import AdminBatch from "./Pages/Admin-View/batch";
 
 
 function App() {
@@ -137,7 +138,7 @@ function App() {
           <Route path="/admin" element={<Adminlayout />}>
             <Route path="dashboard" element={<Admindashboard />} />
             <Route path="products" element={<Adminproducts />} />
-            <Route path="batch" element={<Adminproducts />} />
+            <Route path="batch" element={<AdminBatch />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route
               path="order-details/:orderId"
