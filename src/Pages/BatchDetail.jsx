@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { 
@@ -9,10 +9,11 @@ import {
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { getBatchById } from "@/store/slices/batchSlice";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function BatchDetail() {
-  const router = useRouter();
-  const { batchId } = router.query;
+  const { batchId } = useParams();
+const navigate = useNavigate();
 
  const{batch,loading}=useSelector((state)=>state.batch)
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function BatchDetail() {
           <h2 className="text-2xl font-black text-slate-800 mb-2">Batch Not Found</h2>
           <p className="text-slate-500 mb-8">The traceability record for this ID does not exist or has been archived.</p>
           <button 
-            onClick={() => router.push("/")} 
+            onClick={() => navigate("/")} 
             className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-700 transition-all"
           >
             <ArrowLeft size={18} /> Return to Directory
@@ -54,7 +55,7 @@ export default function BatchDetail() {
       {/* --- FLOATING NAV --- */}
       <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <button onClick={() => router.back()} className="group flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors">
+          <button onClick={() =>navigate(-1)} className="group flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors">
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             <span className="font-bold text-sm">Back</span>
           </button>
