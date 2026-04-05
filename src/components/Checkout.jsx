@@ -77,19 +77,13 @@ export default function ShoppingCheckout() {
       : grandTotal - (Number(discountAmount) || 0);
 
   useEffect(() => {
-    if (isNavigatingToSuccess.current) return; // 🔥 HARD STOP
+    if (isNavigatingToSuccess.current) return;
 
-    if ((cartItems.length === 0 && boxes.length === 0) || !user) {
-      const timer = setTimeout(() => {
-        if (!isNavigatingToSuccess.current) {
-          toast.error("Your cart is empty or you are not logged in.");
-          navigate("/");
-        }
-      }, 100);
-
-      return () => clearTimeout(timer);
+    if (!user) {
+      navigate("/");
+      return;
     }
-  }, [cartItems, boxes, navigate, user]);
+  }, [user, navigate]);
 
   async function handlePlaceOrder() {
     if (cartItems.length === 0 && boxes.length === 0)
@@ -527,9 +521,10 @@ export default function ShoppingCheckout() {
           {/* BREAKDOWN */}
           <div className="space-y-5 mb-8">
             {/* NEW: Dispatch Info */}
-  <div className="text-[11px] font-semibold text-[#B23A2E] bg-[#B23A2E]/5 px-4 py-3 rounded-xl border border-[#B23A2E]/20 text-center">
-    🚚 Orders will be dispatched from <span className="font-bold">18 April</span>
-  </div>
+            <div className="text-[11px] font-semibold text-[#B23A2E] bg-[#B23A2E]/5 px-4 py-3 rounded-xl border border-[#B23A2E]/20 text-center">
+              🚚 Orders will be dispatched from{" "}
+              <span className="font-bold">18 April</span>
+            </div>
             <div className="flex justify-between items-center group">
               <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-stone-600 transition-colors">
                 Artisan Harvest
