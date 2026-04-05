@@ -182,6 +182,40 @@ export default function AdminBatch() {
 
               {/* Inventory Bar */}
               <div className="pt-4 border-t border-slate-50">
+                {/* QR CODE SECTION */}
+{batch.qrCode && (
+  <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col items-center gap-3">
+
+    <img
+      src={batch.qrCode}
+      alt="QR Code"
+      className="w-28 h-28 rounded-xl border p-2 bg-white shadow-sm"
+    />
+
+    <div className="flex gap-3">
+      
+      {/* OPEN PAGE */}
+      <a
+        href={`/batch/${batch.batchId}`}
+        target="_blank"
+        className="text-xs font-bold text-emerald-600 hover:underline"
+      >
+        View Page
+      </a>
+
+      {/* DOWNLOAD QR */}
+      <a
+        href={batch.qrCode}
+        download={`${batch.batchId}.png`}
+        className="text-xs font-bold text-blue-600 hover:underline"
+      >
+        Download QR
+      </a>
+
+    </div>
+
+  </div>
+)}
                 <div className="flex justify-between text-[11px] font-bold mb-2 text-slate-400 uppercase">
                   <span>Stock Available</span>
                   <span>

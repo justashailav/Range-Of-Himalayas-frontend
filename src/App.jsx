@@ -49,6 +49,7 @@ import PrivacyPolicy from "./Pages/privacyPolicy";
 import Chatbot from "./Pages/Chatbot";
 import WhatsAppSupport from "./Pages/WhatsAppSupport";
 import AdminBatch from "./Pages/Admin-View/batch";
+import BatchDetail from "./Pages/BatchDetail";
 
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
         {/* Pages WITH navbar */}
         <Route element={<WithNavbar />}>
           <Route path="/" element={<Home />} />
+          <Route path="/batch/:batchId" element={<BatchDetail />} />
           <Route path="/about-us" element={<OurStroy />} />
           <Route path="/contact-us" element={<ContectUs />} />
           <Route path="/search" element={<SearchProducts />} />
