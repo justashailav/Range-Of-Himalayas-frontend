@@ -149,110 +149,105 @@ export default function AdminBatch() {
         </header>
 
         {/* --- BATCH LIST GRID --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {batchList?.map((batch) => (
-            <div
-              key={batch._id}
-              className="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm hover:shadow-xl transition-all duration-300 relative group overflow-hidden"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full">
-                  {batch.productType}
-                </span>
-                {batch.isVerified && (
-                  <CheckCircle2 size={20} className="text-blue-500" />
-                )}
-              </div>
-
-              <h3 className="text-xl font-bold text-slate-800 mb-1">
-                {batch.productName}
-              </h3>
-              <p className="text-xs font-mono text-slate-400 mb-6 uppercase tracking-wider">
-                ID: {batch.batchId || "GEN-000"}
-              </p>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-3 text-sm text-slate-600">
-                  <MapPin size={16} className="text-slate-400" />{" "}
-                  {batch.origin?.location}, {batch.origin?.state}
-                </div>
-                <div className="flex items-center gap-3 text-sm text-slate-600">
-                  <User size={16} className="text-slate-400" /> Farmer:{" "}
-                  {batch.farmer?.name}
-                </div>
-              </div>
-
-              {/* Inventory Bar */}
-              <div className="mt-8 pt-6 border-t border-slate-100">
-  {/* MAIN UTILITY CONTAINER */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-    
-    {/* LEFT: QR CODE SECTION */}
-    {batch.qrCode && (
-      <div className="flex items-center gap-4 group">
-        <div className="relative shrink-0">
-          <div className="absolute inset-0 bg-emerald-400/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <img
-            src={batch.qrCode}
-            alt="Batch Passport"
-            className="relative w-24 h-24 rounded-2xl border-2 border-slate-100 p-1.5 bg-white shadow-sm transition-transform duration-300 group-hover:scale-105"
-          />
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {batchList?.map((batch) => (
+    <div
+      key={batch._id}
+      className="group bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col"
+    >
+      {/* 1. TOP VISUAL SECTION */}
+      <div className="relative h-48 bg-slate-900 overflow-hidden">
+        {/* Abstract Background Decoration */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-[50px] rounded-full" />
         
-        <div className="flex flex-col gap-2">
-          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Digital Passport</p>
-          <a
-            href={`/batch/${batch.batchId}`}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-emerald-600 transition-colors"
-          >
-            <ExternalLink size={14} /> View Page
-          </a>
-          <a
-            href={batch.qrCode}
-            download={`${batch.batchId}.png`}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
-          >
-            <Download size={14} /> Get QR Code
-          </a>
+        <div className="absolute inset-0 p-6 flex flex-col justify-between">
+          <div className="flex justify-between items-start">
+            <span className="text-[10px] font-black uppercase tracking-widest bg-white/10 backdrop-blur-md text-white px-3 py-1.5 rounded-lg border border-white/10">
+              {batch.productType}
+            </span>
+            {batch.isVerified && (
+              <div className="bg-emerald-500 text-white p-1.5 rounded-full shadow-lg shadow-emerald-500/30">
+                <CheckCircle2 size={16} />
+              </div>
+            )}
+          </div>
+          
+          <div>
+            <p className="text-emerald-400 font-mono text-[10px] uppercase tracking-[0.2em] mb-1">
+              Batch Serial
+            </p>
+            <h3 className="text-2xl font-black text-white leading-none">
+              {batch.productName}
+            </h3>
+          </div>
         </div>
       </div>
-    )}
 
-    {/* RIGHT: INVENTORY STATUS */}
-    <div className="flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-6">
-      <div className="flex justify-between items-end mb-3">
-        <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 mb-1">Stock Integrity</p>
-          <h4 className="text-xl font-black text-slate-900 leading-none">
-            {batch.remainingUnits} <span className="text-sm font-medium text-slate-500 tracking-normal">Units left</span>
-          </h4>
-        </div>
-        <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
-          {Math.round((batch.remainingUnits / batch.totalUnits) * 100)}%
-        </span>
-      </div>
-
-      {/* CUSTOM PROGRESS BAR */}
-      <div className="relative w-full bg-slate-100 h-3 rounded-full overflow-hidden shadow-inner">
-        <div
-          className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(16,185,129,0.4)]"
-          style={{
-            width: `${(batch.remainingUnits / batch.totalUnits) * 100}%`,
-          }}
-        />
-      </div>
-      
-      <p className="mt-3 text-[10px] font-medium text-slate-400">
-        Total Batch Production: {batch.totalUnits} units
-      </p>
-    </div>
-  </div>
-</div>
+      {/* 2. INFO SECTION */}
+      <div className="p-6 space-y-4 flex-grow">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Origin</p>
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+              <MapPin size={14} className="text-emerald-500" />
+              <span className="truncate">{batch.origin?.location}</span>
             </div>
-          ))}
+          </div>
+          <div className="space-y-1">
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Cultivator</p>
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+              <User size={14} className="text-emerald-500" />
+              <span className="truncate">{batch.farmer?.name}</span>
+            </div>
+          </div>
         </div>
+
+        {/* Inventory Progress */}
+        <div className="pt-4 border-t border-slate-50">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-[10px] font-black text-slate-400 uppercase">Availability</span>
+            <span className="text-[10px] font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">
+              {batch.remainingUnits} / {batch.totalUnits} Units
+            </span>
+          </div>
+          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-emerald-500 rounded-full transition-all duration-1000 shadow-[0_0_8px_rgba(16,185,129,0.3)]"
+              style={{ width: `${(batch.remainingUnits / batch.totalUnits) * 100}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 3. INTERACTIVE FOOTER (QR & CTA) */}
+      <div className="px-6 pb-6 mt-auto">
+        <div className="flex items-center gap-3">
+          {/* Subtle QR Trigger */}
+          {batch.qrCode && (
+            <div className="relative group/qr">
+              <img
+                src={batch.qrCode}
+                alt="QR"
+                className="w-12 h-12 rounded-xl border border-slate-100 p-1 bg-slate-50 grayscale hover:grayscale-0 transition-all cursor-pointer"
+              />
+              {/* Tooltip on hover */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/qr:block bg-slate-900 text-white text-[9px] py-1 px-2 rounded whitespace-nowrap">
+                Click to Download
+              </div>
+            </div>
+          )}
+          
+          <button 
+            onClick={() => navigate(`/batch/${batch.batchId}`)}
+            className="flex-1 bg-slate-900 text-white text-xs font-black uppercase tracking-widest py-4 rounded-xl hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2"
+          >
+            Trace Batch <ArrowRight size={14} />
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
       </div>
 
       {/* --- MODAL --- */}
@@ -456,15 +451,18 @@ export default function AdminBatch() {
                 </div>
 
                 <div className="space-y-4">
-                  <SectionHeader icon={<Package size={18}/>} title="Packaging & Stock" />
+                  <SectionHeader
+                    icon={<Package size={18} />}
+                    title="Packaging & Stock"
+                  />
 
-<input
-  type="date"
-  name="packagingDate"
-  value={formData.packagingDate}
-  onChange={handleChange}
-  className="modern-input"
-/>
+                  <input
+                    type="date"
+                    name="packagingDate"
+                    value={formData.packagingDate}
+                    onChange={handleChange}
+                    className="modern-input"
+                  />
                   <div className="flex gap-2">
                     <input
                       type="number"
