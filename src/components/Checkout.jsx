@@ -77,13 +77,12 @@ export default function ShoppingCheckout() {
       : grandTotal - (Number(discountAmount) || 0);
 
   useEffect(() => {
+    // ❌ Do nothing if navigating to success
     if (isNavigatingToSuccess.current) return;
 
-    if (!user) {
-      navigate("/");
-      return;
-    }
-  }, [user, navigate]);
+    // ❌ Only redirect if user is truly not logged in
+    if (!user) return; // 🚫 REMOVE navigate("/")
+  }, [user]);
 
   async function handlePlaceOrder() {
     if (cartItems.length === 0 && boxes.length === 0)
@@ -157,10 +156,13 @@ export default function ShoppingCheckout() {
                   razorpay_payment_id: rzpResponse.razorpay_payment_id,
                   razorpay_signature: rzpResponse.razorpay_signature,
                 }),
-              );
+              ).unwrap();
 
               toast.success("Payment successful!");
-              navigate("/order-success");
+
+              setTimeout(() => {
+                navigate("/order-success", { replace: true });
+              }, 100);
             } catch (err) {
               isNavigatingToSuccess.current = false;
               toast.error("Payment verification failed");
@@ -202,7 +204,9 @@ export default function ShoppingCheckout() {
       // ✅ Non-Razorpay flow
       isNavigatingToSuccess.current = true;
       toast.success(response.message || "Order placed successfully");
-      navigate("/order-success");
+      setTimeout(() => {
+        navigate("/order-success", { replace: true });
+      }, 100);
     } catch (err) {
       toast.error(err.message || "Order failed");
       setIsProcessing(false);
