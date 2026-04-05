@@ -181,56 +181,73 @@ export default function AdminBatch() {
               </div>
 
               {/* Inventory Bar */}
-              <div className="pt-4 border-t border-slate-50">
-                {/* QR CODE SECTION */}
-{batch.qrCode && (
-  <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col items-center gap-3">
+              <div className="mt-8 pt-6 border-t border-slate-100">
+  {/* MAIN UTILITY CONTAINER */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+    
+    {/* LEFT: QR CODE SECTION */}
+    {batch.qrCode && (
+      <div className="flex items-center gap-4 group">
+        <div className="relative shrink-0">
+          <div className="absolute inset-0 bg-emerald-400/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <img
+            src={batch.qrCode}
+            alt="Batch Passport"
+            className="relative w-24 h-24 rounded-2xl border-2 border-slate-100 p-1.5 bg-white shadow-sm transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+        
+        <div className="flex flex-col gap-2">
+          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">Digital Passport</p>
+          <a
+            href={`/batch/${batch.batchId}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-emerald-600 transition-colors"
+          >
+            <ExternalLink size={14} /> View Page
+          </a>
+          <a
+            href={batch.qrCode}
+            download={`${batch.batchId}.png`}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
+          >
+            <Download size={14} /> Get QR Code
+          </a>
+        </div>
+      </div>
+    )}
 
-    <img
-      src={batch.qrCode}
-      alt="QR Code"
-      className="w-28 h-28 rounded-xl border p-2 bg-white shadow-sm"
-    />
+    {/* RIGHT: INVENTORY STATUS */}
+    <div className="flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-6">
+      <div className="flex justify-between items-end mb-3">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 mb-1">Stock Integrity</p>
+          <h4 className="text-xl font-black text-slate-900 leading-none">
+            {batch.remainingUnits} <span className="text-sm font-medium text-slate-500 tracking-normal">Units left</span>
+          </h4>
+        </div>
+        <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
+          {Math.round((batch.remainingUnits / batch.totalUnits) * 100)}%
+        </span>
+      </div>
 
-    <div className="flex gap-3">
+      {/* CUSTOM PROGRESS BAR */}
+      <div className="relative w-full bg-slate-100 h-3 rounded-full overflow-hidden shadow-inner">
+        <div
+          className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(16,185,129,0.4)]"
+          style={{
+            width: `${(batch.remainingUnits / batch.totalUnits) * 100}%`,
+          }}
+        />
+      </div>
       
-      {/* OPEN PAGE */}
-      <a
-        href={`/batch/${batch.batchId}`}
-        target="_blank"
-        className="text-xs font-bold text-emerald-600 hover:underline"
-      >
-        View Page
-      </a>
-
-      {/* DOWNLOAD QR */}
-      <a
-        href={batch.qrCode}
-        download={`${batch.batchId}.png`}
-        className="text-xs font-bold text-blue-600 hover:underline"
-      >
-        Download QR
-      </a>
-
+      <p className="mt-3 text-[10px] font-medium text-slate-400">
+        Total Batch Production: {batch.totalUnits} units
+      </p>
     </div>
-
   </div>
-)}
-                <div className="flex justify-between text-[11px] font-bold mb-2 text-slate-400 uppercase">
-                  <span>Stock Available</span>
-                  <span>
-                    {batch.remainingUnits} / {batch.totalUnits} Units
-                  </span>
-                </div>
-                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                  <div
-                    className="bg-emerald-500 h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${(batch.remainingUnits / batch.totalUnits) * 100}%`,
-                    }}
-                  />
-                </div>
-              </div>
+</div>
             </div>
           ))}
         </div>
