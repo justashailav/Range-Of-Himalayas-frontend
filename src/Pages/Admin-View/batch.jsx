@@ -1,7 +1,6 @@
+import { createBatch, getAllBatches } from "@/store/slices/batchSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBatch, getAllBatches } from "../store/batchSlice";
-
 export default function AdminBatch() {
   const dispatch = useDispatch();
   const { batchList, loading } = useSelector((state) => state.batch);
