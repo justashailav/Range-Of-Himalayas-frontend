@@ -6,7 +6,8 @@ import {
   PanelLeft,
   ImageIcon,
   Tag,
-  BookOpenText, // Consistent icon set
+  BookOpenText,
+  Boxes, // Consistent icon set
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
@@ -18,6 +19,7 @@ export default function Adminsidebar({ open, setOpen }) {
   const menuItems = [
     { icon: <LayoutDashboard size={20} />, label: "Dashboard", path: "/admin/dashboard" },
     { icon: <Package size={20} />, label: "Products", path: "/admin/products" },
+    { icon: <Boxes size={20} />, label: "Batch", path: "/admin/batch" },
     { icon: <ClipboardList size={20} />, label: "Orders", path: "/admin/orders" },
     { icon: <Tag size={20} />, label: "Coupons", path: "/admin/coupons" },
     { icon: <ImageIcon size={20} />, label: "Gallery", path: "/admin/gallery" },

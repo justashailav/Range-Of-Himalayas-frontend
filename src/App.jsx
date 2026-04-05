@@ -137,6 +137,7 @@ function App() {
           <Route path="/admin" element={<Adminlayout />}>
             <Route path="dashboard" element={<Admindashboard />} />
             <Route path="products" element={<Adminproducts />} />
+            <Route path="batch" element={<Adminproducts />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route
               path="order-details/:orderId"
