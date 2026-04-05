@@ -76,14 +76,6 @@ export default function ShoppingCheckout() {
       ? finalAmount
       : grandTotal - (Number(discountAmount) || 0);
 
-  useEffect(() => {
-    // ❌ Do nothing if navigating to success
-    if (isNavigatingToSuccess.current) return;
-
-    // ❌ Only redirect if user is truly not logged in
-    if (!user) return; // 🚫 REMOVE navigate("/")
-  }, [user]);
-
   async function handlePlaceOrder() {
     if (cartItems.length === 0 && boxes.length === 0)
       return toast.error("Your cart is empty.");
