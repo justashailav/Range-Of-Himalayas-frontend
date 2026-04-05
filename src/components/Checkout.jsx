@@ -159,7 +159,9 @@ export default function ShoppingCheckout() {
               );
 
               toast.success("Payment successful!");
-              navigate("/order-success");
+              setTimeout(() => {
+                navigate("/order-success", { replace: true });
+              }, 100);
             } catch (err) {
               isNavigatingToSuccess.current = false;
               toast.error("Payment verification failed");
