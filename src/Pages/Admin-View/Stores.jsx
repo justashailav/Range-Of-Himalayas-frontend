@@ -17,8 +17,7 @@ export default function AdminStore() {
     name: "", slug: "", code: "",
     phone: "", whatsapp: "", email: "",
     address: { line1: "", line2: "", city: "", state: "", country: "India", pincode: "" },
-    location: { type: "Point", coordinates: [77.1025, 28.7041] }, // Default [lng, lat]
-    managerId: "",
+    location: { type: "Point", coordinates: [77.1025, 28.7041] }, 
     orderModes: ["pickup", "delivery"],
     services: {
       pickup: { enabled: 1, preparationTimeMinutes: 30, maxOrdersPerSlot: 20 },
