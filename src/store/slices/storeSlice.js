@@ -9,7 +9,8 @@ const storeSlice = createSlice({
     message: null,
     storeList: [],
     selectedStore: null,
-    nearestStore: null
+    nearestStore: null,
+    nearestStores: [],
   },
 
   reducers: {
@@ -65,7 +66,7 @@ const storeSlice = createSlice({
       state.message = "Store updated successfully";
 
       const updated = action.payload.data;
-      const index = state.storeList.findIndex(s => s._id === updated._id);
+      const index = state.storeList.findIndex((s) => s._id === updated._id);
 
       if (index !== -1) {
         state.storeList[index] = updated;
@@ -86,7 +87,7 @@ const storeSlice = createSlice({
       state.message = action.payload.message;
 
       state.storeList = state.storeList.filter(
-        (store) => store._id !== action.payload.storeId
+        (store) => store._id !== action.payload.storeId,
       );
     },
     deleteStoreFailed: (state, action) => {
@@ -100,7 +101,7 @@ const storeSlice = createSlice({
     },
     nearestStoreSuccess: (state, action) => {
       state.loading = false;
-      state.nearestStore = action.payload;
+      state.nearestStores = action.payload; // 🔥 multiple stores
     },
     nearestStoreFailed: (state, action) => {
       state.loading = false;
@@ -115,7 +116,7 @@ const storeSlice = createSlice({
       state.loading = false;
 
       const updated = action.payload.data;
-      const index = state.storeList.findIndex(s => s._id === updated._id);
+      const index = state.storeList.findIndex((s) => s._id === updated._id);
 
       if (index !== -1) {
         state.storeList[index] = updated;
@@ -124,33 +125,26 @@ const storeSlice = createSlice({
     toggleStoreFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 
-
-// ================== ACTIONS ================== //
-
-// ✅ CREATE STORE
 export const createStore = (formData) => async (dispatch) => {
   dispatch(storeSlice.actions.createStoreStart());
   try {
     const res = await axios.post(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/create-store`,
       formData,
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     dispatch(storeSlice.actions.createStoreSuccess(res.data));
   } catch (error) {
     dispatch(
-      storeSlice.actions.createStoreFailed(
-        error.response?.data?.message
-      )
+      storeSlice.actions.createStoreFailed(error.response?.data?.message),
     );
   }
 };
-
 
 // ✅ GET ALL STORES
 export const fetchAllStores = () => async (dispatch) => {
@@ -158,19 +152,16 @@ export const fetchAllStores = () => async (dispatch) => {
   try {
     const res = await axios.get(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/get-all-stores`,
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     dispatch(storeSlice.actions.fetchStoreSuccess(res.data.data));
   } catch (error) {
     dispatch(
-      storeSlice.actions.fetchStoreFailed(
-        error.response?.data?.message
-      )
+      storeSlice.actions.fetchStoreFailed(error.response?.data?.message),
     );
   }
 };
-
 
 // ✅ GET SINGLE STORE
 export const fetchStoreById = (id) => async (dispatch) => {
@@ -178,40 +169,36 @@ export const fetchStoreById = (id) => async (dispatch) => {
   try {
     const res = await axios.get(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/${id}`,
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     dispatch(storeSlice.actions.fetchSingleStoreSuccess(res.data.data));
   } catch (error) {
     dispatch(
-      storeSlice.actions.fetchSingleStoreFailed(
-        error.response?.data?.message
-      )
+      storeSlice.actions.fetchSingleStoreFailed(error.response?.data?.message),
     );
   }
 };
-
 
 // ✅ UPDATE STORE
-export const updateStore = ({ id, formData }) => async (dispatch) => {
-  dispatch(storeSlice.actions.updateStoreStart());
-  try {
-    const res = await axios.put(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/${id}`,
-      formData,
-      { withCredentials: true }
-    );
+export const updateStore =
+  ({ id, formData }) =>
+  async (dispatch) => {
+    dispatch(storeSlice.actions.updateStoreStart());
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/${id}`,
+        formData,
+        { withCredentials: true },
+      );
 
-    dispatch(storeSlice.actions.updateStoreSuccess(res.data));
-  } catch (error) {
-    dispatch(
-      storeSlice.actions.updateStoreFailed(
-        error.response?.data?.message
-      )
-    );
-  }
-};
-
+      dispatch(storeSlice.actions.updateStoreSuccess(res.data));
+    } catch (error) {
+      dispatch(
+        storeSlice.actions.updateStoreFailed(error.response?.data?.message),
+      );
+    }
+  };
 
 // ✅ DELETE STORE
 export const deleteStore = (id) => async (dispatch) => {
@@ -219,44 +206,39 @@ export const deleteStore = (id) => async (dispatch) => {
   try {
     const res = await axios.delete(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/${id}`,
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     dispatch(
       storeSlice.actions.deleteStoreSuccess({
         message: res.data.message,
-        storeId: id
-      })
+        storeId: id,
+      }),
     );
   } catch (error) {
     dispatch(
-      storeSlice.actions.deleteStoreFailed(
-        error.response?.data?.message
-      )
+      storeSlice.actions.deleteStoreFailed(error.response?.data?.message),
     );
   }
 };
 
+export const getNearestStore =
+  ({ lat, lng, orderType }) =>
+  async (dispatch) => {
+    dispatch(storeSlice.actions.nearestStoreStart());
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/nearest?lat=${lat}&lng=${lng}&orderType=${orderType}`,
+        { withCredentials: true },
+      );
 
-// ✅ FIND NEAREST STORE (🔥 IMPORTANT)
-export const getNearestStore = ({ lat, lng, orderType }) => async (dispatch) => {
-  dispatch(storeSlice.actions.nearestStoreStart());
-  try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/nearest?lat=${lat}&lng=${lng}&orderType=${orderType}`,
-      { withCredentials: true }
-    );
-
-    dispatch(storeSlice.actions.nearestStoreSuccess(res.data.data));
-  } catch (error) {
-    dispatch(
-      storeSlice.actions.nearestStoreFailed(
-        error.response?.data?.message
-      )
-    );
-  }
-};
-
+      dispatch(storeSlice.actions.nearestStoreSuccess(res.data.data));
+    } catch (error) {
+      dispatch(
+        storeSlice.actions.nearestStoreFailed(error.response?.data?.message),
+      );
+    }
+  };
 
 // ✅ TOGGLE STORE STATUS
 export const toggleStore = (id) => async (dispatch) => {
@@ -265,19 +247,15 @@ export const toggleStore = (id) => async (dispatch) => {
     const res = await axios.patch(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/toggle/${id}`,
       {},
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     dispatch(storeSlice.actions.toggleStoreSuccess(res.data));
   } catch (error) {
     dispatch(
-      storeSlice.actions.toggleStoreFailed(
-        error.response?.data?.message
-      )
+      storeSlice.actions.toggleStoreFailed(error.response?.data?.message),
     );
   }
 };
 
-
 export default storeSlice.reducer;
-

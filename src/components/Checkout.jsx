@@ -22,6 +22,7 @@ import {
   Star,
   ShieldCheck,
 } from "lucide-react";
+import { getNearestStore } from "@/store/slices/storeSlice";
 
 export default function ShoppingCheckout() {
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
@@ -41,11 +42,29 @@ export default function ShoppingCheckout() {
 
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [orderType, setOrderType] = useState("delivery");
+  const [selectedStore, setSelectedStore] = useState(null);
+
+  const { nearestStores, loading: storeLoading } = useSelector(
+    (state) => state.store,
+  );
   const isNavigatingToSuccess = useRef(false);
 
   useEffect(() => {
     if (!code) dispatch(resetCoupon());
   }, [code, dispatch]);
+
+  useEffect(() => {
+  if (orderType === "pickup" && currentSelectedAddress) {
+    dispatch(
+      getNearestStore({
+        lat: currentSelectedAddress?.lat,
+        lng: currentSelectedAddress?.lng,
+        orderType: "pickup",
+      })
+    );
+  }
+}, [orderType, currentSelectedAddress]);
 
   // 🛒 Calculate totals
   const totalCartAmount = cartItems.reduce((sum, item) => {
@@ -326,6 +345,138 @@ export default function ShoppingCheckout() {
               />
             </div>
           </section>
+
+          <section className="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+            Fulfillment Method
+          </h2>
+          <p className="text-slate-900 font-bold text-lg">How should we get this to you?</p>
+        </div>
+        <div className="h-10 w-10 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400">
+          <Settings size={18} className="animate-spin-slow" />
+        </div>
+      </div>
+
+      {/* PREMIUM TOGGLE */}
+      <div className="flex p-1.5 bg-slate-50 rounded-[1.5rem] mb-8 relative">
+        <button
+          onClick={() => {
+            setOrderType("delivery");
+            setSelectedStore(null);
+          }}
+          className={`relative flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.2rem] text-sm font-black transition-all duration-500 z-10 ${
+            orderType === "delivery" ? "text-white" : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          <Truck size={18} strokeWidth={2.5} />
+          Doorstep Delivery
+          {orderType === "delivery" && (
+            <div className="absolute inset-0 bg-slate-900 rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200 animate-in fade-in zoom-in-95 duration-300" />
+          )}
+        </button>
+
+        <button
+          onClick={() => setOrderType("pickup")}
+          className={`relative flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.2rem] text-sm font-black transition-all duration-500 z-10 ${
+            orderType === "pickup" ? "text-white" : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          <Store size={18} strokeWidth={2.5} />
+          Self Pickup
+          {orderType === "pickup" && (
+            <div className="absolute inset-0 bg-slate-900 rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200 animate-in fade-in zoom-in-95 duration-300" />
+          )}
+        </button>
+      </div>
+
+      {/* STORE LIST SELECTION */}
+      {orderType === "pickup" && (
+        <div className="space-y-4 animate-in slide-in-from-top-4 duration-500">
+          <div className="flex items-center justify-between px-2">
+            <span className="text-[11px] font-black uppercase text-blue-600 flex items-center gap-2">
+              <Navigation size={12} fill="currentColor" /> Nearby Outlets
+            </span>
+            <span className="text-[10px] font-bold text-slate-400">Showing {nearestStores.length} locations</span>
+          </div>
+
+          {storeLoading ? (
+            <div className="space-y-3">
+              {[1, 2].map((i) => (
+                <div key={i} className="h-24 w-full bg-slate-50 animate-pulse rounded-[1.5rem]" />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {nearestStores.map((store) => (
+                <div
+                  key={store._id}
+                  onClick={() => setSelectedStore(store)}
+                  className={`group relative p-5 rounded-[1.8rem] border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+                    selectedStore?._id === store._id
+                      ? "bg-white border-blue-600 shadow-2xl shadow-blue-100"
+                      : "bg-white border-slate-50 hover:border-slate-200"
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex gap-4">
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${
+                        selectedStore?._id === store._id ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-400"
+                      }`}>
+                        <MapPin size={20} />
+                      </div>
+                      <div>
+                        <p className={`font-black text-base transition-colors ${
+                          selectedStore?._id === store._id ? "text-slate-900" : "text-slate-600"
+                        }`}>
+                          {store.name}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md">
+                            {(store.distance / 1000).toFixed(1)} km
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-medium italic">
+                            {store.address?.city || 'Himalayas'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`mt-2 transition-transform duration-300 ${selectedStore?._id === store._id ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"}`}>
+                      <div className="bg-blue-600 text-white p-1 rounded-full">
+                        <ChevronRight size={16} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Subtle Background Accent for Active Store */}
+                  {selectedStore?._id === store._id && (
+                    <div className="absolute -right-4 -bottom-4 text-blue-50 opacity-10">
+                       <Store size={80} />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      
+      {/* Delivery Info Snippet */}
+      {orderType === "delivery" && (
+        <div className="p-6 bg-slate-50 rounded-[2rem] border border-dashed border-slate-200 animate-in fade-in slide-in-from-bottom-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-white p-3 rounded-2xl shadow-sm text-slate-400">
+               <Truck size={20} />
+            </div>
+            <p className="text-xs font-medium text-slate-500 leading-relaxed">
+              Dispatching from our <span className="text-slate-900 font-bold">Himalayan Warehouse</span>. 
+              Expected arrival within <span className="text-slate-900 font-bold">3-5 business days</span>.
+            </p>
+          </div>
+        </div>
+      )}
+    </section>
 
           {/* CART ITEMS SECTION */}
           {cartItems.length > 0 && (
