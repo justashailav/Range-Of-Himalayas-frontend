@@ -4,13 +4,8 @@ import {
   Plus, Edit2, Trash2, Power, MapPin, Phone, Mail, 
   Clock, Truck, Package, Settings, BarChart3, Tag 
 } from "lucide-react";
-import {
-  fetchAllStores,
-  createStore,
-  updateStore,
-  deleteStore,
-  toggleStore
-} from "@/store/storeSlice";
+import { createStore, deleteStore, fetchAllStores, toggleStore, updateStore } from "@/store/slices/storeSlice";
+
 
 export default function AdminStore() {
   const dispatch = useDispatch();
