@@ -129,14 +129,18 @@ export default function ShoppingCheckout() {
         weight: item.weight || item.productWeight,
       })),
       boxes,
-      addressInfo: {
-        addressId: currentSelectedAddress?._id,
-        address: currentSelectedAddress?.address,
-        city: currentSelectedAddress?.city,
-        pincode: currentSelectedAddress?.pincode,
-        phone: currentSelectedAddress?.phone,
-        notes: currentSelectedAddress?.notes,
-      },
+     addressInfo: {
+  addressId: currentSelectedAddress?._id,
+  address: currentSelectedAddress?.address,
+  city: currentSelectedAddress?.city,
+  pincode: currentSelectedAddress?.pincode,
+  phone: currentSelectedAddress?.phone,
+  notes: currentSelectedAddress?.notes,
+
+  // 🔥 ADD THIS (IMPORTANT)
+  latitude: currentSelectedAddress?.location?.coordinates?.[1],
+  longitude: currentSelectedAddress?.location?.coordinates?.[0],
+},
       paymentMethod,
       totalAmount: payableAmount,
       ...(code ? { code } : {}),
