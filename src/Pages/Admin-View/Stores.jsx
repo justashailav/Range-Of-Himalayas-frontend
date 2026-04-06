@@ -110,7 +110,7 @@ export default function AdminStore() {
                       <Input label="Phone" name="phone" value={form.phone} onChange={handleChange} />
                       <Input label="Email" name="email" value={form.email} onChange={handleChange} />
                     </div>
-                    <Input label="Manager ID (User Reference)" name="managerId" value={form.managerId} onChange={handleChange} />
+                   
                   </div>
                 )}
 
