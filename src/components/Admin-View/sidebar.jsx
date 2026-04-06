@@ -21,6 +21,7 @@ export default function Adminsidebar({ open, setOpen }) {
     { icon: <Package size={20} />, label: "Products", path: "/admin/products" },
     { icon: <Boxes size={20} />, label: "Batch", path: "/admin/batch" },
     { icon: <ClipboardList size={20} />, label: "Orders", path: "/admin/orders" },
+    { icon: <ClipboardList size={20} />, label: "Store", path: "/admin/store" },
     { icon: <Tag size={20} />, label: "Coupons", path: "/admin/coupons" },
     { icon: <ImageIcon size={20} />, label: "Gallery", path: "/admin/gallery" },
     { icon: <BookOpenText size={20} />, label: "Blogs", path: "/admin/blog" },

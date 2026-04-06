@@ -18,6 +18,7 @@ import galleryReducer from "./slices/gallerySlice";
 import blogReducer from "./slices/blogSlice";
 import chatReducer from "./slices/chatSlice";
 import batchReducer from "./slices/batchSlice";
+import storeReducer from "./slices/storeSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
   gallery: galleryReducer,
   blogs: blogReducer,
   chat:chatReducer,
-  batch:batchReducer
+  batch:batchReducer,
+  store:storeReducer
 });
 const persistConfig = {
   key: "root",
