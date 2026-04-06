@@ -59,17 +59,21 @@ export default function ShoppingCheckout() {
   }, [code, dispatch]);
 
   useEffect(() => {
-  if (orderType === "pickup" && currentSelectedAddress) {
+  if (
+    orderType === "pickup" &&
+    currentSelectedAddress?.location?.coordinates?.length === 2
+  ) {
+    const [lng, lat] = currentSelectedAddress.location.coordinates;
+
     dispatch(
       getNearestStore({
-        lat: currentSelectedAddress?.lat,
-        lng: currentSelectedAddress?.lng,
+        lat,
+        lng,
         orderType: "pickup",
       })
     );
   }
 }, [orderType, currentSelectedAddress]);
-
   // 🛒 Calculate totals
   const totalCartAmount = cartItems.reduce((sum, item) => {
     const price =
