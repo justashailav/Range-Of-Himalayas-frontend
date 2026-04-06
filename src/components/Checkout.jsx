@@ -21,6 +21,10 @@ import {
   Lock,
   Star,
   ShieldCheck,
+  Settings,
+  Store,
+  Navigation,
+  ChevronRight,
 } from "lucide-react";
 import { getNearestStore } from "@/store/slices/storeSlice";
 
