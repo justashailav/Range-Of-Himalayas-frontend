@@ -38,7 +38,8 @@ const rootReducer = combineReducers({
   blogs: blogReducer,
   chat:chatReducer,
   batch:batchReducer,
-  store:storeReducer
+  store:storeReducer,
+  store:storeReducer,
 });
 const persistConfig = {
   key: "root",
