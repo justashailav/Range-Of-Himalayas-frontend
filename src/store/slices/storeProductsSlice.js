@@ -139,7 +139,7 @@ export const {
   deleteStoreProductSuccess,
   deleteStoreProductFailed,
   clearMessage,
-} = storeSlice.actions;
+} = storeProductsSlice.actions;
 
 
 export const addStoreProduct = (formData) => async (dispatch) => {
