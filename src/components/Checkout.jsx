@@ -329,195 +329,184 @@ export default function ShoppingCheckout() {
         {/* ================= LEFT SECTION ================= */}
         <div className="lg:col-span-2 space-y-10">
           {/* ADDRESS SECTION */}
-          <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200">
-                  <MapPin className="w-5 h-5 text-stone-100" />
-                </div>
-                <div>
-                  <h2 className="text-xs font-black text-stone-900 uppercase tracking-[0.25em]">
-                    Shipping Destination
-                  </h2>
-                  <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
-                    Logistics & Final Delivery
-                  </p>
-                </div>
-              </div>
-              {/* Visual Indicator of Step Completion */}
-              <div
-                className={`w-2 h-2 rounded-full ${currentSelectedAddress ? "bg-green-500" : "bg-orange-400 animate-pulse"}`}
-              />
-            </div>
+          <section className="bg-white rounded-[1.5rem] sm:rounded-[2.5rem] border border-stone-100 p-5 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+  {/* Header Section: Adjusted for mobile stacking or tight spaces */}
+  <div className="flex flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
+    <div className="flex items-center gap-3 sm:gap-4">
+      {/* Icon: Slightly smaller on mobile to preserve horizontal space */}
+      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200 shrink-0">
+        <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-stone-100" />
+      </div>
+      
+      <div className="min-w-0"> {/* min-w-0 prevents text overflow in flex containers */}
+        <h2 className="text-[10px] sm:text-xs font-black text-stone-900 uppercase tracking-[0.15em] sm:tracking-[0.25em] leading-tight">
+          Shipping Destination
+        </h2>
+        <p className="text-[8px] sm:text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5 truncate">
+          Logistics & Final Delivery
+        </p>
+      </div>
+    </div>
 
-            <div className="pl-0 sm:pl-2">
-              <Address
-                selectedId={currentSelectedAddress}
-                setCurrentSelectedAddress={setCurrentSelectedAddress}
-              />
-            </div>
-          </section>
+    {/* Status Indicator */}
+    <div className="flex shrink-0 items-center gap-2">
+       <span className="hidden sm:block text-[8px] font-black uppercase text-stone-300 tracking-tighter">
+        {currentSelectedAddress ? "Verified" : "Pending"}
+      </span>
+      <div
+        className={`w-2 h-2 rounded-full ${
+          currentSelectedAddress ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]" : "bg-orange-400 animate-pulse"
+        }`}
+      />
+    </div>
+  </div>
 
-          <section className="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                  Fulfillment Method
-                </h2>
-                <p className="text-slate-900 font-bold text-lg">
-                  How should we get this to you?
-                </p>
-              </div>
-              <div className="h-10 w-10 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400">
-                <Settings size={18} className="animate-spin-slow" />
-              </div>
-            </div>
+  {/* Address Content Wrapper */}
+  <div className="w-full">
+    <div className="sm:pl-2">
+      <Address
+        selectedId={currentSelectedAddress}
+        setCurrentSelectedAddress={setCurrentSelectedAddress}
+      />
+    </div>
+  </div>
+</section>
 
-            {/* PREMIUM TOGGLE */}
-            <div className="flex p-1.5 bg-slate-50 rounded-[1.5rem] mb-8 relative">
-              <button
-                onClick={() => {
-                  setOrderType("delivery");
-                  setSelectedStore(null);
-                }}
-                className={`relative flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.2rem] text-sm font-black transition-all duration-500 z-10 ${
-                  orderType === "delivery"
-                    ? "text-white"
-                    : "text-slate-400 hover:text-slate-600"
-                }`}
-              >
-                <Truck size={18} strokeWidth={2.5} />
-                Doorstep Delivery
-                {orderType === "delivery" && (
-                  <div className="absolute inset-0 bg-slate-900 rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200 animate-in fade-in zoom-in-95 duration-300" />
-                )}
-              </button>
+          <section className="bg-white rounded-[1.5rem] sm:rounded-[2.5rem] border border-slate-100 p-5 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+  <div className="flex items-center justify-between mb-6">
+    <div className="min-w-0"> {/* Prevents text from pushing the icon out */}
+      <h2 className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+        Fulfillment Method
+      </h2>
+      <p className="text-slate-900 font-bold text-base sm:text-lg leading-tight">
+        How should we get this to you?
+      </p>
+    </div>
+    <div className="h-9 w-9 sm:h-10 sm:w-10 bg-slate-50 rounded-xl sm:rounded-2xl flex items-center justify-center text-slate-400 shrink-0">
+      <Settings size={18} className="animate-spin-slow" />
+    </div>
+  </div>
 
-              <button
-                onClick={() => setOrderType("pickup")}
-                className={`relative flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.2rem] text-sm font-black transition-all duration-500 z-10 ${
-                  orderType === "pickup"
-                    ? "text-white"
-                    : "text-slate-400 hover:text-slate-600"
-                }`}
-              >
-                <Store size={18} strokeWidth={2.5} />
-                Self Pickup
-                {orderType === "pickup" && (
-                  <div className="absolute inset-0 bg-slate-900 rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200 animate-in fade-in zoom-in-95 duration-300" />
-                )}
-              </button>
-            </div>
+  {/* PREMIUM TOGGLE - Adjusted for mobile stacking or shrinking */}
+  <div className="flex flex-col sm:flex-row p-1.5 bg-slate-50 rounded-[1.5rem] sm:rounded-[1.5rem] mb-6 sm:mb-8 gap-1 sm:gap-0 relative">
+    <button
+      onClick={() => {
+        setOrderType("delivery");
+        setSelectedStore(null);
+      }}
+      className={`relative flex-1 flex items-center justify-center gap-3 py-3.5 sm:py-4 rounded-[1.2rem] text-xs sm:text-sm font-black transition-all duration-500 z-10 ${
+        orderType === "delivery"
+          ? "text-white"
+          : "text-slate-400 hover:text-slate-600"
+      }`}
+    >
+      <Truck size={16} sm:size={18} strokeWidth={2.5} />
+      <span>Doorstep Delivery</span>
+      {orderType === "delivery" && (
+        <motion.div 
+          layoutId="activeTab"
+          className="absolute inset-0 bg-slate-900 rounded-[1.1rem] sm:rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200" 
+        />
+      )}
+    </button>
 
-            {/* STORE LIST SELECTION */}
-            {orderType === "pickup" && (
-              <div className="space-y-4 animate-in slide-in-from-top-4 duration-500">
-                <div className="flex items-center justify-between px-2">
-                  <span className="text-[11px] font-black uppercase text-blue-600 flex items-center gap-2">
-                    <Navigation size={12} fill="currentColor" /> Nearby Outlets
-                  </span>
-                  <span className="text-[10px] font-bold text-slate-400">
-                    Showing {nearestStores.length} locations
-                  </span>
-                </div>
+    <button
+      onClick={() => setOrderType("pickup")}
+      className={`relative flex-1 flex items-center justify-center gap-3 py-3.5 sm:py-4 rounded-[1.2rem] text-xs sm:text-sm font-black transition-all duration-500 z-10 ${
+        orderType === "pickup"
+          ? "text-white"
+          : "text-slate-400 hover:text-slate-600"
+      }`}
+    >
+      <Store size={16} sm:size={18} strokeWidth={2.5} />
+      <span>Self Pickup</span>
+      {orderType === "pickup" && (
+        <motion.div 
+          layoutId="activeTab"
+          className="absolute inset-0 bg-slate-900 rounded-[1.1rem] sm:rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200" 
+        />
+      )}
+    </button>
+  </div>
 
-                {storeLoading ? (
-                  <div className="space-y-3">
-                    {[1, 2].map((i) => (
-                      <div
-                        key={i}
-                        className="h-24 w-full bg-slate-50 animate-pulse rounded-[1.5rem]"
-                      />
-                    ))}
+  {/* STORE LIST SELECTION */}
+  {orderType === "pickup" && (
+    <div className="space-y-4 animate-in slide-in-from-top-4 duration-500">
+      <div className="flex items-center justify-between px-1">
+        <span className="text-[10px] sm:text-[11px] font-black uppercase text-blue-600 flex items-center gap-2 tracking-wider">
+          <Navigation size={12} fill="currentColor" /> Nearby Outlets
+        </span>
+        <span className="text-[9px] sm:text-[10px] font-bold text-slate-400">
+          {nearestStores.length} locations
+        </span>
+      </div>
+
+      {storeLoading ? (
+        <div className="space-y-3">
+          {[1, 2].map((i) => (
+            <div key={i} className="h-20 sm:h-24 w-full bg-slate-50 animate-pulse rounded-[1.5rem]" />
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {nearestStores.map((store) => (
+            <div
+              key={store._id}
+              onClick={() => setSelectedStore(store)}
+              className={`group relative p-4 sm:p-5 rounded-[1.5rem] sm:rounded-[1.8rem] border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+                selectedStore?._id === store._id
+                  ? "bg-white border-blue-600 shadow-xl shadow-blue-100/50"
+                  : "bg-white border-slate-50 hover:border-slate-200"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
+                    selectedStore?._id === store._id ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-400"
+                  }`}>
+                    <MapPin size={18} />
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    {nearestStores.map((store) => (
-                      <div
-                        key={store._id}
-                        onClick={() => setSelectedStore(store)}
-                        className={`group relative p-5 rounded-[1.8rem] border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
-                          selectedStore?._id === store._id
-                            ? "bg-white border-blue-600 shadow-2xl shadow-blue-100"
-                            : "bg-white border-slate-50 hover:border-slate-200"
-                        }`}
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex gap-4">
-                            <div
-                              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${
-                                selectedStore?._id === store._id
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-slate-100 text-slate-400"
-                              }`}
-                            >
-                              <MapPin size={20} />
-                            </div>
-                            <div>
-                              <p
-                                className={`font-black text-base transition-colors ${
-                                  selectedStore?._id === store._id
-                                    ? "text-slate-900"
-                                    : "text-slate-600"
-                                }`}
-                              >
-                                {store.name}
-                              </p>
-                              <div className="flex items-center gap-2 mt-1">
-                                <span className="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md">
-                                  {(store.distance / 1000).toFixed(1)} km
-                                </span>
-                                <span className="text-[10px] text-slate-400 font-medium italic">
-                                  {store.address?.city || "Himalayas"}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            className={`mt-2 transition-transform duration-300 ${selectedStore?._id === store._id ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"}`}
-                          >
-                            <div className="bg-blue-600 text-white p-1 rounded-full">
-                              <ChevronRight size={16} />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Subtle Background Accent for Active Store */}
-                        {selectedStore?._id === store._id && (
-                          <div className="absolute -right-4 -bottom-4 text-blue-50 opacity-10">
-                            <Store size={80} />
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                  <div className="min-w-0">
+                    <p className={`font-black text-sm sm:text-base truncate ${selectedStore?._id === store._id ? "text-slate-900" : "text-slate-600"}`}>
+                      {store.name}
+                    </p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span className="text-[9px] sm:text-xs font-bold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md">
+                        {(store.distance / 1000).toFixed(1)} km
+                      </span>
+                      <span className="text-[9px] sm:text-[10px] text-slate-400 font-medium italic truncate">
+                        {store.address?.city || "Himalayas"}
+                      </span>
+                    </div>
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* Delivery Info Snippet */}
-            {orderType === "delivery" && (
-              <div className="p-6 bg-slate-50 rounded-[2rem] border border-dashed border-slate-200 animate-in fade-in slide-in-from-bottom-4">
-                <div className="flex items-center gap-4">
-                  <div className="bg-white p-3 rounded-2xl shadow-sm text-slate-400">
-                    <Truck size={20} />
-                  </div>
-                  <p className="text-xs font-medium text-slate-500 leading-relaxed">
-                    Dispatching from our{" "}
-                    <span className="text-slate-900 font-bold">
-                      Himalayan Warehouse
-                    </span>
-                    . Expected arrival within{" "}
-                    <span className="text-slate-900 font-bold">
-                      3-5 business days
-                    </span>
-                    .
-                  </p>
+                </div>
+                {/* Arrow hidden on very small screens to save space */}
+                <div className={`hidden sm:block transition-transform duration-300 ${selectedStore?._id === store._id ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"}`}>
+                  <div className="bg-blue-600 text-white p-1 rounded-full"><ChevronRight size={14} /></div>
                 </div>
               </div>
-            )}
-          </section>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
 
+  {/* Delivery Info Snippet */}
+  {orderType === "delivery" && (
+    <div className="p-4 sm:p-6 bg-slate-50 rounded-[1.5rem] sm:rounded-[2rem] border border-dashed border-slate-200">
+      <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+        <div className="bg-white p-2.5 sm:p-3 rounded-xl sm:rounded-2xl shadow-sm text-slate-400 shrink-0">
+          <Truck size={18} />
+        </div>
+        <p className="text-[10px] sm:text-xs font-medium text-slate-500 leading-relaxed">
+          Dispatching from <span className="text-slate-900 font-bold">Himalayan Warehouse</span>. 
+          Expected arrival within <span className="text-slate-900 font-bold">3-5 business days</span>.
+        </p>
+      </div>
+    </div>
+  )}
+</section>
           {/* CART ITEMS SECTION */}
           {cartItems.length > 0 && (
             <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
@@ -535,58 +524,62 @@ export default function ShoppingCheckout() {
                 </div>
               </div>
 
-              <div className="space-y-6 max-h-[500px] overflow-y-auto no-scrollbar pr-2">
-                {cartItems.map((item) => (
-                  <div
-                    key={`${item.productId}-${item.size || "default"}`}
-                    className="group flex items-center justify-between bg-stone-50/30 p-4 rounded-3xl border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-300"
-                  >
-                    <div className="flex gap-5">
-                      <div className="relative w-20 h-20 rounded-[1.25rem] overflow-hidden bg-white border border-stone-100 shadow-sm">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                        />
-                      </div>
-                      <div className="flex flex-col justify-center">
-                        <p className="text-[11px] font-black text-stone-900 uppercase tracking-tight italic font-serif">
-                          {item.title}
-                        </p>
+             <div className="space-y-4 sm:space-y-6 max-h-[400px] sm:max-h-[500px] overflow-y-auto no-scrollbar pr-1 sm:pr-2">
+  {cartItems.map((item) => (
+    <div
+      key={`${item.productId}-${item.size || "default"}`}
+      className="group flex items-center justify-between bg-stone-50/30 p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-300 gap-3"
+    >
+      <div className="flex gap-3 sm:gap-5 items-center min-w-0">
+        {/* Responsive Image Size */}
+        <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-[1.25rem] overflow-hidden bg-white border border-stone-100 shadow-sm shrink-0">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+        </div>
 
-                        <div className="flex flex-wrap items-center gap-2 mt-2">
-                          {item.size && (
-                            <span className="text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2.5 py-1 rounded-lg">
-                              {item.size}
-                            </span>
-                          )}
-                          {(item.weight || item.productWeight) && (
-                            <span className="text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2.5 py-1 rounded-lg">
-                              {item.weight || item.productWeight}
-                            </span>
-                          )}
-                          <span className="text-[8px] font-black text-[#B23A2E] uppercase tracking-widest ml-1">
-                            Qty: {item.quantity}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+        {/* Product Details - min-w-0 allows truncation to work */}
+        <div className="flex flex-col justify-center min-w-0">
+          <p className="text-[10px] sm:text-[11px] font-black text-stone-900 uppercase tracking-tight italic font-serif truncate leading-tight">
+            {item.title}
+          </p>
 
-                    <div className="text-right">
-                      <p className="text-xs font-black text-stone-900 tracking-tighter">
-                        ₹
-                        {(
-                          (item.salesPrice > 0 ? item.salesPrice : item.price) *
-                          item.quantity
-                        ).toFixed(0)}
-                      </p>
-                      <p className="text-[8px] font-bold text-stone-300 uppercase tracking-widest mt-1">
-                        incl. tax
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+            {item.size && (
+              <span className="text-[7px] sm:text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg">
+                {item.size}
+              </span>
+            )}
+            {(item.weight || item.productWeight) && (
+              <span className="text-[7px] sm:text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg">
+                {item.weight || item.productWeight}
+              </span>
+            )}
+            <span className="text-[7px] sm:text-[8px] font-black text-[#B23A2E] uppercase tracking-widest sm:ml-1 whitespace-nowrap">
+              Qty: {item.quantity}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Price Section - Shrink-0 ensures the price doesn't wrap awkwardly */}
+      <div className="text-right shrink-0">
+        <p className="text-xs sm:text-sm font-black text-stone-900 tracking-tighter">
+          ₹
+          {(
+            (item.salesPrice > 0 ? item.salesPrice : item.price) *
+            item.quantity
+          ).toFixed(0)}
+        </p>
+        <p className="hidden sm:block text-[8px] font-bold text-stone-300 uppercase tracking-widest mt-1">
+          incl. tax
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
             </section>
           )}
 
