@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Search,
@@ -27,6 +27,7 @@ import {
 export default function AdminStorePanel() {
   const { storeId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { productList, loading } = useSelector((state) => state.storeProducts);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAdd, setShowAdd] = useState(false);
