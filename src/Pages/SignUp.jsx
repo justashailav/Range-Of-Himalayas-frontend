@@ -31,7 +31,6 @@ export default function SignUp() {
   useEffect(() => {
     if (message) {
       navigateTo(`/otp-verification/${email}`);
-      toast.success("Verification code dispatched.");
     }
     if (error) {
       toast.error(error);
