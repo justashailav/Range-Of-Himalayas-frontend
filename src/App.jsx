@@ -51,6 +51,7 @@ import WhatsAppSupport from "./Pages/WhatsAppSupport";
 import AdminBatch from "./Pages/Admin-View/batch";
 import BatchDetail from "./Pages/BatchDetail";
 import AdminStore from "./Pages/Admin-View/Stores";
+import AdminStorePanel from "./Pages/AdminStorePanel";
 
 
 function App() {
@@ -144,6 +145,7 @@ function App() {
             <Route path="batch" element={<AdminBatch />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="store" element={<AdminStore />} />
+            <Route path="store/:storeId" element={<AdminStorePanel />} />
             <Route
               path="order-details/:orderId"
               element={<AdminOrderDetailsView />}
