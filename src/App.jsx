@@ -52,7 +52,8 @@ import AdminBatch from "./Pages/Admin-View/batch";
 import BatchDetail from "./Pages/BatchDetail";
 import AdminStore from "./Pages/Admin-View/Stores";
 import AdminStorePanel from "./Pages/AdminStorePanel";
-
+import { useParams } from "react-router-dom";
+import AdminPOSPanel from "./components/AdminPosPanel";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,11 @@ function App() {
         </div>
       </>
     );
+  }
+
+  function AdminPOSWrapper() {
+    const { storeId } = useParams();
+    return <AdminPOSPanel storeId={storeId} />;
   }
 
   return (
@@ -100,7 +106,7 @@ function App() {
           <Route path="/return-policy" element={<RefundPolicy />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/custombox" element={<CustomBox />} />
-          
+
           {/* User protected */}
           <Route
             element={
@@ -146,6 +152,8 @@ function App() {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="store" element={<AdminStore />} />
             <Route path="store/:storeId" element={<AdminStorePanel />} />
+            <Route path="store/:storeId/pos" element={<AdminPOSWrapper />}/>
+
             <Route
               path="order-details/:orderId"
               element={<AdminOrderDetailsView />}
@@ -160,7 +168,7 @@ function App() {
       </Routes>
 
       <RecentOrderToast />
-      <Chatbot/>
+      <Chatbot />
       <ToastContainer />
     </div>
   );
