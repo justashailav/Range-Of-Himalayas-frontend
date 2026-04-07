@@ -85,7 +85,7 @@ function SearchProducts() {
           }
         })
         .catch(() => {
-          toast.error("Failed to add item");
+          
         });
     }
   
