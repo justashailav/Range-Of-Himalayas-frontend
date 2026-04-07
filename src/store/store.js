@@ -19,7 +19,7 @@ import blogReducer from "./slices/blogSlice";
 import chatReducer from "./slices/chatSlice";
 import batchReducer from "./slices/batchSlice";
 import storeReducer from "./slices/storeSlice";
-
+import storeProductsReducer from "./slices/storeProductsSlice";
 const rootReducer = combineReducers({
   auth: authReducer,
   products: productReducer,
@@ -39,7 +39,7 @@ const rootReducer = combineReducers({
   chat:chatReducer,
   batch:batchReducer,
   store:storeReducer,
-  store:storeReducer,
+  storeProducts:storeProductsReducer,
 });
 const persistConfig = {
   key: "root",
