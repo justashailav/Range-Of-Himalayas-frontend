@@ -27,7 +27,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { getNearestStore } from "@/store/slices/storeSlice";
-
+import { motion, AnimatePresence } from "framer-motion";
 export default function ShoppingCheckout() {
   const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
