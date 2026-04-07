@@ -172,7 +172,16 @@ export default function AdminStore() {
               .filter(Boolean)
           : form.tags,
     };
-
+    if (
+      !form.location ||
+      !form.location.coordinates ||
+      form.location.coordinates.length !== 2
+    ) {
+      form.location = {
+        type: "Point",
+        coordinates: [77.1734, 31.1048], // fallback
+      };
+    }
     if (editId) {
       dispatch(updateStore({ id: editId, formData: submissionData }));
     } else {
@@ -316,19 +325,21 @@ export default function AdminStore() {
             </div>
 
             <div className="flex bg-slate-50 p-2 gap-1 mx-8 mt-6 rounded-2xl overflow-x-auto no-scrollbar">
-              {["basic", "address", "manager", "services", "timing", "ops"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 min-w-[100px] py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                    activeTab === tab
-                      ? "bg-white text-blue-600 shadow-sm"
-                      : "text-slate-400 hover:text-slate-600"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
+              {["basic", "address", "manager", "services", "timing", "ops"].map(
+                (tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-1 min-w-[100px] py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                      activeTab === tab
+                        ? "bg-white text-blue-600 shadow-sm"
+                        : "text-slate-400 hover:text-slate-600"
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ),
+              )}
             </div>
 
             <form onSubmit={handleSubmit} className="p-8">
@@ -452,10 +463,12 @@ export default function AdminStore() {
                       </div>
                       <div>
                         <h3 className="font-black text-lg">Node Authority</h3>
-                        <p className="text-slate-400 text-xs">Configure the administrative lead for this node</p>
+                        <p className="text-slate-400 text-xs">
+                          Configure the administrative lead for this node
+                        </p>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4">
                       <Input
                         label="Manager Name"
@@ -571,7 +584,9 @@ export default function AdminStore() {
                           type="button"
                           onClick={() => {
                             const updated = [...form.openingHours];
-                            updated[index].isClosed = updated[index].isClosed ? 0 : 1;
+                            updated[index].isClosed = updated[index].isClosed
+                              ? 0
+                              : 1;
                             setForm({ ...form, openingHours: updated });
                           }}
                           className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition-colors ${slot.isClosed ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}
@@ -619,7 +634,9 @@ export default function AdminStore() {
                           value={form.inventoryType}
                           onChange={handleChange}
                         >
-                          <option value="store-based">Store-Based (Local)</option>
+                          <option value="store-based">
+                            Store-Based (Local)
+                          </option>
                           <option value="central">Central (Cloud)</option>
                         </Select>
                         <Input
@@ -637,7 +654,10 @@ export default function AdminStore() {
                         </p>
                         <div className="space-y-4">
                           {Object.keys(form.permissions).map((perm) => (
-                            <div key={perm} className="flex justify-between items-center group">
+                            <div
+                              key={perm}
+                              className="flex justify-between items-center group"
+                            >
                               <span className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">
                                 {perm.replace(/([A-Z])/g, " $1").trim()}
                               </span>
@@ -723,13 +743,22 @@ const Badge = ({ icon, label, color }) => {
     emerald: "bg-emerald-50 text-emerald-600",
   };
   return (
-    <div className={`flex items-center gap-1.5 px-2 py-1 rounded-lg font-bold text-[10px] ${colors[color]}`}>
+    <div
+      className={`flex items-center gap-1.5 px-2 py-1 rounded-lg font-bold text-[10px] ${colors[color]}`}
+    >
       {icon} {label}
     </div>
   );
 };
 
-const ServiceToggle = ({ icon, title, name, checked, onChange, color = "blue" }) => {
+const ServiceToggle = ({
+  icon,
+  title,
+  name,
+  checked,
+  onChange,
+  color = "blue",
+}) => {
   const activeClass = color === "blue" ? "bg-blue-600" : "bg-emerald-600";
   return (
     <div className="flex justify-between items-center">
@@ -744,15 +773,23 @@ const ServiceToggle = ({ icon, title, name, checked, onChange, color = "blue" })
         onClick={() => onChange({ target: { name, value: checked ? 0 : 1 } })}
         className={`w-12 h-6 rounded-full transition-all relative ${checked ? activeClass : "bg-slate-200"}`}
       >
-        <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${checked ? "left-7" : "left-1"}`} />
+        <div
+          className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${checked ? "left-7" : "left-1"}`}
+        />
       </button>
     </div>
   );
 };
 
 const StatusToggle = ({ active, onClick }) => (
-  <button type="button" onClick={onClick} className="flex items-center gap-2 group">
-    <div className={`w-2.5 h-2.5 rounded-full ${active ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-slate-300"}`} />
+  <button
+    type="button"
+    onClick={onClick}
+    className="flex items-center gap-2 group"
+  >
+    <div
+      className={`w-2.5 h-2.5 rounded-full ${active ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-slate-300"}`}
+    />
     <span className="text-[11px] font-bold text-slate-600 uppercase group-hover:text-blue-600 transition-colors">
       {active ? "Active" : "Inactive"}
     </span>
@@ -765,7 +802,11 @@ const CircleBtn = ({ icon, onClick, color = "blue" }) => {
     red: "text-slate-400 hover:bg-red-50 hover:text-red-600",
   };
   return (
-    <button type="button" onClick={onClick} className={`p-2.5 rounded-xl transition-all ${styles[color]}`}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`p-2.5 rounded-xl transition-all ${styles[color]}`}
+    >
       {icon}
     </button>
   );
