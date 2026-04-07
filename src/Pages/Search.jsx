@@ -41,61 +41,116 @@ function SearchProducts() {
   }, [keyword, dispatch, setSearchParams]);
 
   // Add to Cart
-  const handleAddToCart = useCallback(
-    (productId, totalStock, size) => {
-      const existingItem = cartItems?.items?.find(
-        (item) =>
-          item.productId.toString() === productId.toString() &&
-          item.size === size,
-      );
-
-      if (existingItem && existingItem.quantity + 1 > totalStock) {
-        toast.error(`Only ${totalStock} available for this size`);
+  function handleAddToCart(getCurrentProductId, getTotalStock, size, weight) {
+      if (!user?._id) {
+        toast.error("Oops! You need to login first to add items to your cart.");
         return;
       }
-
-      dispatch(
-        addToCart({ userId: user?._id, productId, quantity: 1, size }),
-      ).then((res) => {
-        if (res?.success) {
-          dispatch(fetchCartItems(user?._id));
-          toast.success("Product added to cart");
-        } else {
-          toast.error(res?.payload?.message || "Failed to add item");
+  
+      const normalizedSize = size || "";
+  
+      const getCartItems = cartItems?.items || [];
+  
+      const existingItemIndex = getCartItems.findIndex(
+        (item) =>
+          item.productId.toString() === getCurrentProductId.toString() &&
+          (item.size || "") === normalizedSize &&
+          item.weight === weight,
+      );
+  
+      if (existingItemIndex > -1) {
+        const currentQuantity = getCartItems[existingItemIndex].quantity;
+        if (currentQuantity + 1 > getTotalStock) {
+          toast.error(`Only ${getTotalStock} items available for this variant`);
+          return;
         }
-      });
-    },
-    [cartItems, dispatch, user?._id],
-  );
-
-  // Add to Wishlist
-  const handleAddToWishList = useCallback(
-    (productId, totalStock, size) => {
-      const existingItem = wishListItems?.items?.find(
-        (item) =>
-          item.productId.toString() === productId.toString() &&
-          item.size === size,
-      );
-
-      if (existingItem && existingItem.quantity + 1 > totalStock) {
-        toast.error(`Only ${totalStock} available for this size`);
+      }
+  
+      dispatch(
+        addToCart({
+          userId: user._id,
+          productId: getCurrentProductId,
+          quantity: 1,
+          size: normalizedSize,
+          weight,
+        }),
+      )
+        .then((data) => {
+          if (data?.success) {
+            dispatch(fetchCartItems(user._id));
+            toast.success("Product added to cart");
+            setOpenCartSheet(true);
+          } else {
+            toast.error(data?.message || "Failed to add item");
+          }
+        })
+        .catch(() => {
+          toast.error("Failed to add item");
+        });
+    }
+  
+    function handleAddToWishList(
+      getCurrentProductId,
+      getTotalStock,
+      size,
+      weight,
+    ) {
+      if (!user?._id) {
+        toast.error(
+          "Oops! You need to login first to add items to your wishlist.",
+        );
         return;
       }
-
+  
+      const normalizedSize = size || "";
+      const getWishListItems = wishListItems?.items || [];
+  
+      if (getWishListItems.length) {
+        const indexOfCurrentItem = getWishListItems.findIndex((item) => {
+          // 🔥 FIX: Check if productId is an object with an _id inside it
+          const existingProductId = item.productId?._id || item.productId;
+  
+          const sameProduct =
+            existingProductId?.toString() === getCurrentProductId?.toString();
+  
+          const sameSize = (item.size || "") === normalizedSize;
+  
+          const sameWeight =
+            (item.weight &&
+              weight &&
+              item.weight.toString() === weight.toString()) ||
+            (!item.weight && !weight);
+  
+          return sameProduct && sameSize && sameWeight;
+        });
+  
+        if (indexOfCurrentItem > -1) {
+          toast.error("This item is already in your wishlist!");
+          return;
+        }
+      }
+  
       dispatch(
-        addToWishList({ userId: user?._id, productId, quantity: 1, size }),
-      ).then((res) => {
-        if (res?.success) {
+        addToWishList({
+          userId: user?._id,
+          productId: getCurrentProductId,
+          quantity: 1,
+          size: normalizedSize,
+          weight,
+        }),
+      ).then((data) => {
+        // 🔥 NOTE: If you use Redux Toolkit, you MUST check data.payload.success
+        const response = data?.payload || data;
+  
+        if (response?.success) {
           dispatch(fetchWishListItems(user?._id));
           toast.success("Product added to wishlist");
         } else {
-          toast.error(res?.message || "Failed to add item");
+          toast.error(response?.message || "Failed to add item");
         }
       });
-    },
-    [wishListItems, dispatch, user?._id],
-  );
-
+    }
+  
   const handleGetProductDetails = useCallback(
     (product) => navigate(`/product/${product._id}`),
     [navigate],
