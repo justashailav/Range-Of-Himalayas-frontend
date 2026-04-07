@@ -1,55 +1,88 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { 
-  Search, Plus, Minus, Trash2, ShoppingCart, 
-  ChevronRight, Package, CreditCard, X 
+import {
+  Search,
+  Plus,
+  Minus,
+  Trash2,
+  ShoppingCart,
+  ChevronRight,
+  Package,
+  CreditCard,
+  X,
 } from "lucide-react";
 
 import {
   fetchStoreProducts,
   sellStoreProduct,
 } from "@/store/slices/storeProductsSlice";
-
+import { useLocation } from "react-router-dom";
 export default function AdminPOSPanel({ storeId }) {
   const dispatch = useDispatch();
   const { productList } = useSelector((state) => state.storeProducts);
 
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState([]);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const preSelectedSKU = params.get("sku");
 
   useEffect(() => {
     dispatch(fetchStoreProducts(storeId));
   }, [storeId, dispatch]);
 
+  useEffect(() => {
+  if (preSelectedSKU && productList.length > 0) {
+    for (let p of productList) {
+      const variant = p.variants.find(v => v.sku === preSelectedSKU);
+      if (variant) {
+        addToCart(p, variant);
+        break;
+      }
+    }
+  }
+}, [preSelectedSKU, productList]);
+
   const filteredProducts = productList.filter((p) =>
-    p.title.toLowerCase().includes(search.toLowerCase())
+    p.title.toLowerCase().includes(search.toLowerCase()),
   );
 
   const addToCart = (product, variant) => {
     const existing = cart.find((c) => c.sku === variant.sku);
     if (existing) {
       if (existing.quantity >= variant.stock) return; // Stock limit
-      setCart(cart.map((c) => c.sku === variant.sku ? { ...c, quantity: c.quantity + 1 } : c));
+      setCart(
+        cart.map((c) =>
+          c.sku === variant.sku ? { ...c, quantity: c.quantity + 1 } : c,
+        ),
+      );
     } else {
-      setCart([...cart, {
-        productId: product._id,
-        title: product.title,
-        sku: variant.sku,
-        price: variant.salesPrice || variant.price,
-        quantity: 1,
-        stock: variant.stock,
-        image: product.image
-      }]);
+      setCart([
+        ...cart,
+        {
+          productId: product._id,
+          title: product.title,
+          sku: variant.sku,
+          price: variant.salesPrice || variant.price,
+          quantity: 1,
+          stock: variant.stock,
+          image: product.image,
+        },
+      ]);
     }
   };
 
   const updateQty = (sku, type) => {
-    setCart(cart.map((c) => {
-      if (c.sku !== sku) return c;
-      if (type === "inc" && c.quantity < c.stock) return { ...c, quantity: c.quantity + 1 };
-      if (type === "dec" && c.quantity > 1) return { ...c, quantity: c.quantity - 1 };
-      return c;
-    }));
+    setCart(
+      cart.map((c) => {
+        if (c.sku !== sku) return c;
+        if (type === "inc" && c.quantity < c.stock)
+          return { ...c, quantity: c.quantity + 1 };
+        if (type === "dec" && c.quantity > 1)
+          return { ...c, quantity: c.quantity - 1 };
+        return c;
+      }),
+    );
   };
 
   const removeItem = (sku) => setCart(cart.filter((c) => c.sku !== sku));
@@ -58,26 +91,36 @@ export default function AdminPOSPanel({ storeId }) {
   const handleCheckout = async () => {
     try {
       for (let item of cart) {
-        await dispatch(sellStoreProduct({ sku: item.sku, quantity: item.quantity }));
+        await dispatch(
+          sellStoreProduct({ sku: item.sku, quantity: item.quantity }),
+        );
       }
       alert("✅ Transaction Successful");
       setCart([]);
       dispatch(fetchStoreProducts(storeId));
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <div className="h-screen bg-[#FBFBFD] flex flex-col lg:flex-row overflow-hidden font-sans text-slate-900">
-      
       {/* ---------------- LEFT: PRODUCT BROWSER ---------------- */}
       <div className="flex-1 flex flex-col p-6 lg:p-10 overflow-hidden">
         <header className="mb-8 flex justify-between items-end">
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-1 block">Retail Terminal</span>
-            <h1 className="text-3xl font-black tracking-tight italic">Product <span className="text-slate-400">Catalog</span></h1>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-1 block">
+              Retail Terminal
+            </span>
+            <h1 className="text-3xl font-black tracking-tight italic">
+              Product <span className="text-slate-400">Catalog</span>
+            </h1>
           </div>
           <div className="relative w-full max-w-xs">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"
+              size={18}
+            />
             <input
               placeholder="Search by name or category..."
               value={search}
@@ -98,21 +141,33 @@ export default function AdminPOSPanel({ storeId }) {
                 >
                   <div className="aspect-square bg-slate-50 rounded-2xl mb-4 overflow-hidden flex items-center justify-center border border-slate-50">
                     {p.image ? (
-                      <img src={p.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="" />
+                      <img
+                        src={p.image}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        alt=""
+                      />
                     ) : (
                       <Package className="text-slate-200" size={32} />
                     )}
                   </div>
-                  <h3 className="text-sm font-black leading-tight mb-1 truncate">{p.title}</h3>
+                  <h3 className="text-sm font-black leading-tight mb-1 truncate">
+                    {p.title}
+                  </h3>
                   <div className="flex justify-between items-center">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{v.weight}</p>
-                    <p className="text-sm font-black text-blue-600">₹{v.price}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                      {v.weight}
+                    </p>
+                    <p className="text-sm font-black text-blue-600">
+                      ₹{v.price}
+                    </p>
                   </div>
                   {v.stock <= 5 && (
-                    <div className="absolute top-2 right-2 bg-orange-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase">Low</div>
+                    <div className="absolute top-2 right-2 bg-orange-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase">
+                      Low
+                    </div>
                   )}
                 </div>
-              ))
+              )),
             )}
           </div>
         </div>
@@ -136,28 +191,62 @@ export default function AdminPOSPanel({ storeId }) {
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center opacity-20">
               <ShoppingCart size={48} className="mb-4" />
-              <p className="text-xs font-black uppercase tracking-widest">Cart is Empty</p>
+              <p className="text-xs font-black uppercase tracking-widest">
+                Cart is Empty
+              </p>
             </div>
           ) : (
             cart.map((item) => (
-              <div key={item.sku} className="group flex gap-4 bg-slate-50/50 p-4 rounded-3xl border border-transparent hover:border-slate-100 transition-all">
+              <div
+                key={item.sku}
+                className="group flex gap-4 bg-slate-50/50 p-4 rounded-3xl border border-transparent hover:border-slate-100 transition-all"
+              >
                 <div className="w-16 h-16 rounded-2xl bg-white border border-slate-100 overflow-hidden flex-shrink-0">
-                  {item.image ? <img src={item.image} className="w-full h-full object-cover" /> : <Package size={16} className="m-auto text-slate-200 h-full" />}
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Package
+                      size={16}
+                      className="m-auto text-slate-200 h-full"
+                    />
+                  )}
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-start mb-1">
-                    <h3 className="text-xs font-black leading-tight max-w-[120px]">{item.title}</h3>
-                    <button onClick={() => removeItem(item.sku)} className="text-slate-300 hover:text-red-500 transition-colors">
+                    <h3 className="text-xs font-black leading-tight max-w-[120px]">
+                      {item.title}
+                    </h3>
+                    <button
+                      onClick={() => removeItem(item.sku)}
+                      className="text-slate-300 hover:text-red-500 transition-colors"
+                    >
                       <X size={16} />
                     </button>
                   </div>
                   <div className="flex justify-between items-center mt-3">
                     <div className="flex items-center bg-white border border-slate-100 rounded-xl px-1">
-                      <button onClick={() => updateQty(item.sku, "dec")} className="p-1.5 hover:text-blue-600"><Minus size={12} /></button>
-                      <span className="text-xs font-black w-6 text-center">{item.quantity}</span>
-                      <button onClick={() => updateQty(item.sku, "inc")} className="p-1.5 hover:text-blue-600"><Plus size={12} /></button>
+                      <button
+                        onClick={() => updateQty(item.sku, "dec")}
+                        className="p-1.5 hover:text-blue-600"
+                      >
+                        <Minus size={12} />
+                      </button>
+                      <span className="text-xs font-black w-6 text-center">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQty(item.sku, "inc")}
+                        className="p-1.5 hover:text-blue-600"
+                      >
+                        <Plus size={12} />
+                      </button>
                     </div>
-                    <p className="text-sm font-black tracking-tighter">₹{item.price * item.quantity}</p>
+                    <p className="text-sm font-black tracking-tighter">
+                      ₹{item.price * item.quantity}
+                    </p>
                   </div>
                 </div>
               </div>
