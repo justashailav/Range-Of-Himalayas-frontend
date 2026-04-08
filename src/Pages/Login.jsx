@@ -37,31 +37,37 @@ export default function Login() {
     dispatch(login(data));
   };
 
- useEffect(() => {
+useEffect(() => {
   if (error) {
     toast.error(error);
     setIsSubmitting(false);
     dispatch(resetAuthSlice());
+    return; // ✅ stop further execution
   }
 
-  if (isAuthencated && user) {
+  // ✅ Only run when login is fully ready
+  if (isAuthencated && user && user.role) {
     console.log("👤 User:", user);
-    console.log("🎭 Role:", user?.role);
+    console.log("🎭 Role:", user.role);
 
-    if (user._id) {
+    // Fetch cart only for normal users
+    if (user._id && user.role === "User") {
       dispatch(fetchCartItems(user._id))
         .catch((err) => console.log("Error fetching cart:", err));
     }
 
-    // ✅ FIXED ROLE HANDLING
+    // ✅ ROLE-BASED REDIRECT
     if (user.role === "Admin") {
       navigate("/admin/dashboard");
     } 
     else if (user.role === "Manager") {
-      navigate("/manager/dashboard"); // 🔥 THIS WAS MISSING
+      navigate("/manager/dashboard");
+    } 
+    else if (user.role === "User") {
+      navigate("/"); // ✅ explicit for normal user
     } 
     else {
-      navigate("/");
+      console.log("⚠ Unknown role:", user.role);
     }
   }
 }, [dispatch, error, isAuthencated, user, navigate]);
