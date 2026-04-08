@@ -37,13 +37,7 @@ export default function Login() {
     dispatch(login(data));
   };
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      setIsSubmitting(false); // Reset so they can try again
-      dispatch(resetAuthSlice());
-    }
-useEffect(() => {
+ useEffect(() => {
   if (error) {
     toast.error(error);
     setIsSubmitting(false);
@@ -51,7 +45,7 @@ useEffect(() => {
   }
 
   if (isAuthencated && user) {
-    console.log("👤 Logged in user:", user);
+    console.log("👤 User:", user);
     console.log("🎭 Role:", user?.role);
 
     if (user._id) {
@@ -59,36 +53,18 @@ useEffect(() => {
         .catch((err) => console.log("Error fetching cart:", err));
     }
 
-    // ✅ STRICT ROLE CHECK (NO lowercase)
+    // ✅ FIXED ROLE HANDLING
     if (user.role === "Admin") {
-      console.log("👑 Redirect → Admin Dashboard");
       navigate("/admin/dashboard");
     } 
     else if (user.role === "Manager") {
-      console.log("🏬 Redirect → Manager Dashboard");
-      navigate("/manager/dashboard");
+      navigate("/manager/dashboard"); // 🔥 THIS WAS MISSING
     } 
     else {
-      console.log("👤 Redirect → Home");
       navigate("/");
     }
   }
 }, [dispatch, error, isAuthencated, user, navigate]);
-    if (isAuthencated && user) {
-      if (user._id) {
-        dispatch(fetchCartItems(user._id))
-          .catch((err) => console.log("Error fetching cart:", err));
-      }
-
-      // Redirect based on role
-      if (user.role === "Admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/");
-      }
-    }
-  }, [dispatch, error, isAuthencated, user, navigate]);
-
   if (isAuthencated) return null;
 
   return (
