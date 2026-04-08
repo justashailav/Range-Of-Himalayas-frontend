@@ -182,24 +182,20 @@ export const otpVerification = (email, otp) => async (dispatch) => {
 };
 export const login = (data) => async (dispatch) => {
   dispatch(authSlice.actions.login());
-
   await axios
     .post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`, data, {
       withCredentials: true,
-      // ❌ REMOVE headers
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
     .then((res) => {
-      console.log("🔥 API RESPONSE:", res.data);
-
+      console.log(res.data);
       dispatch(authSlice.actions.loginSuccess(res.data));
       return res.data;
     })
     .catch((error) => {
-      dispatch(
-        authSlice.actions.loginFailed(
-          error.response?.data?.message || "Login failed"
-        )
-      );
+      dispatch(authSlice.actions.loginFailed(error.response.data.message));
     });
 };
 
