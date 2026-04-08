@@ -37,26 +37,24 @@ export default function Login() {
     dispatch(login(data));
   };
 
-useEffect(() => {
+  useEffect(() => {
   if (error) {
     toast.error(error);
     setIsSubmitting(false);
     dispatch(resetAuthSlice());
-    return; // ✅ stop further execution
+    return;
   }
 
-  // ✅ Only run when login is fully ready
   if (isAuthencated && user && user.role) {
     console.log("👤 User:", user);
     console.log("🎭 Role:", user.role);
 
-    // Fetch cart only for normal users
-    if (user._id && user.role === "User") {
-      dispatch(fetchCartItems(user._id))
+    // ✅ FIXED HERE
+    if (user.id && user.role === "User") {
+      dispatch(fetchCartItems(user.id))
         .catch((err) => console.log("Error fetching cart:", err));
     }
 
-    // ✅ ROLE-BASED REDIRECT
     if (user.role === "Admin") {
       navigate("/admin/dashboard");
     } 
@@ -64,14 +62,11 @@ useEffect(() => {
       navigate("/manager/dashboard");
     } 
     else if (user.role === "User") {
-      navigate("/"); // ✅ explicit for normal user
+      navigate("/");
     } 
-    else {
-      console.log("⚠ Unknown role:", user.role);
-    }
   }
 }, [dispatch, error, isAuthencated, user, navigate]);
-  if (isAuthencated) return null;
+  
 
   return (
     <div className="min-h-screen overflow-hidden">
