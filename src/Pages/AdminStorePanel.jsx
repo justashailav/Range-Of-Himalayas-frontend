@@ -31,7 +31,8 @@ export default function AdminStorePanel() {
   const { productList, loading } = useSelector((state) => state.storeProducts);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAdd, setShowAdd] = useState(false);
-
+  const { user } = useSelector((state) => state.auth);
+  const isManager = user?.role === "Manager";
   const [newProduct, setNewProduct] = useState({
     title: "",
     displayName: "",
@@ -56,17 +57,23 @@ export default function AdminStorePanel() {
   });
 
   useEffect(() => {
-    dispatch(fetchStoreProducts(storeId));
-  }, [storeId, dispatch]);
+    if (isManager) {
+      dispatch(fetchStoreProducts()); // manager no storeId
+    } else {
+      dispatch(fetchStoreProducts(storeId)); // admin needs storeId
+    }
+  }, [storeId, dispatch, isManager]);
 
   const filteredProducts = productList.filter((p) =>
     p.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleAddProduct = () => {
+    if (!isManager) return; // 🔥 safety
+
     const payload = {
       ...newProduct,
-      storeId,
+      ...(isManager ? {} : { storeId }), // admin not allowed anyway
       lowStockThreshold: Number(newProduct.lowStockThreshold),
       variants: newProduct.variants.map((v) => ({
         ...v,
@@ -79,11 +86,17 @@ export default function AdminStorePanel() {
           v.barcode || `${Date.now()}${Math.floor(Math.random() * 1000)}`,
       })),
     };
+
     dispatch(addStoreProduct(payload));
     setShowAdd(false);
     resetForm();
+
     setTimeout(() => {
-      dispatch(fetchStoreProducts(storeId));
+      if (isManager) {
+        dispatch(fetchStoreProducts());
+      } else {
+        dispatch(fetchStoreProducts(storeId));
+      }
     }, 300);
   };
 
@@ -146,12 +159,14 @@ export default function AdminStorePanel() {
               />
             </div>
 
-            <button
-              onClick={() => setShowAdd(true)}
-              className="bg-slate-900 text-white px-6 py-3.5 rounded-2xl flex items-center gap-2 hover:bg-blue-600 transition-all shadow-xl shadow-slate-200 active:scale-95 font-bold text-sm"
-            >
-              <Plus size={18} /> New Product
-            </button>
+            {isManager && (
+              <button
+                onClick={() => setShowAdd(true)}
+                className="bg-slate-900 text-white px-6 py-3.5 rounded-2xl flex items-center gap-2 hover:bg-blue-600 transition-all shadow-xl shadow-slate-200 active:scale-95 font-bold text-sm"
+              >
+                <Plus size={18} /> New Product
+              </button>
+            )}
           </div>
         </div>
 
@@ -231,7 +246,11 @@ export default function AdminStorePanel() {
 
                       <button
                         onClick={() =>
-                          navigate(`/admin/store/${storeId}/pos?sku=${v.sku}`)
+                          navigate(
+                            isManager
+                              ? `/manager/pos?sku=${v.sku}`
+                              : `/admin/store/${storeId}/pos?sku=${v.sku}`,
+                          )
                         }
                         disabled={v.stock <= 0}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
@@ -253,7 +272,7 @@ export default function AdminStorePanel() {
       </div>
 
       {/* --- ADD PRODUCT MODAL --- */}
-      {showAdd && (
+      {showAdd && isManager && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"

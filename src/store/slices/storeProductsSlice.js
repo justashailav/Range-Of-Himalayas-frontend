@@ -141,16 +141,22 @@ export const {
   clearMessage,
 } = storeProductsSlice.actions;
 
+const getRolePrefix = (getState) => {
+  const role = getState().auth?.user?.role;
 
-export const addStoreProduct = (formData) => async (dispatch) => {
+  if (role === "Admin") return "admin";
+  return "manager";
+};
+
+export const addStoreProduct = (formData) => async (dispatch, getState) => {
   dispatch(addStoreProductStart());
   try {
+    const prefix = getRolePrefix(getState);
+
     const res = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/add`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/${prefix}/add`,
       formData,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
 
     dispatch(addStoreProductSuccess(res.data));
@@ -160,12 +166,17 @@ export const addStoreProduct = (formData) => async (dispatch) => {
   }
 };
 
-export const fetchStoreProducts = (storeId) => async (dispatch) => {
+export const fetchStoreProducts = (storeId) => async (dispatch, getState) => {
   dispatch(fetchStoreProductStart());
   try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/products?storeId=${storeId}`
-    );
+    const prefix = getRolePrefix(getState);
+
+    const url =
+      prefix === "admin"
+        ? `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/admin/products?storeId=${storeId}`
+        : `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/manager/products`;
+
+    const res = await axios.get(url);
 
     dispatch(fetchStoreProductSuccess(res.data.products));
 
@@ -173,11 +184,13 @@ export const fetchStoreProducts = (storeId) => async (dispatch) => {
     dispatch(fetchStoreProductFailed(error.response?.data?.message));
   }
 };
-export const sellStoreProduct = (data) => async (dispatch) => {
+export const sellStoreProduct = (data) => async (dispatch, getState) => {
   dispatch(sellProductStart());
   try {
+    const prefix = getRolePrefix(getState);
+
     await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/sell`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/${prefix}/sell`,
       data
     );
 
@@ -187,11 +200,13 @@ export const sellStoreProduct = (data) => async (dispatch) => {
     dispatch(sellProductFailed(error.response?.data?.message));
   }
 };
-export const restockProduct = (data) => async (dispatch) => {
+export const restockProduct = (data) => async (dispatch, getState) => {
   dispatch(restockStart());
   try {
+    const prefix = getRolePrefix(getState);
+
     await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/restock`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/${prefix}/restock`,
       data
     );
 
@@ -201,11 +216,13 @@ export const restockProduct = (data) => async (dispatch) => {
     dispatch(restockFailed(error.response?.data?.message));
   }
 };
-export const deleteStoreProduct = (id) => async (dispatch) => {
+export const deleteStoreProduct = (id) => async (dispatch, getState) => {
   dispatch(deleteStoreProductStart());
   try {
+    const prefix = getRolePrefix(getState);
+
     const res = await axios.delete(
-      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/delete/${id}`
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/${prefix}/delete/${id}`
     );
 
     dispatch(
