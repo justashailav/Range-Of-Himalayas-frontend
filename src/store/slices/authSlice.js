@@ -43,7 +43,7 @@ const authSlice = createSlice({
       (state.loading = true), (state.error = null), (state.message = null);
     },
     loginSuccess(state, action) {
-      console.log("LOGIN SUCCESS PAYLOAD", action.payload);
+      
       (state.loading = false),
         (state.message = action.payload.message),
         (state.isAuthencated = true),
@@ -182,20 +182,24 @@ export const otpVerification = (email, otp) => async (dispatch) => {
 };
 export const login = (data) => async (dispatch) => {
   dispatch(authSlice.actions.login());
+
   await axios
     .post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user/login`, data, {
       withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      // ❌ REMOVE headers
     })
     .then((res) => {
-      console.log(res.data);
+      console.log("🔥 API RESPONSE:", res.data);
+
       dispatch(authSlice.actions.loginSuccess(res.data));
       return res.data;
     })
     .catch((error) => {
-      dispatch(authSlice.actions.loginFailed(error.response.data.message));
+      dispatch(
+        authSlice.actions.loginFailed(
+          error.response?.data?.message || "Login failed"
+        )
+      );
     });
 };
 
