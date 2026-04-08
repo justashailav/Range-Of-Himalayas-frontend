@@ -50,10 +50,10 @@ export default function Login() {
     console.log("🎭 Role:", user.role);
 
     // ✅ FIXED HERE
-    // if (user.id && user.role === "User") {
-    //   dispatch(fetchCartItems(user.id))
-    //     .catch((err) => console.log("Error fetching cart:", err));
-    // }
+    if (user.id && user.role === "User") {
+      dispatch(fetchCartItems(user.id))
+        .catch((err) => console.log("Error fetching cart:", err));
+    }
 
     if (user.role === "Admin") {
       navigate("/admin/dashboard");
