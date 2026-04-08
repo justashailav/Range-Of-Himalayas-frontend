@@ -54,6 +54,10 @@ import AdminStore from "./Pages/Admin-View/Stores";
 import AdminStorePanel from "./Pages/AdminStorePanel";
 import { useParams } from "react-router-dom";
 import AdminPOSPanel from "./components/AdminPosPanel";
+import ManagerLayout from "./Pages/ManagerLayout";
+import ManagerDashboard from "./Pages/ManagerDashboard";
+import ManagerProductsPanel from "./Pages/ManagerProductPanel";
+import ManagerAnalytics from "./Pages/ManagerAnalytics";
 
 function App() {
   const dispatch = useDispatch();
@@ -77,7 +81,10 @@ function App() {
   function AdminPOSWrapper() {
     const { storeId } = useParams();
     return <AdminPOSPanel storeId={storeId} />;
-  }
+  } 
+  function ManagerPOSWrapper() {
+  return <AdminPOSPanel />; // storeId auto handled via backend
+}
 
   return (
     <div>
@@ -152,7 +159,7 @@ function App() {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="store" element={<AdminStore />} />
             <Route path="store/:storeId" element={<AdminStorePanel />} />
-            <Route path="store/:storeId/pos" element={<AdminPOSWrapper />}/>
+            <Route path="store/:storeId/pos" element={<AdminPOSWrapper />} />
 
             <Route
               path="order-details/:orderId"
@@ -161,6 +168,25 @@ function App() {
             <Route path="gallery" element={<Gallery />} />
             <Route path="blog" element={<Blogs />} />
             <Route path="coupons" element={<Admincoupon />} />
+          </Route>
+        </Route>
+
+        <Route
+          element={
+            <CheckAuth
+              user={user}
+              isAuthencated={isAuthencated}
+              requiredRole="Manager"
+            >
+              <Outlet />
+            </CheckAuth>
+          }
+        >
+          <Route path="/manager" element={<ManagerLayout />}>
+            <Route path="dashboard" element={<ManagerDashboard />} />
+            <Route path="products" element={<ManagerProductsPanel />} />
+            <Route path="pos" element={<ManagerPOSWrapper />} />
+            <Route path="analytics" element={<ManagerAnalytics/>} />
           </Route>
         </Route>
 
