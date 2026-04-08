@@ -11,6 +11,7 @@ const storeSlice = createSlice({
     selectedStore: null,
     nearestStore: null,
     nearestStores: [],
+    myStore: null,
   },
 
   reducers: {
@@ -73,6 +74,19 @@ const storeSlice = createSlice({
       }
     },
     updateStoreFailed: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    // ✅ GET MY STORE (Manager)
+    fetchMyStoreStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchMyStoreSuccess: (state, action) => {
+      state.loading = false;
+      state.myStore = action.payload;
+    },
+    fetchMyStoreFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -221,7 +235,24 @@ export const deleteStore = (id) => async (dispatch) => {
     );
   }
 };
+// ✅ GET MANAGER STORE
+export const fetchMyStore = () => async (dispatch) => {
+  dispatch(storeSlice.actions.fetchMyStoreStart());
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/store/my-store`,
+      { withCredentials: true }
+    );
 
+    dispatch(storeSlice.actions.fetchMyStoreSuccess(res.data.data));
+  } catch (error) {
+    dispatch(
+      storeSlice.actions.fetchMyStoreFailed(
+        error.response?.data?.message
+      )
+    );
+  }
+};
 export const getNearestStore =
   ({ lat, lng, orderType }) =>
   async (dispatch) => {
