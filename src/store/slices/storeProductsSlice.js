@@ -178,7 +178,10 @@ export const fetchStoreProducts = (storeId) => async (dispatch, getState) => {
         ? `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/admin/products?storeId=${storeId}`
         : `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/manager/products`;
 
-    const res = await axios.get(url);
+    const res = await axios.get(url, {
+      withCredentials: true, // 🔥 ADD THIS
+    });
+
 
     dispatch(fetchStoreProductSuccess(res.data.products));
 
