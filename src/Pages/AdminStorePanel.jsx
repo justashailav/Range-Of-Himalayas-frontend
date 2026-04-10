@@ -272,189 +272,267 @@ export default function AdminStorePanel() {
       </div>
 
       {/* --- ADD PRODUCT MODAL --- */}
-      {showAdd && isManager && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
-            onClick={() => setShowAdd(false)}
+      {/* --- ADD PRODUCT MODAL --- */}
+{showAdd && isManager && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div
+      className="absolute inset-0 bg-black/60"
+      onClick={() => setShowAdd(false)}
+    />
+
+    <div className="relative bg-white w-full max-w-3xl rounded-3xl shadow-xl overflow-y-auto max-h-[90vh] p-8 space-y-6">
+
+      <h2 className="text-2xl font-bold">Add Product</h2>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleAddProduct();
+        }}
+        className="space-y-6"
+      >
+
+        {/* -------- BASIC INFO -------- */}
+        <div className="grid grid-cols-2 gap-4">
+          <input
+            placeholder="Title"
+            value={newProduct.title}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, title: e.target.value })
+            }
+            className="input"
           />
 
-          <div className="relative bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
-            <div className="flex justify-between items-center p-10 border-b border-slate-50">
-              <h2 className="text-3xl font-black italic tracking-tighter">
-                Add <span className="text-blue-600">Product</span>
-              </h2>
-              <button
-                onClick={() => setShowAdd(false)}
-                className="p-3 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleAddProduct();
-              }}
-              className="p-10 overflow-y-auto space-y-10 custom-scrollbar"
-            >
-              {/* SECTION: Core Info */}
-              <div className="space-y-5">
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                  <Info size={14} /> Core Details
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <FormInput
-                    label="Internal Title"
-                    placeholder="e.g. Shilajit Resin 20g"
-                    value={newProduct.title}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, title: e.target.value })
-                    }
-                  />
-                  <FormInput
-                    label="Public Display Name"
-                    placeholder="e.g. Pure Himalayan Shilajit"
-                    value={newProduct.displayName}
-                    onChange={(e) =>
-                      setNewProduct({
-                        ...newProduct,
-                        displayName: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <FormInput
-                  label="Description"
-                  placeholder="Detailed product story..."
-                  value={newProduct.description}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </div>
-
-              {/* SECTION: Logistics */}
-              <div className="p-8 bg-slate-50 rounded-[2.5rem] space-y-5 border border-slate-100">
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                  <Settings2 size={14} /> Logistics & Meta
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <FormInput
-                    label="Category"
-                    value={newProduct.category}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, category: e.target.value })
-                    }
-                  />
-                  <FormInput
-                    label="Image URL"
-                    icon={<ImageIcon size={14} />}
-                    value={newProduct.image}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, image: e.target.value })
-                    }
-                  />
-
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase text-slate-400 ml-2">
-                      Status
-                    </label>
-                    <select
-                      className="w-full bg-white border border-slate-200 px-4 py-3.5 rounded-2xl text-sm outline-none focus:border-blue-500 transition-all appearance-none cursor-pointer"
-                      value={newProduct.status}
-                      onChange={(e) =>
-                        setNewProduct({ ...newProduct, status: e.target.value })
-                      }
-                    >
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                    </select>
-                  </div>
-
-                  <FormInput
-                    label="Low Stock Alert"
-                    type="number"
-                    value={newProduct.lowStockThreshold}
-                    onChange={(e) =>
-                      setNewProduct({
-                        ...newProduct,
-                        lowStockThreshold: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-
-              {/* SECTION: Initial Variant */}
-              <div className="space-y-5">
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                  <BarChart3 size={14} /> Initial Variant Inventory
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  <FormInput
-                    label="Weight (e.g. 500g)"
-                    value={newProduct.variants[0].weight}
-                    onChange={(e) => {
-                      const v = [...newProduct.variants];
-                      v[0].weight = e.target.value;
-                      setNewProduct({ ...newProduct, variants: v });
-                    }}
-                  />
-                  <FormInput
-                    label="Price (₹)"
-                    type="number"
-                    value={newProduct.variants[0].price}
-                    onChange={(e) => {
-                      const v = [...newProduct.variants];
-                      v[0].price = e.target.value;
-                      setNewProduct({ ...newProduct, variants: v });
-                    }}
-                  />
-                  <FormInput
-                    label="Initial Stock"
-                    type="number"
-                    value={newProduct.variants[0].stock}
-                    onChange={(e) => {
-                      const v = [...newProduct.variants];
-                      v[0].stock = e.target.value;
-                      setNewProduct({ ...newProduct, variants: v });
-                    }}
-                  />
-                  <FormInput
-                    label="Cost Price"
-                    type="number"
-                    value={newProduct.variants[0].costPrice}
-                    onChange={(e) => {
-                      const v = [...newProduct.variants];
-                      v[0].costPrice = e.target.value;
-                      setNewProduct({ ...newProduct, variants: v });
-                    }}
-                  />
-                  <FormInput
-                    label="Barcode"
-                    placeholder="Auto-gen if empty"
-                    value={newProduct.variants[0].barcode}
-                    onChange={(e) => {
-                      const v = [...newProduct.variants];
-                      v[0].barcode = e.target.value;
-                      setNewProduct({ ...newProduct, variants: v });
-                    }}
-                  />
-                </div>
-              </div>
-
-              <button className="w-full bg-slate-900 text-white py-5 rounded-3xl font-black uppercase tracking-[0.3em] text-xs shadow-xl shadow-slate-200 hover:bg-blue-600 transition-all active:scale-[0.98]">
-                Authorize & Deploy SKU
-              </button>
-            </form>
-          </div>
+          <input
+            placeholder="Display Name"
+            value={newProduct.displayName}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, displayName: e.target.value })
+            }
+            className="input"
+          />
         </div>
-      )}
+
+        <input
+          placeholder="Description"
+          value={newProduct.description}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, description: e.target.value })
+          }
+          className="input w-full"
+        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <input
+            placeholder="Category"
+            value={newProduct.category}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, category: e.target.value })
+            }
+            className="input"
+          />
+
+          <input
+            placeholder="Image URL"
+            value={newProduct.image}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, image: e.target.value })
+            }
+            className="input"
+          />
+        </div>
+
+        <input
+          placeholder="Search Keywords (comma separated)"
+          value={newProduct.searchKeywords}
+          onChange={(e) =>
+            setNewProduct({
+              ...newProduct,
+              searchKeywords: e.target.value,
+            })
+          }
+          className="input w-full"
+        />
+
+        {/* -------- SETTINGS -------- */}
+        <div className="grid grid-cols-2 gap-4">
+          <select
+            value={newProduct.status}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, status: e.target.value })
+            }
+            className="input"
+          >
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+
+          <select
+            value={newProduct.isAvailable}
+            onChange={(e) =>
+              setNewProduct({
+                ...newProduct,
+                isAvailable: e.target.value === "true",
+              })
+            }
+            className="input"
+          >
+            <option value={true}>Available</option>
+            <option value={false}>Not Available</option>
+          </select>
+        </div>
+
+        <input
+          type="number"
+          placeholder="Low Stock Threshold"
+          value={newProduct.lowStockThreshold}
+          onChange={(e) =>
+            setNewProduct({
+              ...newProduct,
+              lowStockThreshold: e.target.value,
+            })
+          }
+          className="input w-full"
+        />
+
+        {/* -------- VARIANTS -------- */}
+        <div className="space-y-4">
+          <h3 className="font-semibold">Variants</h3>
+
+          {newProduct.variants.map((v, index) => (
+            <div key={index} className="grid grid-cols-2 md:grid-cols-3 gap-3 border p-4 rounded-xl">
+
+              <input
+                placeholder="Size"
+                value={v.size}
+                onChange={(e) => {
+                  const arr = [...newProduct.variants];
+                  arr[index].size = e.target.value;
+                  setNewProduct({ ...newProduct, variants: arr });
+                }}
+                className="input"
+              />
+
+              <input
+                placeholder="Weight"
+                value={v.weight}
+                onChange={(e) => {
+                  const arr = [...newProduct.variants];
+                  arr[index].weight = e.target.value;
+                  setNewProduct({ ...newProduct, variants: arr });
+                }}
+                className="input"
+              />
+
+              <input
+                type="number"
+                placeholder="Price"
+                value={v.price}
+                onChange={(e) => {
+                  const arr = [...newProduct.variants];
+                  arr[index].price = e.target.value;
+                  setNewProduct({ ...newProduct, variants: arr });
+                }}
+                className="input"
+              />
+
+              <input
+                type="number"
+                placeholder="Sales Price"
+                value={v.salesPrice}
+                onChange={(e) => {
+                  const arr = [...newProduct.variants];
+                  arr[index].salesPrice = e.target.value;
+                  setNewProduct({ ...newProduct, variants: arr });
+                }}
+                className="input"
+              />
+
+              <input
+                type="number"
+                placeholder="Cost Price"
+                value={v.costPrice}
+                onChange={(e) => {
+                  const arr = [...newProduct.variants];
+                  arr[index].costPrice = e.target.value;
+                  setNewProduct({ ...newProduct, variants: arr });
+                }}
+                className="input"
+              />
+
+              <input
+                type="number"
+                placeholder="Stock"
+                value={v.stock}
+                onChange={(e) => {
+                  const arr = [...newProduct.variants];
+                  arr[index].stock = e.target.value;
+                  setNewProduct({ ...newProduct, variants: arr });
+                }}
+                className="input"
+              />
+
+              <input
+                placeholder="Barcode"
+                value={v.barcode}
+                onChange={(e) => {
+                  const arr = [...newProduct.variants];
+                  arr[index].barcode = e.target.value;
+                  setNewProduct({ ...newProduct, variants: arr });
+                }}
+                className="input"
+              />
+
+              {/* REMOVE VARIANT */}
+              {index > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const arr = newProduct.variants.filter((_, i) => i !== index);
+                    setNewProduct({ ...newProduct, variants: arr });
+                  }}
+                  className="text-red-500 text-xs"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+
+          {/* ADD VARIANT BUTTON */}
+          <button
+            type="button"
+            onClick={() =>
+              setNewProduct({
+                ...newProduct,
+                variants: [
+                  ...newProduct.variants,
+                  {
+                    size: "",
+                    weight: "",
+                    price: "",
+                    salesPrice: "",
+                    costPrice: "",
+                    stock: "",
+                    barcode: "",
+                  },
+                ],
+              })
+            }
+            className="bg-gray-200 px-4 py-2 rounded-lg text-sm"
+          >
+            + Add Variant
+          </button>
+        </div>
+
+        {/* -------- SUBMIT -------- */}
+        <button className="w-full bg-black text-white py-3 rounded-xl">
+          Save Product
+        </button>
+      </form>
+    </div>
+  </div>
+)}
     </div>
   );
 }
