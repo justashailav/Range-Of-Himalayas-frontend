@@ -12,6 +12,7 @@ import {
   Image as ImageIcon,
   BarChart3,
   Info,
+  X,
   Settings2,
 } from "lucide-react";
 
