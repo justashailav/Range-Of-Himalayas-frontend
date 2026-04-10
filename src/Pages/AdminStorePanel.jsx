@@ -273,262 +273,212 @@ export default function AdminStorePanel() {
 
       {/* --- ADD PRODUCT MODAL --- */}
       {/* --- ADD PRODUCT MODAL --- */}
+      {/* --- ADD PRODUCT MODAL --- */}
 {showAdd && isManager && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+    
+    {/* BACKDROP with Blur */}
     <div
-      className="absolute inset-0 bg-black/60"
+      className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
       onClick={() => setShowAdd(false)}
     />
 
-    <div className="relative bg-white w-full max-w-3xl rounded-3xl shadow-xl overflow-y-auto max-h-[90vh] p-8 space-y-6">
+    {/* MODAL CONTAINER */}
+    <div className="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      
+      {/* HEADER */}
+      <div className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Add New Product</h2>
+          <p className="text-sm text-gray-500">Fill in the details to list a new item in your inventory.</p>
+        </div>
+        <button 
+          onClick={() => setShowAdd(false)}
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+        >
+          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
 
-      <h2 className="text-2xl font-bold">Add Product</h2>
-
+      {/* FORM BODY */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleAddProduct();
         }}
-        className="space-y-6"
+        className="p-8 overflow-y-auto space-y-8"
       >
-
-        {/* -------- BASIC INFO -------- */}
-        <div className="grid grid-cols-2 gap-4">
-          <input
-            placeholder="Title"
-            value={newProduct.title}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, title: e.target.value })
-            }
-            className="input"
-          />
-
-          <input
-            placeholder="Display Name"
-            value={newProduct.displayName}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, displayName: e.target.value })
-            }
-            className="input"
-          />
-        </div>
-
-        <input
-          placeholder="Description"
-          value={newProduct.description}
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, description: e.target.value })
-          }
-          className="input w-full"
-        />
-
-        <div className="grid grid-cols-2 gap-4">
-          <input
-            placeholder="Category"
-            value={newProduct.category}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, category: e.target.value })
-            }
-            className="input"
-          />
-
-          <input
-            placeholder="Image URL"
-            value={newProduct.image}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, image: e.target.value })
-            }
-            className="input"
-          />
-        </div>
-
-        <input
-          placeholder="Search Keywords (comma separated)"
-          value={newProduct.searchKeywords}
-          onChange={(e) =>
-            setNewProduct({
-              ...newProduct,
-              searchKeywords: e.target.value,
-            })
-          }
-          className="input w-full"
-        />
-
-        {/* -------- SETTINGS -------- */}
-        <div className="grid grid-cols-2 gap-4">
-          <select
-            value={newProduct.status}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, status: e.target.value })
-            }
-            className="input"
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-
-          <select
-            value={newProduct.isAvailable}
-            onChange={(e) =>
-              setNewProduct({
-                ...newProduct,
-                isAvailable: e.target.value === "true",
-              })
-            }
-            className="input"
-          >
-            <option value={true}>Available</option>
-            <option value={false}>Not Available</option>
-          </select>
-        </div>
-
-        <input
-          type="number"
-          placeholder="Low Stock Threshold"
-          value={newProduct.lowStockThreshold}
-          onChange={(e) =>
-            setNewProduct({
-              ...newProduct,
-              lowStockThreshold: e.target.value,
-            })
-          }
-          className="input w-full"
-        />
-
-        {/* -------- VARIANTS -------- */}
-        <div className="space-y-4">
-          <h3 className="font-semibold">Variants</h3>
-
-          {newProduct.variants.map((v, index) => (
-            <div key={index} className="grid grid-cols-2 md:grid-cols-3 gap-3 border p-4 rounded-xl">
-
+        {/* SECTION: BASIC INFO */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-1 h-6 bg-blue-600 rounded-full"></div>
+            <h3 className="font-semibold text-gray-800">Basic Information</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-gray-500 ml-1">Product Title</label>
               <input
-                placeholder="Size"
-                value={v.size}
-                onChange={(e) => {
-                  const arr = [...newProduct.variants];
-                  arr[index].size = e.target.value;
-                  setNewProduct({ ...newProduct, variants: arr });
-                }}
-                className="input"
+                placeholder="e.g. Classic White Tee"
+                value={newProduct.title}
+                onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })}
+                className="w-full border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 px-4 py-3 rounded-2xl outline-none transition-all bg-gray-50/50"
               />
-
-              <input
-                placeholder="Weight"
-                value={v.weight}
-                onChange={(e) => {
-                  const arr = [...newProduct.variants];
-                  arr[index].weight = e.target.value;
-                  setNewProduct({ ...newProduct, variants: arr });
-                }}
-                className="input"
-              />
-
-              <input
-                type="number"
-                placeholder="Price"
-                value={v.price}
-                onChange={(e) => {
-                  const arr = [...newProduct.variants];
-                  arr[index].price = e.target.value;
-                  setNewProduct({ ...newProduct, variants: arr });
-                }}
-                className="input"
-              />
-
-              <input
-                type="number"
-                placeholder="Sales Price"
-                value={v.salesPrice}
-                onChange={(e) => {
-                  const arr = [...newProduct.variants];
-                  arr[index].salesPrice = e.target.value;
-                  setNewProduct({ ...newProduct, variants: arr });
-                }}
-                className="input"
-              />
-
-              <input
-                type="number"
-                placeholder="Cost Price"
-                value={v.costPrice}
-                onChange={(e) => {
-                  const arr = [...newProduct.variants];
-                  arr[index].costPrice = e.target.value;
-                  setNewProduct({ ...newProduct, variants: arr });
-                }}
-                className="input"
-              />
-
-              <input
-                type="number"
-                placeholder="Stock"
-                value={v.stock}
-                onChange={(e) => {
-                  const arr = [...newProduct.variants];
-                  arr[index].stock = e.target.value;
-                  setNewProduct({ ...newProduct, variants: arr });
-                }}
-                className="input"
-              />
-
-              <input
-                placeholder="Barcode"
-                value={v.barcode}
-                onChange={(e) => {
-                  const arr = [...newProduct.variants];
-                  arr[index].barcode = e.target.value;
-                  setNewProduct({ ...newProduct, variants: arr });
-                }}
-                className="input"
-              />
-
-              {/* REMOVE VARIANT */}
-              {index > 0 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const arr = newProduct.variants.filter((_, i) => i !== index);
-                    setNewProduct({ ...newProduct, variants: arr });
-                  }}
-                  className="text-red-500 text-xs"
-                >
-                  Remove
-                </button>
-              )}
             </div>
-          ))}
 
-          {/* ADD VARIANT BUTTON */}
-          <button
-            type="button"
-            onClick={() =>
-              setNewProduct({
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-gray-500 ml-1">Display Name</label>
+              <input
+                placeholder="Public name"
+                value={newProduct.displayName}
+                onChange={(e) => setNewProduct({...newProduct, displayName: e.target.value})}
+                className="w-full border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 px-4 py-3 rounded-2xl outline-none transition-all bg-gray-50/50"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-gray-500 ml-1">Description</label>
+            <textarea
+              placeholder="Tell customers about this product..."
+              rows="3"
+              value={newProduct.description}
+              onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+              className="w-full border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 px-4 py-3 rounded-2xl outline-none transition-all bg-gray-50/50 resize-none"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-gray-500 ml-1">Category</label>
+              <input
+                placeholder="Apparel, Electronics, etc."
+                value={newProduct.category}
+                onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                className="w-full border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 px-4 py-3 rounded-2xl outline-none transition-all bg-gray-50/50"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-gray-500 ml-1">Image URL</label>
+              <input
+                placeholder="https://..."
+                value={newProduct.image}
+                onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+                className="w-full border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 px-4 py-3 rounded-2xl outline-none transition-all bg-gray-50/50"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION: INVENTORY SETTINGS */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-1 h-6 bg-purple-600 rounded-full"></div>
+            <h3 className="font-semibold text-gray-800">Inventory Settings</h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-gray-500 ml-1">Status</label>
+              <select
+                value={newProduct.status}
+                onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value })}
+                className="w-full border border-gray-200 px-4 py-3 rounded-2xl outline-none bg-gray-50/50 appearance-none"
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-gray-500 ml-1">Visibility</label>
+              <select
+                value={newProduct.isAvailable}
+                onChange={(e) => setNewProduct({ ...newProduct, isAvailable: e.target.value === "true" })}
+                className="w-full border border-gray-200 px-4 py-3 rounded-2xl outline-none bg-gray-50/50"
+              >
+                <option value={true}>Available</option>
+                <option value={false}>Hidden</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-gray-500 ml-1">Low Stock Alert</label>
+              <input
+                type="number"
+                placeholder="5"
+                value={newProduct.lowStockThreshold}
+                onChange={(e) => setNewProduct({ ...newProduct, lowStockThreshold: e.target.value })}
+                className="w-full border border-gray-200 px-4 py-3 rounded-2xl outline-none bg-gray-50/50"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION: VARIANTS */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-6 bg-emerald-600 rounded-full"></div>
+              <h3 className="font-semibold text-gray-800">Product Variants</h3>
+            </div>
+            <button
+              type="button"
+              onClick={() => setNewProduct({
                 ...newProduct,
-                variants: [
-                  ...newProduct.variants,
-                  {
-                    size: "",
-                    weight: "",
-                    price: "",
-                    salesPrice: "",
-                    costPrice: "",
-                    stock: "",
-                    barcode: "",
-                  },
-                ],
-              })
-            }
-            className="bg-gray-200 px-4 py-2 rounded-lg text-sm"
-          >
-            + Add Variant
+                variants: [...newProduct.variants, { size: "", weight: "", price: "", salesPrice: "", costPrice: "", stock: "", barcode: "" }]
+              })}
+              className="text-emerald-600 hover:bg-emerald-50 px-4 py-2 rounded-xl text-sm font-bold transition-colors flex items-center gap-1"
+            >
+              <span className="text-lg">+</span> Add Variant
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {newProduct.variants.map((v, index) => (
+              <div key={index} className="relative p-6 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow group">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Size</label>
+                    <input value={v.size} placeholder="M, L, XL" onChange={(e) => { const arr = [...newProduct.variants]; arr[index].size = e.target.value; setNewProduct({ ...newProduct, variants: arr }); }} className="w-full border-b border-gray-200 py-1 focus:border-emerald-500 outline-none text-sm" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Weight</label>
+                    <input value={v.weight} placeholder="500g" onChange={(e) => { const arr = [...newProduct.variants]; arr[index].weight = e.target.value; setNewProduct({ ...newProduct, variants: arr }); }} className="w-full border-b border-gray-200 py-1 focus:border-emerald-500 outline-none text-sm" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Price ($)</label>
+                    <input type="number" value={v.price} placeholder="0.00" onChange={(e) => { const arr = [...newProduct.variants]; arr[index].price = e.target.value; setNewProduct({ ...newProduct, variants: arr }); }} className="w-full border-b border-gray-200 py-1 focus:border-emerald-500 outline-none text-sm" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Stock</label>
+                    <input type="number" value={v.stock} placeholder="0" onChange={(e) => { const arr = [...newProduct.variants]; arr[index].stock = e.target.value; setNewProduct({ ...newProduct, variants: arr }); }} className="w-full border-b border-gray-200 py-1 focus:border-emerald-500 outline-none text-sm" />
+                  </div>
+                </div>
+
+                {index > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const arr = newProduct.variants.filter((_, i) => i !== index);
+                      setNewProduct({ ...newProduct, variants: arr });
+                    }}
+                    className="absolute -top-2 -right-2 bg-red-100 text-red-600 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SUBMIT BUTTON */}
+        <div className="pt-4 sticky bottom-0 bg-white">
+          <button className="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 transition-all active:scale-[0.98]">
+            Create Product Listing
           </button>
         </div>
-
-        {/* -------- SUBMIT -------- */}
-        <button className="w-full bg-black text-white py-3 rounded-xl">
-          Save Product
-        </button>
       </form>
     </div>
   </div>
