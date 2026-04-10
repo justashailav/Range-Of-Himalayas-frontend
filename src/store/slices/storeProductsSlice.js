@@ -156,7 +156,9 @@ export const addStoreProduct = (formData) => async (dispatch, getState) => {
     const res = await axios.post(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/store-products/${prefix}/add`,
       formData,
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+     }
     );
 
     dispatch(addStoreProductSuccess(res.data));
