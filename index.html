@@ -2,13 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <title>Range Of Himalayas</title>
-    <link rel="icon" type="image/png" sizes="64x64"  href="/favicon.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+
+    <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 🚀 HERO IMAGE PRELOAD (VERY IMPORTANT) -->
+    <link 
+      rel="preload" 
+      as="image" 
+      href="/hero.webp"
+      imagesrcset="/hero-small.webp 768w, /hero.webp 1400w"
+      imagesizes="100vw"
+    />
+
   </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- React App -->
     <script type="module" src="/src/main.jsx"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Razorpay (defer to avoid blocking) -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+    
   </body>
 </html>

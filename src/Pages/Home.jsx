@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import bgImage from "../assets/Banner.webp";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaInstagram,
@@ -346,92 +345,89 @@ export default function Home() {
           ))}
         </motion.div>
       </div>
-      <section className="relative w-full h-[100dvh] overflow-hidden ">
-        {/* 1. THE IMAGE LAYER */}
-        <img
-          src={bgImage}
-          className="w-full h-full object-cover object-center md:object-[right_35%]"
-          alt="Himalayan Products"
-          loading="eager"
-        />
+      <section className="relative w-full h-[100dvh] overflow-hidden">
 
-        {/* 3. CONTENT LAYER */}
-        <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
-          {/* TOP TAG */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm"
-          >
-            <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
-            <p className="text-white/60 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
-              Harvest 2026 • Himalayan Origin
-            </p>
-          </motion.div>
+      {/* 🔥 HERO IMAGE (OPTIMIZED LCP IMAGE) */}
+      <img
+        src="/hero-small.webp"
+        srcSet="/hero-small.webp 768w, /hero.webp 1400w"
+        sizes="100vw"
+        alt="Himalayan Products"
+        className="absolute inset-0 w-full h-full object-cover object-center md:object-[right_35%]"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
 
-          {/* CENTER HERO TEXT */}
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7, duration: 1 }}
-            >
-              <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
-                Pure Goodness <br />
-                <span className="font-serif italic text-[#B23A2E]">
-                  From the Himalayas
-                </span>
-              </h1>
+      {/* 🔥 GRADIENT OVERLAYS (NO PERFORMANCE ISSUE) */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-black/50 md:hidden" />
 
-              <p className="mt-6 max-w-md text-white/50 text-base md:text-lg leading-relaxed font-light">
-                Rare, high-altitude ingredients crafted with{" "}
-                <br className="hidden md:block" />
-                centuries of tradition and zero compromise.
-              </p>
+      {/* 🔥 CONTENT */}
+      <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
 
-              {/* CTA GROUP */}
-              <div className="mt-10 flex flex-wrap items-center gap-8">
-                <Link to="/viewproducts">
-                  <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
-                    Shop Collection
-                  </button>
-                </Link>
+        {/* TOP TAG */}
+        <div className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
+          <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
+          <p className="text-white/60 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
+            Harvest 2026 • Himalayan Origin
+          </p>
+        </div>
 
-                <Link to="/about-us" className="group flex items-center gap-3">
-                  <span className="w-8 h-[1px] bg-white/30 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
-                  <span className="text-white/40 group-hover:text-white text-[11px] tracking-[0.2em] uppercase transition-colors">
-                    Explore Story
-                  </span>
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 }}
-              className="flex flex-wrap md:flex-nowrap gap-x-12 gap-y-4 border-t border-white/10 pt-8"
-            >
-              {["Apricot Oil", "Rock Salt", "Buckthorn"].map((item, i) => (
-                <div key={i} className="group cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[#B23A2E] text-[10px] font-mono">
-                      0{i + 1}
-                    </span>
-                    <span className="text-white/40 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
-                      {item}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+        {/* HERO TEXT */}
+        <div className="max-w-4xl">
+          <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
+            Pure Goodness <br />
+            <span className="font-serif italic text-[#B23A2E]">
+              From the Himalayas
+            </span>
+          </h1>
+
+          <p className="mt-6 max-w-md text-white/50 text-base md:text-lg leading-relaxed font-light">
+            Rare, high-altitude ingredients crafted with
+            <br className="hidden md:block" />
+            centuries of tradition and zero compromise.
+          </p>
+
+          {/* CTA */}
+          <div className="mt-10 flex flex-wrap items-center gap-8">
+            <Link to="/viewproducts">
+              <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
+                Shop Collection
+              </button>
+            </Link>
+
+            <Link to="/about-us" className="group flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-white/30 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
+              <span className="text-white/40 group-hover:text-white text-[11px] tracking-[0.2em] uppercase transition-colors">
+                Explore Story
+              </span>
+            </Link>
           </div>
         </div>
-      </section>
+
+        {/* BOTTOM PRODUCTS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
+          <div className="flex flex-wrap md:flex-nowrap gap-x-12 gap-y-4 border-t border-white/10 pt-8">
+            {["Apricot Oil", "Rock Salt", "Buckthorn"].map((item, i) => (
+              <div key={i} className="group cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <span className="text-[#B23A2E] text-[10px] font-mono">
+                    0{i + 1}
+                  </span>
+                  <span className="text-white/40 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
+                    {item}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
       <div>
-        
         <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             {/* Title Section */}
@@ -499,72 +495,73 @@ export default function Home() {
           {/* Optional: A very faint divider to anchor the grid below */}
           <div className="mt-12 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-50" />
 
-
           <div className="relative px-4 md:px-6 pt-0 pb-10">
-        {productList && productList.length > 0 ? (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Swiper
-              modules={[Navigation]}
-              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex + 1)}
-              grabCursor={true}
-              spaceBetween={20}
-              slidesPerView={1.2}
-              breakpoints={{
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-                1280: { slidesPerView: 4 },
-              }}
-              className="pb-6"
-            >
-              {productList.map((item) => (
-                <SwiperSlide key={item._id} className="py-2">
-                  <motion.div
-                    whileHover={{ y: -8 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ShoppingProductTile
-                      product={item}
-                      handleAddToCart={handleAddToCart}
-                      handleAddToWishList={handleAddToWishList}
-                    />
-                  </motion.div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            <div className="mt-4 flex flex-col items-center justify-center space-y-2">
-              <div className="flex items-center gap-4">
-                <span className="h-[1px] w-8 bg-gray-200" />
-                <div className="flex items-baseline font-mono text-[11px] tracking-widest text-gray-900">
-                  <span className="text-[#d84c3c] font-bold">
-                    {activeIndex.toString().padStart(2, "0")}
-                  </span>
-                  <span className="mx-2 text-gray-300">/</span>
-                  <span className="text-gray-400">
-                    {productList.length.toString().padStart(2, "0")}
-                  </span>
+            {productList && productList.length > 0 ? (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Swiper
+                  modules={[Navigation]}
+                  onSlideChange={(swiper) =>
+                    setActiveIndex(swiper.realIndex + 1)
+                  }
+                  grabCursor={true}
+                  spaceBetween={20}
+                  slidesPerView={1.2}
+                  breakpoints={{
+                    640: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 },
+                    1280: { slidesPerView: 4 },
+                  }}
+                  className="pb-6"
+                >
+                  {productList.map((item) => (
+                    <SwiperSlide key={item._id} className="py-2">
+                      <motion.div
+                        whileHover={{ y: -8 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ShoppingProductTile
+                          product={item}
+                          handleAddToCart={handleAddToCart}
+                          handleAddToWishList={handleAddToWishList}
+                        />
+                      </motion.div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+                <div className="mt-4 flex flex-col items-center justify-center space-y-2">
+                  <div className="flex items-center gap-4">
+                    <span className="h-[1px] w-8 bg-gray-200" />
+                    <div className="flex items-baseline font-mono text-[11px] tracking-widest text-gray-900">
+                      <span className="text-[#d84c3c] font-bold">
+                        {activeIndex.toString().padStart(2, "0")}
+                      </span>
+                      <span className="mx-2 text-gray-300">/</span>
+                      <span className="text-gray-400">
+                        {productList.length.toString().padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    {/* Right Decorative Line */}
+                    <span className="h-[1px] w-8 bg-gray-200" />
+                  </div>
+
+                  <p className="text-[9px] uppercase tracking-[0.4em] text-gray-400 font-medium">
+                    Slide to Discover
+                  </p>
                 </div>
-
-                {/* Right Decorative Line */}
-                <span className="h-[1px] w-8 bg-gray-200" />
+              </motion.div>
+            ) : (
+              <div className="h-[400px] flex items-center justify-center">
+                <span className="text-[10px] uppercase tracking-widest text-gray-300 animate-pulse">
+                  Loading Collection...
+                </span>
               </div>
-
-              <p className="text-[9px] uppercase tracking-[0.4em] text-gray-400 font-medium">
-                Slide to Discover
-              </p>
-            </div>
-          </motion.div>
-        ) : (
-          <div className="h-[400px] flex items-center justify-center">
-            <span className="text-[10px] uppercase tracking-widest text-gray-300 animate-pulse">
-              Loading Collection...
-            </span>
+            )}
           </div>
-        )}
-      </div>
         </div>
         <section className="bg-[#F7F3F0] py-24 relative overflow-hidden">
           {/* Soft atmospheric glows - using clay and amber tones instead of dark red */}
@@ -642,7 +639,6 @@ export default function Home() {
           </motion.div>
         </section>
       </div>
-      
 
       <div>
         {/* HEADER */}
