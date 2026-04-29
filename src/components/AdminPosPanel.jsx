@@ -235,7 +235,6 @@ export default function AdminPOSPanel({ storeId }) {
   );
 }
 
-// --- REFINED MINI-COMPONENTS ---
 
 function ProductTile({ p, v, addToCart }) {
   return (
