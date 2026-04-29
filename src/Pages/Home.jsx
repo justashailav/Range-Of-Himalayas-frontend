@@ -348,25 +348,12 @@ export default function Home() {
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden ">
         {/* 1. THE IMAGE LAYER */}
-        <div className="absolute inset-0 z-0">
-          <motion.img
-            initial={{ scale: 1.1, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.7 }}
-            transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-            src={bgImage}
-            // Focus the image to the right so bottles don't overlap text on desktop
-            className="w-full h-full object-cover object-center md:object-[right_35%]"
-            alt="Himalayan Products"
-          />
-
-          {/* 2. ADVANCED GRADIENT SYSTEM (The Scrim) */}
-          {/* Deep shadow on the left for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
-          {/* Bottom fade for the product list */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-          {/* Mobile overlay (darker overall) */}
-          <div className="absolute inset-0 bg-black/50 md:hidden" />
-        </div>
+        <img
+  src={bgImage}
+  className="w-full h-full object-cover object-center md:object-[right_35%]"
+  alt="Himalayan Products"
+  loading="eager"
+/>
 
         {/* 3. CONTENT LAYER */}
         <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
