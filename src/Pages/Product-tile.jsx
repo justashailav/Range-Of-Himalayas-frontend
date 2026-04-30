@@ -198,31 +198,31 @@ export default function ShoppingProductTile({
 
     {/* VARIANTS - Styled Dropdowns */}
     <div className="space-y-3">
-      {hasVariants ? (
-        <div className="grid grid-cols-2 gap-2">
-          {hasSizes ? (
-            <div className="relative">
-              <select
-                value={selectedSize}
-                onChange={(e) => {
-                  const size = e.target.value;
-                  setSelectedSize(size);
-                  setSelectedWeight(getWeightsBySize(size)[0]);
-                }}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer hover:border-slate-300 transition-all"
-              >
-                {sizes.map((size) => (
-                  <option key={size} value={size}>{size}</option>
-                ))}
-              </select>
-              <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                <svg width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
+  {hasVariants ? (
+    <div className="grid grid-cols-2 gap-2">
+      {hasSizes ? (
+        <>
+          {/* SIZE DROPDOWN */}
+          <div className="relative">
+            <select
+              value={selectedSize}
+              onChange={(e) => {
+                const size = e.target.value;
+                setSelectedSize(size);
+                setSelectedWeight(getWeightsBySize(size)[0]);
+              }}
+              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer hover:border-slate-300 transition-all"
+            >
+              {sizes.map((size) => (
+                <option key={size} value={size}>{size}</option>
+              ))}
+            </select>
+            <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+              <svg width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
-          ) : (
-             <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5 text-xs text-slate-400 italic">No Size</div>
-          )}
+          </div>
 
+          {/* WEIGHT DROPDOWN (HALF WIDTH) */}
           <div className="relative">
             <select
               value={selectedWeight}
@@ -234,15 +234,33 @@ export default function ShoppingProductTile({
               ))}
             </select>
             <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-               <svg width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
           </div>
-        </div>
+        </>
       ) : (
-        <div className="h-[42px]" /> /* Placeholder to keep height consistent for products without variants */
+        /* WEIGHT DROPDOWN (FULL WIDTH IF NO SIZES) */
+        <div className="relative col-span-2">
+          <select
+            value={selectedWeight}
+            onChange={(e) => setSelectedWeight(e.target.value)}
+            className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer hover:border-slate-300 transition-all"
+          >
+            {getWeightsBySize(selectedSize).map((w) => (
+              <option key={w} value={w}>{w}</option>
+            ))}
+          </select>
+          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+            <svg width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+        </div>
       )}
     </div>
-
+  ) : (
+    /* Placeholder for consistent grid height */
+    <div className="h-[38px]" /> 
+  )}
+</div>
     {/* ACTION BUTTONS */}
     <div className="pt-2 space-y-2">
       {stock === 0 ? (
