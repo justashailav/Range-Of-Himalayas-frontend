@@ -62,7 +62,7 @@ export default function ShoppingProductTile({
 
   // 🔥 MAIN ACTION HANDLER
   const handleAction = async (type) => {
-    // Add to cart always (optional)
+  if (type === "add-to-cart") {
     handleAddToCart(
       product._id,
       stock,
@@ -70,83 +70,85 @@ export default function ShoppingProductTile({
       selectedWeight
     );
 
-    if (type === "buy-now") {
-      try {
-        const orderData = {
-          userId: user?._id,
-          cartItems: [
-            {
-              productId: product._id,
-              title: product.title,
-              image: product.image,
-              price: finalPrice,
-              quantity: 1,
-              size: hasSizes ? selectedSize : "",
-              weight: selectedWeight,
-            },
-          ],
-          boxes: [],
-          paymentMethod: "razorpay",
-          totalAmount: finalPrice,
+    setOpenCartSheet?.(true);
+    return;
+  }
+
+  // ✅ BUY NOW FLOW (NO CART ADD)
+  if (type === "buy-now") {
+    try {
+      const orderData = {
+        userId: user?._id,
+        cartItems: [
+          {
+            productId: product._id,
+            title: product.title,
+            image: product.image,
+            price: finalPrice,
+            quantity: 1,
+            size: hasSizes ? selectedSize : "",
+            weight: selectedWeight,
+          },
+        ],
+        boxes: [],
+        paymentMethod: "razorpay",
+        totalAmount: finalPrice,
+      };
+
+      const response = await dispatch(createNewOrder(orderData));
+
+      if (response?.razorpayOrderId) {
+        if (!window.Razorpay) {
+          alert("Payment gateway not loaded");
+          return;
+        }
+
+        const options = {
+          key: response.key,
+          amount: response.amount,
+          currency: response.currency,
+          order_id: response.razorpayOrderId,
+
+          name: "Range of Himalayas",
+          description: product.title,
+          image: product.image,
+
+          handler: async function (rzpResponse) {
+            await dispatch(
+              capturePayment({
+                orderId: response.orderId,
+                razorpay_order_id: rzpResponse.razorpay_order_id,
+                razorpay_payment_id: rzpResponse.razorpay_payment_id,
+                razorpay_signature: rzpResponse.razorpay_signature,
+              })
+            );
+
+            window.location.href = "/order-success";
+          },
+
+          prefill: {
+            name: user?.name || "Customer",
+            email: user?.email || "",
+            contact: "9015118744",
+          },
+
+          theme: { color: "#D84C3C" },
         };
 
-        const response = await dispatch(createNewOrder(orderData));
+        const rzp = new window.Razorpay(options);
 
-        if (response?.razorpayOrderId) {
-          if (!window.Razorpay) {
-            alert("Payment gateway not loaded");
-            return;
-          }
+        rzp.on("payment.failed", function () {
+          alert("Payment failed. Try again.");
+        });
 
-          const options = {
-            key: response.key,
-            amount: response.amount,
-            currency: response.currency,
-            order_id: response.razorpayOrderId,
-
-            name: "Range of Himalayas",
-            description: product.title,
-            image: product.image,
-
-            handler: async function (rzpResponse) {
-              await dispatch(
-                capturePayment({
-                  orderId: response.orderId,
-                  razorpay_order_id: rzpResponse.razorpay_order_id,
-                  razorpay_payment_id: rzpResponse.razorpay_payment_id,
-                  razorpay_signature: rzpResponse.razorpay_signature,
-                })
-              );
-
-              window.location.href = "/order-success";
-            },
-
-            prefill: {
-              name: user?.name || "Customer",
-              email: user?.email || "",
-              contact: "9015118744",
-            },
-
-            theme: { color: "#D84C3C" },
-          };
-
-          const rzp = new window.Razorpay(options);
-
-          rzp.on("payment.failed", function () {
-            alert("Payment failed. Try again.");
-          });
-
-          rzp.open();
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Something went wrong");
+        rzp.open();
       }
-    } else {
-      setOpenCartSheet?.(true);
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
     }
-  };
-
+  }
+};
   return (
     <div className="group relative bg-[#FCFBFA] rounded-[2.5rem] border border-gray-100 hover:shadow-xl transition-all max-w-sm mx-auto overflow-hidden">
 
