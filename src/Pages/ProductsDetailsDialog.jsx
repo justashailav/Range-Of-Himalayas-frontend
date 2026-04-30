@@ -196,7 +196,86 @@ export default function ProductsDetailsDialog() {
       }
     });
   };
+  const handleBuyNow = async () => {
+  if (!selectedVariant) return;
 
+  try {
+    const finalPrice =
+      selectedVariant.salesPrice > 0
+        ? selectedVariant.salesPrice
+        : selectedVariant.price;
+
+    const orderData = {
+      userId: user?._id,
+      cartItems: [
+        {
+          productId: productDetails._id,
+          title: productDetails.title,
+          image: productDetails.image,
+          price: finalPrice,
+          quantity: 1,
+          size: selectedVariant.size || "",
+          weight: selectedVariant.weight,
+        },
+      ],
+      boxes: [],
+      paymentMethod: "razorpay",
+      totalAmount: finalPrice,
+    };
+
+    const response = await dispatch(createNewOrder(orderData));
+
+    if (response?.razorpayOrderId) {
+      if (!window.Razorpay) {
+        alert("Payment gateway not loaded");
+        return;
+      }
+
+      const options = {
+        key: response.key,
+        amount: response.amount,
+        currency: response.currency,
+        order_id: response.razorpayOrderId,
+
+        name: "Range of Himalayas",
+        description: productDetails.title,
+        image: productDetails.image,
+
+        handler: async function (rzpResponse) {
+          await dispatch(
+            capturePayment({
+              orderId: response.orderId,
+              razorpay_order_id: rzpResponse.razorpay_order_id,
+              razorpay_payment_id: rzpResponse.razorpay_payment_id,
+              razorpay_signature: rzpResponse.razorpay_signature,
+            })
+          );
+
+          window.location.href = "/order-success";
+        },
+
+        prefill: {
+          name: user?.name || "Customer",
+          email: user?.email || "",
+          contact: "9015118744",
+        },
+
+        theme: { color: "#B23A2E" },
+      };
+
+      const rzp = new window.Razorpay(options);
+
+      rzp.on("payment.failed", function () {
+        alert("Payment failed. Try again.");
+      });
+
+      rzp.open();
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong");
+  }
+};
   function handleAddToWishList(
     getCurrentProductId,
     getTotalStock,
@@ -535,84 +614,93 @@ export default function ProductsDetailsDialog() {
             )}
             {/* ---------------- NORMAL PRODUCT ---------------- */}
             {/* ---------------- NUTRITION SECTION ---------------- */}
-<div className="mt-12">
-  {/* SECTION TITLE */}
-  <div className="flex items-center gap-3 mb-6">
-    <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-stone-800"></div>
-    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500">
-      Nutritional Information
-    </span>
-    <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-stone-800"></div>
-  </div>
-
-  {/* SINGLE PRODUCT NUTRITION */}
-  {!productDetails?.isCombo && productDetails?.nutrition && (
-    <div className="relative group">
-      {/* Subtle Background Glow */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-stone-800 to-stone-700 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-      
-      <div className="relative overflow-hidden rounded-[2.5rem] bg-stone-900/80 backdrop-blur-sm border border-stone-800 shadow-2xl">
-        <div className="px-10 py-8">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
-            {Object.entries(productDetails.nutrition)
-              .filter(([key, value]) => !["_id", "__v"].includes(key) && value)
-              .map(([key, value]) => (
-                <div key={key} className="flex flex-col gap-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500">
-                    {key.replace(/_/g, ' ')}
-                  </p>
-                  <p className="text-xl font-medium text-stone-100 leading-none">
-                    {value}
-                  </p>
-                </div>
-              ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
-
-  {/* COMBO PRODUCT NUTRITION */}
-  {productDetails?.isCombo && productDetails?.comboNutrition?.length > 0 && (
-    <div className="space-y-4">
-      {productDetails.comboNutrition.map((item, index) => (
-        <div
-          key={index}
-          className="group overflow-hidden rounded-[1.5rem] bg-stone-900 border border-stone-800/60 hover:border-stone-700 transition-colors shadow-xl"
-        >
-          {/* HEADER */}
-          <div className="px-6 py-3 bg-stone-950/50 border-b border-stone-800/50 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-full bg-[#B23A2E]/10">
-                <Leaf size={14} className="text-[#B23A2E]" />
+            <div className="mt-12">
+              {/* SECTION TITLE */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-stone-800"></div>
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500">
+                  Nutritional Information
+                </span>
+                <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-stone-800"></div>
               </div>
-              <h3 className="text-[11px] font-black uppercase tracking-tighter text-stone-200">
-                {item.name}
-              </h3>
-            </div>
-            <div className="text-[9px] font-medium px-2 py-0.5 rounded border border-stone-800 text-stone-500 uppercase">
-              Part {index + 1}
-            </div>
-          </div>
 
-          {/* NUTRITION GRID */}
-          <div className="px-6 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {Object.entries(item.nutrition || {})
-              .filter(([key, value]) => !["_id", "__v"].includes(key) && value)
-              .map(([key, value]) => (
-                <div key={key} className="space-y-0.5">
-                  <p className="text-[9px] font-semibold uppercase tracking-widest text-stone-500">
-                    {key}
-                  </p>
-                  <p className="text-base font-medium text-stone-200">{value}</p>
+              {/* SINGLE PRODUCT NUTRITION */}
+              {!productDetails?.isCombo && productDetails?.nutrition && (
+                <div className="relative group">
+                  {/* Subtle Background Glow */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-stone-800 to-stone-700 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+
+                  <div className="relative overflow-hidden rounded-[2.5rem] bg-stone-900/80 backdrop-blur-sm border border-stone-800 shadow-2xl">
+                    <div className="px-10 py-8">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
+                        {Object.entries(productDetails.nutrition)
+                          .filter(
+                            ([key, value]) =>
+                              !["_id", "__v"].includes(key) && value,
+                          )
+                          .map(([key, value]) => (
+                            <div key={key} className="flex flex-col gap-1">
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500">
+                                {key.replace(/_/g, " ")}
+                              </p>
+                              <p className="text-xl font-medium text-stone-100 leading-none">
+                                {value}
+                              </p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  )}
-</div>
+              )}
+
+              {/* COMBO PRODUCT NUTRITION */}
+              {productDetails?.isCombo &&
+                productDetails?.comboNutrition?.length > 0 && (
+                  <div className="space-y-4">
+                    {productDetails.comboNutrition.map((item, index) => (
+                      <div
+                        key={index}
+                        className="group overflow-hidden rounded-[1.5rem] bg-stone-900 border border-stone-800/60 hover:border-stone-700 transition-colors shadow-xl"
+                      >
+                        {/* HEADER */}
+                        <div className="px-6 py-3 bg-stone-950/50 border-b border-stone-800/50 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="p-1.5 rounded-full bg-[#B23A2E]/10">
+                              <Leaf size={14} className="text-[#B23A2E]" />
+                            </div>
+                            <h3 className="text-[11px] font-black uppercase tracking-tighter text-stone-200">
+                              {item.name}
+                            </h3>
+                          </div>
+                          <div className="text-[9px] font-medium px-2 py-0.5 rounded border border-stone-800 text-stone-500 uppercase">
+                            Part {index + 1}
+                          </div>
+                        </div>
+
+                        {/* NUTRITION GRID */}
+                        <div className="px-6 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6">
+                          {Object.entries(item.nutrition || {})
+                            .filter(
+                              ([key, value]) =>
+                                !["_id", "__v"].includes(key) && value,
+                            )
+                            .map(([key, value]) => (
+                              <div key={key} className="space-y-0.5">
+                                <p className="text-[9px] font-semibold uppercase tracking-widest text-stone-500">
+                                  {key}
+                                </p>
+                                <p className="text-base font-medium text-stone-200">
+                                  {value}
+                                </p>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+            </div>
           </div>
           <div className="flex flex-col gap-6">
             <motion.div
@@ -984,19 +1072,41 @@ export default function ProductsDetailsDialog() {
             </div>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-5 items-center">
-              {/* PRIMARY CTA: ACQUIRE TO BASKET */}
-              <button
-                onClick={() => {
-                  setIsAddingToCart(true);
-                  handleAddToCart(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size,
-                    selectedVariant.weight,
-                  );
-                  setTimeout(() => setIsAddingToCart(false), 250);
-                }}
-                className="
+
+  {/* ⚡ BUY NOW (NEW PRIMARY CTA) */}
+  <button
+    disabled={!selectedVariant}
+    onClick={handleBuyNow}
+    className="
+      w-full sm:flex-1
+      bg-[#B23A2E] text-white
+      px-12 py-5
+      text-[11px] font-black uppercase tracking-[0.3em]
+      rounded-2xl
+      shadow-xl hover:shadow-2xl
+      hover:bg-stone-900
+      active:scale-[0.97]
+      transition-all duration-500
+      flex items-center justify-center gap-2
+      disabled:opacity-40
+    "
+  >
+    ⚡ Buy Now
+  </button>
+
+  {/* 🛒 ADD TO CART */}
+  <button
+    onClick={() => {
+      setIsAddingToCart(true);
+      handleAddToCart(
+        productDetails._id,
+        selectedVariant.stock,
+        selectedVariant.size,
+        selectedVariant.weight,
+      );
+      setTimeout(() => setIsAddingToCart(false), 250);
+    }}
+    className="
       relative overflow-hidden
       w-full sm:flex-1
       bg-stone-900 text-white
@@ -1009,38 +1119,32 @@ export default function ProductsDetailsDialog() {
       transition-all duration-500
       flex items-center justify-center
     "
-              >
-                <span
-                  className={
-                    isAddingToCart
-                      ? "opacity-0"
-                      : "opacity-100 transition-opacity"
-                  }
-                >
-                  Acquire to Basket
-                </span>
+  >
+    <span className={isAddingToCart ? "opacity-0" : "opacity-100"}>
+      Acquire to Basket
+    </span>
 
-                {/* Minimalist Loading Overlay */}
-                {isAddingToCart && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="h-1 w-12 bg-white/20 rounded-full overflow-hidden">
-                      <div className="h-full bg-white w-1/2 animate-shimmer" />
-                    </div>
-                  </div>
-                )}
-              </button>
-              <button
-                disabled={!selectedVariant}
-                onClick={() => {
-                  if (!selectedVariant) return;
-                  handleAddToWishList(
-                    productDetails._id,
-                    selectedVariant.stock,
-                    selectedVariant.size || "",
-                    selectedVariant.weight,
-                  );
-                }}
-                className="
+    {isAddingToCart && (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-1 w-12 bg-white/20 rounded-full overflow-hidden">
+          <div className="h-full bg-white w-1/2 animate-shimmer" />
+        </div>
+      </div>
+    )}
+  </button>
+
+  {/* ❤️ WISHLIST */}
+  <button
+    disabled={!selectedVariant}
+    onClick={() => {
+      handleAddToWishList(
+        productDetails._id,
+        selectedVariant.stock,
+        selectedVariant.size || "",
+        selectedVariant.weight,
+      );
+    }}
+    className="
       h-16 w-16
       rounded-2xl
       border border-stone-200
@@ -1053,10 +1157,10 @@ export default function ProductsDetailsDialog() {
       disabled:opacity-30
       group
     "
-              >
-                <Heart className="w-6 h-6 transition-transform duration-300 group-hover:scale-110 group-active:scale-90" />
-              </button>
-            </div>
+  >
+    <Heart className="w-6 h-6 group-hover:scale-110" />
+  </button>
+</div>
           </div>
         </div>
         <div className="mt-32 max-w-6xl mx-auto px-6 pb-32">
