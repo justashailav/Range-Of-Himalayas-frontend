@@ -150,99 +150,130 @@ export default function ShoppingProductTile({
   }
 };
   return (
-    <div className="group relative bg-[#FCFBFA] rounded-[2.5rem] border border-gray-100 hover:shadow-xl transition-all max-w-sm mx-auto overflow-hidden">
-
-      {/* IMAGE */}
-      <div className="relative aspect-[4/5] m-3 rounded-[2rem] overflow-hidden bg-[#F3F0EB]">
-        <img
-          src={mainImage}
-          alt={product?.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition"
-        />
-
-        {images[1] && (
-          <img
-            src={images[1]}
-            alt="hover"
-            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition"
-          />
-        )}
-
-        <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full">
-          ₹{finalPrice}
-        </div>
-
-        <button
-          onClick={() =>
-            handleAddToWishList(
-              product._id,
-              stock,
-              hasSizes ? selectedSize : "",
-              selectedWeight
-            )
-          }
-          className="absolute top-4 right-4 bg-white p-2 rounded-full"
-        >
-          <Heart size={16} />
-        </button>
+    <div className="group relative bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 max-w-sm mx-auto overflow-hidden">
+  
+  {/* IMAGE SECTION */}
+  <div className="relative aspect-[4/5] m-3 rounded-[1.5rem] overflow-hidden bg-[#F3F0EB]">
+    {/* Sale Badge */}
+    {product?.salesPrice > 0 && (
+      <div className="absolute top-3 left-3 z-10 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-tight">
+        Sale
       </div>
+    )}
 
-      {/* CONTENT */}
-      <div className="p-6 space-y-4">
-        <h2 className="font-semibold">{product?.title}</h2>
+    <img
+      src={mainImage}
+      alt={product?.title}
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
 
-        {/* VARIANTS */}
-        {hasVariants && (
-          <div className="flex gap-2">
-            {hasSizes && (
-              <select
-                value={selectedSize}
-                onChange={(e) => {
-                  const size = e.target.value;
-                  setSelectedSize(size);
-                  setSelectedWeight(getWeightsBySize(size)[0]);
-                }}
-              >
-                {sizes.map((size) => (
-                  <option key={size}>{size}</option>
-                ))}
-              </select>
-            )}
+    {images[1] && (
+      <img
+        src={images[1]}
+        alt="hover"
+        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+      />
+    )}
 
-            <select
-              value={selectedWeight}
-              onChange={(e) => setSelectedWeight(e.target.value)}
-            >
-              {getWeightsBySize(selectedSize).map((w) => (
-                <option key={w}>{w}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {/* BUTTONS */}
-        {stock === 0 ? (
-          <button disabled className="w-full bg-gray-200 py-3 rounded-xl">
-            Sold Out
-          </button>
-        ) : (
-          <>
-            <button
-              onClick={() => handleAction("buy-now")}
-              className="w-full bg-[#D84C3C] text-white py-3 rounded-xl flex justify-center gap-2"
-            >
-              <Zap size={14} /> Buy Now
-            </button>
-
-            <button
-              onClick={() => handleAction("add-to-cart")}
-              className="w-full bg-black text-white py-3 rounded-xl flex justify-center gap-2"
-            >
-              <ShoppingBag size={14} /> Add to Cart
-            </button>
-          </>
+    {/* Floating Price Tag */}
+    <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-sm border border-white/20">
+      <div className="flex items-center gap-1.5">
+        <span className="text-slate-900 font-bold text-sm">₹{finalPrice}</span>
+        {product?.salesPrice > 0 && (
+          <span className="text-slate-400 line-through text-[10px]">₹{product.price}</span>
         )}
       </div>
     </div>
+
+    {/* Wishlist Button */}
+    <button
+      onClick={() => handleAddToWishList(product._id, stock, hasSizes ? selectedSize : "", selectedWeight)}
+      className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full text-slate-900 hover:bg-red-50 hover:text-red-500 transition-colors shadow-sm"
+    >
+      <Heart size={18} />
+    </button>
+  </div>
+
+  {/* CONTENT SECTION */}
+  <div className="p-5 pt-2 space-y-5">
+    <div>
+      <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-slate-400 mb-1">{product?.category || "Natural"}</p>
+      <h2 className="font-bold text-slate-800 text-lg leading-tight line-clamp-1">{product?.title}</h2>
+    </div>
+
+    {/* VARIANTS (PILL STYLE) */}
+    {hasVariants && (
+      <div className="space-y-3">
+        {hasSizes && (
+          <div className="flex flex-wrap gap-2">
+            {sizes.map((size) => (
+              <button
+                key={size}
+                onClick={() => {
+                  setSelectedSize(size);
+                  setSelectedWeight(getWeightsBySize(size)[0]);
+                }}
+                className={`px-3 py-1 text-[11px] font-medium rounded-lg border transition-all ${
+                  selectedSize === size 
+                    ? "bg-slate-900 border-slate-900 text-white shadow-md" 
+                    : "border-slate-200 text-slate-600 hover:border-slate-400"
+                }`}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-2">
+          {getWeightsBySize(selectedSize).map((w) => (
+            <button
+              key={w}
+              onClick={() => setSelectedWeight(w)}
+              className={`px-3 py-1 text-[10px] rounded-full border transition-all ${
+                selectedWeight === w 
+                  ? "bg-emerald-50 border-emerald-500 text-emerald-700" 
+                  : "border-slate-100 bg-slate-50 text-slate-500"
+              }`}
+            >
+              {w}
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* BUTTONS */}
+    <div className="flex flex-col gap-2 pt-2">
+      {stock === 0 ? (
+        <button disabled className="w-full bg-slate-100 text-slate-400 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-wider">
+          Out of Stock
+        </button>
+      ) : (
+        <>
+          <button
+            onClick={() => handleAction("buy-now")}
+            className="w-full bg-[#D84C3C] hover:bg-[#c04234] text-white py-3.5 rounded-2xl flex justify-center items-center gap-2 font-bold shadow-lg shadow-red-100 transition-all active:scale-[0.98]"
+          >
+            <Zap size={16} fill="white" /> Buy Now
+          </button>
+
+          <button
+            onClick={() => handleAction("add-to-cart")}
+            className="w-full bg-white border border-slate-200 hover:border-slate-900 text-slate-900 py-3.5 rounded-2xl flex justify-center items-center gap-2 font-bold transition-all"
+          >
+            <ShoppingBag size={16} /> Add to Cart
+          </button>
+        </>
+      )}
+      
+      {stock > 0 && stock < 10 && (
+        <p className="text-center text-[10px] text-orange-600 font-medium animate-pulse">
+          Only {stock} items left in stock!
+        </p>
+      )}
+    </div>
+  </div>
+</div>
   );
 }
