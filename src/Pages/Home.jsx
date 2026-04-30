@@ -348,23 +348,15 @@ export default function Home() {
       <section className="relative w-full h-[100dvh] overflow-hidden">
         {/* 🔥 HERO IMAGE (OPTIMIZED LCP IMAGE) */}
         <img
-  src="/hero-768.webp"
-  srcSet="
-    /hero-480.webp 480w,
-    /hero-768.webp 768w,
-    /hero-1024.webp 1024w,
-    /hero-1400.webp 1400w
-  "
-  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1400px"
-  alt="Himalayan Products"
-  width="1400"
-  height="800"
-  className="absolute inset-0 w-full h-full object-cover object-center md:object-[right_35%]"
-  loading="eager"
-  fetchPriority="high"
-  decoding="async"
-/>
-
+          src="/hero.webp"
+          alt="Himalayan Products"
+          width="1400"
+          height="800"
+          className="absolute inset-0 w-full h-full object-cover object-center md:object-[right_35%]"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
         {/* 🔥 GRADIENT OVERLAYS (NO PERFORMANCE ISSUE) */}
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
