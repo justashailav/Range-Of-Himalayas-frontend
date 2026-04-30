@@ -12,6 +12,7 @@ import {
   Star,
   Truck,
   X,
+  Zap,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import StarRatingComponent from "./Star-Review";
