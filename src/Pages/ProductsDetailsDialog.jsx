@@ -37,6 +37,7 @@ import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import { socket } from "@/utils/socket";
 import { motion, AnimatePresence } from "framer-motion";
+import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 export default function ProductsDetailsDialog() {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -1071,30 +1072,34 @@ export default function ProductsDetailsDialog() {
               </Button>
             </div>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-5 items-center">
-
-  {/* ⚡ BUY NOW (NEW PRIMARY CTA) */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 items-stretch">
+  
+  {/* ⚡ BUY NOW - High Impact Primary */}
   <button
     disabled={!selectedVariant}
     onClick={handleBuyNow}
     className="
-      w-full sm:flex-1
+      group
+      relative overflow-hidden
+      w-full sm:flex-[1.5]
       bg-[#B23A2E] text-white
-      px-12 py-5
-      text-[11px] font-black uppercase tracking-[0.3em]
-      rounded-2xl
-      shadow-xl hover:shadow-2xl
-      hover:bg-stone-900
-      active:scale-[0.97]
-      transition-all duration-500
+      px-8 py-4
+      text-[12px] font-bold uppercase tracking-[0.2em]
+      rounded-xl
+      shadow-[0_10px_20px_-10px_rgba(178,58,46,0.4)]
+      hover:shadow-[0_20px_30px_-10px_rgba(178,58,46,0.5)]
+      hover:-translate-y-0.5
+      active:scale-[0.98]
+      transition-all duration-300
       flex items-center justify-center gap-2
-      disabled:opacity-40
+      disabled:opacity-40 disabled:pointer-events-none
     "
   >
-    ⚡ Buy Now
+    <Zap size={15} className="fill-current group-hover:animate-pulse" />
+    <span>Buy Now</span>
   </button>
 
-  {/* 🛒 ADD TO CART */}
+  {/* 🛒 ADD TO CART - Sophisticated Secondary */}
   <button
     onClick={() => {
       setIsAddingToCart(true);
@@ -1104,36 +1109,33 @@ export default function ProductsDetailsDialog() {
         selectedVariant.size,
         selectedVariant.weight,
       );
-      setTimeout(() => setIsAddingToCart(false), 250);
+      setTimeout(() => setIsAddingToCart(false), 800);
     }}
     className="
       relative overflow-hidden
       w-full sm:flex-1
       bg-stone-900 text-white
-      px-12 py-5
-      text-[11px] font-black uppercase tracking-[0.3em]
-      rounded-2xl
-      shadow-xl hover:shadow-2xl
-      hover:bg-[#B23A2E]
-      active:scale-[0.97]
-      transition-all duration-500
+      px-8 py-4
+      text-[12px] font-bold uppercase tracking-[0.2em]
+      rounded-xl
+      hover:bg-stone-800
+      hover:-translate-y-0.5
+      active:scale-[0.98]
+      transition-all duration-300
       flex items-center justify-center
     "
   >
-    <span className={isAddingToCart ? "opacity-0" : "opacity-100"}>
-      Acquire to Basket
-    </span>
-
-    {isAddingToCart && (
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-1 w-12 bg-white/20 rounded-full overflow-hidden">
-          <div className="h-full bg-white w-1/2 animate-shimmer" />
-        </div>
+    {isAddingToCart ? (
+      <div className="flex items-center gap-2">
+        <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+        <span className="text-[10px]">Adding...</span>
       </div>
+    ) : (
+      <span>Add to Cart</span>
     )}
   </button>
 
-  {/* ❤️ WISHLIST */}
+  {/* ❤️ WISHLIST - Clean Utility */}
   <button
     disabled={!selectedVariant}
     onClick={() => {
@@ -1145,20 +1147,21 @@ export default function ProductsDetailsDialog() {
       );
     }}
     className="
-      h-16 w-16
-      rounded-2xl
-      border border-stone-200
+      aspect-square h-[56px] w-[56px]
+      rounded-xl
+      border-2 border-stone-100
       flex items-center justify-center
       text-stone-400
-      hover:border-stone-900
-      hover:text-stone-900
-      hover:bg-stone-50
+      hover:border-stone-900 hover:text-stone-900
+      hover:bg-white
       transition-all duration-300
       disabled:opacity-30
       group
     "
   >
-    <Heart className="w-6 h-6 group-hover:scale-110" />
+    <Heart 
+      className={`w-5 h-5 transition-transform duration-300 group-hover:scale-125 ${productDetails.isWishlisted ? 'fill-red-500 stroke-red-500' : ''}`} 
+    />
   </button>
 </div>
           </div>

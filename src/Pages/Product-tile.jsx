@@ -150,18 +150,16 @@ export default function ShoppingProductTile({
   }
 };
   return (
-    <div className="group relative bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 max-w-sm mx-auto overflow-hidden">
+    <div className="group relative flex flex-col h-full bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 max-w-sm mx-auto overflow-hidden">
   
-  {/* IMAGE SECTION */}
-  <div className="relative aspect-[4/5] m-3 rounded-[2rem] overflow-hidden bg-[#F3F0EB]">
-    {/* Product Image */}
+  {/* IMAGE SECTION - Fixed Aspect Ratio */}
+  <div className="relative aspect-[4/5] m-3 mb-0 rounded-[2rem] overflow-hidden bg-[#F3F0EB] shrink-0">
     <img
       src={mainImage}
       alt={product?.title}
       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
     />
 
-    {/* Secondary Image on Hover */}
     {images[1] && (
       <img
         src={images[1]}
@@ -172,90 +170,99 @@ export default function ShoppingProductTile({
 
     {/* Price Tag - Glassmorphism */}
     <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full shadow-sm border border-white/20">
-      <span className="font-bold text-slate-900">₹{finalPrice}</span>
+      <span className="font-bold text-slate-900 text-sm">₹{finalPrice}</span>
     </div>
 
     {/* Wishlist Button */}
     <button
       onClick={() => handleAddToWishList(product._id, stock, hasSizes ? selectedSize : "", selectedWeight)}
-      className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2.5 rounded-full text-slate-900 hover:text-red-500 hover:scale-110 transition-all shadow-sm"
+      className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2.5 rounded-full text-slate-900 hover:text-red-500 hover:scale-110 transition-all shadow-sm z-10"
     >
       <Heart size={18} />
     </button>
   </div>
 
-  {/* CONTENT SECTION */}
-  <div className="p-6 pt-2 space-y-5">
-    <div>
-      <h2 className="text-xl font-bold text-slate-800 leading-tight mb-1">
+  {/* CONTENT SECTION - Flex Grow ensures all boxes are same height */}
+  <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
+    
+    {/* Title & Category Area */}
+    <div className="space-y-1">
+      <p className="text-[10px] text-slate-400 font-bold tracking-widest uppercase">
+        {product?.category || "Himalayan"}
+      </p>
+      {/* line-clamp-2 and min-h ensures titles don't push the dropdowns down */}
+      <h2 className="text-lg font-bold text-slate-800 leading-tight line-clamp-2 min-h-[3rem]">
         {product?.title}
       </h2>
-      <p className="text-xs text-slate-400 font-medium tracking-wide uppercase">
-        {product?.category || "Authentic Himalayan"}
-      </p>
     </div>
 
     {/* VARIANTS - Styled Dropdowns */}
-    {hasVariants && (
-      <div className="grid grid-cols-2 gap-3">
-        {hasSizes && (
+    <div className="space-y-3">
+      {hasVariants ? (
+        <div className="grid grid-cols-2 gap-2">
+          {hasSizes ? (
+            <div className="relative">
+              <select
+                value={selectedSize}
+                onChange={(e) => {
+                  const size = e.target.value;
+                  setSelectedSize(size);
+                  setSelectedWeight(getWeightsBySize(size)[0]);
+                }}
+                className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer hover:border-slate-300 transition-all"
+              >
+                {sizes.map((size) => (
+                  <option key={size} value={size}>{size}</option>
+                ))}
+              </select>
+              <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                <svg width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+            </div>
+          ) : (
+             <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5 text-xs text-slate-400 italic">No Size</div>
+          )}
+
           <div className="relative">
             <select
-              value={selectedSize}
-              onChange={(e) => {
-                const size = e.target.value;
-                setSelectedSize(size);
-                setSelectedWeight(getWeightsBySize(size)[0]);
-              }}
-              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-[#D84C3C]/20 focus:border-[#D84C3C] transition-all appearance-none cursor-pointer"
+              value={selectedWeight}
+              onChange={(e) => setSelectedWeight(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer hover:border-slate-300 transition-all"
             >
-              {sizes.map((size) => (
-                <option key={size} value={size}>{size}</option>
+              {getWeightsBySize(selectedSize).map((w) => (
+                <option key={w} value={w}>{w}</option>
               ))}
             </select>
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+               <svg width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
           </div>
-        )}
-
-        <div className="relative">
-          <select
-            value={selectedWeight}
-            onChange={(e) => setSelectedWeight(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-[#D84C3C]/20 focus:border-[#D84C3C] transition-all appearance-none cursor-pointer"
-          >
-            {getWeightsBySize(selectedSize).map((w) => (
-              <option key={w} value={w}>{w}</option>
-            ))}
-          </select>
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
         </div>
-      </div>
-    )}
+      ) : (
+        <div className="h-[42px]" /> /* Placeholder to keep height consistent for products without variants */
+      )}
+    </div>
 
     {/* ACTION BUTTONS */}
-    <div className="space-y-2">
+    <div className="pt-2 space-y-2">
       {stock === 0 ? (
-        <button disabled className="w-full bg-slate-100 text-slate-400 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs">
+        <button disabled className="w-full bg-slate-100 text-slate-400 py-3.5 rounded-2xl font-bold uppercase tracking-widest text-[10px]">
           Sold Out
         </button>
       ) : (
         <>
           <button
             onClick={() => handleAction("buy-now")}
-            className="w-full bg-[#D84C3C] hover:bg-[#bd3e31] text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all shadow-lg shadow-red-100 active:scale-[0.98]"
+            className="w-full bg-[#D84C3C] hover:bg-[#bd3e31] text-white py-3.5 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all shadow-md shadow-red-50 active:scale-[0.98]"
           >
-            <Zap size={16} fill="white" /> Buy Now
+            <Zap size={14} fill="white" /> <span className="text-sm">Buy Now</span>
           </button>
 
           <button
             onClick={() => handleAction("add-to-cart")}
-            className="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all active:scale-[0.98]"
+            className="w-full bg-slate-900 hover:bg-black text-white py-3.5 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all active:scale-[0.98]"
           >
-            <ShoppingBag size={16} /> Add to Cart
+            <ShoppingBag size={14} /> <span className="text-sm">Add to Cart</span>
           </button>
         </>
       )}
