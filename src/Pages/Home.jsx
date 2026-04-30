@@ -128,10 +128,10 @@ export default function Home() {
   }
 
   function handleAddToCart(getCurrentProductId, getTotalStock, size, weight) {
-    if (!user?._id) {
-      toast.error("Oops! You need to login first to add items to your cart.");
-      return;
-    }
+    // if (!user?._id) {
+    //   toast.error("Oops! You need to login first to add items to your cart.");
+    //   return;
+    // }
 
     const normalizedSize = size || "";
 
@@ -181,12 +181,12 @@ export default function Home() {
     size,
     weight,
   ) {
-    if (!user?._id) {
-      toast.error(
-        "Oops! You need to login first to add items to your wishlist.",
-      );
-      return;
-    }
+    // if (!user?._id) {
+    //   toast.error(
+    //     "Oops! You need to login first to add items to your wishlist.",
+    //   );
+    //   return;
+    // }
 
     const normalizedSize = size || "";
     const getWishListItems = wishListItems?.items || [];
@@ -346,7 +346,6 @@ export default function Home() {
         </motion.div>
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden">
-        {/* 🔥 HERO IMAGE (OPTIMIZED LCP IMAGE) */}
         <img
           src="/hero.webp"
           alt="Himalayan Products"
