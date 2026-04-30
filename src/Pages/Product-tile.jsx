@@ -150,23 +150,18 @@ export default function ShoppingProductTile({
   }
 };
   return (
-    <div className="group relative bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 max-w-sm mx-auto overflow-hidden">
+    <div className="group relative bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 max-w-sm mx-auto overflow-hidden">
   
   {/* IMAGE SECTION */}
-  <div className="relative aspect-[4/5] m-3 rounded-[1.5rem] overflow-hidden bg-[#F3F0EB]">
-    {/* Sale Badge */}
-    {product?.salesPrice > 0 && (
-      <div className="absolute top-3 left-3 z-10 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-tight">
-        Sale
-      </div>
-    )}
-
+  <div className="relative aspect-[4/5] m-3 rounded-[2rem] overflow-hidden bg-[#F3F0EB]">
+    {/* Product Image */}
     <img
       src={mainImage}
       alt={product?.title}
-      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
     />
 
+    {/* Secondary Image on Hover */}
     {images[1] && (
       <img
         src={images[1]}
@@ -175,102 +170,94 @@ export default function ShoppingProductTile({
       />
     )}
 
-    {/* Floating Price Tag */}
-    <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-sm border border-white/20">
-      <div className="flex items-center gap-1.5">
-        <span className="text-slate-900 font-bold text-sm">₹{finalPrice}</span>
-        {product?.salesPrice > 0 && (
-          <span className="text-slate-400 line-through text-[10px]">₹{product.price}</span>
-        )}
-      </div>
+    {/* Price Tag - Glassmorphism */}
+    <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full shadow-sm border border-white/20">
+      <span className="font-bold text-slate-900">₹{finalPrice}</span>
     </div>
 
     {/* Wishlist Button */}
     <button
       onClick={() => handleAddToWishList(product._id, stock, hasSizes ? selectedSize : "", selectedWeight)}
-      className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full text-slate-900 hover:bg-red-50 hover:text-red-500 transition-colors shadow-sm"
+      className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2.5 rounded-full text-slate-900 hover:text-red-500 hover:scale-110 transition-all shadow-sm"
     >
       <Heart size={18} />
     </button>
   </div>
 
   {/* CONTENT SECTION */}
-  <div className="p-5 pt-2 space-y-5">
+  <div className="p-6 pt-2 space-y-5">
     <div>
-      <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-slate-400 mb-1">{product?.category || "Natural"}</p>
-      <h2 className="font-bold text-slate-800 text-lg leading-tight line-clamp-1">{product?.title}</h2>
+      <h2 className="text-xl font-bold text-slate-800 leading-tight mb-1">
+        {product?.title}
+      </h2>
+      <p className="text-xs text-slate-400 font-medium tracking-wide uppercase">
+        {product?.category || "Authentic Himalayan"}
+      </p>
     </div>
 
-    {/* VARIANTS (PILL STYLE) */}
+    {/* VARIANTS - Styled Dropdowns */}
     {hasVariants && (
-      <div className="space-y-3">
+      <div className="grid grid-cols-2 gap-3">
         {hasSizes && (
-          <div className="flex flex-wrap gap-2">
-            {sizes.map((size) => (
-              <button
-                key={size}
-                onClick={() => {
-                  setSelectedSize(size);
-                  setSelectedWeight(getWeightsBySize(size)[0]);
-                }}
-                className={`px-3 py-1 text-[11px] font-medium rounded-lg border transition-all ${
-                  selectedSize === size 
-                    ? "bg-slate-900 border-slate-900 text-white shadow-md" 
-                    : "border-slate-200 text-slate-600 hover:border-slate-400"
-                }`}
-              >
-                {size}
-              </button>
-            ))}
+          <div className="relative">
+            <select
+              value={selectedSize}
+              onChange={(e) => {
+                const size = e.target.value;
+                setSelectedSize(size);
+                setSelectedWeight(getWeightsBySize(size)[0]);
+              }}
+              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-[#D84C3C]/20 focus:border-[#D84C3C] transition-all appearance-none cursor-pointer"
+            >
+              {sizes.map((size) => (
+                <option key={size} value={size}>{size}</option>
+              ))}
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
           </div>
         )}
 
-        <div className="flex flex-wrap gap-2">
-          {getWeightsBySize(selectedSize).map((w) => (
-            <button
-              key={w}
-              onClick={() => setSelectedWeight(w)}
-              className={`px-3 py-1 text-[10px] rounded-full border transition-all ${
-                selectedWeight === w 
-                  ? "bg-emerald-50 border-emerald-500 text-emerald-700" 
-                  : "border-slate-100 bg-slate-50 text-slate-500"
-              }`}
-            >
-              {w}
-            </button>
-          ))}
+        <div className="relative">
+          <select
+            value={selectedWeight}
+            onChange={(e) => setSelectedWeight(e.target.value)}
+            className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-[#D84C3C]/20 focus:border-[#D84C3C] transition-all appearance-none cursor-pointer"
+          >
+            {getWeightsBySize(selectedSize).map((w) => (
+              <option key={w} value={w}>{w}</option>
+            ))}
+          </select>
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
         </div>
       </div>
     )}
 
-    {/* BUTTONS */}
-    <div className="flex flex-col gap-2 pt-2">
+    {/* ACTION BUTTONS */}
+    <div className="space-y-2">
       {stock === 0 ? (
-        <button disabled className="w-full bg-slate-100 text-slate-400 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-wider">
-          Out of Stock
+        <button disabled className="w-full bg-slate-100 text-slate-400 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs">
+          Sold Out
         </button>
       ) : (
         <>
           <button
             onClick={() => handleAction("buy-now")}
-            className="w-full bg-[#D84C3C] hover:bg-[#c04234] text-white py-3.5 rounded-2xl flex justify-center items-center gap-2 font-bold shadow-lg shadow-red-100 transition-all active:scale-[0.98]"
+            className="w-full bg-[#D84C3C] hover:bg-[#bd3e31] text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all shadow-lg shadow-red-100 active:scale-[0.98]"
           >
             <Zap size={16} fill="white" /> Buy Now
           </button>
 
           <button
             onClick={() => handleAction("add-to-cart")}
-            className="w-full bg-white border border-slate-200 hover:border-slate-900 text-slate-900 py-3.5 rounded-2xl flex justify-center items-center gap-2 font-bold transition-all"
+            className="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all active:scale-[0.98]"
           >
             <ShoppingBag size={16} /> Add to Cart
           </button>
         </>
-      )}
-      
-      {stock > 0 && stock < 10 && (
-        <p className="text-center text-[10px] text-orange-600 font-medium animate-pulse">
-          Only {stock} items left in stock!
-        </p>
       )}
     </div>
   </div>
