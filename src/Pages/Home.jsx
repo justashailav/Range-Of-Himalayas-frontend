@@ -346,6 +346,8 @@ export default function Home() {
         </motion.div>
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden">
+  <section className="relative w-full h-[100dvh] overflow-hidden">
+  {/* IMAGE */}
   <img
     src="/hero.webp"
     alt="Himalayan Products"
@@ -357,18 +359,19 @@ export default function Home() {
     decoding="async"
   />
 
-  {/* GRADIENT OVERLAYS */}
+  {/* OVERLAYS */}
+  <div className="absolute inset-0 bg-black/30" />
   <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
   <div className="absolute inset-0 bg-black/50 md:hidden" />
 
   {/* CONTENT */}
-  <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
-    
+  <div className="relative z-10 flex flex-col justify-center h-full px-6 py-12 md:px-20 md:py-20 lg:px-32 gap-10">
+
     {/* TOP TAG */}
     <div className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
       <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
-      <p className="text-white/70 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
+      <p className="text-white/80 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
         100% Natural • Himalayan Sourced
       </p>
     </div>
@@ -378,13 +381,13 @@ export default function Home() {
       <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
         100% Pure Himalayan <br />
         <span className="font-serif italic text-[#B23A2E]">
-          Sea Buckthorn & Natural Products
+          Sea Buckthorn <br /> & Natural Essentials
         </span>
       </h1>
 
-      <p className="mt-6 max-w-md text-white/80 text-base md:text-lg leading-relaxed font-light">
-        Boost immunity, improve skin & overall wellness with products sourced
-        directly from the Himalayas — no chemicals, no compromise.
+      <p className="mt-6 max-w-md text-white/90 text-base md:text-lg leading-relaxed font-light">
+        Boost immunity, improve skin glow, and support digestion with
+        vitamin-rich Sea Buckthorn — sourced directly from the Himalayas.
       </p>
 
       {/* TRUST LINE */}
@@ -395,42 +398,46 @@ export default function Home() {
         <span>✔ Trusted by Customers</span>
       </div>
 
+      {/* SOCIAL PROOF */}
+      <div className="mt-4 flex items-center gap-3 text-white/70 text-xs">
+        ⭐⭐⭐⭐⭐ <span>4.8/5 from 500+ customers</span>
+      </div>
+
       {/* CTA */}
-      <div className="mt-10 flex flex-wrap items-center gap-6">
+      <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
         <Link to="/viewproducts">
           <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
             Shop Now
           </button>
         </Link>
-
-        <span className="text-white/50 text-xs">
-          🚚 Free Delivery | 🔒 Secure Checkout
-        </span>
       </div>
     </div>
 
-    {/* BOTTOM PRODUCTS */}
-    <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
-      <div className="flex flex-wrap md:flex-nowrap gap-x-12 gap-y-4 border-t border-white/10 pt-8">
-        {[
-          { name: "Apricot Oil", link: "/product/apricot-oil" },
-          { name: "Rock Salt", link: "/product/rock-salt" },
-          { name: "Sea Buckthorn", link: "/product/sea-buckthorn" },
-        ].map((item, i) => (
-          <Link to={item.link} key={i} className="group cursor-pointer">
-            <div className="flex items-center gap-3">
-              <span className="text-[#B23A2E] text-[10px] font-mono">
-                0{i + 1}
-              </span>
-              <span className="text-white/40 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
-                {item.name}
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
+    {/* BOTTOM PRODUCTS (VISIBLE FIXED) */}
+    <div className="mt-6 md:mt-12 border-t border-white/10 pt-6 flex flex-wrap gap-6">
+      {[
+        { name: "Apricot Oil", link: "/product/apricot-oil" },
+        { name: "Rock Salt", link: "/product/rock-salt" },
+        { name: "Sea Buckthorn", link: "/product/sea-buckthorn" },
+      ].map((item, i) => (
+        <Link
+          to={item.link}
+          key={i}
+          className="group flex items-center gap-3"
+        >
+          <span className="text-[#B23A2E] text-[10px] font-mono">
+            0{i + 1}
+          </span>
+
+          <span className="text-white/60 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
+            {item.name}
+          </span>
+        </Link>
+      ))}
     </div>
+
   </div>
+</section>
 </section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
