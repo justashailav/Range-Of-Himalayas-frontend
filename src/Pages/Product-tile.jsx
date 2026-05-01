@@ -177,10 +177,10 @@ export default function ShoppingProductTile({
 
       {/* ADDRESS MODAL (Glassmorphism effect) */}
       {showAddressModal && (
-  <div className="fixed inset-0 z-[100] bg-white flex flex-col">
+  <div className="fixed inset-0 z-[100] bg-white flex flex-col w-full h-full">
 
     {/* HEADER */}
-    <div className="p-5 border-b flex justify-between items-center shadow-sm">
+    <div className="p-5 border-b flex justify-between items-center">
       <h2 className="text-lg font-bold">Select Delivery Address</h2>
 
       <button
@@ -191,20 +191,20 @@ export default function ShoppingProductTile({
       </button>
     </div>
 
-    {/* ADDRESS FULL SCREEN */}
-    <div className="flex-1 overflow-y-auto p-4">
+    {/* ADDRESS SECTION FULL HEIGHT */}
+    <div className="flex-1 overflow-y-auto">
       <Address
         selectedId={selectedAddress}
         setCurrentSelectedAddress={setSelectedAddress}
       />
     </div>
 
-    {/* FIXED FOOTER */}
-    <div className="p-4 border-t bg-white shadow-lg">
+    {/* FIXED BOTTOM BUTTON */}
+    <div className="p-4 border-t bg-white">
       <button
         disabled={!selectedAddress}
         onClick={handleBuyNowWithAddress}
-        className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${
+        className={`w-full py-4 rounded-2xl font-bold text-lg ${
           !selectedAddress
             ? "bg-gray-300 cursor-not-allowed"
             : "bg-[#D84C3C] text-white"
@@ -213,6 +213,46 @@ export default function ShoppingProductTile({
         Proceed to Pay ₹{finalPrice}
       </button>
     </div>
+
+  </div>
+)}{showAddressModal && (
+  <div className="fixed inset-0 z-[100] bg-white flex flex-col w-full h-full">
+
+    {/* HEADER */}
+    <div className="p-5 border-b flex justify-between items-center">
+      <h2 className="text-lg font-bold">Select Delivery Address</h2>
+
+      <button
+        onClick={() => setShowAddressModal(false)}
+        className="p-2 rounded-full hover:bg-gray-100"
+      >
+        <X size={20} />
+      </button>
+    </div>
+
+    {/* ADDRESS SECTION FULL HEIGHT */}
+    <div className="flex-1 overflow-y-auto">
+      <Address
+        selectedId={selectedAddress}
+        setCurrentSelectedAddress={setSelectedAddress}
+      />
+    </div>
+
+    {/* FIXED BOTTOM BUTTON */}
+    <div className="p-4 border-t bg-white">
+      <button
+        disabled={!selectedAddress}
+        onClick={handleBuyNowWithAddress}
+        className={`w-full py-4 rounded-2xl font-bold text-lg ${
+          !selectedAddress
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-[#D84C3C] text-white"
+        }`}
+      >
+        Proceed to Pay ₹{finalPrice}
+      </button>
+    </div>
+
   </div>
 )}
     </>
