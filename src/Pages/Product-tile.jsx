@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Heart, ShoppingBag, Zap, X } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
-import Address from "@/Pages/Address";
+import { Heart, ShoppingBag, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function ShoppingProductTile({
   product,
@@ -10,12 +8,7 @@ export default function ShoppingProductTile({
   handleAddToWishList,
   setOpenCartSheet,
 }) {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-
-  const [showAddressModal, setShowAddressModal] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState(null);
-
+  const navigate = useNavigate();
   const variants = Array.isArray(product?.variants) ? product.variants : [];
   const hasVariants = variants.length > 0;
 
@@ -29,12 +22,12 @@ export default function ShoppingProductTile({
 
   const getVariant = (size, weight) =>
     variants.find(
-      (v) => (hasSizes ? v.size === size : true) && v.weight === weight
+      (v) => (hasSizes ? v.size === size : true) && v.weight === weight,
     ) || null;
 
   const [selectedSize, setSelectedSize] = useState(hasSizes ? sizes[0] : "");
   const [selectedWeight, setSelectedWeight] = useState(
-    getWeightsBySize(hasSizes ? sizes[0] : "")[0] || ""
+    getWeightsBySize(hasSizes ? sizes[0] : "")[0] || "",
   );
   const [selectedVariant, setSelectedVariant] = useState(null);
 
@@ -64,245 +57,188 @@ export default function ShoppingProductTile({
       : [product?.image].filter(Boolean);
 
   // 🔥 MAIN ACTION HANDLER
-  const handleAction = async (type) => {
-    if (type === "add-to-cart") {
-      handleAddToCart(
-        product._id,
-        stock,
-        hasSizes ? selectedSize : "",
-        selectedWeight
-      );
-      setOpenCartSheet?.(true);
-      return;
-    }
+   const handleAction = async (type) => {
+  // ✅ ADD TO CART (same as before)
+  if (type === "add-to-cart") {
+    handleAddToCart(
+      product._id,
+      stock,
+      hasSizes ? selectedSize : "",
+      selectedWeight
+    );
 
-    if (type === "buy-now") {
-      setShowAddressModal(true); // 👈 OPEN ADDRESS SCREEN
-      return;
-    }
-  };
+    setOpenCartSheet?.(true);
+    return;
+  }
 
-  // 🔥 AFTER ADDRESS SELECT → PAYMENT
-  const handleBuyNowWithAddress = async () => {
-    if (!selectedAddress) {
-      alert("Please select address");
-      return;
-    }
-
-    try {
-      const orderData = {
-        userId: user?._id,
-        cartItems: [
-          {
-            productId: product._id,
-            title: product.title,
-            image: product.image,
-            price: finalPrice,
-            quantity: 1,
-            size: hasSizes ? selectedSize : "",
-            weight: selectedWeight,
-          },
-        ],
-        boxes: [],
-        paymentMethod: "razorpay",
-        totalAmount: finalPrice,
-
-        addressInfo: {
-          addressId: selectedAddress._id,
-          address: selectedAddress.address,
-          city: selectedAddress.city,
-          pincode: selectedAddress.pincode,
-          phone: selectedAddress.phone,
-          latitude: selectedAddress.location?.coordinates?.[1],
-          longitude: selectedAddress.location?.coordinates?.[0],
-        },
-      };
-
-      const response = await dispatch(createNewOrder(orderData));
-
-      if (response?.razorpayOrderId) {
-        const rzp = new window.Razorpay({
-          key: response.key,
-          amount: response.amount,
-          currency: response.currency,
-          order_id: response.razorpayOrderId,
-
-          name: "Range of Himalayas",
-          description: product.title,
-          image: product.image,
-
-          handler: async function (rzpResponse) {
-            await dispatch(
-              capturePayment({
-                orderId: response.orderId,
-                razorpay_order_id: rzpResponse.razorpay_order_id,
-                razorpay_payment_id: rzpResponse.razorpay_payment_id,
-                razorpay_signature: rzpResponse.razorpay_signature,
-              })
-            );
-
-            window.location.href = "/order-success";
-          },
-
-          prefill: {
-            name: user?.name || "Customer",
-            email: user?.email || "",
-            contact: selectedAddress.phone,
-          },
-
-          theme: { color: "#D84C3C" },
-        });
-
-        rzp.open();
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Something went wrong");
-    }
-  };
-
+  // ✅ BUY NOW → REDIRECT TO CHECKOUT
+  if (type === "buy-now") {
+    navigate("/checkout", {
+      state: {
+        productId: product._id,
+        title: product.title,
+        image: product.image,
+        price: finalPrice,
+        quantity: 1,
+        size: hasSizes ? selectedSize : "",
+        weight: selectedWeight,
+      },
+    });
+  }
+};
   return (
-    <>
-      {/* PRODUCT CARD */}
-      <div className="group relative flex flex-col h-full bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl transition-all max-w-sm mx-auto overflow-hidden">
+    <div className="group relative flex flex-col h-full bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 max-w-sm mx-auto overflow-hidden">
+      {/* IMAGE SECTION - Fixed Aspect Ratio */}
+      <div className="relative aspect-[4/5] m-3 mb-0 rounded-[2rem] overflow-hidden bg-[#F3F0EB] shrink-0">
+        <img
+          src={mainImage}
+          alt={product?.title}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
 
-        {/* IMAGE */}
-        <div className="relative aspect-[4/5] m-3 rounded-[2rem] overflow-hidden bg-[#F3F0EB]">
+        {images[1] && (
           <img
-            src={mainImage}
-            alt={product?.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition"
+            src={images[1]}
+            alt="hover"
+            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           />
+        )}
 
-          {images[1] && (
-            <img
-              src={images[1]}
-              className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition"
-            />
-          )}
-
-          <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full">
+        {/* Price Tag - Glassmorphism */}
+        <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full shadow-sm border border-white/20">
+          <span className="font-bold text-slate-900 text-sm">
             ₹{finalPrice}
-          </div>
-
-          <button
-            onClick={() =>
-              handleAddToWishList(
-                product._id,
-                stock,
-                hasSizes ? selectedSize : "",
-                selectedWeight
-              )
-            }
-            className="absolute top-4 right-4 bg-white p-2 rounded-full"
-          >
-            <Heart size={16} />
-          </button>
+          </span>
         </div>
 
-        {/* CONTENT */}
-        <div className="p-6 space-y-4">
-          <h2 className="font-semibold">{product?.title}</h2>
+        {/* Wishlist Button */}
+        <button
+          onClick={() =>
+            handleAddToWishList(
+              product._id,
+              stock,
+              hasSizes ? selectedSize : "",
+              selectedWeight,
+            )
+          }
+          className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2.5 rounded-full text-slate-900 hover:text-red-500 hover:scale-110 transition-all shadow-sm z-10"
+        >
+          <Heart size={18} />
+        </button>
+      </div>
 
-          {/* VARIANTS */}
-          {hasVariants && (
-            <div className="flex gap-2">
-              {hasSizes && (
-                <select
-                  value={selectedSize}
-                  onChange={(e) => {
-                    const size = e.target.value;
-                    setSelectedSize(size);
-                    setSelectedWeight(getWeightsBySize(size)[0]);
-                  }}
-                >
-                  {sizes.map((size) => (
-                    <option key={size}>{size}</option>
-                  ))}
-                </select>
+      {/* CONTENT SECTION - Flex Grow ensures all boxes are same height */}
+      <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
+        {/* Title & Category Area */}
+        <div className="space-y-1">
+          <p className="text-[10px] text-slate-400 font-bold tracking-widest uppercase">
+            {product?.category || "Himalayan"}
+          </p>
+          {/* line-clamp-2 and min-h ensures titles don't push the dropdowns down */}
+          <h2 className="text-lg font-bold text-slate-800 leading-tight line-clamp-2 min-h-[3rem]">
+            {product?.title}
+          </h2>
+        </div>
+
+        {/* VARIANTS - Styled Dropdowns */}
+        <div className="space-y-3">
+          {hasVariants ? (
+            <div className="grid grid-cols-2 gap-2">
+              {hasSizes ? (
+                <div className="relative">
+                  <select
+                    value={selectedSize}
+                    onChange={(e) => {
+                      const size = e.target.value;
+                      setSelectedSize(size);
+                      setSelectedWeight(getWeightsBySize(size)[0]);
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer hover:border-slate-300 transition-all"
+                  >
+                    {sizes.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <svg width="8" height="5" viewBox="0 0 10 6" fill="none">
+                      <path
+                        d="M1 1L5 5L9 1"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5 text-xs text-slate-400 italic">
+                  No Size
+                </div>
               )}
 
-              <select
-                value={selectedWeight}
-                onChange={(e) => setSelectedWeight(e.target.value)}
-              >
-                {getWeightsBySize(selectedSize).map((w) => (
-                  <option key={w}>{w}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={selectedWeight}
+                  onChange={(e) => setSelectedWeight(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-3 py-2.5 outline-none appearance-none cursor-pointer hover:border-slate-300 transition-all"
+                >
+                  {getWeightsBySize(selectedSize).map((w) => (
+                    <option key={w} value={w}>
+                      {w}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                  <svg width="8" height="5" viewBox="0 0 10 6" fill="none">
+                    <path
+                      d="M1 1L5 5L9 1"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
+          ) : (
+            <div className="h-[42px]" /> /* Placeholder to keep height consistent for products without variants */
           )}
+        </div>
 
-          {/* BUTTONS */}
+        {/* ACTION BUTTONS */}
+        <div className="pt-2 space-y-2">
           {stock === 0 ? (
-            <button disabled className="w-full bg-gray-200 py-3 rounded-xl">
+            <button
+              disabled
+              className="w-full bg-slate-100 text-slate-400 py-3.5 rounded-2xl font-bold uppercase tracking-widest text-[10px]"
+            >
               Sold Out
             </button>
           ) : (
             <>
               <button
                 onClick={() => handleAction("buy-now")}
-                className="w-full bg-[#D84C3C] text-white py-3 rounded-xl flex justify-center gap-2"
+                className="w-full bg-[#D84C3C] hover:bg-[#bd3e31] text-white py-3.5 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all shadow-md shadow-red-50 active:scale-[0.98]"
               >
-                <Zap size={14} /> Buy Now
+                <Zap size={14} fill="white" />{" "}
+                <span className="text-sm">Buy Now</span>
               </button>
 
               <button
                 onClick={() => handleAction("add-to-cart")}
-                className="w-full bg-black text-white py-3 rounded-xl flex justify-center gap-2"
+                className="w-full bg-slate-900 hover:bg-black text-white py-3.5 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all active:scale-[0.98]"
               >
-                <ShoppingBag size={14} /> Add to Cart
+                <ShoppingBag size={14} />{" "}
+                <span className="text-sm">Add to Cart</span>
               </button>
             </>
           )}
         </div>
       </div>
-
-      {/* FULL SCREEN ADDRESS */}
-     {showAddressModal && (
-  <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center">
-
-    {/* MAIN BOX */}
-    <div className="w-[95%] max-w-4xl h-[90vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-
-      {/* HEADER */}
-      <div className="flex items-center justify-between p-6 border-b">
-        <h2 className="text-xl font-bold">
-          Select Delivery Address
-        </h2>
-
-        <button onClick={() => setShowAddressModal(false)}>
-          <X size={22} />
-        </button>
-      </div>
-
-      {/* BODY */}
-      <div className="flex-1 overflow-y-auto p-6 flex justify-center">
-  <div className="w-full max-w-2xl">
-    <Address
-      selectedId={selectedAddress}
-      setCurrentSelectedAddress={setSelectedAddress}
-    />
-  </div>
-</div>
-      {/* FOOTER */}
-      <div className="p-6 border-t bg-white">
-        <button
-          disabled={!selectedAddress}
-          onClick={handleBuyNowWithAddress}
-          className={`w-full py-4 rounded-xl font-bold text-lg ${
-            !selectedAddress
-              ? "bg-gray-300"
-              : "bg-[#D84C3C] text-white hover:bg-[#c03f31]"
-          }`}
-        >
-          Proceed to Pay ₹{finalPrice}
-        </button>
-      </div>
-
     </div>
-  </div>
-)}
-    </>
   );
 }
