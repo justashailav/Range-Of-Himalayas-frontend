@@ -260,46 +260,59 @@ export default function ShoppingProductTile({
 
       {/* FULL SCREEN ADDRESS */}
       {showAddressModal && (
-  <div className="fixed inset-0 z-[100] flex">
-    
-    {/* DARK BACKDROP */}
-    <div
-      className="flex-1 bg-black/40"
-      onClick={() => setShowAddressModal(false)}
-    />
+  <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center">
 
-    {/* RIGHT SIDE PANEL (LIKE RAZORPAY) */}
-    <div className="w-full sm:w-[420px] h-full bg-white shadow-2xl flex flex-col animate-slideIn">
-      
-      {/* HEADER */}
-      <div className="p-5 border-b flex justify-between items-center">
-        <h2 className="text-lg font-bold">Select Delivery Address</h2>
-        <button onClick={() => setShowAddressModal(false)}>
-          <X size={20} />
-        </button>
+    {/* MAIN CONTAINER */}
+    <div className="w-[95%] max-w-6xl h-[90vh] bg-white rounded-3xl overflow-hidden flex shadow-2xl">
+
+      {/* LEFT SIDE (LIKE RAZORPAY RED PANEL) */}
+      <div className="w-[35%] bg-[#D84C3C] text-white p-6 flex flex-col justify-between">
+
+        <div>
+          <h2 className="text-xl font-bold mb-6">Range of Himalayas</h2>
+
+          <div className="bg-white/20 p-4 rounded-xl">
+            <p className="text-sm opacity-80">Price Summary</p>
+            <p className="text-2xl font-bold mt-1">₹{finalPrice}</p>
+          </div>
+        </div>
+
+        <p className="text-xs opacity-70">Secured by Razorpay</p>
       </div>
 
-      {/* ADDRESS LIST */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <Address
-          selectedId={selectedAddress}
-          setCurrentSelectedAddress={setSelectedAddress}
-        />
-      </div>
+      {/* RIGHT SIDE */}
+      <div className="flex-1 flex flex-col">
 
-      {/* FOOTER */}
-      <div className="p-4 border-t">
-        <button
-          disabled={!selectedAddress}
-          onClick={handleBuyNowWithAddress}
-          className={`w-full py-4 rounded-xl font-bold ${
-            !selectedAddress
-              ? "bg-gray-300"
-              : "bg-[#D84C3C] text-white"
-          }`}
-        >
-          Proceed to Pay ₹{finalPrice}
-        </button>
+        {/* HEADER */}
+        <div className="p-5 border-b flex justify-between items-center">
+          <h2 className="text-lg font-bold">Select Delivery Address</h2>
+          <button onClick={() => setShowAddressModal(false)}>
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* ADDRESS SECTION */}
+        <div className="flex-1 overflow-y-auto p-5">
+          <Address
+            selectedId={selectedAddress}
+            setCurrentSelectedAddress={setSelectedAddress}
+          />
+        </div>
+
+        {/* FOOTER */}
+        <div className="p-5 border-t">
+          <button
+            disabled={!selectedAddress}
+            onClick={handleBuyNowWithAddress}
+            className={`w-full py-4 rounded-xl font-bold text-white ${
+              !selectedAddress
+                ? "bg-gray-300"
+                : "bg-[#D84C3C] hover:bg-[#c03f31]"
+            }`}
+          >
+            Proceed to Pay ₹{finalPrice}
+          </button>
+        </div>
       </div>
     </div>
   </div>
