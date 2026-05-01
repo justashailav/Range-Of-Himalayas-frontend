@@ -22,7 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import ShoppingProductTile from "./Product-tile";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   addProductReview,
   getProductReviews,
@@ -38,9 +38,9 @@ import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import { socket } from "@/utils/socket";
 import { motion, AnimatePresence } from "framer-motion";
-import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 export default function ProductsDetailsDialog() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const productDetails = useSelector((state) => state.product.productDetails);
@@ -198,85 +198,29 @@ export default function ProductsDetailsDialog() {
       }
     });
   };
-  const handleBuyNow = async () => {
+  
+
+const handleBuyNow = () => {
   if (!selectedVariant) return;
 
-  try {
-    const finalPrice =
-      selectedVariant.salesPrice > 0
-        ? selectedVariant.salesPrice
-        : selectedVariant.price;
+  const finalPrice =
+    selectedVariant.salesPrice > 0
+      ? selectedVariant.salesPrice
+      : selectedVariant.price;
 
-    const orderData = {
-      userId: user?._id,
-      cartItems: [
-        {
-          productId: productDetails._id,
-          title: productDetails.title,
-          image: productDetails.image,
-          price: finalPrice,
-          quantity: 1,
-          size: selectedVariant.size || "",
-          weight: selectedVariant.weight,
-        },
-      ],
-      boxes: [],
-      paymentMethod: "razorpay",
-      totalAmount: finalPrice,
-    };
+  // ✅ Create Buy Now product object
+  const buyNowItem = {
+    productId: productDetails._id,
+    title: productDetails.title,
+    image: productDetails.image,
+    price: finalPrice,
+    quantity: 1,
+    size: selectedVariant.size || "",
+    weight: selectedVariant.weight,
+  };
 
-    const response = await dispatch(createNewOrder(orderData));
-
-    if (response?.razorpayOrderId) {
-      if (!window.Razorpay) {
-        alert("Payment gateway not loaded");
-        return;
-      }
-
-      const options = {
-        key: response.key,
-        amount: response.amount,
-        currency: response.currency,
-        order_id: response.razorpayOrderId,
-
-        name: "Range of Himalayas",
-        description: productDetails.title,
-        image: productDetails.image,
-
-        handler: async function (rzpResponse) {
-          await dispatch(
-            capturePayment({
-              orderId: response.orderId,
-              razorpay_order_id: rzpResponse.razorpay_order_id,
-              razorpay_payment_id: rzpResponse.razorpay_payment_id,
-              razorpay_signature: rzpResponse.razorpay_signature,
-            })
-          );
-
-          window.location.href = "/order-success";
-        },
-
-        prefill: {
-          name: user?.name || "Customer",
-          email: user?.email || "",
-          contact: "9015118744",
-        },
-
-        theme: { color: "#B23A2E" },
-      };
-
-      const rzp = new window.Razorpay(options);
-
-      rzp.on("payment.failed", function () {
-        alert("Payment failed. Try again.");
-      });
-
-      rzp.open();
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Something went wrong");
-  }
+  // ✅ Redirect to checkout with data
+  navigate("/checkout", { state: buyNowItem });
 };
   function handleAddToWishList(
     getCurrentProductId,
