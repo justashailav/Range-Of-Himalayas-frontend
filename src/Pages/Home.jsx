@@ -155,7 +155,7 @@ export default function Home() {
 
     dispatch(
       addToCart({
-        userId: user._id,
+        userId: user._id || "guest",
         productId: getCurrentProductId,
         quantity: 1,
         size: normalizedSize,
@@ -219,7 +219,7 @@ export default function Home() {
 
     dispatch(
       addToWishList({
-        userId: user?._id,
+        userId: user?._id||"guest",
         productId: getCurrentProductId,
         quantity: 1,
         size: normalizedSize,
