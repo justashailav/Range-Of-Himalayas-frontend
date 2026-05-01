@@ -277,13 +277,14 @@ export default function ShoppingProductTile({
       </div>
 
       {/* BODY */}
-      <div className="flex-1 overflow-y-auto p-6">
-        <Address
-          selectedId={selectedAddress}
-          setCurrentSelectedAddress={setSelectedAddress}
-        />
-      </div>
-
+      <div className="flex-1 overflow-y-auto p-6 flex justify-center">
+  <div className="w-full max-w-2xl">
+    <Address
+      selectedId={selectedAddress}
+      setCurrentSelectedAddress={setSelectedAddress}
+    />
+  </div>
+</div>
       {/* FOOTER */}
       <div className="p-6 border-t bg-white">
         <button
