@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { capturePayment, createNewOrder } from "@/store/slices/orderSlice";
 import { useNavigate } from "react-router-dom";
 import { resetCoupon } from "@/store/slices/couponSlice";
+import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import {
   Check,
@@ -29,7 +30,24 @@ import {
 import { getNearestStore } from "@/store/slices/storeSlice";
 import { motion, AnimatePresence } from "framer-motion";
 export default function ShoppingCheckout() {
-  const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
+ const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
+
+// ✅ If buy now exists → override cart
+const finalCartItems =
+  buyNowItem && buyNowItem.productId
+    ? [
+        {
+          productId: buyNowItem.productId,
+          title: buyNowItem.title,
+          image: buyNowItem.image,
+          price: buyNowItem.price,
+          salesPrice: buyNowItem.price,
+          quantity: buyNowItem.quantity,
+          size: buyNowItem.size,
+          weight: buyNowItem.weight,
+        },
+      ]
+    : cartItems;
   const { user } = useSelector((state) => state.auth);
   const {
     discountAmount = 0,
@@ -43,6 +61,8 @@ export default function ShoppingCheckout() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const buyNowItem = location.state;
 
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -75,7 +95,7 @@ export default function ShoppingCheckout() {
     }
   }, [orderType, currentSelectedAddress]);
   // 🛒 Calculate totals
-  const totalCartAmount = cartItems.reduce((sum, item) => {
+  const totalCartAmount = finalCartItems.reduce((sum, item) => {
     const price =
       item.salesPrice && item.salesPrice > 0
         ? Number(item.salesPrice)
@@ -104,7 +124,7 @@ export default function ShoppingCheckout() {
       : grandTotal - (Number(discountAmount) || 0);
 
   async function handlePlaceOrder() {
-    if (cartItems.length === 0 && boxes.length === 0)
+    if (finalCartItems.length === 0 && boxes.length === 0)
       return toast.error("Your cart is empty.");
 
     if (!currentSelectedAddress)
@@ -119,7 +139,7 @@ export default function ShoppingCheckout() {
 
     const orderData = {
       userId: user?._id,
-      cartItems: cartItems.map((item) => ({
+      cartItems: finalCartItems.map((item) => ({
         productId: item.productId,
         title: item.title,
         image: item.image,
@@ -330,185 +350,211 @@ export default function ShoppingCheckout() {
         <div className="lg:col-span-2 space-y-10">
           {/* ADDRESS SECTION */}
           <section className="bg-white rounded-[1.5rem] sm:rounded-[2.5rem] border border-stone-100 p-5 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-  {/* Header Section: Adjusted for mobile stacking or tight spaces */}
-  <div className="flex flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
-    <div className="flex items-center gap-3 sm:gap-4">
-      {/* Icon: Slightly smaller on mobile to preserve horizontal space */}
-      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200 shrink-0">
-        <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-stone-100" />
-      </div>
-      
-      <div className="min-w-0"> {/* min-w-0 prevents text overflow in flex containers */}
-        <h2 className="text-[10px] sm:text-xs font-black text-stone-900 uppercase tracking-[0.15em] sm:tracking-[0.25em] leading-tight">
-          Shipping Destination
-        </h2>
-        <p className="text-[8px] sm:text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5 truncate">
-          Logistics & Final Delivery
-        </p>
-      </div>
-    </div>
-
-    {/* Status Indicator */}
-    <div className="flex shrink-0 items-center gap-2">
-       <span className="hidden sm:block text-[8px] font-black uppercase text-stone-300 tracking-tighter">
-        {currentSelectedAddress ? "Verified" : "Pending"}
-      </span>
-      <div
-        className={`w-2 h-2 rounded-full ${
-          currentSelectedAddress ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]" : "bg-orange-400 animate-pulse"
-        }`}
-      />
-    </div>
-  </div>
-
-  {/* Address Content Wrapper */}
-  <div className="w-full">
-    <div className="sm:pl-2">
-      <Address
-        selectedId={currentSelectedAddress}
-        setCurrentSelectedAddress={setCurrentSelectedAddress}
-      />
-    </div>
-  </div>
-</section>
-
-          <section className="bg-white rounded-[1.5rem] sm:rounded-[2.5rem] border border-slate-100 p-5 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
-  <div className="flex items-center justify-between mb-6">
-    <div className="min-w-0"> {/* Prevents text from pushing the icon out */}
-      <h2 className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-        Fulfillment Method
-      </h2>
-      <p className="text-slate-900 font-bold text-base sm:text-lg leading-tight">
-        How should we get this to you?
-      </p>
-    </div>
-    <div className="h-9 w-9 sm:h-10 sm:w-10 bg-slate-50 rounded-xl sm:rounded-2xl flex items-center justify-center text-slate-400 shrink-0">
-      <Settings size={18} className="animate-spin-slow" />
-    </div>
-  </div>
-
-  {/* PREMIUM TOGGLE - Adjusted for mobile stacking or shrinking */}
-  <div className="flex flex-col sm:flex-row p-1.5 bg-slate-50 rounded-[1.5rem] sm:rounded-[1.5rem] mb-6 sm:mb-8 gap-1 sm:gap-0 relative">
-    <button
-      onClick={() => {
-        setOrderType("delivery");
-        setSelectedStore(null);
-      }}
-      className={`relative flex-1 flex items-center justify-center gap-3 py-3.5 sm:py-4 rounded-[1.2rem] text-xs sm:text-sm font-black transition-all duration-500 z-10 ${
-        orderType === "delivery"
-          ? "text-white"
-          : "text-slate-400 hover:text-slate-600"
-      }`}
-    >
-      <Truck size={16} sm:size={18} strokeWidth={2.5} />
-      <span>Doorstep Delivery</span>
-      {orderType === "delivery" && (
-        <motion.div 
-          layoutId="activeTab"
-          className="absolute inset-0 bg-slate-900 rounded-[1.1rem] sm:rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200" 
-        />
-      )}
-    </button>
-
-    <button
-      onClick={() => setOrderType("pickup")}
-      className={`relative flex-1 flex items-center justify-center gap-3 py-3.5 sm:py-4 rounded-[1.2rem] text-xs sm:text-sm font-black transition-all duration-500 z-10 ${
-        orderType === "pickup"
-          ? "text-white"
-          : "text-slate-400 hover:text-slate-600"
-      }`}
-    >
-      <Store size={16} sm:size={18} strokeWidth={2.5} />
-      <span>Self Pickup</span>
-      {orderType === "pickup" && (
-        <motion.div 
-          layoutId="activeTab"
-          className="absolute inset-0 bg-slate-900 rounded-[1.1rem] sm:rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200" 
-        />
-      )}
-    </button>
-  </div>
-
-  {/* STORE LIST SELECTION */}
-  {orderType === "pickup" && (
-    <div className="space-y-4 animate-in slide-in-from-top-4 duration-500">
-      <div className="flex items-center justify-between px-1">
-        <span className="text-[10px] sm:text-[11px] font-black uppercase text-blue-600 flex items-center gap-2 tracking-wider">
-          <Navigation size={12} fill="currentColor" /> Nearby Outlets
-        </span>
-        <span className="text-[9px] sm:text-[10px] font-bold text-slate-400">
-          {nearestStores.length} locations
-        </span>
-      </div>
-
-      {storeLoading ? (
-        <div className="space-y-3">
-          {[1, 2].map((i) => (
-            <div key={i} className="h-20 sm:h-24 w-full bg-slate-50 animate-pulse rounded-[1.5rem]" />
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {nearestStores.map((store) => (
-            <div
-              key={store._id}
-              onClick={() => setSelectedStore(store)}
-              className={`group relative p-4 sm:p-5 rounded-[1.5rem] sm:rounded-[1.8rem] border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
-                selectedStore?._id === store._id
-                  ? "bg-white border-blue-600 shadow-xl shadow-blue-100/50"
-                  : "bg-white border-slate-50 hover:border-slate-200"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
-                    selectedStore?._id === store._id ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-400"
-                  }`}>
-                    <MapPin size={18} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className={`font-black text-sm sm:text-base truncate ${selectedStore?._id === store._id ? "text-slate-900" : "text-slate-600"}`}>
-                      {store.name}
-                    </p>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[9px] sm:text-xs font-bold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md">
-                        {(store.distance / 1000).toFixed(1)} km
-                      </span>
-                      <span className="text-[9px] sm:text-[10px] text-slate-400 font-medium italic truncate">
-                        {store.address?.city || "Himalayas"}
-                      </span>
-                    </div>
-                  </div>
+            {/* Header Section: Adjusted for mobile stacking or tight spaces */}
+            <div className="flex flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
+                {/* Icon: Slightly smaller on mobile to preserve horizontal space */}
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg shadow-stone-200 shrink-0">
+                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-stone-100" />
                 </div>
-                {/* Arrow hidden on very small screens to save space */}
-                <div className={`hidden sm:block transition-transform duration-300 ${selectedStore?._id === store._id ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"}`}>
-                  <div className="bg-blue-600 text-white p-1 rounded-full"><ChevronRight size={14} /></div>
+
+                <div className="min-w-0">
+                  {" "}
+                  {/* min-w-0 prevents text overflow in flex containers */}
+                  <h2 className="text-[10px] sm:text-xs font-black text-stone-900 uppercase tracking-[0.15em] sm:tracking-[0.25em] leading-tight">
+                    Shipping Destination
+                  </h2>
+                  <p className="text-[8px] sm:text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5 truncate">
+                    Logistics & Final Delivery
+                  </p>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )}
 
-  {/* Delivery Info Snippet */}
-  {orderType === "delivery" && (
-    <div className="p-4 sm:p-6 bg-slate-50 rounded-[1.5rem] sm:rounded-[2rem] border border-dashed border-slate-200">
-      <div className="flex items-start sm:items-center gap-3 sm:gap-4">
-        <div className="bg-white p-2.5 sm:p-3 rounded-xl sm:rounded-2xl shadow-sm text-slate-400 shrink-0">
-          <Truck size={18} />
-        </div>
-        <p className="text-[10px] sm:text-xs font-medium text-slate-500 leading-relaxed">
-          Dispatching from <span className="text-slate-900 font-bold">Himalayan Warehouse</span>. 
-          Expected arrival within <span className="text-slate-900 font-bold">3-5 business days</span>.
-        </p>
-      </div>
-    </div>
-  )}
-</section>
+              {/* Status Indicator */}
+              <div className="flex shrink-0 items-center gap-2">
+                <span className="hidden sm:block text-[8px] font-black uppercase text-stone-300 tracking-tighter">
+                  {currentSelectedAddress ? "Verified" : "Pending"}
+                </span>
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    currentSelectedAddress
+                      ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]"
+                      : "bg-orange-400 animate-pulse"
+                  }`}
+                />
+              </div>
+            </div>
+
+            {/* Address Content Wrapper */}
+            <div className="w-full">
+              <div className="sm:pl-2">
+                <Address
+                  selectedId={currentSelectedAddress}
+                  setCurrentSelectedAddress={setCurrentSelectedAddress}
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-[1.5rem] sm:rounded-[2.5rem] border border-slate-100 p-5 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
+            <div className="flex items-center justify-between mb-6">
+              <div className="min-w-0">
+                {" "}
+                {/* Prevents text from pushing the icon out */}
+                <h2 className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Fulfillment Method
+                </h2>
+                <p className="text-slate-900 font-bold text-base sm:text-lg leading-tight">
+                  How should we get this to you?
+                </p>
+              </div>
+              <div className="h-9 w-9 sm:h-10 sm:w-10 bg-slate-50 rounded-xl sm:rounded-2xl flex items-center justify-center text-slate-400 shrink-0">
+                <Settings size={18} className="animate-spin-slow" />
+              </div>
+            </div>
+
+            {/* PREMIUM TOGGLE - Adjusted for mobile stacking or shrinking */}
+            <div className="flex flex-col sm:flex-row p-1.5 bg-slate-50 rounded-[1.5rem] sm:rounded-[1.5rem] mb-6 sm:mb-8 gap-1 sm:gap-0 relative">
+              <button
+                onClick={() => {
+                  setOrderType("delivery");
+                  setSelectedStore(null);
+                }}
+                className={`relative flex-1 flex items-center justify-center gap-3 py-3.5 sm:py-4 rounded-[1.2rem] text-xs sm:text-sm font-black transition-all duration-500 z-10 ${
+                  orderType === "delivery"
+                    ? "text-white"
+                    : "text-slate-400 hover:text-slate-600"
+                }`}
+              >
+                <Truck size={16} sm:size={18} strokeWidth={2.5} />
+                <span>Doorstep Delivery</span>
+                {orderType === "delivery" && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-slate-900 rounded-[1.1rem] sm:rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200"
+                  />
+                )}
+              </button>
+
+              <button
+                onClick={() => setOrderType("pickup")}
+                className={`relative flex-1 flex items-center justify-center gap-3 py-3.5 sm:py-4 rounded-[1.2rem] text-xs sm:text-sm font-black transition-all duration-500 z-10 ${
+                  orderType === "pickup"
+                    ? "text-white"
+                    : "text-slate-400 hover:text-slate-600"
+                }`}
+              >
+                <Store size={16} sm:size={18} strokeWidth={2.5} />
+                <span>Self Pickup</span>
+                {orderType === "pickup" && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-slate-900 rounded-[1.1rem] sm:rounded-[1.2rem] -z-10 shadow-xl shadow-slate-200"
+                  />
+                )}
+              </button>
+            </div>
+
+            {/* STORE LIST SELECTION */}
+            {orderType === "pickup" && (
+              <div className="space-y-4 animate-in slide-in-from-top-4 duration-500">
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-[10px] sm:text-[11px] font-black uppercase text-blue-600 flex items-center gap-2 tracking-wider">
+                    <Navigation size={12} fill="currentColor" /> Nearby Outlets
+                  </span>
+                  <span className="text-[9px] sm:text-[10px] font-bold text-slate-400">
+                    {nearestStores.length} locations
+                  </span>
+                </div>
+
+                {storeLoading ? (
+                  <div className="space-y-3">
+                    {[1, 2].map((i) => (
+                      <div
+                        key={i}
+                        className="h-20 sm:h-24 w-full bg-slate-50 animate-pulse rounded-[1.5rem]"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {nearestStores.map((store) => (
+                      <div
+                        key={store._id}
+                        onClick={() => setSelectedStore(store)}
+                        className={`group relative p-4 sm:p-5 rounded-[1.5rem] sm:rounded-[1.8rem] border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+                          selectedStore?._id === store._id
+                            ? "bg-white border-blue-600 shadow-xl shadow-blue-100/50"
+                            : "bg-white border-slate-50 hover:border-slate-200"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                            <div
+                              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
+                                selectedStore?._id === store._id
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-slate-100 text-slate-400"
+                              }`}
+                            >
+                              <MapPin size={18} />
+                            </div>
+                            <div className="min-w-0">
+                              <p
+                                className={`font-black text-sm sm:text-base truncate ${selectedStore?._id === store._id ? "text-slate-900" : "text-slate-600"}`}
+                              >
+                                {store.name}
+                              </p>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-[9px] sm:text-xs font-bold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md">
+                                  {(store.distance / 1000).toFixed(1)} km
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] text-slate-400 font-medium italic truncate">
+                                  {store.address?.city || "Himalayas"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          {/* Arrow hidden on very small screens to save space */}
+                          <div
+                            className={`hidden sm:block transition-transform duration-300 ${selectedStore?._id === store._id ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"}`}
+                          >
+                            <div className="bg-blue-600 text-white p-1 rounded-full">
+                              <ChevronRight size={14} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Delivery Info Snippet */}
+            {orderType === "delivery" && (
+              <div className="p-4 sm:p-6 bg-slate-50 rounded-[1.5rem] sm:rounded-[2rem] border border-dashed border-slate-200">
+                <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                  <div className="bg-white p-2.5 sm:p-3 rounded-xl sm:rounded-2xl shadow-sm text-slate-400 shrink-0">
+                    <Truck size={18} />
+                  </div>
+                  <p className="text-[10px] sm:text-xs font-medium text-slate-500 leading-relaxed">
+                    Dispatching from{" "}
+                    <span className="text-slate-900 font-bold">
+                      Himalayan Warehouse
+                    </span>
+                    . Expected arrival within{" "}
+                    <span className="text-slate-900 font-bold">
+                      3-5 business days
+                    </span>
+                    .
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
           {/* CART ITEMS SECTION */}
-          {cartItems.length > 0 && (
+          {finalCartItems.length > 0 && (
             <section className="bg-white rounded-[2.5rem] border border-stone-100 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-12 h-12 rounded-2xl bg-stone-50 flex items-center justify-center border border-stone-100">
@@ -519,67 +565,67 @@ export default function ShoppingCheckout() {
                     Harvest Manifest
                   </h2>
                   <p className="text-[9px] text-stone-400 font-bold uppercase tracking-widest mt-0.5">
-                    {cartItems.length} Individual Items Selected
+                    {finalCartItems.length} Individual Items Selected
                   </p>
                 </div>
               </div>
 
-             <div className="space-y-4 sm:space-y-6 max-h-[400px] sm:max-h-[500px] overflow-y-auto no-scrollbar pr-1 sm:pr-2">
-  {cartItems.map((item) => (
-    <div
-      key={`${item.productId}-${item.size || "default"}`}
-      className="group flex items-center justify-between bg-stone-50/30 p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-300 gap-3"
-    >
-      <div className="flex gap-3 sm:gap-5 items-center min-w-0">
-        {/* Responsive Image Size */}
-        <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-[1.25rem] overflow-hidden bg-white border border-stone-100 shadow-sm shrink-0">
-          <img
-            src={item.image}
-            alt={item.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-          />
-        </div>
+              <div className="space-y-4 sm:space-y-6 max-h-[400px] sm:max-h-[500px] overflow-y-auto no-scrollbar pr-1 sm:pr-2">
+                {finalCartItems.map((item) => (
+                  <div
+                    key={`${item.productId}-${item.size || "default"}`}
+                    className="group flex items-center justify-between bg-stone-50/30 p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-transparent hover:border-stone-100 hover:bg-white transition-all duration-300 gap-3"
+                  >
+                    <div className="flex gap-3 sm:gap-5 items-center min-w-0">
+                      {/* Responsive Image Size */}
+                      <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-[1.25rem] overflow-hidden bg-white border border-stone-100 shadow-sm shrink-0">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                      </div>
 
-        {/* Product Details - min-w-0 allows truncation to work */}
-        <div className="flex flex-col justify-center min-w-0">
-          <p className="text-[10px] sm:text-[11px] font-black text-stone-900 uppercase tracking-tight italic font-serif truncate leading-tight">
-            {item.title}
-          </p>
+                      {/* Product Details - min-w-0 allows truncation to work */}
+                      <div className="flex flex-col justify-center min-w-0">
+                        <p className="text-[10px] sm:text-[11px] font-black text-stone-900 uppercase tracking-tight italic font-serif truncate leading-tight">
+                          {item.title}
+                        </p>
 
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
-            {item.size && (
-              <span className="text-[7px] sm:text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg">
-                {item.size}
-              </span>
-            )}
-            {(item.weight || item.productWeight) && (
-              <span className="text-[7px] sm:text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg">
-                {item.weight || item.productWeight}
-              </span>
-            )}
-            <span className="text-[7px] sm:text-[8px] font-black text-[#B23A2E] uppercase tracking-widest sm:ml-1 whitespace-nowrap">
-              Qty: {item.quantity}
-            </span>
-          </div>
-        </div>
-      </div>
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+                          {item.size && (
+                            <span className="text-[7px] sm:text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg">
+                              {item.size}
+                            </span>
+                          )}
+                          {(item.weight || item.productWeight) && (
+                            <span className="text-[7px] sm:text-[8px] font-black text-stone-500 uppercase bg-white border border-stone-100 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg">
+                              {item.weight || item.productWeight}
+                            </span>
+                          )}
+                          <span className="text-[7px] sm:text-[8px] font-black text-[#B23A2E] uppercase tracking-widest sm:ml-1 whitespace-nowrap">
+                            Qty: {item.quantity}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-      {/* Price Section - Shrink-0 ensures the price doesn't wrap awkwardly */}
-      <div className="text-right shrink-0">
-        <p className="text-xs sm:text-sm font-black text-stone-900 tracking-tighter">
-          ₹
-          {(
-            (item.salesPrice > 0 ? item.salesPrice : item.price) *
-            item.quantity
-          ).toFixed(0)}
-        </p>
-        <p className="hidden sm:block text-[8px] font-bold text-stone-300 uppercase tracking-widest mt-1">
-          incl. tax
-        </p>
-      </div>
-    </div>
-  ))}
-</div>
+                    {/* Price Section - Shrink-0 ensures the price doesn't wrap awkwardly */}
+                    <div className="text-right shrink-0">
+                      <p className="text-xs sm:text-sm font-black text-stone-900 tracking-tighter">
+                        ₹
+                        {(
+                          (item.salesPrice > 0 ? item.salesPrice : item.price) *
+                          item.quantity
+                        ).toFixed(0)}
+                      </p>
+                      <p className="hidden sm:block text-[8px] font-bold text-stone-300 uppercase tracking-widest mt-1">
+                        incl. tax
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </section>
           )}
 
