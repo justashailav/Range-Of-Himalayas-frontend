@@ -31,7 +31,8 @@ import { getNearestStore } from "@/store/slices/storeSlice";
 import { motion, AnimatePresence } from "framer-motion";
 export default function ShoppingCheckout() {
  const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
-
+ const location = useLocation();
+  const buyNowItem = location.state;
 // ✅ If buy now exists → override cart
 const finalCartItems =
   buyNowItem && buyNowItem.productId
@@ -61,8 +62,7 @@ const finalCartItems =
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const buyNowItem = location.state;
+  
 
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
