@@ -260,40 +260,50 @@ export default function ShoppingProductTile({
 
       {/* FULL SCREEN ADDRESS */}
       {showAddressModal && (
-        <div className="fixed inset-0 z-[100] bg-white flex flex-col">
+  <div className="fixed inset-0 z-[100] flex">
+    
+    {/* DARK BACKDROP */}
+    <div
+      className="flex-1 bg-black/40"
+      onClick={() => setShowAddressModal(false)}
+    />
 
-          {/* HEADER */}
-          <div className="p-5 border-b flex justify-between items-center">
-            <h2 className="text-lg font-bold">Select Delivery Address</h2>
-            <button onClick={() => setShowAddressModal(false)}>
-              <X size={20} />
-            </button>
-          </div>
+    {/* RIGHT SIDE PANEL (LIKE RAZORPAY) */}
+    <div className="w-full sm:w-[420px] h-full bg-white shadow-2xl flex flex-col animate-slideIn">
+      
+      {/* HEADER */}
+      <div className="p-5 border-b flex justify-between items-center">
+        <h2 className="text-lg font-bold">Select Delivery Address</h2>
+        <button onClick={() => setShowAddressModal(false)}>
+          <X size={20} />
+        </button>
+      </div>
 
-          {/* ADDRESS */}
-          <div className="flex-1 overflow-y-auto p-4">
-            <Address
-              selectedId={selectedAddress}
-              setCurrentSelectedAddress={setSelectedAddress}
-            />
-          </div>
+      {/* ADDRESS LIST */}
+      <div className="flex-1 overflow-y-auto p-4">
+        <Address
+          selectedId={selectedAddress}
+          setCurrentSelectedAddress={setSelectedAddress}
+        />
+      </div>
 
-          {/* FOOTER */}
-          <div className="p-4 border-t">
-            <button
-              disabled={!selectedAddress}
-              onClick={handleBuyNowWithAddress}
-              className={`w-full py-4 rounded-xl font-bold ${
-                !selectedAddress
-                  ? "bg-gray-300"
-                  : "bg-[#D84C3C] text-white"
-              }`}
-            >
-              Proceed to Pay ₹{finalPrice}
-            </button>
-          </div>
-        </div>
-      )}
+      {/* FOOTER */}
+      <div className="p-4 border-t">
+        <button
+          disabled={!selectedAddress}
+          onClick={handleBuyNowWithAddress}
+          className={`w-full py-4 rounded-xl font-bold ${
+            !selectedAddress
+              ? "bg-gray-300"
+              : "bg-[#D84C3C] text-white"
+          }`}
+        >
+          Proceed to Pay ₹{finalPrice}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </>
   );
 }
