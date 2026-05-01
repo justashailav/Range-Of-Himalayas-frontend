@@ -346,82 +346,92 @@ export default function Home() {
         </motion.div>
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden">
-        <img
-          src="/hero.webp"
-          alt="Himalayan Products"
-          width="1400"
-          height="800"
-          className="absolute inset-0 w-full h-full object-cover object-center md:object-[right_35%]"
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
-        />
-        {/* 🔥 GRADIENT OVERLAYS (NO PERFORMANCE ISSUE) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-black/50 md:hidden" />
+  <img
+    src="/hero.webp"
+    alt="Himalayan Products"
+    width="1400"
+    height="800"
+    className="absolute inset-0 w-full h-full object-cover object-center md:object-[right_35%]"
+    loading="eager"
+    fetchPriority="high"
+    decoding="async"
+  />
 
-        {/* 🔥 CONTENT */}
-        <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
-          {/* TOP TAG */}
-          <div className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
-            <p className="text-white/60 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
-              Harvest 2026 • Himalayan Origin
-            </p>
-          </div>
+  {/* GRADIENT OVERLAYS */}
+  <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
+  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+  <div className="absolute inset-0 bg-black/50 md:hidden" />
 
-          {/* HERO TEXT */}
-          <div className="max-w-4xl">
-            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
-              Pure Goodness <br />
-              <span className="font-serif italic text-[#B23A2E]">
-                From the Himalayas
+  {/* CONTENT */}
+  <div className="relative z-10 flex flex-col justify-between h-full px-6 py-12 md:px-20 md:py-20 lg:px-32">
+    
+    {/* TOP TAG */}
+    <div className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
+      <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
+      <p className="text-white/70 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
+        100% Natural • Himalayan Sourced
+      </p>
+    </div>
+
+    {/* HERO TEXT */}
+    <div className="max-w-4xl">
+      <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
+        100% Pure Himalayan <br />
+        <span className="font-serif italic text-[#B23A2E]">
+          Sea Buckthorn & Natural Products
+        </span>
+      </h1>
+
+      <p className="mt-6 max-w-md text-white/80 text-base md:text-lg leading-relaxed font-light">
+        Boost immunity, improve skin & overall wellness with products sourced
+        directly from the Himalayas — no chemicals, no compromise.
+      </p>
+
+      {/* TRUST LINE */}
+      <div className="mt-6 flex flex-wrap items-center gap-4 text-white/70 text-[10px] uppercase tracking-widest font-semibold">
+        <span>✔ 100% Natural</span>
+        <span>✔ No Chemicals</span>
+        <span>✔ Direct from Farmers</span>
+        <span>✔ Trusted by Customers</span>
+      </div>
+
+      {/* CTA */}
+      <div className="mt-10 flex flex-wrap items-center gap-6">
+        <Link to="/viewproducts">
+          <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
+            Shop Now
+          </button>
+        </Link>
+
+        <span className="text-white/50 text-xs">
+          🚚 Free Delivery | 🔒 Secure Checkout
+        </span>
+      </div>
+    </div>
+
+    {/* BOTTOM PRODUCTS */}
+    <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
+      <div className="flex flex-wrap md:flex-nowrap gap-x-12 gap-y-4 border-t border-white/10 pt-8">
+        {[
+          { name: "Apricot Oil", link: "/product/apricot-oil" },
+          { name: "Rock Salt", link: "/product/rock-salt" },
+          { name: "Sea Buckthorn", link: "/product/sea-buckthorn" },
+        ].map((item, i) => (
+          <Link to={item.link} key={i} className="group cursor-pointer">
+            <div className="flex items-center gap-3">
+              <span className="text-[#B23A2E] text-[10px] font-mono">
+                0{i + 1}
               </span>
-            </h1>
-
-            <p className="mt-6 max-w-md text-white/50 text-base md:text-lg leading-relaxed font-light">
-              Rare, high-altitude ingredients crafted with
-              <br className="hidden md:block" />
-              centuries of tradition and zero compromise.
-            </p>
-
-            {/* CTA */}
-            <div className="mt-10 flex flex-wrap items-center gap-8">
-              <Link to="/viewproducts">
-                <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
-                  Shop Collection
-                </button>
-              </Link>
-
-              <Link to="/about-us" className="group flex items-center gap-3">
-                <span className="w-8 h-[1px] bg-white/30 group-hover:w-12 group-hover:bg-[#B23A2E] transition-all duration-500" />
-                <span className="text-white/40 group-hover:text-white text-[11px] tracking-[0.2em] uppercase transition-colors">
-                  Explore Story
-                </span>
-              </Link>
+              <span className="text-white/40 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
+                {item.name}
+              </span>
             </div>
-          </div>
-
-          {/* BOTTOM PRODUCTS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-10">
-            <div className="flex flex-wrap md:flex-nowrap gap-x-12 gap-y-4 border-t border-white/10 pt-8">
-              {["Apricot Oil", "Rock Salt", "Buckthorn"].map((item, i) => (
-                <div key={i} className="group cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[#B23A2E] text-[10px] font-mono">
-                      0{i + 1}
-                    </span>
-                    <span className="text-white/40 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
-                      {item}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
