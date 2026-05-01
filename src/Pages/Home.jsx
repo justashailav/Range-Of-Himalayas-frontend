@@ -27,6 +27,7 @@ import HomeBlog from "./HomeBlogs";
 import { motion, AnimatePresence } from "framer-motion";
 import HimalayanLoader from "./HimalayanLoader";
 import GallerySkeleton from "./GallerySkeleton";
+import { MoveRight, Star, CheckCircle2 } from 'lucide-react';
 const categories = ["All", "Orchard", "Harvesting", "Products", "Farm"];
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -345,100 +346,90 @@ export default function Home() {
           ))}
         </motion.div>
       </div>
-      <section className="relative w-full h-[100dvh] overflow-hidden">
-  <section className="relative w-full h-[100dvh] overflow-hidden">
-  {/* IMAGE */}
-  <img
-    src="/hero.webp"
-    alt="Himalayan Products"
-    width="1400"
-    height="800"
-    className="absolute inset-0 w-full h-full object-cover object-center md:object-[right_35%]"
-    loading="eager"
-    fetchPriority="high"
-    decoding="async"
-  />
-
-  {/* OVERLAYS */}
-  <div className="absolute inset-0 bg-black/30" />
-  <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent hidden md:block" />
-  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-  <div className="absolute inset-0 bg-black/50 md:hidden" />
-
-  {/* CONTENT */}
-  <div className="relative z-10 flex flex-col justify-center h-full px-6 py-12 md:px-20 md:py-20 lg:px-32 gap-10">
-
-    {/* TOP TAG */}
-    <div className="inline-flex items-center self-start gap-3 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm">
-      <span className="w-1.5 h-1.5 bg-[#B23A2E] rounded-full animate-pulse shadow-[0_0_10px_#B23A2E]" />
-      <p className="text-white/80 text-[9px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
-        100% Natural • Himalayan Sourced
-      </p>
-    </div>
-
-    {/* HERO TEXT */}
-    <div className="max-w-4xl">
-      <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-light leading-[1] tracking-tight">
-        100% Pure Himalayan <br />
-        <span className="font-serif italic text-[#B23A2E]">
-          Sea Buckthorn <br /> & Natural Essentials
-        </span>
-      </h1>
-
-      <p className="mt-6 max-w-md text-white/90 text-base md:text-lg leading-relaxed font-light">
-        Boost immunity, improve skin glow, and support digestion with
-        vitamin-rich Sea Buckthorn — sourced directly from the Himalayas.
-      </p>
-
-      {/* TRUST LINE */}
-      <div className="mt-6 flex flex-wrap items-center gap-4 text-white/70 text-[10px] uppercase tracking-widest font-semibold">
-        <span>✔ 100% Natural</span>
-        <span>✔ No Chemicals</span>
-        <span>✔ Direct from Farmers</span>
-        <span>✔ Trusted by Customers</span>
+     <section className="relative w-full h-[100dvh] overflow-hidden bg-neutral-900">
+      {/* BACKGROUND IMAGE WITH VIGNETTE */}
+      <div className="absolute inset-0">
+        <img
+          src="/hero.webp"
+          alt="Himalayan Products"
+          className="w-full h-full object-cover object-center md:object-[right_35%] opacity-80"
+          loading="eager"
+          fetchPriority="high"
+        />
+        {/* Gradient Overlay for Text Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent md:from-black/70" />
       </div>
 
-      {/* SOCIAL PROOF */}
-      <div className="mt-4 flex items-center gap-3 text-white/70 text-xs">
-        ⭐⭐⭐⭐⭐ <span>4.8/5 from 500+ customers</span>
+      {/* CONTENT WRAPPER */}
+      <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-20 lg:px-32">
+        <div className="max-w-4xl space-y-8">
+          
+          {/* TOP TAG - Floating Badge */}
+          <div className="inline-flex items-center gap-3 px-4 py-2 border border-white/20 rounded-full bg-white/10 backdrop-blur-md transition-transform hover:scale-105 cursor-default w-fit">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B23A2E] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B23A2E]"></span>
+            </span>
+            <p className="text-white/90 text-[8px] md:text-[10px] tracking-[0.3em] uppercase font-bold">
+              Purely Himalayan • Sustainably Sourced
+            </p>
+          </div>
+
+          {/* MAIN HEADLINE */}
+          <div className="space-y-4">
+            <h1 className="text-white text-4xl sm:text-6xl lg:text-8xl font-extralight leading-[1.05] tracking-tight">
+              Nature’s Most <br />
+              <span className="font-serif italic text-[#B23A2E] font-normal">
+                Potent Superfood
+              </span>
+            </h1>
+            <p className="max-w-md text-white/80 text-base md:text-lg leading-relaxed font-light">
+              Experience the revitalizing power of organic Sea Buckthorn. 
+              Grown in high-altitude minerals, bottled for your longevity.
+            </p>
+          </div>
+
+          {/* TRUST BADGES - Organized & Clean */}
+          <div className="flex flex-wrap gap-x-6 gap-y-3 pt-2">
+            {['100% Organic', 'No Additives', 'Farmer Direct'].map((text) => (
+              <div key={text} className="flex items-center gap-2 group">
+                <CheckCircle2 className="w-4 h-4 text-[#B23A2E] group-hover:scale-110 transition-transform" />
+                <span className="text-white/60 text-xs uppercase tracking-widest font-medium">
+                  {text}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* CALL TO ACTION & SOCIAL PROOF */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 pt-4">
+            <Link to="/viewproducts" className="group">
+              <button className="relative overflow-hidden px-10 py-4 bg-[#B23A2E] text-white text-[11px] tracking-[0.2em] uppercase rounded-full transition-all duration-300 group-hover:bg-[#962f26] group-hover:shadow-[0_20px_50px_-12px_rgba(178,58,46,0.5)] flex items-center gap-3">
+                Explore Collection
+                <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
+
+            <div className="flex flex-col gap-1">
+              <div className="flex text-yellow-500">
+                {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
+              </div>
+              <p className="text-white/50 text-[11px] tracking-wide uppercase">
+                Trusted by <span className="text-white font-bold">2,000+</span> Wellness Seekers
+              </p>
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      {/* CTA */}
-      <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-        <Link to="/viewproducts">
-          <button className="px-10 py-4 bg-[#B23A2E] hover:bg-[#d14538] text-white text-[11px] tracking-[0.25em] uppercase rounded-full transition-all duration-500 hover:shadow-[0_10px_40px_-10px_#B23A2E]">
-            Shop Now
-          </button>
-        </Link>
+      {/* DECORATIVE BOTTOM ELEMENT */}
+      <div className="absolute bottom-10 right-10 hidden lg:block">
+        <div className="text-white/10 text-9xl font-serif italic select-none">
+          Himalayas
+        </div>
       </div>
-    </div>
-
-    {/* BOTTOM PRODUCTS (VISIBLE FIXED) */}
-    <div className="mt-6 md:mt-12 border-t border-white/10 pt-6 flex flex-wrap gap-6">
-      {[
-        { name: "Apricot Oil", link: "/product/apricot-oil" },
-        { name: "Rock Salt", link: "/product/rock-salt" },
-        { name: "Sea Buckthorn", link: "/product/sea-buckthorn" },
-      ].map((item, i) => (
-        <Link
-          to={item.link}
-          key={i}
-          className="group flex items-center gap-3"
-        >
-          <span className="text-[#B23A2E] text-[10px] font-mono">
-            0{i + 1}
-          </span>
-
-          <span className="text-white/60 group-hover:text-white text-[11px] uppercase tracking-[0.25em] transition-all duration-300">
-            {item.name}
-          </span>
-        </Link>
-      ))}
-    </div>
-
-  </div>
-</section>
-</section>
+    </section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
