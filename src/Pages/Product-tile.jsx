@@ -259,66 +259,46 @@ export default function ShoppingProductTile({
       </div>
 
       {/* FULL SCREEN ADDRESS */}
-      {showAddressModal && (
+     {showAddressModal && (
   <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center">
 
-    {/* MAIN CHECKOUT BOX */}
-    <div className="w-[90%] max-w-5xl h-[85vh] bg-white rounded-3xl overflow-hidden flex shadow-2xl">
+    {/* MAIN BOX */}
+    <div className="w-[95%] max-w-4xl h-[90vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden">
 
-      {/* LEFT PANEL */}
-      <div className="w-[35%] bg-[#D84C3C] text-white p-8 flex flex-col justify-between">
-        
-        <div>
-          <h2 className="text-2xl font-bold mb-6">
-            Range of Himalayas
-          </h2>
+      {/* HEADER */}
+      <div className="flex items-center justify-between p-6 border-b">
+        <h2 className="text-xl font-bold">
+          Select Delivery Address
+        </h2>
 
-          <div className="bg-white/20 p-5 rounded-2xl">
-            <p className="text-sm opacity-80">Price Summary</p>
-            <p className="text-3xl font-bold mt-2">₹{finalPrice}</p>
-          </div>
-        </div>
-
-        <p className="text-sm opacity-70">Secured by Razorpay</p>
+        <button onClick={() => setShowAddressModal(false)}>
+          <X size={22} />
+        </button>
       </div>
 
-      {/* RIGHT PANEL */}
-      <div className="flex-1 flex flex-col bg-white">
-
-        {/* HEADER */}
-        <div className="p-6 border-b flex justify-between items-center">
-          <h2 className="text-xl font-bold">
-            Select Delivery Address
-          </h2>
-          <button onClick={() => setShowAddressModal(false)}>
-            <X size={22} />
-          </button>
-        </div>
-
-        {/* ADDRESS CONTENT */}
-        <div className="flex-1 overflow-y-auto p-6">
-          <Address
-            selectedId={selectedAddress}
-            setCurrentSelectedAddress={setSelectedAddress}
-          />
-        </div>
-
-        {/* FOOTER */}
-        <div className="p-6 border-t bg-gray-50">
-          <button
-            disabled={!selectedAddress}
-            onClick={handleBuyNowWithAddress}
-            className={`w-full py-4 rounded-2xl font-bold text-lg ${
-              !selectedAddress
-                ? "bg-gray-300"
-                : "bg-[#D84C3C] text-white hover:bg-[#c03f31]"
-            }`}
-          >
-            Proceed to Pay ₹{finalPrice}
-          </button>
-        </div>
-
+      {/* BODY */}
+      <div className="flex-1 overflow-y-auto p-6">
+        <Address
+          selectedId={selectedAddress}
+          setCurrentSelectedAddress={setSelectedAddress}
+        />
       </div>
+
+      {/* FOOTER */}
+      <div className="p-6 border-t bg-white">
+        <button
+          disabled={!selectedAddress}
+          onClick={handleBuyNowWithAddress}
+          className={`w-full py-4 rounded-xl font-bold text-lg ${
+            !selectedAddress
+              ? "bg-gray-300"
+              : "bg-[#D84C3C] text-white hover:bg-[#c03f31]"
+          }`}
+        >
+          Proceed to Pay ₹{finalPrice}
+        </button>
+      </div>
+
     </div>
   </div>
 )}
