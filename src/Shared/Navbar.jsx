@@ -130,40 +130,44 @@ export default function Navbar() {
 
               {/* CART */}
               <Sheet open={openCart} onOpenChange={setOpenCart}>
-                <div
-                  onClick={() => setOpenCart(true)}
-                  className="relative p-2 cursor-pointer active:scale-90 transition-transform"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    className="transition-colors duration-500"
-                  >
-                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                    <path d="M3 6h18" />
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                  </svg>
-                  {totalCount > 0 && (
-                    <span className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center bg-[#B23A2E] text-[7px] font-bold text-white rounded-full ring-1 ring-stone-900">
-                      {totalCount}
-                    </span>
-                  )}
-                </div>
-                <SheetContent
-                  side="right"
-                  className="sm:max-w-md bg-[#fdfcf7] p-0"
-                >
-                  <UserCartWrapper
-                    cartItems={cartItems}
-                    setOpenCartSheet={setOpenCart}
-                  />
-                </SheetContent>
-              </Sheet>
+  <div
+    className="group relative p-2 cursor-pointer outline-none"
+    onClick={() => setOpenCart(true)}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]"
+    >
+      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+      <path d="M3 6h18" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+
+    {totalCount > 0 && (
+      <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900">
+        {totalCount}
+      </span>
+    )}
+  </div>
+
+  <SheetContent
+    side="right"
+    className="sm:max-w-md bg-[#fdfcf7] border-l border-stone-200 p-0 shadow-2xl"
+  >
+    <UserCartWrapper
+      cartItems={cartItems}
+      setOpenCartSheet={setOpenCart}
+    />
+  </SheetContent>
+</Sheet>
 
               {/* USER AVATAR: Scaled to h-8 for mobile */}
               <DropdownMenu>
