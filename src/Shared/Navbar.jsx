@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-himalayas.png";
