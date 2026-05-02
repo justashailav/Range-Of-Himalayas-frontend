@@ -14,8 +14,14 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { cartItems = [], boxes = [] } =
-    useSelector((state) => state.cart) || {};
+  const { cartItems: reduxCartItems = [], boxes = [] } =
+  useSelector((state) => state.cart) || {};
+
+const guestCartItems =
+  JSON.parse(localStorage.getItem("guestCart")) || [];
+
+// 🔥 FINAL CART
+const cartItems = user?._id ? reduxCartItems : guestCartItems;
   const { productList = [] } = useSelector((state) => state.products) || {};
   const { user } = useSelector((state) => state.auth) || {};
   const {
