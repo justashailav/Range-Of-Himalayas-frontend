@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-himalayas.png";
@@ -79,11 +79,6 @@ export default function Navbar() {
   const boxCount = boxes?.length || 0;
   const totalCount = cartCount + boxCount;
   const wishListCount = wishListItems?.length || 0;
-
-
-  useEffect(() => {
-  setOpenCart(false);
-}, [user]);
   return (
     <>
       <motion.nav
@@ -136,11 +131,8 @@ export default function Navbar() {
               {/* CART */}
               <Sheet open={openCart} onOpenChange={setOpenCart}>
                 <div
-                  className="group relative p-2 cursor-pointer outline-none"
-                  onClick={() => {
-                    setOpenCart(false);
-                    setTimeout(() => setOpenCart(true), 50);
-                  }}
+                  onClick={() => setOpenCart(true)}
+                  className="relative p-2 cursor-pointer active:scale-90 transition-transform"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -150,25 +142,21 @@ export default function Navbar() {
                     fill="none"
                     stroke="white"
                     strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="transition-all duration-500 group-hover:scale-110 group-hover:text-[#B23A2E]"
+                    className="transition-colors duration-500"
                   >
                     <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
                     <path d="M3 6h18" />
                     <path d="M16 10a4 4 0 0 1-8 0" />
                   </svg>
-
                   {totalCount > 0 && (
-                    <span className="absolute top-1 right-0 flex h-4 w-4 items-center justify-center bg-[#B23A2E] text-[8px] font-black text-white rounded-full ring-2 ring-stone-900">
+                    <span className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center bg-[#B23A2E] text-[7px] font-bold text-white rounded-full ring-1 ring-stone-900">
                       {totalCount}
                     </span>
                   )}
                 </div>
-
                 <SheetContent
                   side="right"
-                  className="sm:max-w-md bg-[#fdfcf7] border-l border-stone-200 p-0 shadow-2xl"
+                  className="sm:max-w-md bg-[#fdfcf7] p-0"
                 >
                   <UserCartWrapper
                     cartItems={cartItems}
@@ -179,94 +167,95 @@ export default function Navbar() {
 
               {/* USER AVATAR: Scaled to h-8 for mobile */}
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="relative cursor-pointer outline-none active:scale-95 transition-transform">
-                    <Avatar className="h-8 w-8 ring-1 ring-white/20 shadow-xl">
-                      <AvatarImage
-                        src={
-                          user?.profile?.profilePhoto ||
-                          "https://github.com/shadcn.png"
-                        }
-                        className="object-cover"
-                      />
-                      <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px]">
-                        {currentUser.name.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="absolute bottom-0 right-0 h-2 w-2 bg-[#B23A2E] border border-stone-900 rounded-full" />
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
-                  <DropdownMenuGroup>
-                    <DropdownMenuContent className="w-56 bg-[#fdfcf7] border border-stone-200 p-2 shadow-xl">
-                      {/* HEADER */}
-                      <div className="px-3 py-4 border-b border-stone-100 mb-2">
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-                          {user ? "Member" : "Guest"}
-                        </p>
+  <DropdownMenuTrigger asChild>
+    <div className="relative cursor-pointer outline-none active:scale-95 transition-transform">
+      <Avatar className="h-8 w-8 ring-1 ring-white/20 shadow-xl">
+        <AvatarImage
+          src={
+            user?.profile?.profilePhoto ||
+            "https://github.com/shadcn.png"
+          }
+          className="object-cover"
+        />
+        <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px]">
+          {currentUser.name.charAt(0)}
+        </AvatarFallback>
+      </Avatar>
+      <span className="absolute bottom-0 right-0 h-2 w-2 bg-[#B23A2E] border border-stone-900 rounded-full" />
+    </div>
+  </DropdownMenuTrigger>
 
-                        <p className="font-serif italic text-stone-900 truncate">
-                          {currentUser.name}
-                        </p>
-                      </div>
+  {/* ✅ ONLY ONE CONTENT */}
+  <DropdownMenuContent className="w-56 bg-[#fdfcf7] border border-stone-200 p-2 shadow-xl rounded-xl">
 
-                      {/* PROFILE */}
-                      <Link to="/profile">
-                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100">
-                          <User className="w-4 h-4 text-stone-400" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            The Profile
-                          </span>
-                        </DropdownMenuItem>
-                      </Link>
+    {/* HEADER */}
+    <div className="px-3 py-4 border-b border-stone-100 mb-2">
+      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
+        {user ? "Member" : "Guest"}
+      </p>
 
-                      {/* ACCOUNT */}
-                      <Link to="/account">
-                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100">
-                          <Settings className="w-4 h-4 text-stone-400" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            Account Settings
-                          </span>
-                        </DropdownMenuItem>
-                      </Link>
+      <p className="font-serif italic text-stone-900 truncate">
+        {currentUser.name}
+      </p>
+    </div>
 
-                      {/* TRACK ORDER */}
-                      <DropdownMenuItem
-                        onClick={() => navigate("/order-tracking")}
-                        className="flex items-center gap-3 px-3 py-3 hover:bg-[#2d3a2d] hover:text-white"
-                      >
-                        <Package className="w-4 h-4" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">
-                          Track Order
-                        </span>
-                      </DropdownMenuItem>
+    {/* PROFILE */}
+    <DropdownMenuItem
+      onClick={() => navigate("/profile")}
+      className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100 cursor-pointer"
+    >
+      <User className="w-4 h-4 text-stone-400" />
+      <span className="text-[11px] font-black uppercase tracking-widest">
+        The Profile
+      </span>
+    </DropdownMenuItem>
 
-                      {/* LOGIN / LOGOUT SWITCH */}
-                      {user ? (
-                        <DropdownMenuItem
-                          onClick={handleLogout}
-                          className="flex items-center gap-3 px-3 py-3 hover:bg-red-50"
-                        >
-                          <LogOut className="w-4 h-4 text-stone-400" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            Logout
-                          </span>
-                        </DropdownMenuItem>
-                      ) : (
-                        <DropdownMenuItem
-                          onClick={() => navigate("/login")}
-                          className="flex items-center gap-3 px-3 py-3 bg-[#2d3a2d] text-white"
-                        >
-                          <User className="w-4 h-4 text-white/60" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            Login / Signup
-                          </span>
-                        </DropdownMenuItem>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
+    {/* ACCOUNT */}
+    <DropdownMenuItem
+      onClick={() => navigate("/account")}
+      className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100 cursor-pointer"
+    >
+      <Settings className="w-4 h-4 text-stone-400" />
+      <span className="text-[11px] font-black uppercase tracking-widest">
+        Account Settings
+      </span>
+    </DropdownMenuItem>
+
+    {/* TRACK ORDER */}
+    <DropdownMenuItem
+      onClick={() => navigate("/order-tracking")}
+      className="flex items-center gap-3 px-3 py-3 hover:bg-[#2d3a2d] hover:text-white cursor-pointer"
+    >
+      <Package className="w-4 h-4" />
+      <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+        Track Order
+      </span>
+    </DropdownMenuItem>
+
+    {/* LOGIN / LOGOUT */}
+    {user ? (
+      <DropdownMenuItem
+        onClick={handleLogout}
+        className="flex items-center gap-3 px-3 py-3 hover:bg-red-50 cursor-pointer"
+      >
+        <LogOut className="w-4 h-4 text-stone-400" />
+        <span className="text-[11px] font-black uppercase tracking-widest">
+          Logout
+        </span>
+      </DropdownMenuItem>
+    ) : (
+      <DropdownMenuItem
+        onClick={() => navigate("/login")}
+        className="flex items-center gap-3 px-3 py-3 bg-[#2d3a2d] text-white cursor-pointer"
+      >
+        <User className="w-4 h-4 text-white/60" />
+        <span className="text-[11px] font-black uppercase tracking-widest">
+          Login / Signup
+        </span>
+      </DropdownMenuItem>
+    )}
+  </DropdownMenuContent>
+</DropdownMenu>
               <button
                 onClick={toggleMenu}
                 className="p-2 flex items-center justify-center active:scale-90 transition-transform"
@@ -413,100 +402,95 @@ export default function Navbar() {
                 </div>
               </Sheet>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="flex items-center justify-center h-full ml-2">
-                    <div className="relative group cursor-pointer outline-none">
-                      {/* 1. DECORATIVE OUTER RING: Mimics a wax seal or frame */}
-                      <div className="absolute -inset-1 border border-white/5 rounded-full group-hover:border-[#B23A2E]/40 transition-colors duration-700" />
+  <DropdownMenuTrigger asChild>
+    <div className="relative cursor-pointer outline-none active:scale-95 transition-transform">
+      <Avatar className="h-8 w-8 ring-1 ring-white/20 shadow-xl">
+        <AvatarImage
+          src={
+            user?.profile?.profilePhoto ||
+            "https://github.com/shadcn.png"
+          }
+          className="object-cover"
+        />
+        <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px]">
+          {currentUser.name.charAt(0)}
+        </AvatarFallback>
+      </Avatar>
+      <span className="absolute bottom-0 right-0 h-2 w-2 bg-[#B23A2E] border border-stone-900 rounded-full" />
+    </div>
+  </DropdownMenuTrigger>
 
-                      {/* 2. THE AVATAR: Perfectly centered */}
-                      <Avatar className="h-8 w-8 lg:h-9 lg:w-9 ring-2 ring-stone-900 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-2xl">
-                        <AvatarImage
-                          src={user?.profile?.profilePhoto}
-                          className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
-                        />
-                        {/* Fallback for when no image exists, using your brand colors */}
-                        <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-serif italic">
-                          {currentUser.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
+  {/* ✅ ONLY ONE CONTENT */}
+  <DropdownMenuContent className="w-56 bg-[#fdfcf7] border border-stone-200 p-2 shadow-xl rounded-xl">
 
-                      {/* 3. STATUS INDICATOR: A tiny red dot to match your hero icons */}
-                      <span className="absolute bottom-0 right-0 h-2 w-2 bg-[#B23A2E] border border-stone-900 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
-                    </div>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 p-2 mr-6 mt-2 shadow-lg rounded-xl">
-                  <DropdownMenuGroup>
-                    <DropdownMenuContent className="w-56 bg-[#fdfcf7] border border-stone-200 p-2 shadow-xl">
-                      {/* HEADER */}
-                      <div className="px-3 py-4 border-b border-stone-100 mb-2">
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
-                          {user ? "Member" : "Guest"}
-                        </p>
+    {/* HEADER */}
+    <div className="px-3 py-4 border-b border-stone-100 mb-2">
+      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-400">
+        {user ? "Member" : "Guest"}
+      </p>
 
-                        <p className="font-serif italic text-stone-900 truncate">
-                          {currentUser.name}
-                        </p>
-                      </div>
+      <p className="font-serif italic text-stone-900 truncate">
+        {currentUser.name}
+      </p>
+    </div>
 
-                      {/* PROFILE */}
-                      <Link to="/profile">
-                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100">
-                          <User className="w-4 h-4 text-stone-400" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            The Profile
-                          </span>
-                        </DropdownMenuItem>
-                      </Link>
+    {/* PROFILE */}
+    <DropdownMenuItem
+      onClick={() => navigate("/profile")}
+      className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100 cursor-pointer"
+    >
+      <User className="w-4 h-4 text-stone-400" />
+      <span className="text-[11px] font-black uppercase tracking-widest">
+        The Profile
+      </span>
+    </DropdownMenuItem>
 
-                      {/* ACCOUNT */}
-                      <Link to="/account">
-                        <DropdownMenuItem className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100">
-                          <Settings className="w-4 h-4 text-stone-400" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            Account Settings
-                          </span>
-                        </DropdownMenuItem>
-                      </Link>
+    {/* ACCOUNT */}
+    <DropdownMenuItem
+      onClick={() => navigate("/account")}
+      className="flex items-center gap-3 px-3 py-3 hover:bg-stone-100 cursor-pointer"
+    >
+      <Settings className="w-4 h-4 text-stone-400" />
+      <span className="text-[11px] font-black uppercase tracking-widest">
+        Account Settings
+      </span>
+    </DropdownMenuItem>
 
-                      {/* TRACK ORDER */}
-                      <DropdownMenuItem
-                        onClick={() => navigate("/order-tracking")}
-                        className="flex items-center gap-3 px-3 py-3 hover:bg-[#2d3a2d] hover:text-white"
-                      >
-                        <Package className="w-4 h-4" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">
-                          Track Order
-                        </span>
-                      </DropdownMenuItem>
+    {/* TRACK ORDER */}
+    <DropdownMenuItem
+      onClick={() => navigate("/order-tracking")}
+      className="flex items-center gap-3 px-3 py-3 hover:bg-[#2d3a2d] hover:text-white cursor-pointer"
+    >
+      <Package className="w-4 h-4" />
+      <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+        Track Order
+      </span>
+    </DropdownMenuItem>
 
-                      {/* LOGIN / LOGOUT SWITCH */}
-                      {user ? (
-                        <DropdownMenuItem
-                          onClick={handleLogout}
-                          className="flex items-center gap-3 px-3 py-3 hover:bg-red-50"
-                        >
-                          <LogOut className="w-4 h-4 text-stone-400" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            Logout
-                          </span>
-                        </DropdownMenuItem>
-                      ) : (
-                        <DropdownMenuItem
-                          onClick={() => navigate("/login")}
-                          className="flex items-center gap-3 px-3 py-3 bg-[#2d3a2d] text-white"
-                        >
-                          <User className="w-4 h-4 text-white/60" />
-                          <span className="text-[11px] font-black uppercase tracking-widest">
-                            Login / Signup
-                          </span>
-                        </DropdownMenuItem>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
+    {/* LOGIN / LOGOUT */}
+    {user ? (
+      <DropdownMenuItem
+        onClick={handleLogout}
+        className="flex items-center gap-3 px-3 py-3 hover:bg-red-50 cursor-pointer"
+      >
+        <LogOut className="w-4 h-4 text-stone-400" />
+        <span className="text-[11px] font-black uppercase tracking-widest">
+          Logout
+        </span>
+      </DropdownMenuItem>
+    ) : (
+      <DropdownMenuItem
+        onClick={() => navigate("/login")}
+        className="flex items-center gap-3 px-3 py-3 bg-[#2d3a2d] text-white cursor-pointer"
+      >
+        <User className="w-4 h-4 text-white/60" />
+        <span className="text-[11px] font-black uppercase tracking-widest">
+          Login / Signup
+        </span>
+      </DropdownMenuItem>
+    )}
+  </DropdownMenuContent>
+</DropdownMenu>
             </div>
           </div>
         </div>
