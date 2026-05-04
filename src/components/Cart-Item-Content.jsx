@@ -153,6 +153,15 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
     }
   });
 };
+useEffect(() => {
+  const updateCart = () => {
+    setFinalAmount((prev) => prev); // force re-render
+  };
+
+  window.addEventListener("storage", updateCart);
+
+  return () => window.removeEventListener("storage", updateCart);
+}, []);
   if (cartItem) {
     const product = productList.find((p) => p._id === cartItem.productId) || {};
     const variant =
