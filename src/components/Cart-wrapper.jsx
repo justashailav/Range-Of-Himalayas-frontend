@@ -73,38 +73,9 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const remaining = Math.max(0, FREE_SHIPPING - finalAmount);
   const progressPercent = Math.min((finalAmount / FREE_SHIPPING) * 100, 100);
   
-  const suggestedProducts = productList
-  .filter((p) => {
-    const variant = p?.variants?.[0];
-    const price =
-      variant?.salesPrice > 0 ? variant.salesPrice : variant?.price;
-
-    // ❌ remove already added items
-    const alreadyInCart = (cartItems || []).some(
-      (item) => item.productId === p._id
-    );
-
-    // ✅ show only relevant price range
-    return (
-      !alreadyInCart &&
-      price > 0 &&
-      price <= remaining + 150 // margin
-    );
-  })
-  .sort((a, b) => {
-    const pa =
-      a.variants?.[0]?.salesPrice > 0
-        ? a.variants[0].salesPrice
-        : a.variants?.[0]?.price;
-
-    const pb =
-      b.variants?.[0]?.salesPrice > 0
-        ? b.variants[0].salesPrice
-        : b.variants?.[0]?.price;
-
-    // 🔥 closest to remaining first
-    return Math.abs(pa - remaining) - Math.abs(pb - remaining);
-  });
+  const suggestedProducts = productList.filter(
+    (p) => !(cartItems || []).some((item) => item.productId === p._id)
+  ).slice(0, 8);
 
   return (
     <SheetContent
@@ -141,12 +112,10 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
               </span>
             </div>
             {remaining > 0 && (
-  <div className="px-5 mt-6">
-    <p className="text-[12px] font-bold text-[#B23A2E]">
-      Add ₹{remaining} more to unlock FREE SHIPPING 🚚
-    </p>
-  </div>
-)}
+              <span className="text-[10px] font-medium text-stone-400 italic">
+                ₹{remaining} to unlock free shipping
+              </span>
+            )}
           </div>
           <div className="h-[2px] w-full bg-stone-100 rounded-full overflow-hidden">
             <div 
