@@ -54,8 +54,8 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
 
     localStorage.setItem("guestCart", JSON.stringify(guestCart));
 
-    // 🔥 trigger UI update
-    window.dispatchEvent(new Event("storage"));
+// 🔥 trigger UI refresh
+window.dispatchEvent(new Event("guestCartUpdated"));
 
     return;
   }
@@ -130,7 +130,8 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
 
     localStorage.setItem("guestCart", JSON.stringify(guestCart));
 
-    window.dispatchEvent(new Event("storage"));
+// 🔥 trigger UI refresh
+window.dispatchEvent(new Event("guestCartUpdated"));
 
     toast.success("Item removed");
 

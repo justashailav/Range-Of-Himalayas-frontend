@@ -19,7 +19,7 @@ import CartSuggestions from "@/Pages/CartProducts";
 export default function UserCartWrapper({ setOpenCartSheet }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+   const [guestCartTrigger, setGuestCartTrigger] = useState(0);
   const { productList = [] } = useSelector((state) => state.products) || {};
   const { user } = useSelector((state) => state.auth) || {};
   const { cartItems: reduxCartItems = [], boxes = [] } =
@@ -33,7 +33,9 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
     }
   })();
 
-  const cartItems = user?._id ? reduxCartItems : guestCartItems;
+  const cartItems = user?._id
+  ? reduxCartItems
+  : JSON.parse(localStorage.getItem("guestCart")) || [];
   const { discountAmount, success } = useSelector((state) => state.coupon);
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -135,7 +137,16 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const suggestedProducts = productList
     .filter((p) => !(cartItems || []).some((item) => item.productId === p._id))
     .slice(0, 8);
+  useEffect(() => {
+  const handleGuestUpdate = () => {
+    setGuestCartTrigger((prev) => prev + 1);
+  };
 
+  window.addEventListener("guestCartUpdated", handleGuestUpdate);
+
+  return () =>
+    window.removeEventListener("guestCartUpdated", handleGuestUpdate);
+}, []);
   return (
     <SheetContent
       side="right"
