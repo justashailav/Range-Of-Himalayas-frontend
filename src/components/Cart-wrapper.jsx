@@ -6,7 +6,14 @@ import { addToCart } from "@/store/slices/cartSlice";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { applyCoupon, resetCoupon } from "@/store/slices/couponSlice";
-import { X, ShoppingBag, Truck, ArrowRight, ShieldCheck, Tag } from "lucide-react";
+import {
+  X,
+  ShoppingBag,
+  Truck,
+  ArrowRight,
+  ShieldCheck,
+  Tag,
+} from "lucide-react";
 import CartSuggestions from "@/Pages/CartProducts";
 
 export default function UserCartWrapper({ setOpenCartSheet }) {
@@ -15,12 +22,15 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
   const { productList = [] } = useSelector((state) => state.products) || {};
   const { user } = useSelector((state) => state.auth) || {};
-  const { cartItems: reduxCartItems = [], boxes = [] } = useSelector((state) => state.cart) || {};
+  const { cartItems: reduxCartItems = [], boxes = [] } =
+    useSelector((state) => state.cart) || {};
 
   const guestCartItems = (() => {
     try {
       return JSON.parse(localStorage.getItem("guestCart")) || [];
-    } catch { return []; }
+    } catch {
+      return [];
+    }
   })();
 
   const cartItems = user?._id ? reduxCartItems : guestCartItems;
@@ -39,22 +49,65 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
   useEffect(() => {
     const cartTotal = (cartItems || []).reduce((sum, item) => {
-      const price = item.salesPrice && Number(item.salesPrice) > 0 ? Number(item.salesPrice) : Number(item.price) || 0;
-      return sum + price * (Number(item.quantity) || 1);
+      let price = 0;
+
+      // ✅ Logged-in user (price already exists)
+      if (item.price || item.salesPrice) {
+        price =
+          item.salesPrice && Number(item.salesPrice) > 0
+            ? Number(item.salesPrice)
+            : Number(item.price) || 0;
+      }
+      // ✅ Guest user (get price from productList)
+      else {
+        const product = productList.find(
+          (p) => p._id.toString() === item.productId?.toString(),
+        );
+
+        if (product) {
+          const variant = (product.variants || []).find(
+            (v) =>
+              v.weight === item.weight && (v.size === item.size || !v.size),
+          );
+
+          if (variant) {
+            price =
+              variant.salesPrice && Number(variant.salesPrice) > 0
+                ? Number(variant.salesPrice)
+                : Number(variant.price) || 0;
+          }
+        }
+      }
+
+      const quantity = Number(item.quantity) || 1;
+
+      return sum + price * quantity;
     }, 0);
 
     const boxesTotal = (boxes || []).reduce((sum, box) => {
       const boxItemsTotal = (box.items || []).reduce((bSum, item) => {
-        const product = productList.find((p) => p._id.toString() === item.productId?.toString());
+        const product = productList.find(
+          (p) => p._id.toString() === item.productId?.toString(),
+        );
         if (!product) return bSum;
-        const sizePriceObj = (product.customBoxPrices || []).find((p) => p.size === item.size);
-        return bSum + (sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0) * (Number(item.quantity) || 1);
+        const sizePriceObj = (product.customBoxPrices || []).find(
+          (p) => p.size === item.size,
+        );
+        return (
+          bSum +
+          (sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0) *
+            (Number(item.quantity) || 1)
+        );
       }, 0);
       return sum + boxItemsTotal;
     }, 0);
 
     const currentGrandTotal = cartTotal + boxesTotal;
-    setFinalAmount(discountAmount > 0 ? Math.max(0, currentGrandTotal - discountAmount) : currentGrandTotal);
+    setFinalAmount(
+      discountAmount > 0
+        ? Math.max(0, currentGrandTotal - discountAmount)
+        : currentGrandTotal,
+    );
   }, [cartItems, boxes, productList, discountAmount]);
 
   useEffect(() => {
@@ -64,18 +117,24 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const handleApplyCoupon = async () => {
     const trimmedCode = couponCode.trim().toUpperCase();
     if (!trimmedCode) return toast.error("Enter coupon code");
-    
-    const data = await dispatch(applyCoupon({ code: trimmedCode, orderAmount: finalAmount, userId: user?._id }));
+
+    const data = await dispatch(
+      applyCoupon({
+        code: trimmedCode,
+        orderAmount: finalAmount,
+        userId: user?._id,
+      }),
+    );
     if (data?.success) toast.success("Elite discount applied");
   };
 
   const FREE_SHIPPING = 1000;
   const remaining = Math.max(0, FREE_SHIPPING - finalAmount);
   const progressPercent = Math.min((finalAmount / FREE_SHIPPING) * 100, 100);
-  
-  const suggestedProducts = productList.filter(
-    (p) => !(cartItems || []).some((item) => item.productId === p._id)
-  ).slice(0, 8);
+
+  const suggestedProducts = productList
+    .filter((p) => !(cartItems || []).some((item) => item.productId === p._id))
+    .slice(0, 8);
 
   return (
     <SheetContent
@@ -89,7 +148,9 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
             Shopping Bag
           </h2>
           <div className="flex items-center gap-2">
-            <span className="text-xl font-serif italic text-stone-900 leading-none">Your Selection</span>
+            <span className="text-xl font-serif italic text-stone-900 leading-none">
+              Your Selection
+            </span>
             <span className="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full font-bold">
               {(cartItems?.length || 0) + (boxes?.length || 0)}
             </span>
@@ -118,9 +179,9 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
             )}
           </div>
           <div className="h-[2px] w-full bg-stone-100 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-[#B23A2E] transition-all duration-1000 ease-out" 
-              style={{ width: `${progressPercent}%` }} 
+            <div
+              className="h-full bg-[#B23A2E] transition-all duration-1000 ease-out"
+              style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
@@ -131,7 +192,11 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
             <div className="space-y-12">
               <div className="space-y-8">
                 {cartItems.map((item) => (
-                  <UserCartItemsContent key={`${item.productId}-${item.size}`} cartItem={item} mobile />
+                  <UserCartItemsContent
+                    key={`${item.productId}-${item.size}`}
+                    cartItem={item}
+                    mobile
+                  />
                 ))}
               </div>
 
@@ -142,11 +207,11 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
                   </h4>
                   <div className="space-y-8">
                     {boxes.map((boxItem) => (
-                      <UserCartItemsContent 
-                        key={`box-${boxItem.boxId}`} 
-                        boxItem={boxItem} 
-                        productList={productList} 
-                        mobile 
+                      <UserCartItemsContent
+                        key={`box-${boxItem.boxId}`}
+                        boxItem={boxItem}
+                        productList={productList}
+                        mobile
                       />
                     ))}
                   </div>
@@ -156,9 +221,14 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <ShoppingBag className="w-10 h-10 text-stone-200 mb-6 stroke-[1px]" />
-              <p className="text-stone-400 font-serif italic text-lg">Your bag is empty</p>
+              <p className="text-stone-400 font-serif italic text-lg">
+                Your bag is empty
+              </p>
               <SheetClose asChild>
-                <Link to="/viewproducts" className="mt-6 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B23A2E] border-b border-[#B23A2E]/30 pb-1 hover:border-[#B23A2E] transition-all">
+                <Link
+                  to="/viewproducts"
+                  className="mt-6 text-[10px] font-bold tracking-[0.2em] uppercase text-[#B23A2E] border-b border-[#B23A2E]/30 pb-1 hover:border-[#B23A2E] transition-all"
+                >
                   Browse Collection
                 </Link>
               </SheetClose>
@@ -205,7 +275,9 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
         <div className="space-y-3 mb-8 px-1">
           <div className="flex justify-between text-[11px] text-stone-400 font-medium tracking-tight uppercase">
             <span>Subtotal</span>
-            <span className="text-stone-600">₹{(finalAmount + discount).toFixed(2)}</span>
+            <span className="text-stone-600">
+              ₹{(finalAmount + discount).toFixed(2)}
+            </span>
           </div>
           {isCouponApplied && (
             <div className="flex justify-between text-[11px] text-green-600 font-bold tracking-tight uppercase">
@@ -214,7 +286,9 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
             </div>
           )}
           <div className="flex justify-between items-baseline pt-4">
-            <span className="text-xs font-bold text-stone-900 uppercase tracking-widest">Total Amount</span>
+            <span className="text-xs font-bold text-stone-900 uppercase tracking-widest">
+              Total Amount
+            </span>
             <span className="text-2xl font-light text-stone-900 tracking-tighter leading-none">
               ₹{finalAmount.toFixed(2)}
             </span>
@@ -226,18 +300,21 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           to="/checkout"
           onClick={() => setOpenCartSheet(false)}
           className={`group flex items-center justify-between w-full px-8 py-5 rounded-full font-bold text-[11px] tracking-[0.25em] uppercase transition-all duration-700
-            ${cartItems?.length === 0 && boxes?.length === 0
-              ? "bg-stone-100 text-stone-300 cursor-not-allowed"
-              : "bg-stone-900 text-white hover:bg-[#B23A2E] hover:shadow-[0_20px_40px_rgba(178,58,46,0.25)] active:scale-[0.98]"
+            ${
+              cartItems?.length === 0 && boxes?.length === 0
+                ? "bg-stone-100 text-stone-300 cursor-not-allowed"
+                : "bg-stone-900 text-white hover:bg-[#B23A2E] hover:shadow-[0_20px_40px_rgba(178,58,46,0.25)] active:scale-[0.98]"
             }`}
         >
           <span>Complete Purchase</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-500" />
         </Link>
-        
+
         <div className="flex items-center justify-center gap-2 mt-5 text-stone-300">
-           <ShieldCheck className="w-3 h-3" />
-           <span className="text-[8px] font-bold tracking-[0.2em] uppercase">Safe & Secure Himalayan Logistics</span>
+          <ShieldCheck className="w-3 h-3" />
+          <span className="text-[8px] font-bold tracking-[0.2em] uppercase">
+            Safe & Secure Himalayan Logistics
+          </span>
         </div>
       </div>
     </SheetContent>
