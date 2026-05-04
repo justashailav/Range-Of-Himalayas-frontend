@@ -26,9 +26,9 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
   const handleUpdateQuantity = (item, action) => {
     if (!item) return;
     if (!user || !user._id) {
-    toast.error("Please login to manage your cart");
-    return;
-  }
+      toast.error("Please login to manage your cart");
+      return;
+    }
     const normalizedSize = item.size || "";
 
     const index = cartItems.findIndex((i) => {
@@ -82,19 +82,18 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
   const handleCartItemDelete = (item) => {
     if (!item) return;
     if (!user || !user._id) {
-    toast.error("Please login to manage your cart");
-    return;
-  }
+      toast.error("Please login to manage your cart");
+      return;
+    }
     const normalizedSize = item.size || "";
 
-    
     dispatch(
       deleteCartItem({
         userId: user._id,
         productId: item.productId,
         size: normalizedSize,
         weight: item.weight,
-      })
+      }),
     ).then((res) => {
       if (res?.payload?.success || res?.success) {
         toast.success("Item removed");
@@ -117,79 +116,81 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
 
     return (
       <div className="group relative flex gap-5 p-5 bg-white rounded-[2.5rem] border border-stone-100 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500">
-  
-  {/* Left: Image with Decorative Frame */}
-  <div className="relative h-28 w-28 flex-shrink-0">
-    <div className="absolute inset-0 bg-stone-100 rounded-[1.8rem] rotate-3 group-hover:rotate-6 transition-transform duration-500" />
-    <div className="relative h-full w-full overflow-hidden rounded-[1.8rem] bg-stone-50 border border-white shadow-inner">
-      <img
-        src={image}
-        alt={title}
-        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-    </div>
-  </div>
+        {/* Left: Image with Decorative Frame */}
+        <div className="relative h-28 w-28 flex-shrink-0">
+          <div className="absolute inset-0 bg-stone-100 rounded-[1.8rem] rotate-3 group-hover:rotate-6 transition-transform duration-500" />
+          <div className="relative h-full w-full overflow-hidden rounded-[1.8rem] bg-stone-50 border border-white shadow-inner">
+            <img
+              src={image}
+              alt={title}
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          </div>
+        </div>
 
-  {/* Right: Content Area */}
-  <div className="flex flex-1 flex-col py-1">
-    <div className="flex justify-between items-start gap-2">
-      <div className="space-y-1">
-        <h3 className="text-sm font-black text-stone-900 leading-tight uppercase tracking-tight">
-          {title}
-        </h3>
-        {/* Detail Pill */}
-        <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-full bg-stone-50 border border-stone-100">
-          <span className="text-[9px] text-stone-500 font-bold uppercase tracking-widest">
-            {cartItem.size ? `${cartItem.size} • ${cartItem.weight}` : cartItem.weight}
-          </span>
+        {/* Right: Content Area */}
+        <div className="flex flex-1 flex-col py-1">
+          <div className="flex justify-between items-start gap-2">
+            <div className="space-y-1">
+              <h3 className="text-sm font-black text-stone-900 leading-tight uppercase tracking-tight">
+                {title}
+              </h3>
+              {/* Detail Pill */}
+              <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-full bg-stone-50 border border-stone-100">
+                <span className="text-[9px] text-stone-500 font-bold uppercase tracking-widest">
+                  {cartItem.size
+                    ? `${cartItem.size} • ${cartItem.weight}`
+                    : cartItem.weight}
+                </span>
+              </div>
+            </div>
+
+            {/* Price with "Currency Symbol" styling */}
+            <div className="text-right">
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-tighter mb-0.5">
+                Price
+              </p>
+              <p className="text-base font-black text-stone-900 tracking-tighter">
+                ₹{(displayPrice * cartItem.quantity).toFixed(0)}
+              </p>
+            </div>
+          </div>
+
+          {/* Footer: Controls & Quick Actions */}
+          <div className="flex items-center justify-between mt-auto">
+            {/* Quantity Selector - Minimalist Pill */}
+            <div className="flex items-center bg-stone-900 rounded-full p-1 shadow-md shadow-stone-200">
+              <button
+                onClick={() => handleUpdateQuantity(cartItem, "minus")}
+                disabled={cartItem?.quantity === 1}
+                className="h-6 w-6 flex items-center justify-center rounded-full text-white hover:bg-white/20 disabled:opacity-30 transition-colors"
+              >
+                <Minus className="w-3 h-3" />
+              </button>
+
+              <span className="w-8 text-center text-[11px] font-black text-white">
+                {cartItem?.quantity}
+              </span>
+
+              <button
+                onClick={() => handleUpdateQuantity(cartItem, "plus")}
+                className="h-6 w-6 flex items-center justify-center rounded-full text-white hover:bg-white/20 transition-colors"
+              >
+                <Plus className="w-3 h-3" />
+              </button>
+            </div>
+
+            {/* Remove Button - Text based looks more premium than just a trash can */}
+            <button
+              onClick={() => handleCartItemDelete(cartItem)}
+              className="text-[10px] font-black text-stone-300 uppercase tracking-widest hover:text-[#B23A2E] transition-colors flex items-center gap-1.5 px-2 py-1"
+            >
+              <Trash size={12} className="mt-[-2px]" />
+              <span>Remove</span>
+            </button>
+          </div>
         </div>
       </div>
-      
-      {/* Price with "Currency Symbol" styling */}
-      <div className="text-right">
-        <p className="text-xs font-bold text-stone-400 uppercase tracking-tighter mb-0.5">Price</p>
-        <p className="text-base font-black text-stone-900 tracking-tighter">
-          ₹{(displayPrice * cartItem.quantity).toFixed(0)}
-        </p>
-      </div>
-    </div>
-
-    {/* Footer: Controls & Quick Actions */}
-    <div className="flex items-center justify-between mt-auto">
-      
-      {/* Quantity Selector - Minimalist Pill */}
-      <div className="flex items-center bg-stone-900 rounded-full p-1 shadow-md shadow-stone-200">
-        <button
-          onClick={() => handleUpdateQuantity(cartItem, "minus")}
-          disabled={cartItem?.quantity === 1}
-          className="h-6 w-6 flex items-center justify-center rounded-full text-white hover:bg-white/20 disabled:opacity-30 transition-colors"
-        >
-          <Minus className="w-3 h-3" />
-        </button>
-        
-        <span className="w-8 text-center text-[11px] font-black text-white">
-          {cartItem?.quantity}
-        </span>
-        
-        <button
-          onClick={() => handleUpdateQuantity(cartItem, "plus")}
-          className="h-6 w-6 flex items-center justify-center rounded-full text-white hover:bg-white/20 transition-colors"
-        >
-          <Plus className="w-3 h-3" />
-        </button>
-      </div>
-
-      {/* Remove Button - Text based looks more premium than just a trash can */}
-      <button
-        onClick={() => handleCartItemDelete(cartItem)}
-        className="text-[10px] font-black text-stone-300 uppercase tracking-widest hover:text-[#B23A2E] transition-colors flex items-center gap-1.5 px-2 py-1"
-      >
-        <Trash size={12} className="mt-[-2px]" />
-        <span>Remove</span>
-      </button>
-    </div>
-  </div>
-</div>
     );
   }
 
