@@ -24,37 +24,24 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
   }, [user, dispatch]);
 
   const handleUpdateQuantity = (item, action) => {
-    if (!item) return;
-    if (!user || !user._id) {
-      toast.error("Please login to manage your cart");
-      return;
-    }
-    const normalizedSize = item.size || "";
+  if (!item) return;
 
-    const index = cartItems.findIndex((i) => {
-      const cartProductId =
-        i.productId?._id?.toString() || i.productId?.toString();
+  const normalizedSize = item.size || "";
 
-      return (
-        cartProductId === item.productId.toString() &&
+  // ✅ GUEST USER
+  if (!user || !user._id) {
+    let guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+
+    const index = guestCart.findIndex(
+      (i) =>
+        i.productId === item.productId &&
         (i.size || "") === normalizedSize &&
         i.weight === item.weight
-      );
-    });
+    );
 
     if (index === -1) return;
 
-    const productFromList = productList.find(
-      (p) => p._id.toString() === item.productId.toString(),
-    );
-    if (!productFromList) return;
-
-    const variant = productFromList.variants?.find(
-      (v) => (v.size || "") === normalizedSize && v.weight === item.weight,
-    );
-
-    const totalStock = variant?.stock ?? 0;
-    const currentQuantity = cartItems[index].quantity;
+    const currentQuantity = guestCart[index].quantity || 1;
     const newQuantity =
       action === "plus" ? currentQuantity + 1 : currentQuantity - 1;
 
@@ -63,45 +50,109 @@ export default function UserCartItemsContent({ cartItem, boxItem }) {
       return;
     }
 
-    if (action === "plus" && newQuantity > totalStock) {
-      toast.error(`Only ${totalStock} items in stock.`);
-      return;
-    }
+    guestCart[index].quantity = newQuantity;
 
-    dispatch(
-      updateCart({
-        userId: user._id,
-        productId: item.productId,
-        quantity: newQuantity,
-        size: normalizedSize,
-        weight: item.weight,
-      }),
+    localStorage.setItem("guestCart", JSON.stringify(guestCart));
+
+    // 🔥 trigger UI update
+    window.dispatchEvent(new Event("storage"));
+
+    return;
+  }
+
+  // ✅ LOGGED-IN USER (your existing logic)
+  const index = cartItems.findIndex((i) => {
+    const cartProductId =
+      i.productId?._id?.toString() || i.productId?.toString();
+
+    return (
+      cartProductId === item.productId.toString() &&
+      (i.size || "") === normalizedSize &&
+      i.weight === item.weight
     );
-  };
+  });
+
+  if (index === -1) return;
+
+  const productFromList = productList.find(
+    (p) => p._id.toString() === item.productId.toString()
+  );
+  if (!productFromList) return;
+
+  const variant = productFromList.variants?.find(
+    (v) => (v.size || "") === normalizedSize && v.weight === item.weight
+  );
+
+  const totalStock = variant?.stock ?? 0;
+  const currentQuantity = cartItems[index].quantity;
+
+  const newQuantity =
+    action === "plus" ? currentQuantity + 1 : currentQuantity - 1;
+
+  if (newQuantity <= 0) {
+    toast.error("Quantity cannot be less than 1");
+    return;
+  }
+
+  if (action === "plus" && newQuantity > totalStock) {
+    toast.error(`Only ${totalStock} items in stock.`);
+    return;
+  }
+
+  dispatch(
+    updateCart({
+      userId: user._id,
+      productId: item.productId,
+      quantity: newQuantity,
+      size: normalizedSize,
+      weight: item.weight,
+    })
+  );
+};
 
   const handleCartItemDelete = (item) => {
-    if (!item) return;
-    if (!user || !user._id) {
-      toast.error("Please login to manage your cart");
-      return;
-    }
-    const normalizedSize = item.size || "";
+  if (!item) return;
 
-    dispatch(
-      deleteCartItem({
-        userId: user._id,
-        productId: item.productId,
-        size: normalizedSize,
-        weight: item.weight,
-      }),
-    ).then((res) => {
-      if (res?.payload?.success || res?.success) {
-        toast.success("Item removed");
-      } else {
-        toast.error("Failed to remove item");
-      }
-    });
-  };
+  const normalizedSize = item.size || "";
+
+  // ✅ GUEST USER
+  if (!user || !user._id) {
+    let guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+
+    guestCart = guestCart.filter(
+      (i) =>
+        !(
+          i.productId === item.productId &&
+          (i.size || "") === normalizedSize &&
+          i.weight === item.weight
+        )
+    );
+
+    localStorage.setItem("guestCart", JSON.stringify(guestCart));
+
+    window.dispatchEvent(new Event("storage"));
+
+    toast.success("Item removed");
+
+    return;
+  }
+
+  // ✅ LOGGED-IN USER
+  dispatch(
+    deleteCartItem({
+      userId: user._id,
+      productId: item.productId,
+      size: normalizedSize,
+      weight: item.weight,
+    })
+  ).then((res) => {
+    if (res?.payload?.success || res?.success) {
+      toast.success("Item removed");
+    } else {
+      toast.error("Failed to remove item");
+    }
+  });
+};
   if (cartItem) {
     const product = productList.find((p) => p._id === cartItem.productId) || {};
     const variant =
