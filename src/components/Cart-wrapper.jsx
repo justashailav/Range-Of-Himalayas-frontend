@@ -52,15 +52,15 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   useEffect(() => {
     // 1. Calculate the actual current total of everything in the cart
     const cartTotal = (cartItems || []).reduce((sum, item) => {
-  const price =
-    item.salesPrice && Number(item.salesPrice) > 0
-      ? Number(item.salesPrice)
-      : Number(item.price) || 0;
+      const price =
+        item.salesPrice && Number(item.salesPrice) > 0
+          ? Number(item.salesPrice)
+          : Number(item.price) || 0;
 
-  const quantity = Number(item.quantity) || 1; // ✅ FIX
+      const quantity = Number(item.quantity) || 1; // ✅ FIX
 
-  return sum + price * quantity;
-}, 0);
+      return sum + price * quantity;
+    }, 0);
 
     const boxesTotal = (boxes || []).reduce((sum, box) => {
       const boxItemsTotal = (box.items || []).reduce((bSum, item) => {
@@ -130,6 +130,11 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
       toast.error("Something went wrong");
     }
   };
+  const FREE_SHIPPING = 1000;
+
+  const remaining = Math.max(0, FREE_SHIPPING - finalAmount);
+
+  const progressPercent = Math.min((finalAmount / FREE_SHIPPING) * 100, 100);
   return (
     <SheetContent
       side="right"
@@ -156,6 +161,53 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
           <span className="sr-only">Close Basket</span>
         </SheetClose>
       </div>
+
+      {/* ================= FREE SHIPPING BAR ================= */}
+<div className="bg-[#f7f5ef] px-5 py-4 border-b border-stone-200">
+  {/* TITLE */}
+  <p className="text-[11px] font-black uppercase tracking-widest text-stone-700 mb-2">
+    Express Shipping
+  </p>
+
+  {/* MESSAGE */}
+  <p className="text-[12px] text-stone-600 mb-3">
+    {remaining > 0 ? (
+      <>
+        You are{" "}
+        <span className="font-bold text-[#B23A2E]">
+          ₹{remaining}
+        </span>{" "}
+        away from free shipping 🚚
+      </>
+    ) : (
+      <span className="font-bold text-green-600">
+        🎉 Free Shipping Unlocked
+      </span>
+    )}
+  </p>
+
+  {/* PROGRESS BAR */}
+  <div className="w-full h-2 bg-stone-200 rounded-full overflow-hidden relative">
+    <div
+      className="h-full bg-[#B23A2E] transition-all duration-500"
+      style={{ width: `${progressPercent}%` }}
+    />
+
+    {/* OPTIONAL TRUCK */}
+    <div
+      className="absolute -top-2 text-xs transition-all duration-500"
+      style={{ left: `${progressPercent}%`, transform: "translateX(-50%)" }}
+    >
+      🚚
+    </div>
+  </div>
+
+  {/* LABELS */}
+  <div className="flex justify-between text-[10px] text-stone-400 mt-2">
+    <span>₹0</span>
+    <span>₹{FREE_SHIPPING}</span>
+  </div>
+</div>
 
       {/* ================= SCROLLABLE BODY ================= */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden no-scrollbar pb-32">
@@ -236,7 +288,6 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
 
         {/* PRICING TABLE */}
         <div className="space-y-2 mb-10 px-1">
-
           {isCouponApplied && (
             <div className="flex justify-between text-[10px] font-bold text-green-600 uppercase tracking-tight">
               <span>Seasonal Discount Applied</span>
