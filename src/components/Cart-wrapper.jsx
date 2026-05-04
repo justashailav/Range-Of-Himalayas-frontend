@@ -3,7 +3,6 @@ import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import { Button } from "./ui/button";
 import UserCartItemsContent from "./Cart-Item-Content";
 import { useDispatch, useSelector } from "react-redux";
-import CartProducts from "@/Pages/CartProducts";
 import { addToCart, fetchCartItems } from "@/store/slices/cartSlice";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
@@ -14,16 +13,26 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { cartItems: reduxCartItems = [], boxes = [] } =
+  
+  const { productList = [] } = useSelector((state) => state.products) || {};
+  // ✅ FIRST get user
+const { user } = useSelector((state) => state.auth) || {};
+
+// ✅ THEN cart
+const { cartItems: reduxCartItems = [], boxes = [] } =
   useSelector((state) => state.cart) || {};
 
-const guestCartItems =
-  JSON.parse(localStorage.getItem("guestCart")) || [];
+// ✅ guest cart
+const guestCartItems = (() => {
+  try {
+    return JSON.parse(localStorage.getItem("guestCart")) || [];
+  } catch {
+    return [];
+  }
+})();
 
-// 🔥 FINAL CART
+// ✅ FINAL CART
 const cartItems = user?._id ? reduxCartItems : guestCartItems;
-  const { productList = [] } = useSelector((state) => state.products) || {};
-  const { user } = useSelector((state) => state.auth) || {};
   const {
     message,
     discountAmount,
