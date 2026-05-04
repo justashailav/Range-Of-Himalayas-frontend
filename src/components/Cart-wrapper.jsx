@@ -72,7 +72,10 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const FREE_SHIPPING = 1000;
   const remaining = Math.max(0, FREE_SHIPPING - finalAmount);
   const progressPercent = Math.min((finalAmount / FREE_SHIPPING) * 100, 100);
-
+  const suggestedProducts = productList.filter(
+    (p) => !(cartItems || []).some((item) => item.productId === p._id)
+  ).slice(0, 4); // Added slice(0,4) for a cleaner UI
+  // ----------------------
   return (
     <SheetContent
       side="right"
