@@ -13,26 +13,25 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  
   const { productList = [] } = useSelector((state) => state.products) || {};
   // ✅ FIRST get user
-const { user } = useSelector((state) => state.auth) || {};
+  const { user } = useSelector((state) => state.auth) || {};
 
-// ✅ THEN cart
-const { cartItems: reduxCartItems = [], boxes = [] } =
-  useSelector((state) => state.cart) || {};
+  // ✅ THEN cart
+  const { cartItems: reduxCartItems = [], boxes = [] } =
+    useSelector((state) => state.cart) || {};
 
-// ✅ guest cart
-const guestCartItems = (() => {
-  try {
-    return JSON.parse(localStorage.getItem("guestCart")) || [];
-  } catch {
-    return [];
-  }
-})();
+  // ✅ guest cart
+  const guestCartItems = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("guestCart")) || [];
+    } catch {
+      return [];
+    }
+  })();
 
-// ✅ FINAL CART
-const cartItems = user?._id ? reduxCartItems : guestCartItems;
+  // ✅ FINAL CART
+  const cartItems = user?._id ? reduxCartItems : guestCartItems;
   const {
     message,
     discountAmount,
@@ -45,26 +44,38 @@ const cartItems = user?._id ? reduxCartItems : guestCartItems;
   const [finalAmount, setFinalAmount] = useState(0);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   useEffect(() => {
-  if (success) {
-    setDiscount(discountAmount);
-    setIsCouponApplied(true);
-  }
-}, [success, discountAmount]);
+    if (success) {
+      setDiscount(discountAmount);
+      setIsCouponApplied(true);
+    }
+  }, [success, discountAmount]);
   useEffect(() => {
     // 1. Calculate the actual current total of everything in the cart
     const cartTotal = (cartItems || []).reduce((sum, item) => {
-      const price = item.salesPrice && Number(item.salesPrice) > 0
-          ? Number(item.salesPrice)
-          : Number(item.price) || 0;
-      return sum + price * (Number(item.quantity) || 0);
-    }, 0);
+  const price =
+    item.salesPrice && Number(item.salesPrice) > 0
+      ? Number(item.salesPrice)
+      : Number(item.price) || 0;
+
+  const quantity = Number(item.quantity) || 1; // ✅ FIX
+
+  return sum + price * quantity;
+}, 0);
 
     const boxesTotal = (boxes || []).reduce((sum, box) => {
       const boxItemsTotal = (box.items || []).reduce((bSum, item) => {
-        const product = productList.find(p => p._id.toString() === item.productId?.toString());
+        const product = productList.find(
+          (p) => p._id.toString() === item.productId?.toString(),
+        );
         if (!product) return bSum;
-        const sizePriceObj = (product.customBoxPrices || []).find(p => p.size === item.size);
-        return bSum + (sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0) * (Number(item.quantity) || 1);
+        const sizePriceObj = (product.customBoxPrices || []).find(
+          (p) => p.size === item.size,
+        );
+        return (
+          bSum +
+          (sizePriceObj ? Number(sizePriceObj.pricePerPiece) : 0) *
+            (Number(item.quantity) || 1)
+        );
       }, 0);
       return sum + boxItemsTotal;
     }, 0);
@@ -78,48 +89,47 @@ const cartItems = user?._id ? reduxCartItems : guestCartItems;
     } else {
       setFinalAmount(currentGrandTotal);
     }
-    
-  }, [cartItems, boxes, productList, discountAmount]); 
+  }, [cartItems, boxes, productList, discountAmount]);
   useEffect(() => {
-  dispatch(resetCoupon()); // 🔥 clear old coupon
-  setIsCouponApplied(false);
-  setDiscount(0);
-  setCouponCode("");
-}, []);
+    dispatch(resetCoupon()); // 🔥 clear old coupon
+    setIsCouponApplied(false);
+    setDiscount(0);
+    setCouponCode("");
+  }, []);
   // removed couponFinal from deps because we calculate it live now
   const handleApplyCoupon = async () => {
-  const trimmedCode = couponCode.trim().toUpperCase();
+    const trimmedCode = couponCode.trim().toUpperCase();
 
-  if (!trimmedCode) {
-    toast.error("Enter coupon code");
-    return;
-  }
-
-  if (isCouponApplied) {
-    toast.info("Coupon already applied");
-    return;
-  }
-
-  try {
-    const data = await dispatch(
-      applyCoupon({
-        code: trimmedCode,
-        orderAmount: finalAmount,
-        userId: user?._id,
-      })
-    );
-
-    if (data?.success) {
-      setDiscount(Number(data.discountAmount) || 0);
-      setIsCouponApplied(true);
-      toast.success("Coupon applied");
-    } else {
-      toast.error(data?.message || "Invalid coupon");
+    if (!trimmedCode) {
+      toast.error("Enter coupon code");
+      return;
     }
-  } catch (error) {
-    toast.error("Something went wrong");
-  }
-};
+
+    if (isCouponApplied) {
+      toast.info("Coupon already applied");
+      return;
+    }
+
+    try {
+      const data = await dispatch(
+        applyCoupon({
+          code: trimmedCode,
+          orderAmount: finalAmount,
+          userId: user?._id,
+        }),
+      );
+
+      if (data?.success) {
+        setDiscount(Number(data.discountAmount) || 0);
+        setIsCouponApplied(true);
+        toast.success("Coupon applied");
+      } else {
+        toast.error(data?.message || "Invalid coupon");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
   return (
     <SheetContent
       side="right"
@@ -190,10 +200,10 @@ const cartItems = user?._id ? reduxCartItems : guestCartItems;
               </p>
               <SheetClose asChild>
                 <Link to="/viewproducts">
-                <button className="mt-4 text-[#B23A2E] text-[10px] font-bold tracking-[0.2em] uppercase border-b border-[#B23A2E] pb-0.5">
-                  Explore Collection
-                </button>
-              </Link>
+                  <button className="mt-4 text-[#B23A2E] text-[10px] font-bold tracking-[0.2em] uppercase border-b border-[#B23A2E] pb-0.5">
+                    Explore Collection
+                  </button>
+                </Link>
               </SheetClose>
             </div>
           )}
@@ -227,34 +237,29 @@ const cartItems = user?._id ? reduxCartItems : guestCartItems;
         {/* PRICING TABLE */}
         <div className="space-y-2 mb-10 px-1">
 
-  {/* NEW: Dispatch Info */}
-  <div className="text-[10px] font-semibold text-[#B23A2E] bg-[#B23A2E]/5 px-3 py-2 rounded-lg border border-[#B23A2E]/20">
-    🚚 Orders will be dispatched from <span className="font-bold">18 April</span>
-  </div>
+          {isCouponApplied && (
+            <div className="flex justify-between text-[10px] font-bold text-green-600 uppercase tracking-tight">
+              <span>Seasonal Discount Applied</span>
+              <span>-₹{discount}</span>
+            </div>
+          )}
 
-  {isCouponApplied && (
-    <div className="flex justify-between text-[10px] font-bold text-green-600 uppercase tracking-tight">
-      <span>Seasonal Discount Applied</span>
-      <span>-₹{discount}</span>
-    </div>
-  )}
-
-  <div className="flex justify-between items-end">
-    <div>
-      <span className="text-[9px] text-stone-400 font-black uppercase tracking-widest">
-        Total Amount
-      </span>
-      <p className="text-2xl font-black text-stone-900 leading-none mt-1">
-        ₹{finalAmount.toFixed(2)}
-      </p>
-    </div>
-    <div className="text-right">
-      <p className="text-[9px] text-stone-300 font-medium italic">
-        Incl. all mountain taxes
-      </p>
-    </div>
-  </div>
-</div>
+          <div className="flex justify-between items-end">
+            <div>
+              <span className="text-[9px] text-stone-400 font-black uppercase tracking-widest">
+                Total Amount
+              </span>
+              <p className="text-2xl font-black text-stone-900 leading-none mt-1">
+                ₹{finalAmount.toFixed(2)}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-[9px] text-stone-300 font-medium italic">
+                Incl. all mountain taxes
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* CTA BUTTON */}
         <Link
