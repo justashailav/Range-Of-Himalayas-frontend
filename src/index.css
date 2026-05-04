@@ -181,4 +181,21 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* Custom Scrollbar for the Cart */
+.premium-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Thick scrollbar like the image */
+}
 
+.premium-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light track */
+  border-radius: 10px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb {
+  background: #888; /* Grey thumb */
+  border-radius: 10px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker on hover */
+}

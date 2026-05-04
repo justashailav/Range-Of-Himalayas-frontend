@@ -101,7 +101,7 @@ export default function UserCartWrapper({ setOpenCartSheet }) {
       </div>
 
       {/* --- SCROLLABLE CONTENT AREA --- */}
-      <div className="flex-1 overflow-y-auto no-scrollbar scroll-smooth">
+      <div className="flex-1 overflow-y-auto premium-scrollbar scroll-smooth pr-2">
         {/* Free Shipping Tracker - Sticks to top of scroll area */}
         <div className="sticky top-0 z-10 px-8 py-5 bg-white border-b border-stone-50">
           <div className="flex justify-between items-end mb-3">
