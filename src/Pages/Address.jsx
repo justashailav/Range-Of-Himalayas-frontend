@@ -8,7 +8,17 @@ import {
 } from "@/store/slices/addressSlice";
 import AddressCard from "./Address-Card";
 import { toast } from "react-toastify";
-import { MapPin, Navigation, Plus, Save, Trash2, X, Phone, Home, Hash } from "lucide-react";
+import {
+  MapPin,
+  Navigation,
+  Plus,
+  Save,
+  Trash2,
+  X,
+  Phone,
+  Home,
+  Hash,
+} from "lucide-react";
 
 const initialAddressFormData = {
   address: "",
@@ -21,12 +31,24 @@ const initialAddressFormData = {
 };
 
 export default function Address({ setCurrentSelectedAddress, selectedId }) {
+  const getGuestAddresses = () => {
+    try {
+      return JSON.parse(localStorage.getItem("guestAddress")) || [];
+    } catch {
+      return [];
+    }
+  };
+
+  const saveGuestAddresses = (data) => {
+    localStorage.setItem("guestAddress", JSON.stringify(data));
+  };
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null);
+  const [guestAddressList, setGuestAddressList] = useState([]);
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { addressList } = useSelector((state) => state.address);
+  const finalAddressList = user?._id ? addressList : guestAddressList;
 
   function handleGetLocation() {
     if (!navigator.geolocation) {
@@ -40,35 +62,62 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
         setFormData((prev) => ({ ...prev, latitude, longitude }));
         toast.success("Coordinates pinpointed");
       },
-      () => toast.error("Unable to access location")
+      () => toast.error("Unable to access location"),
     );
   }
 
   function handleManageAddress(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (addressList.length >= 3 && currentEditedId === null) {
-      toast.error("Address limit reached (3 max)");
-      return;
-    }
-
-    if (!isFormValid()) {
-      toast.error("Please complete the required fields.");
-      return;
-    }
-
-    const action = currentEditedId 
-      ? editAddress({ userId: user?._id, addressId: currentEditedId, formData }) 
-      : addAddress({ ...formData, userId: user?._id });
-
-    dispatch(action).then((data) => {
-      if (data?.success) {
-        dispatch(fetchAllAddress(user?._id));
-        resetForm();
-        toast.success(currentEditedId ? "Destination Updated" : "Destination Saved");
-      }
-    });
+  if (!isFormValid()) {
+    toast.error("Please complete the required fields.");
+    return;
   }
+
+  // 🔥 GUEST FLOW
+  if (!user?._id) {
+    let guestAddresses = getGuestAddresses();
+
+    if (currentEditedId) {
+      guestAddresses = guestAddresses.map((addr) =>
+        addr._id === currentEditedId ? { ...addr, ...formData } : addr
+      );
+    } else {
+      if (guestAddresses.length >= 3) {
+        toast.error("Address limit reached (3 max)");
+        return;
+      }
+
+      guestAddresses.push({
+        _id: Date.now().toString(), // fake id
+        ...formData,
+        location: {
+          coordinates: [formData.longitude, formData.latitude],
+        },
+      });
+    }
+
+    saveGuestAddresses(guestAddresses);
+    setGuestAddressList(guestAddresses);
+
+    resetForm();
+    toast.success("Address saved");
+    return;
+  }
+
+  // 🔥 LOGGED USER FLOW (UNCHANGED)
+  const action = currentEditedId
+    ? editAddress({ userId: user?._id, addressId: currentEditedId, formData })
+    : addAddress({ ...formData, userId: user?._id });
+
+  dispatch(action).then((data) => {
+    if (data?.success) {
+      dispatch(fetchAllAddress(user?._id));
+      resetForm();
+      toast.success(currentEditedId ? "Updated" : "Saved");
+    }
+  });
+}
 
   const resetForm = () => {
     setCurrentEditedId(null);
@@ -87,31 +136,45 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
       longitude: getCurrentAddress?.location?.coordinates?.[0] || "",
     });
     // Scroll to form smoothly
-    window.scrollTo({ top: document.getElementById('address-form').offsetTop - 100, behavior: 'smooth' });
+    window.scrollTo({
+      top: document.getElementById("address-form").offsetTop - 100,
+      behavior: "smooth",
+    });
   }
 
   function handleDeleteAddress(getCurrentAddress) {
-    dispatch(deleteAddress({ userId: user?._id, addressId: getCurrentAddress._id }))
-      .then((data) => data?.success && dispatch(fetchAllAddress(user?._id)));
+    dispatch(
+      deleteAddress({ userId: user?._id, addressId: getCurrentAddress._id }),
+    ).then((data) => data?.success && dispatch(fetchAllAddress(user?._id)));
   }
 
   function isFormValid() {
-    return ["address", "city", "phone", "pincode"].every(field => formData[field].trim() !== "");
+    return ["address", "city", "phone", "pincode"].every(
+      (field) => formData[field].trim() !== "",
+    );
   }
 
   useEffect(() => {
-    if (user?._id) dispatch(fetchAllAddress(user._id));
-  }, [dispatch, user?._id]);
+  if (user?._id) {
+    dispatch(fetchAllAddress(user._id));
+  } else {
+    const guestData = getGuestAddresses();
+    setGuestAddressList(guestData);
+  }
+}, [dispatch, user]);
 
   return (
     <div className="space-y-16 animate-in fade-in duration-700">
-      
       {/* --- SAVED DESTINATIONS --- */}
       <div>
         <div className="flex items-end justify-between mb-8 px-2">
           <div>
-            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Saved Locations</h2>
-            <p className="text-2xl font-bold text-slate-900">Your Destinations</p>
+            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">
+              Saved Locations
+            </h2>
+            <p className="text-2xl font-bold text-slate-900">
+              Your Destinations
+            </p>
           </div>
           <div className="text-[10px] font-bold bg-slate-100 px-3 py-1 rounded-full text-slate-500">
             {addressList?.length}/3 Slots
@@ -120,7 +183,7 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {addressList && addressList.length > 0 ? (
-            addressList.map((item) => (
+            finalAddressList.map((item) => (
               <AddressCard
                 key={item._id}
                 selectedId={selectedId}
@@ -135,14 +198,19 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
               <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
                 <MapPin className="w-6 h-6 text-slate-300" />
               </div>
-              <p className="text-sm font-bold text-slate-400">No destinations found in your archive.</p>
+              <p className="text-sm font-bold text-slate-400">
+                No destinations found in your archive.
+              </p>
             </div>
           )}
         </div>
       </div>
 
       {/* --- ADDRESS FORM --- */}
-      <div id="address-form" className="relative bg-white rounded-[3rem] border border-slate-100 p-10 shadow-[0_30px_100px_rgba(0,0,0,0.04)] overflow-hidden">
+      <div
+        id="address-form"
+        className="relative bg-white rounded-[3rem] border border-slate-100 p-10 shadow-[0_30px_100px_rgba(0,0,0,0.04)] overflow-hidden"
+      >
         {/* Subtle Background Decoration */}
         <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
           <Navigation size={200} />
@@ -156,50 +224,63 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
             <h2 className="text-xl font-black text-slate-900 tracking-tight">
               {currentEditedId ? "Modify Destination" : "Add New Destination"}
             </h2>
-            <p className="text-sm text-slate-400 mt-1 font-medium">Specify the coordinates for your Himalayan delivery.</p>
+            <p className="text-sm text-slate-400 mt-1 font-medium">
+              Specify the coordinates for your Himalayan delivery.
+            </p>
           </div>
 
           <form onSubmit={handleManageAddress} className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-              
-              <CustomInput 
-                icon={<Home size={16}/>} 
-                label="Street Address" 
-                value={formData.address} 
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })} 
+              <CustomInput
+                icon={<Home size={16} />}
+                label="Street Address"
+                value={formData.address}
+                onChange={(e) =>
+                  setFormData({ ...formData, address: e.target.value })
+                }
                 placeholder="House no, Building, Street"
               />
 
-              <CustomInput 
-                icon={<MapPin size={16}/>} 
-                label="City / Region" 
-                value={formData.city} 
-                onChange={(e) => setFormData({ ...formData, city: e.target.value })} 
+              <CustomInput
+                icon={<MapPin size={16} />}
+                label="City / Region"
+                value={formData.city}
+                onChange={(e) =>
+                  setFormData({ ...formData, city: e.target.value })
+                }
                 placeholder="Shimla, Manali..."
               />
 
-              <CustomInput 
-                icon={<Hash size={16}/>} 
-                label="Pincode" 
-                value={formData.pincode} 
-                onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} 
+              <CustomInput
+                icon={<Hash size={16} />}
+                label="Pincode"
+                value={formData.pincode}
+                onChange={(e) =>
+                  setFormData({ ...formData, pincode: e.target.value })
+                }
                 placeholder="171001"
               />
 
-              <CustomInput 
-                icon={<Phone size={16}/>} 
-                label="Contact Number" 
-                value={formData.phone} 
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+              <CustomInput
+                icon={<Phone size={16} />}
+                label="Contact Number"
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
                 placeholder="+91 00000 00000"
               />
 
               <div className="md:col-span-2 group">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2 mb-2 block">Delivery Notes</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2 mb-2 block">
+                  Delivery Notes
+                </label>
                 <textarea
                   placeholder="Gate code, Landmark, or special instructions..."
                   value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, notes: e.target.value })
+                  }
                   className="w-full bg-slate-50 border border-transparent group-hover:border-slate-200 focus:border-slate-900 focus:bg-white rounded-[1.5rem] p-5 text-sm min-h-[120px] outline-none transition-all resize-none"
                 />
               </div>
@@ -211,21 +292,27 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
                     <Navigation size={18} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-slate-900">Pinpoint Accuracy</p>
-                    <p className="text-[11px] text-slate-500">Enable GPS for faster delivery in remote areas.</p>
+                    <p className="text-sm font-bold text-slate-900">
+                      Pinpoint Accuracy
+                    </p>
+                    <p className="text-[11px] text-slate-500">
+                      Enable GPS for faster delivery in remote areas.
+                    </p>
                   </div>
                 </div>
-                
-                <button 
-                  type="button" 
+
+                <button
+                  type="button"
                   onClick={handleGetLocation}
                   className={`px-6 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
-                    formData.latitude 
-                    ? "bg-green-500 text-white shadow-lg shadow-green-100" 
-                    : "bg-white text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-100"
+                    formData.latitude
+                      ? "bg-green-500 text-white shadow-lg shadow-green-100"
+                      : "bg-white text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-100"
                   }`}
                 >
-                  {formData.latitude ? "Location Captured ✓" : "Get Current Location"}
+                  {formData.latitude
+                    ? "Location Captured ✓"
+                    : "Get Current Location"}
                 </button>
               </div>
 
