@@ -172,104 +172,107 @@ export default function Navbar() {
               </Sheet>
 
               {/* USER AVATAR: Shshifted slightly to the right with mr-1/mr-2 */}
-<DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <div className="relative cursor-pointer outline-none active:scale-95 transition-all duration-500 group mr-1 sm:mr-0">
-      <Avatar className="h-9 w-9 ring-offset-2 ring-1 ring-stone-200 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-sm">
-        <AvatarImage
-          src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
-          className="object-cover"
-        />
-        <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-bold">
-          {currentUser.name.charAt(0)}
-        </AvatarFallback>
-      </Avatar>
-      <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-white rounded-full shadow-sm" />
-    </div>
-  </DropdownMenuTrigger>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="relative cursor-pointer outline-none active:scale-95 transition-all duration-500 group mr-1 sm:mr-0">
+                    <Avatar className="h-9 w-9 ring-offset-2 ring-1 ring-stone-200 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-sm">
+                      <AvatarImage
+                        src={
+                          user?.profile?.profilePhoto ||
+                          "https://github.com/shadcn.png"
+                        }
+                        className="object-cover"
+                      />
+                      <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-bold">
+                        {currentUser.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-white rounded-full shadow-sm" />
+                  </div>
+                </DropdownMenuTrigger>
 
-  <DropdownMenuContent
-    align="end"
-    /* alignOffset moves the menu relative to the trigger. 
+                <DropdownMenuContent
+                  align="end"
+                  /* alignOffset moves the menu relative to the trigger. 
        A negative value shifts it further right beyond the trigger edge. */
-    alignOffset={-4} 
-    className="w-64 bg-white/95 backdrop-blur-md border border-stone-200 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[1.5rem] overflow-hidden animate-in fade-in zoom-in-95 duration-300"
-  >
-    {/* HEADER SECTION */}
-    <div className="px-4 py-5 mb-1 bg-stone-50/50 rounded-[1.2rem] border border-stone-100/50">
-      <div className="flex items-center gap-2 mb-1">
-        <span className="h-1 w-1 rounded-full bg-[#B23A2E]" />
-        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
-          {user ? "Verified Member" : "Guest Explorer"}
-        </p>
-      </div>
-      <p className="font-serif text-lg italic text-stone-900 truncate leading-tight">
-        {currentUser.name}
-      </p>
-    </div>
+                  alignOffset={-4}
+                  className="w-64 bg-white/95 backdrop-blur-md border border-stone-200 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[1.5rem] overflow-hidden animate-in fade-in zoom-in-95 duration-300"
+                >
+                  {/* HEADER SECTION */}
+                  <div className="px-4 py-5 mb-1 bg-stone-50/50 rounded-[1.2rem] border border-stone-100/50">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="h-1 w-1 rounded-full bg-[#B23A2E]" />
+                      <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
+                        {user ? "Verified Member" : "Guest Explorer"}
+                      </p>
+                    </div>
+                    <p className="font-serif text-lg italic text-stone-900 truncate leading-tight">
+                      {currentUser.name}
+                    </p>
+                  </div>
 
-    {/* MENU ITEMS GROUP */}
-    <div className="space-y-0.5">
-      <DropdownMenuItem
-        onClick={() => navigate("/profile")}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
-      >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
-          <User className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
-        </div>
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
-          The Profile
-        </span>
-      </DropdownMenuItem>
+                  {/* MENU ITEMS GROUP */}
+                  <div className="space-y-0.5">
+                    <DropdownMenuItem
+                      onClick={() => navigate("/profile")}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
+                    >
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
+                        <User className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
+                        The Profile
+                      </span>
+                    </DropdownMenuItem>
 
-      <DropdownMenuItem
-        onClick={() => navigate("/account")}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
-      >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
-          <Settings className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
-        </div>
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
-          Settings
-        </span>
-      </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => navigate("/account")}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
+                    >
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
+                        <Settings className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
+                        Settings
+                      </span>
+                    </DropdownMenuItem>
 
-      <DropdownMenuItem
-        onClick={() => navigate("/order-tracking")}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-stone-900 text-white focus:bg-[#2d3a2d] transition-all cursor-pointer mt-2"
-      >
-        <Package className="w-3.5 h-3.5 text-stone-400" />
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-          Track Your Order
-        </span>
-      </DropdownMenuItem>
-    </div>
+                    <DropdownMenuItem
+                      onClick={() => navigate("/order-tracking")}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-stone-900 text-white focus:bg-[#2d3a2d] transition-all cursor-pointer mt-2"
+                    >
+                      <Package className="w-3.5 h-3.5 text-stone-400" />
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
+                        Track Your Order
+                      </span>
+                    </DropdownMenuItem>
+                  </div>
 
-    {/* LOGOUT / LOGIN SECTION */}
-    <div className="mt-2 pt-2 border-t border-stone-100">
-      {user ? (
-        <DropdownMenuItem
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-red-50 cursor-pointer group transition-colors"
-        >
-          <LogOut className="w-3.5 h-3.5 text-stone-400 group-focus:text-red-500" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500 group-focus:text-red-600">
-            Sign Out
-          </span>
-        </DropdownMenuItem>
-      ) : (
-        <DropdownMenuItem
-          onClick={() => navigate("/login")}
-          className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-[#B23A2E] text-white focus:bg-[#962f26] cursor-pointer"
-        >
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-            Join the Club
-          </span>
-        </DropdownMenuItem>
-      )}
-    </div>
-  </DropdownMenuContent>
-</DropdownMenu>
+                  {/* LOGOUT / LOGIN SECTION */}
+                  <div className="mt-2 pt-2 border-t border-stone-100">
+                    {user ? (
+                      <DropdownMenuItem
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-red-50 cursor-pointer group transition-colors"
+                      >
+                        <LogOut className="w-3.5 h-3.5 text-stone-400 group-focus:text-red-500" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500 group-focus:text-red-600">
+                          Sign Out
+                        </span>
+                      </DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem
+                        onClick={() => navigate("/login")}
+                        className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-[#B23A2E] text-white focus:bg-[#962f26] cursor-pointer"
+                      >
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
+                          Join the Club
+                        </span>
+                      </DropdownMenuItem>
+                    )}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <button
                 onClick={toggleMenu}
                 className="p-2 flex items-center justify-center active:scale-90 transition-transform"
@@ -410,104 +413,107 @@ export default function Navbar() {
                 </div>
               </Sheet>
               {/* USER AVATAR: Shshifted slightly to the right with mr-1/mr-2 */}
-<DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <div className="relative cursor-pointer outline-none active:scale-95 transition-all duration-500 group mr-1 sm:mr-0">
-      <Avatar className="h-9 w-9 ring-offset-2 ring-1 ring-stone-200 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-sm">
-        <AvatarImage
-          src={user?.profile?.profilePhoto || "https://github.com/shadcn.png"}
-          className="object-cover"
-        />
-        <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-bold">
-          {currentUser.name.charAt(0)}
-        </AvatarFallback>
-      </Avatar>
-      <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-white rounded-full shadow-sm" />
-    </div>
-  </DropdownMenuTrigger>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="relative cursor-pointer outline-none active:scale-95 transition-all duration-500 group mr-1 sm:mr-0">
+                    <Avatar className="h-9 w-9 ring-offset-2 ring-1 ring-stone-200 group-hover:ring-[#B23A2E] transition-all duration-500 shadow-sm">
+                      <AvatarImage
+                        src={
+                          user?.profile?.profilePhoto ||
+                          "https://github.com/shadcn.png"
+                        }
+                        className="object-cover"
+                      />
+                      <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-bold">
+                        {currentUser.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-white rounded-full shadow-sm" />
+                  </div>
+                </DropdownMenuTrigger>
 
-  <DropdownMenuContent
-    align="end"
-    /* alignOffset moves the menu relative to the trigger. 
+                <DropdownMenuContent
+                  align="end"
+                  /* alignOffset moves the menu relative to the trigger. 
        A negative value shifts it further right beyond the trigger edge. */
-    alignOffset={-4} 
-    className="w-64 bg-white/95 backdrop-blur-md border border-stone-200 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[1.5rem] overflow-hidden animate-in fade-in zoom-in-95 duration-300"
-  >
-    {/* HEADER SECTION */}
-    <div className="px-4 py-5 mb-1 bg-stone-50/50 rounded-[1.2rem] border border-stone-100/50">
-      <div className="flex items-center gap-2 mb-1">
-        <span className="h-1 w-1 rounded-full bg-[#B23A2E]" />
-        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
-          {user ? "Verified Member" : "Guest Explorer"}
-        </p>
-      </div>
-      <p className="font-serif text-lg italic text-stone-900 truncate leading-tight">
-        {currentUser.name}
-      </p>
-    </div>
+                  alignOffset={-4}
+                  className="w-64 bg-white/95 backdrop-blur-md border border-stone-200 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-[1.5rem] overflow-hidden animate-in fade-in zoom-in-95 duration-300"
+                >
+                  {/* HEADER SECTION */}
+                  <div className="px-4 py-5 mb-1 bg-stone-50/50 rounded-[1.2rem] border border-stone-100/50">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="h-1 w-1 rounded-full bg-[#B23A2E]" />
+                      <p className="text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
+                        {user ? "Verified Member" : "Guest Explorer"}
+                      </p>
+                    </div>
+                    <p className="font-serif text-lg italic text-stone-900 truncate leading-tight">
+                      {currentUser.name}
+                    </p>
+                  </div>
 
-    {/* MENU ITEMS GROUP */}
-    <div className="space-y-0.5">
-      <DropdownMenuItem
-        onClick={() => navigate("/profile")}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
-      >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
-          <User className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
-        </div>
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
-          The Profile
-        </span>
-      </DropdownMenuItem>
+                  {/* MENU ITEMS GROUP */}
+                  <div className="space-y-0.5">
+                    <DropdownMenuItem
+                      onClick={() => navigate("/profile")}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
+                    >
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
+                        <User className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
+                        The Profile
+                      </span>
+                    </DropdownMenuItem>
 
-      <DropdownMenuItem
-        onClick={() => navigate("/account")}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
-      >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
-          <Settings className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
-        </div>
-        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
-          Settings
-        </span>
-      </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => navigate("/account")}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-stone-50 cursor-pointer group transition-colors"
+                    >
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 group-focus:bg-white transition-colors">
+                        <Settings className="w-3.5 h-3.5 text-stone-500 group-focus:text-[#B23A2E]" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-600">
+                        Settings
+                      </span>
+                    </DropdownMenuItem>
 
-      <DropdownMenuItem
-        onClick={() => navigate("/order-tracking")}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-stone-900 text-white focus:bg-[#2d3a2d] transition-all cursor-pointer mt-2"
-      >
-        <Package className="w-3.5 h-3.5 text-stone-400" />
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-          Track Your Order
-        </span>
-      </DropdownMenuItem>
-    </div>
+                    <DropdownMenuItem
+                      onClick={() => navigate("/order-tracking")}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-stone-900 text-white focus:bg-[#2d3a2d] transition-all cursor-pointer mt-2"
+                    >
+                      <Package className="w-3.5 h-3.5 text-stone-400" />
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
+                        Track Your Order
+                      </span>
+                    </DropdownMenuItem>
+                  </div>
 
-    {/* LOGOUT / LOGIN SECTION */}
-    <div className="mt-2 pt-2 border-t border-stone-100">
-      {user ? (
-        <DropdownMenuItem
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-red-50 cursor-pointer group transition-colors"
-        >
-          <LogOut className="w-3.5 h-3.5 text-stone-400 group-focus:text-red-500" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500 group-focus:text-red-600">
-            Sign Out
-          </span>
-        </DropdownMenuItem>
-      ) : (
-        <DropdownMenuItem
-          onClick={() => navigate("/login")}
-          className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-[#B23A2E] text-white focus:bg-[#962f26] cursor-pointer"
-        >
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
-            Join the Club
-          </span>
-        </DropdownMenuItem>
-      )}
-    </div>
-  </DropdownMenuContent>
-</DropdownMenu>
+                  {/* LOGOUT / LOGIN SECTION */}
+                  <div className="mt-2 pt-2 border-t border-stone-100">
+                    {user ? (
+                      <DropdownMenuItem
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl focus:bg-red-50 cursor-pointer group transition-colors"
+                      >
+                        <LogOut className="w-3.5 h-3.5 text-stone-400 group-focus:text-red-500" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500 group-focus:text-red-600">
+                          Sign Out
+                        </span>
+                      </DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem
+                        onClick={() => navigate("/login")}
+                        className="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-[#B23A2E] text-white focus:bg-[#962f26] cursor-pointer"
+                      >
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
+                          Join the Club
+                        </span>
+                      </DropdownMenuItem>
+                    )}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>

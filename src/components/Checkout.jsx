@@ -30,26 +30,40 @@ import {
 import { getNearestStore } from "@/store/slices/storeSlice";
 import { motion, AnimatePresence } from "framer-motion";
 export default function ShoppingCheckout() {
- const { cartItems = [], boxes = [] } = useSelector((state) => state.cart);
- const location = useLocation();
-  const buyNowItem = location.state;
-// ✅ If buy now exists → override cart
-const finalCartItems =
-  buyNowItem && buyNowItem.productId
-    ? [
-        {
-          productId: buyNowItem.productId,
-          title: buyNowItem.title,
-          image: buyNowItem.image,
-          price: buyNowItem.price,
-          salesPrice: buyNowItem.price,
-          quantity: buyNowItem.quantity,
-          size: buyNowItem.size,
-          weight: buyNowItem.weight,
-        },
-      ]
-    : cartItems;
   const { user } = useSelector((state) => state.auth);
+  const { cartItems: reduxCartItems = [], boxes = [] } =
+    useSelector((state) => state.cart) || {};
+
+  // ✅ SAFE guest cart
+  const getGuestCart = () => {
+    try {
+      return JSON.parse(localStorage.getItem("guestCart")) || [];
+    } catch {
+      return [];
+    }
+  };
+
+  const guestCartItems = getGuestCart();
+  const location = useLocation();
+  const buyNowItem = location.state;
+  // ✅ If buy now exists → override cart
+  const finalCartItems =
+    buyNowItem && buyNowItem.productId
+      ? [
+          {
+            productId: buyNowItem.productId,
+            title: buyNowItem.title,
+            image: buyNowItem.image,
+            price: buyNowItem.price,
+            salesPrice: buyNowItem.price,
+            quantity: buyNowItem.quantity,
+            size: buyNowItem.size,
+            weight: buyNowItem.weight,
+          },
+        ]
+      : user?._id
+        ? reduxCartItems
+        : guestCartItems;
   const {
     discountAmount = 0,
     finalAmount,
@@ -62,7 +76,6 @@ const finalCartItems =
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
 
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -100,7 +113,7 @@ const finalCartItems =
       item.salesPrice && item.salesPrice > 0
         ? Number(item.salesPrice)
         : Number(item.price);
-    const quantity = Number(item.quantity) || 0;
+    const quantity = Number(item.quantity) || 1;
     return sum + price * quantity;
   }, 0);
 
@@ -138,7 +151,8 @@ const finalCartItems =
     }
 
     const orderData = {
-      userId: user?._id,
+      userId: user?._id || null,
+      isGuest: !user?._id,
       cartItems: finalCartItems.map((item) => ({
         productId: item.productId,
         title: item.title,
