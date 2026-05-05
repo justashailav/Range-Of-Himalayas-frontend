@@ -108,15 +108,7 @@ export default function ShoppingCheckout() {
     }
   }, [orderType, currentSelectedAddress]);
   // 🛒 Calculate totals
-  const totalCartAmount = finalCartItems.reduce((sum, item) => {
-    const price =
-      item.salesPrice && item.salesPrice > 0
-        ? Number(item.salesPrice)
-        : Number(item.price);
-    const quantity = Number(item.quantity) || 1;
-    return sum + price * quantity;
-  }, 0);
-
+  
   const boxesTotal = boxes.reduce((sumBoxes, box) => {
     const boxTotal =
       box?.items?.reduce((sum, item) => {
@@ -130,12 +122,29 @@ export default function ShoppingCheckout() {
     return sumBoxes + boxTotal;
   }, 0);
 
-  const grandTotal = totalCartAmount + boxesTotal;
-  const payableAmount =
-    finalAmount !== null && finalAmount !== undefined
-      ? finalAmount
-      : grandTotal - (Number(discountAmount) || 0);
+  const getItemPrice = (item) => {
+  const sale = Number(item.salesPrice);
+  const base = Number(item.price);
 
+  if (!isNaN(sale) && sale > 0) return sale;
+  if (!isNaN(base) && base > 0) return base;
+
+  return 0; // fallback
+};
+
+const totalCartAmount = finalCartItems.reduce((sum, item) => {
+  const price = getItemPrice(item);
+  const quantity = Number(item.quantity) || 1;
+
+  return sum + price * quantity;
+}, 0);
+
+const grandTotal = totalCartAmount + (Number(boxesTotal) || 0);
+
+const payableAmount =
+  finalAmount !== null && finalAmount !== undefined
+    ? Number(finalAmount) || 0
+    : grandTotal - (Number(discountAmount) || 0);
   async function handlePlaceOrder() {
     if (finalCartItems.length === 0 && boxes.length === 0)
       return toast.error("Your cart is empty.");
