@@ -639,7 +639,6 @@ export default function ShoppingCheckout() {
                     {/* Price Section - Shrink-0 ensures the price doesn't wrap awkwardly */}
                     <div className="text-right shrink-0">
                       <p className="text-xs sm:text-sm font-black text-stone-900 tracking-tighter">
-                        ₹
                         {(() => {
                           const safePrice =
                             Number(item.salesPrice) > 0
