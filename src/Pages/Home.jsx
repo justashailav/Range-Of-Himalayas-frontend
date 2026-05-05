@@ -128,13 +128,42 @@ export default function Home() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }
 
+  
   function handleAddToCart(getCurrentProductId, getTotalStock, size, weight) {
   const normalizedSize = size || "";
   const quantityToAdd = 1;
 
-  // 🔥 IF USER NOT LOGGED IN → USE LOCAL STORAGE
+  // 🔍 FIND PRODUCT FROM STORE
+  const product = productList.find(
+    (p) => p._id.toString() === getCurrentProductId.toString()
+  );
+
+  if (!product) {
+    toast.error("Product not found");
+    return;
+  }
+
+  // 🔍 FIND VARIANT (SIZE + WEIGHT)
+  const variant = product?.variants?.find(
+    (v) =>
+      (normalizedSize ? (v.size || "") === normalizedSize : true) &&
+      v.weight === weight
+  );
+
+  const price = Number(variant?.price) || 0;
+  const salesPrice = Number(variant?.salesPrice) || 0;
+
+  // ===============================
+  // 🔥 GUEST USER FLOW (LOCAL STORAGE)
+  // ===============================
   if (!user?._id) {
-    let guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+    let guestCart = [];
+
+    try {
+      guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+    } catch {
+      guestCart = [];
+    }
 
     const existingIndex = guestCart.findIndex(
       (item) =>
@@ -144,14 +173,28 @@ export default function Home() {
     );
 
     if (existingIndex > -1) {
-      if (guestCart[existingIndex].quantity + 1 > getTotalStock) {
+      const currentQty = Number(guestCart[existingIndex].quantity) || 0;
+
+      if (currentQty + 1 > getTotalStock) {
         toast.error(`Only ${getTotalStock} items available`);
         return;
       }
-      guestCart[existingIndex].quantity += 1;
+
+      // ✅ update quantity + ensure price exists
+      guestCart[existingIndex].quantity = currentQty + 1;
+      guestCart[existingIndex].price =
+        Number(guestCart[existingIndex].price) || price;
+      guestCart[existingIndex].salesPrice =
+        Number(guestCart[existingIndex].salesPrice) || salesPrice;
     } else {
       guestCart.push({
         productId: getCurrentProductId,
+        title: product.title,
+        image: product.image,
+
+        price: price,                 // ✅ FIXED
+        salesPrice: salesPrice,       // ✅ FIXED
+
         quantity: quantityToAdd,
         size: normalizedSize,
         weight,
@@ -165,7 +208,9 @@ export default function Home() {
     return;
   }
 
-  // 🔥 LOGGED IN USER FLOW (YOUR ORIGINAL)
+  // ===============================
+  // 🔥 LOGGED-IN USER FLOW
+  // ===============================
   const getCartItems = cartItems?.items || [];
 
   const existingItemIndex = getCartItems.findIndex(
@@ -177,6 +222,7 @@ export default function Home() {
 
   if (existingItemIndex > -1) {
     const currentQuantity = getCartItems[existingItemIndex].quantity;
+
     if (currentQuantity + 1 > getTotalStock) {
       toast.error(`Only ${getTotalStock} items available`);
       return;
