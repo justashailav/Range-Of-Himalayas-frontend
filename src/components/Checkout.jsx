@@ -108,7 +108,7 @@ export default function ShoppingCheckout() {
     }
   }, [orderType, currentSelectedAddress]);
   // 🛒 Calculate totals
-  
+
   const boxesTotal = boxes.reduce((sumBoxes, box) => {
     const boxTotal =
       box?.items?.reduce((sum, item) => {
@@ -123,28 +123,31 @@ export default function ShoppingCheckout() {
   }, 0);
 
   const getItemPrice = (item) => {
-  const sale = Number(item.salesPrice);
-  const base = Number(item.price);
+    const sale = Number(item.salesPrice);
+    const base = Number(item.price);
 
-  if (!isNaN(sale) && sale > 0) return sale;
-  if (!isNaN(base) && base > 0) return base;
+    if (!isNaN(sale) && sale > 0) return sale;
+    if (!isNaN(base) && base > 0) return base;
 
-  return 0; // fallback
-};
+    return 0; // fallback
+  };
 
-const totalCartAmount = finalCartItems.reduce((sum, item) => {
-  const price = getItemPrice(item);
-  const quantity = Number(item.quantity) || 1;
+  const totalCartAmount = finalCartItems.reduce((sum, item) => {
+  const price =
+    Number(item.salesPrice) > 0
+      ? Number(item.salesPrice)
+      : Number(item.price) || 0;
 
-  return sum + price * quantity;
+  const qty = Number(item.quantity) || 1;
+
+  return sum + price * qty;
 }, 0);
+  const grandTotal = totalCartAmount + (Number(boxesTotal) || 0);
 
-const grandTotal = totalCartAmount + (Number(boxesTotal) || 0);
-
-const payableAmount =
-  finalAmount !== null && finalAmount !== undefined
-    ? Number(finalAmount) || 0
-    : grandTotal - (Number(discountAmount) || 0);
+  const payableAmount =
+    finalAmount !== null && finalAmount !== undefined
+      ? Number(finalAmount) || 0
+      : grandTotal - (Number(discountAmount) || 0);
   async function handlePlaceOrder() {
     if (finalCartItems.length === 0 && boxes.length === 0)
       return toast.error("Your cart is empty.");
@@ -637,10 +640,20 @@ const payableAmount =
                     <div className="text-right shrink-0">
                       <p className="text-xs sm:text-sm font-black text-stone-900 tracking-tighter">
                         ₹
-                        {(
-                          (item.salesPrice > 0 ? item.salesPrice : item.price) *
-                          item.quantity
-                        ).toFixed(0)}
+                        {(() => {
+                          const safePrice =
+                            Number(item.salesPrice) > 0
+                              ? Number(item.salesPrice)
+                              : Number(item.price) || 0;
+
+                          const qty = Number(item.quantity) || 1;
+
+                          return (
+                            <p className="text-xs sm:text-sm font-black text-stone-900 tracking-tighter">
+                              ₹{(safePrice * qty).toFixed(0)}
+                            </p>
+                          );
+                        })()}
                       </p>
                       <p className="hidden sm:block text-[8px] font-bold text-stone-300 uppercase tracking-widest mt-1">
                         incl. tax
