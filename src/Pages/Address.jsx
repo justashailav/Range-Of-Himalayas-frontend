@@ -177,12 +177,12 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
             </p>
           </div>
           <div className="text-[10px] font-bold bg-slate-100 px-3 py-1 rounded-full text-slate-500">
-            {addressList?.length}/3 Slots
+            {finalAddressList?.length}/3 Slots
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {addressList && addressList.length > 0 ? (
+          {finalAddressList && finalAddressList.length > 0 ? (
             finalAddressList.map((item) => (
               <AddressCard
                 key={item._id}
