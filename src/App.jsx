@@ -115,18 +115,9 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/custombox" element={<CustomBox />} />
 
-        {/* 🔥 PUBLIC CHECKOUT (IMPORTANT CHANGE) */}
+        
         <Route path="/checkout" element={<ShoppingCheckout />} />
-
-        {/* ================= USER PROTECTED ================= */}
-        <Route
-          element={
-            <CheckAuth user={user} isAuthencated={isAuthencated}>
-              <Outlet />
-            </CheckAuth>
-          }
-        >
-          <Route path="/account" element={<ShoppingAccount />} />
+        <Route path="/account" element={<ShoppingAccount />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<WishListItemContent />} />
           <Route path="/order-success" element={<OrderSuccess />} />
@@ -140,6 +131,15 @@ function App() {
             element={<ReturnRequestPage />}
           />
           <Route path="/order-tracking" element={<OrderTracking />} />
+        
+        <Route
+          element={
+            <CheckAuth user={user} isAuthencated={isAuthencated}>
+              <Outlet />
+            </CheckAuth>
+          }
+        >
+          
         </Route>
       </Route>
 
