@@ -22,22 +22,26 @@ export default function ShoppingOrders() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+
   const { orderList, error } = useSelector((state) => state.orders);
 
+  // ✅ Guest Orders From LocalStorage
+  const guestOrders = JSON.parse(localStorage.getItem("guestOrders")) || [];
+
+  // ✅ Final Orders
+  const finalOrderList = user?._id ? orderList : guestOrders;
+
+  // ✅ Fetch Only Logged User Orders
   useEffect(() => {
     if (user?._id) {
       dispatch(getAllOrdersByUserId(user._id));
     }
-  }, [dispatch, user?._id]);
+  }, [dispatch, user]);
+  const existingOrders = JSON.parse(localStorage.getItem("guestOrders")) || [];
 
-  if (!user) {
-    return (
-      <p className="text-center mt-20 text-gray-500 text-lg">
-        Please login to view your orders.
-      </p>
-    );
-  }
+  existingOrders.push(order);
 
+  localStorage.setItem("guestOrders", JSON.stringify(existingOrders));
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 py-8">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -64,7 +68,7 @@ export default function ShoppingOrders() {
           </div>
         </div>
         {/* EMPTY STATE */}
-        {orderList?.length === 0 && (
+        {finalOrderList?.length === 0 && (
           <div className="mt-12 py-24 px-10 text-center bg-stone-50 rounded-[3rem] border border-dashed border-stone-200">
             <div className="flex flex-col items-center gap-6">
               {/* Minimalist Icon/Graphic placeholder */}
@@ -93,7 +97,7 @@ export default function ShoppingOrders() {
         )}
         {/* ORDERS */}
         <div className="space-y-6">
-          {orderList?.map((order) => {
+          {finalOrderList?.map((order) => {
             const currentIndex = statusSteps.indexOf(order.orderStatus);
 
             return (
