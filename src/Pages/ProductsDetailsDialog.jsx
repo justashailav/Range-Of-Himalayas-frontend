@@ -53,6 +53,7 @@ export default function ProductsDetailsDialog() {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [infoOpen, setInfoOpen] = useState(true);
   const [variantHighlight, setVariantHighlight] = useState(false);
+  const [openSection, setOpenSection] = useState(null);
 
   const variants = productDetails?.variants || [];
 
@@ -198,30 +199,29 @@ export default function ProductsDetailsDialog() {
       }
     });
   };
-  
 
-const handleBuyNow = () => {
-  if (!selectedVariant) return;
+  const handleBuyNow = () => {
+    if (!selectedVariant) return;
 
-  const finalPrice =
-    selectedVariant.salesPrice > 0
-      ? selectedVariant.salesPrice
-      : selectedVariant.price;
+    const finalPrice =
+      selectedVariant.salesPrice > 0
+        ? selectedVariant.salesPrice
+        : selectedVariant.price;
 
-  // ✅ Create Buy Now product object
-  const buyNowItem = {
-    productId: productDetails._id,
-    title: productDetails.title,
-    image: productDetails.image,
-    price: finalPrice,
-    quantity: 1,
-    size: selectedVariant.size || "",
-    weight: selectedVariant.weight,
+    // ✅ Create Buy Now product object
+    const buyNowItem = {
+      productId: productDetails._id,
+      title: productDetails.title,
+      image: productDetails.image,
+      price: finalPrice,
+      quantity: 1,
+      size: selectedVariant.size || "",
+      weight: selectedVariant.weight,
+    };
+
+    // ✅ Redirect to checkout with data
+    navigate("/checkout", { state: buyNowItem });
   };
-
-  // ✅ Redirect to checkout with data
-  navigate("/checkout", { state: buyNowItem });
-};
   function handleAddToWishList(
     getCurrentProductId,
     getTotalStock,
@@ -749,79 +749,126 @@ const handleBuyNow = () => {
                 </span>
               </motion.div>
 
-              
-
-{/* BENEFITS SECTION */}
+              {/* BENEFITS */}
 {productDetails?.benefits?.length > 0 && (
   <div className="mt-16">
-    {/* Minimalist Asymmetric Header */}
-    <div className="flex items-center gap-4 mb-8">
-      <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 shrink-0">
-        Product Benefits
-      </span>
-      <div className="h-[1px] w-full bg-stone-200/80"></div>
-    </div>
+    <button
+      onClick={() =>
+        setOpenSection(
+          openSection === "benefits" ? null : "benefits",
+        )
+      }
+      className="w-full flex items-center justify-between group"
+    >
+      <div className="flex items-center gap-4 w-full">
+        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 shrink-0">
+          Product Benefits
+        </span>
 
-    {/* Elegant Content Stream */}
-    <div className="grid gap-y-6 pl-1">
-      {productDetails.benefits.map((benefit, index) => (
-        <div
-          key={index}
-          className="flex items-start gap-5 group relative"
-        >
-          {/* Accent Line Indicator */}
-          <div className="flex flex-col items-center shrink-0 pt-1">
-            <div className="w-5 h-5 rounded-full bg-[#942820]/5 flex items-center justify-center transition-colors group-hover:bg-[#942820]/10">
-              <Leaf size={11} className="text-[#942820]" />
+        <div className="h-[1px] w-full bg-stone-200/80"></div>
+      </div>
+
+      <ChevronDown
+        size={18}
+        className={`ml-4 text-stone-400 transition-transform duration-500 ${
+          openSection === "benefits" ? "rotate-180" : ""
+        }`}
+      />
+    </button>
+
+    <div
+      className={`grid transition-all duration-700 ease-in-out overflow-hidden ${
+        openSection === "benefits"
+          ? "grid-rows-[1fr] opacity-100 mt-10"
+          : "grid-rows-[0fr] opacity-0"
+      }`}
+    >
+      <div className="overflow-hidden">
+        <div className="grid gap-y-6 pl-1">
+          {productDetails.benefits.map((benefit, index) => (
+            <div
+              key={index}
+              className="flex items-start gap-5 group relative"
+            >
+              <div className="flex flex-col items-center shrink-0 pt-1">
+                <div className="w-5 h-5 rounded-full bg-[#942820]/5 flex items-center justify-center transition-colors group-hover:bg-[#942820]/10">
+                  <Leaf size={11} className="text-[#942820]" />
+                </div>
+
+                {index !== productDetails.benefits.length - 1 && (
+                  <div className="w-[1px] h-12 bg-stone-100 mt-2 absolute top-6 left-2.5"></div>
+                )}
+              </div>
+
+              <p className="text-sm text-stone-600 font-light leading-relaxed max-w-2xl">
+                {benefit}
+              </p>
             </div>
-            {index !== productDetails.benefits.length - 1 && (
-              <div className="w-[1px] h-12 bg-stone-100 mt-2 absolute top-6 left-2.5"></div>
-            )}
-          </div>
-
-          <p className="text-sm text-stone-600 font-light leading-relaxed max-w-2xl">
-            {benefit}
-          </p>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   </div>
 )}
 
-{/* HOW TO USE SECTION */}
+{/* HOW TO USE */}
 {productDetails?.howToUse?.length > 0 && (
-  <div className="mt-20">
-    {/* Minimalist Asymmetric Header */}
-    <div className="flex items-center gap-4 mb-10">
-      <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 shrink-0">
-        Application & Ritual
-      </span>
-      <div className="h-[1px] w-full bg-stone-200/80"></div>
-    </div>
+  <div className="mt-16">
+    <button
+      onClick={() =>
+        setOpenSection(
+          openSection === "usage" ? null : "usage",
+        )
+      }
+      className="w-full flex items-center justify-between group"
+    >
+      <div className="flex items-center gap-4 w-full">
+        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 shrink-0">
+          Application & Ritual
+        </span>
 
-    {/* Deconstructed Grid Steps */}
-    <div className="grid gap-y-10 sm:gap-y-12">
-      {productDetails.howToUse.map((step, index) => (
-        <div
-          key={index}
-          className="grid grid-cols-1 md:grid-cols-[60px_1fr] gap-2 md:gap-6 items-start group"
-        >
-          {/* Fine Editorial Typography Index */}
-          <div className="text-xs font-mono font-medium tracking-widest text-stone-400/80 group-hover:text-stone-800 transition-colors duration-300 md:pt-0.5">
-            {String(index + 1).padStart(2, "0")}
-          </div>
+        <div className="h-[1px] w-full bg-stone-200/80"></div>
+      </div>
 
-          {/* Step Narrative */}
-          <div className="border-l border-stone-100 md:border-l-0 pl-4 md:pl-0">
-            <p className="text-sm text-stone-600 font-light leading-relaxed max-w-2xl">
-              {step}
-            </p>
-          </div>
+      <ChevronDown
+        size={18}
+        className={`ml-4 text-stone-400 transition-transform duration-500 ${
+          openSection === "usage" ? "rotate-180" : ""
+        }`}
+      />
+    </button>
+
+    <div
+      className={`grid transition-all duration-700 ease-in-out overflow-hidden ${
+        openSection === "usage"
+          ? "grid-rows-[1fr] opacity-100 mt-10"
+          : "grid-rows-[0fr] opacity-0"
+      }`}
+    >
+      <div className="overflow-hidden">
+        <div className="grid gap-y-10 sm:gap-y-12">
+          {productDetails.howToUse.map((step, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-1 md:grid-cols-[60px_1fr] gap-2 md:gap-6 items-start group"
+            >
+              <div className="text-xs font-mono font-medium tracking-widest text-stone-400/80 group-hover:text-stone-800 transition-colors duration-300 md:pt-0.5">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <div className="border-l border-stone-100 md:border-l-0 pl-4 md:pl-0">
+                <p className="text-sm text-stone-600 font-light leading-relaxed max-w-2xl">
+                  {step}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   </div>
 )}
+              
             </motion.div>
 
             <motion.div
@@ -1091,13 +1138,12 @@ const handleBuyNow = () => {
               </Button>
             </div>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 items-stretch">
-  
-  {/* ⚡ BUY NOW - High Impact Primary */}
-  <button
-    disabled={!selectedVariant}
-    onClick={handleBuyNow}
-    className="
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 items-stretch">
+              {/* ⚡ BUY NOW - High Impact Primary */}
+              <button
+                disabled={!selectedVariant}
+                onClick={handleBuyNow}
+                className="
       group
       relative overflow-hidden
       w-full sm:flex-[1.5]
@@ -1113,24 +1159,27 @@ const handleBuyNow = () => {
       flex items-center justify-center gap-2
       disabled:opacity-40 disabled:pointer-events-none
     "
-  >
-    <Zap size={15} className="fill-current group-hover:animate-pulse" />
-    <span>Buy Now</span>
-  </button>
+              >
+                <Zap
+                  size={15}
+                  className="fill-current group-hover:animate-pulse"
+                />
+                <span>Buy Now</span>
+              </button>
 
-  {/* 🛒 ADD TO CART - Sophisticated Secondary */}
-  <button
-    onClick={() => {
-      setIsAddingToCart(true);
-      handleAddToCart(
-        productDetails._id,
-        selectedVariant.stock,
-        selectedVariant.size,
-        selectedVariant.weight,
-      );
-      setTimeout(() => setIsAddingToCart(false), 800);
-    }}
-    className="
+              {/* 🛒 ADD TO CART - Sophisticated Secondary */}
+              <button
+                onClick={() => {
+                  setIsAddingToCart(true);
+                  handleAddToCart(
+                    productDetails._id,
+                    selectedVariant.stock,
+                    selectedVariant.size,
+                    selectedVariant.weight,
+                  );
+                  setTimeout(() => setIsAddingToCart(false), 800);
+                }}
+                className="
       relative overflow-hidden
       w-full sm:flex-1
       bg-stone-900 text-white
@@ -1143,29 +1192,29 @@ const handleBuyNow = () => {
       transition-all duration-300
       flex items-center justify-center
     "
-  >
-    {isAddingToCart ? (
-      <div className="flex items-center gap-2">
-        <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-        <span className="text-[10px]">Adding...</span>
-      </div>
-    ) : (
-      <span>Add to Cart</span>
-    )}
-  </button>
+              >
+                {isAddingToCart ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="text-[10px]">Adding...</span>
+                  </div>
+                ) : (
+                  <span>Add to Cart</span>
+                )}
+              </button>
 
-  {/* ❤️ WISHLIST - Clean Utility */}
-  <button
-    disabled={!selectedVariant}
-    onClick={() => {
-      handleAddToWishList(
-        productDetails._id,
-        selectedVariant.stock,
-        selectedVariant.size || "",
-        selectedVariant.weight,
-      );
-    }}
-    className="
+              {/* ❤️ WISHLIST - Clean Utility */}
+              <button
+                disabled={!selectedVariant}
+                onClick={() => {
+                  handleAddToWishList(
+                    productDetails._id,
+                    selectedVariant.stock,
+                    selectedVariant.size || "",
+                    selectedVariant.weight,
+                  );
+                }}
+                className="
       aspect-square h-[56px] w-[56px]
       rounded-xl
       border-2 border-stone-100
@@ -1177,12 +1226,12 @@ const handleBuyNow = () => {
       disabled:opacity-30
       group
     "
-  >
-    <Heart 
-      className={`w-5 h-5 transition-transform duration-300 group-hover:scale-125 ${productDetails.isWishlisted ? 'fill-red-500 stroke-red-500' : ''}`} 
-    />
-  </button>
-</div>
+              >
+                <Heart
+                  className={`w-5 h-5 transition-transform duration-300 group-hover:scale-125 ${productDetails.isWishlisted ? "fill-red-500 stroke-red-500" : ""}`}
+                />
+              </button>
+            </div>
           </div>
         </div>
         <div className="mt-32 max-w-6xl mx-auto px-6 pb-32">
