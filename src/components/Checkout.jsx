@@ -133,15 +133,15 @@ export default function ShoppingCheckout() {
   };
 
   const totalCartAmount = finalCartItems.reduce((sum, item) => {
-  const price =
-    Number(item.salesPrice) > 0
-      ? Number(item.salesPrice)
-      : Number(item.price) || 0;
+    const price =
+      Number(item.salesPrice) > 0
+        ? Number(item.salesPrice)
+        : Number(item.price) || 0;
 
-  const qty = Number(item.quantity) || 1;
+    const qty = Number(item.quantity) || 1;
 
-  return sum + price * qty;
-}, 0);
+    return sum + price * qty;
+  }, 0);
   const grandTotal = totalCartAmount + (Number(boxesTotal) || 0);
 
   const payableAmount =
@@ -226,7 +226,17 @@ export default function ShoppingCheckout() {
                   razorpay_signature: rzpResponse.razorpay_signature,
                 }),
               );
+              if (!user?._id) {
+                const existingOrders =
+                  JSON.parse(localStorage.getItem("guestOrders")) || [];
 
+                existingOrders.push(paymentResponse.order);
+
+                localStorage.setItem(
+                  "guestOrders",
+                  JSON.stringify(existingOrders),
+                );
+              }
               toast.success("Payment successful!");
               setTimeout(() => {
                 navigate("/order-success", { replace: true });
