@@ -751,138 +751,126 @@ export default function ProductsDetailsDialog() {
 
               {/* BENEFITS */}
               {/* BENEFITS */}
-{productDetails?.benefits?.length > 0 && (
-  <div className="mt-16">
-    <button
-      onClick={() =>
-        setOpenSection(
-          openSection === "benefits" ? null : "benefits",
-        )
-      }
-      className="w-full flex items-center justify-between group"
-    >
-      <div className="flex items-center gap-5 w-full">
-        <span className="text-lg md:text-xl font-black tracking-[0.08em] uppercase text-stone-800 shrink-0">
-          Product Benefits
-        </span>
+              {productDetails?.benefits?.length > 0 && (
+                <div className="mt-16">
+                  <button
+                    onClick={() =>
+                      setOpenSection(
+                        openSection === "benefits" ? null : "benefits",
+                      )
+                    }
+                    className="w-full flex items-center justify-between group"
+                  >
+                    <div className="flex items-center gap-5 w-full">
+                      <span className="text-lg md:text-xl font-black tracking-[0.08em] uppercase text-stone-800 shrink-0">
+                        Product Benefits
+                      </span>
 
-        <div className="h-[1px] w-full bg-stone-300"></div>
-      </div>
+                      <div className="h-[1px] w-full bg-stone-300"></div>
+                    </div>
 
-      <ChevronDown
-        size={22}
-        className={`ml-4 text-stone-700 transition-all duration-500 ${
-          openSection === "benefits"
-            ? "rotate-180"
-            : ""
-        }`}
-      />
-    </button>
+                    <ChevronDown
+                      size={22}
+                      className={`ml-4 text-stone-700 transition-all duration-500 ${
+                        openSection === "benefits" ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-    <div
-      className={`grid transition-all duration-700 ease-in-out overflow-hidden ${
-        openSection === "benefits"
-          ? "grid-rows-[1fr] opacity-100 mt-10"
-          : "grid-rows-[0fr] opacity-0"
-      }`}
-    >
-      <div className="overflow-hidden">
-        <div className="grid gap-y-8 pl-1">
-          {productDetails.benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-5 group relative"
-            >
-              {/* ICON + LINE */}
-              <div className="flex flex-col items-center shrink-0 pt-1">
-                <div className="w-8 h-8 rounded-full bg-[#942820]/10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#942820]/20">
-                  <Leaf
-                    size={15}
-                    className="text-[#942820]"
-                  />
+                  <div
+                    className={`grid transition-all duration-700 ease-in-out overflow-hidden ${
+                      openSection === "benefits"
+                        ? "grid-rows-[1fr] opacity-100 mt-10"
+                        : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="grid gap-y-8 pl-1">
+                        {productDetails.benefits.map((benefit, index) => (
+                          <div
+                            key={index}
+                            className="flex items-start gap-5 group relative"
+                          >
+                            {/* ICON + LINE */}
+                            <div className="flex flex-col items-center shrink-0 pt-1">
+                              <div className="w-8 h-8 rounded-full bg-[#942820]/10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#942820]/20">
+                                <Leaf size={15} className="text-[#942820]" />
+                              </div>
+
+                              {index !== productDetails.benefits.length - 1 && (
+                                <div className="w-[1px] h-16 bg-stone-200 mt-2 absolute top-8 left-4"></div>
+                              )}
+                            </div>
+
+                            {/* TEXT */}
+                            <p className="text-base md:text-lg text-stone-800 font-medium leading-relaxed max-w-3xl">
+                              {benefit}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              )}
 
-                {index !==
-                  productDetails.benefits.length - 1 && (
-                  <div className="w-[1px] h-16 bg-stone-200 mt-2 absolute top-8 left-4"></div>
-                )}
-              </div>
+              {/* HOW TO USE */}
+              {productDetails?.howToUse?.length > 0 && (
+                <div className="mt-20">
+                  <button
+                    onClick={() =>
+                      setOpenSection(openSection === "usage" ? null : "usage")
+                    }
+                    className="w-full flex items-center justify-between group"
+                  >
+                    <div className="flex items-center gap-5 w-full">
+                      <span className="text-lg md:text-xl font-black tracking-[0.08em] uppercase text-stone-800 shrink-0">
+                        How To Use
+                      </span>
 
-              {/* TEXT */}
-              <p className="text-base md:text-lg text-stone-800 font-medium leading-relaxed max-w-3xl">
-                {benefit}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+                      <div className="h-[1px] w-full bg-stone-300"></div>
+                    </div>
 
-{/* HOW TO USE */}
-{productDetails?.howToUse?.length > 0 && (
-  <div className="mt-20">
-    <button
-      onClick={() =>
-        setOpenSection(
-          openSection === "usage" ? null : "usage",
-        )
-      }
-      className="w-full flex items-center justify-between group"
-    >
-      <div className="flex items-center gap-5 w-full">
-        <span className="text-lg md:text-xl font-black tracking-[0.08em] uppercase text-stone-800 shrink-0">
-          How To Use
-        </span>
+                    <ChevronDown
+                      size={22}
+                      className={`ml-4 text-stone-700 transition-all duration-500 ${
+                        openSection === "usage" ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-        <div className="h-[1px] w-full bg-stone-300"></div>
-      </div>
+                  <div
+                    className={`grid transition-all duration-700 ease-in-out overflow-hidden ${
+                      openSection === "usage"
+                        ? "grid-rows-[1fr] opacity-100 mt-12"
+                        : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="grid gap-y-12">
+                        {productDetails.howToUse.map((step, index) => (
+                          <div
+                            key={index}
+                            className="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-3 md:gap-8 items-start group"
+                          >
+                            {/* NUMBER */}
+                            <div className="text-lg font-mono font-bold tracking-widest text-stone-700 group-hover:text-stone-900 transition-colors duration-300 md:pt-1">
+                              {String(index + 1).padStart(2, "0")}
+                            </div>
 
-      <ChevronDown
-        size={22}
-        className={`ml-4 text-stone-700 transition-all duration-500 ${
-          openSection === "usage"
-            ? "rotate-180"
-            : ""
-        }`}
-      />
-    </button>
-
-    <div
-      className={`grid transition-all duration-700 ease-in-out overflow-hidden ${
-        openSection === "usage"
-          ? "grid-rows-[1fr] opacity-100 mt-12"
-          : "grid-rows-[0fr] opacity-0"
-      }`}
-    >
-      <div className="overflow-hidden">
-        <div className="grid gap-y-12">
-          {productDetails.howToUse.map(
-            (step, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-3 md:gap-8 items-start group"
-              >
-                {/* NUMBER */}
-                <div className="text-lg font-mono font-bold tracking-widest text-stone-700 group-hover:text-stone-900 transition-colors duration-300 md:pt-1">
-                  {String(index + 1).padStart(2, "0")}
+                            {/* TEXT */}
+                            <div className="border-l border-stone-200 pl-5 md:pl-0 md:border-l-0">
+                              <p className="text-base md:text-lg text-stone-800 font-medium leading-relaxed max-w-3xl">
+                                {step}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                {/* TEXT */}
-                <div className="border-l border-stone-200 pl-5 md:pl-0 md:border-l-0">
-                  <p className="text-base md:text-lg text-stone-800 font-medium leading-relaxed max-w-3xl">
-                    {step}
-                  </p>
-                </div>
-              </div>
-            ),
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+              )}
             </motion.div>
 
             <motion.div
@@ -1312,10 +1300,9 @@ export default function ProductsDetailsDialog() {
                   <div className="md:col-span-3 mb-10 md:mb-0 space-y-8">
                     <div className="relative inline-block">
                       {/* Boxed Initial */}
-                     <div className="w-20 h-20 bg-stone-900 flex items-center justify-center text-white font-serif italic text-4xl shadow-lg group-hover:bg-[#B23A2E] transition-colors duration-500">
-  {r?.userName?.charAt(0) || "U"}
-</div>
-
+                      <div className="w-20 h-20 bg-stone-900 flex items-center justify-center text-white font-serif italic text-4xl shadow-lg group-hover:bg-[#B23A2E] transition-colors duration-500">
+                        {r?.userName?.charAt(0) || "U"}
+                      </div>
 
                       {/* Red Detail Tag */}
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#B23A2E] border-4 border-[#fdfcf7] rounded-full" />
@@ -1323,9 +1310,9 @@ export default function ProductsDetailsDialog() {
 
                     <div className="space-y-3">
                       <div>
-                        <h3 className="text-[14px] font-black uppercase tracking-[0.2em] text-stone-900 leading-none">
-                          {r.userName}
-                        </h3>
+                       <h3 className="text-[14px] font-black uppercase tracking-[0.2em] text-stone-900 leading-none">
+  {r?.userName || "Unknown User"}
+</h3>
                         <p className="text-[10px] text-stone-400 uppercase tracking-widest mt-2">
                           {dayjs(r.createdAt).format("MMM YYYY")}
                         </p>
