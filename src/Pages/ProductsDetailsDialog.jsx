@@ -1312,9 +1312,11 @@ export default function ProductsDetailsDialog() {
                   <div className="md:col-span-3 mb-10 md:mb-0 space-y-8">
                     <div className="relative inline-block">
                       {/* Boxed Initial */}
-                      <div className="w-20 h-20 bg-stone-900 flex items-center justify-center text-white font-serif italic text-4xl shadow-lg group-hover:bg-[#B23A2E] transition-colors duration-500">
-                        {r.userName.charAt(0)}
-                      </div>
+                     <div className="w-20 h-20 bg-stone-900 flex items-center justify-center text-white font-serif italic text-4xl shadow-lg group-hover:bg-[#B23A2E] transition-colors duration-500">
+  {r?.userName?.charAt(0) || "U"}
+</div>
+
+
                       {/* Red Detail Tag */}
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#B23A2E] border-4 border-[#fdfcf7] rounded-full" />
                     </div>
