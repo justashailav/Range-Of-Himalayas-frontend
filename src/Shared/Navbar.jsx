@@ -184,8 +184,8 @@ export default function Navbar() {
                         className="object-cover"
                       />
                       <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-bold">
-                        {currentUser.name.charAt(0)}
-                      </AvatarFallback>
+  {currentUser?.name?.charAt(0) || "U"}
+</AvatarFallback>
                     </Avatar>
                     <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-white rounded-full shadow-sm" />
                   </div>
@@ -425,8 +425,8 @@ export default function Navbar() {
                         className="object-cover"
                       />
                       <AvatarFallback className="bg-[#2d3a2d] text-[#fdfcf7] text-[10px] font-bold">
-                        {currentUser.name.charAt(0)}
-                      </AvatarFallback>
+  {currentUser?.name?.charAt(0) || "U"}
+</AvatarFallback>
                     </Avatar>
                     <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 bg-[#B23A2E] border-2 border-white rounded-full shadow-sm" />
                   </div>
