@@ -22,7 +22,7 @@ export default function ShoppingOrders() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-
+  
   const { orderList, error } = useSelector((state) => state.orders);
 
   // ✅ Guest Orders From LocalStorage
@@ -37,11 +37,7 @@ export default function ShoppingOrders() {
       dispatch(getAllOrdersByUserId(user._id));
     }
   }, [dispatch, user]);
-  const existingOrders = JSON.parse(localStorage.getItem("guestOrders")) || [];
 
-  existingOrders.push(order);
-
-  localStorage.setItem("guestOrders", JSON.stringify(existingOrders));
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 py-8">
       <div className="max-w-6xl mx-auto space-y-8">
