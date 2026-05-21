@@ -257,15 +257,33 @@ export default function Adminproducts() {
   };
 
   const handleEdit = (p) => {
-    setCurrentEditedId(p._id);
-    setOpenCreateProductDialog(true);
-    setProduct({
-      ...p,
-      images: [],
-      variants: (p.variants || []).map((v) => ({ ...v })),
-      customBoxPrices: (p.customBoxPrices || []).map((c) => ({ ...c })),
-    });
-  };
+  setCurrentEditedId(p._id);
+  setOpenCreateProductDialog(true);
+
+  setProduct({
+    ...p,
+
+    benefits:
+      Array.isArray(p.benefits) && p.benefits.length > 0
+        ? p.benefits
+        : [""],
+
+    howToUse:
+      Array.isArray(p.howToUse) && p.howToUse.length > 0
+        ? p.howToUse
+        : [""],
+
+    images: [],
+
+    variants: Array.isArray(p.variants)
+      ? p.variants.map((v) => ({ ...v }))
+      : [],
+
+    customBoxPrices: Array.isArray(p.customBoxPrices)
+      ? p.customBoxPrices.map((c) => ({ ...c }))
+      : [],
+  });
+};
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
