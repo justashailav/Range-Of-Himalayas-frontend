@@ -13,6 +13,7 @@ import {
   Truck,
   X,
   Zap,
+  Leaf
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import StarRatingComponent from "./Star-Review";
@@ -748,6 +749,80 @@ const handleBuyNow = () => {
                   Authentic Origin
                 </span>
               </motion.div>
+
+              
+
+{/* BENEFITS SECTION */}
+{productDetails?.benefits?.length > 0 && (
+  <div className="mt-16">
+    {/* Minimalist Asymmetric Header */}
+    <div className="flex items-center gap-4 mb-8">
+      <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 shrink-0">
+        Product Benefits
+      </span>
+      <div className="h-[1px] w-full bg-stone-200/80"></div>
+    </div>
+
+    {/* Elegant Content Stream */}
+    <div className="grid gap-y-6 pl-1">
+      {productDetails.benefits.map((benefit, index) => (
+        <div
+          key={index}
+          className="flex items-start gap-5 group relative"
+        >
+          {/* Accent Line Indicator */}
+          <div className="flex flex-col items-center shrink-0 pt-1">
+            <div className="w-5 h-5 rounded-full bg-[#942820]/5 flex items-center justify-center transition-colors group-hover:bg-[#942820]/10">
+              <Leaf size={11} className="text-[#942820]" />
+            </div>
+            {index !== productDetails.benefits.length - 1 && (
+              <div className="w-[1px] h-12 bg-stone-100 mt-2 absolute top-6 left-2.5"></div>
+            )}
+          </div>
+
+          <p className="text-sm text-stone-600 font-light leading-relaxed max-w-2xl">
+            {benefit}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+{/* HOW TO USE SECTION */}
+{productDetails?.howToUse?.length > 0 && (
+  <div className="mt-20">
+    {/* Minimalist Asymmetric Header */}
+    <div className="flex items-center gap-4 mb-10">
+      <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 shrink-0">
+        Application & Ritual
+      </span>
+      <div className="h-[1px] w-full bg-stone-200/80"></div>
+    </div>
+
+    {/* Deconstructed Grid Steps */}
+    <div className="grid gap-y-10 sm:gap-y-12">
+      {productDetails.howToUse.map((step, index) => (
+        <div
+          key={index}
+          className="grid grid-cols-1 md:grid-cols-[60px_1fr] gap-2 md:gap-6 items-start group"
+        >
+          {/* Fine Editorial Typography Index */}
+          <div className="text-xs font-mono font-medium tracking-widest text-stone-400/80 group-hover:text-stone-800 transition-colors duration-300 md:pt-0.5">
+            {String(index + 1).padStart(2, "0")}
+          </div>
+
+          {/* Step Narrative */}
+          <div className="border-l border-stone-100 md:border-l-0 pl-4 md:pl-0">
+            <p className="text-sm text-stone-600 font-light leading-relaxed max-w-2xl">
+              {step}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
             </motion.div>
 
             <motion.div
