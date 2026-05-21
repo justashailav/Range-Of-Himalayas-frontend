@@ -24,6 +24,8 @@ export default function Adminproducts() {
   const [product, setProduct] = useState({
     title: "",
     description: "",
+    benefits: [""],
+    howToUse: [""],
     isCombo: false,
     nutrition: {
       calories: "",
@@ -122,6 +124,8 @@ export default function Adminproducts() {
     setProduct({
       title: "",
       description: "",
+      benefits: [""],
+      howToUse: [""],
       isCombo: false,
       comboNutrition: [
         {
@@ -264,52 +268,59 @@ export default function Adminproducts() {
   };
 
   const handleProductSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  Object.keys(product).forEach((key) => {
-    // 🟢 IMAGES (files)
-    if (key === "images") {
-      product.images.forEach((img) => {
-        formData.append("images", img);
-      });
-    }
-
-    // 🟣 COMBO NUTRITION (only if combo)
-    else if (key === "comboNutrition") {
-      if (product.isCombo) {
-        const cleaned = product.comboNutrition.filter(
-          (item) => item.name && item.name.trim() !== ""
-        );
-
-        formData.append("comboNutrition", JSON.stringify(cleaned));
+    Object.keys(product).forEach((key) => {
+      // 🟢 IMAGES (files)
+      if (key === "images") {
+        product.images.forEach((img) => {
+          formData.append("images", img);
+        });
       }
-      // ❌ skip completely if not combo
-    }
 
-    // 🔵 OBJECTS → stringify
-    else if (
-      ["variants", "nutrition", "details", "customBoxPrices"].includes(key)
-    ) {
-      formData.append(key, JSON.stringify(product[key]));
-    }
+      // 🟣 COMBO NUTRITION (only if combo)
+      else if (key === "comboNutrition") {
+        if (product.isCombo) {
+          const cleaned = product.comboNutrition.filter(
+            (item) => item.name && item.name.trim() !== "",
+          );
 
-    // ⚪ NORMAL FIELDS
-    else {
-      formData.append(key, product[key]);
+          formData.append("comboNutrition", JSON.stringify(cleaned));
+        }
+        // ❌ skip completely if not combo
+      }
+
+      // 🔵 OBJECTS → stringify
+      else if (
+        [
+          "variants",
+          "nutrition",
+          "details",
+          "customBoxPrices",
+          "benefits",
+          "howToUse",
+        ].includes(key)
+      ) {
+        formData.append(key, JSON.stringify(product[key]));
+      }
+
+      // ⚪ NORMAL FIELDS
+      else {
+        formData.append(key, product[key]);
+      }
+    });
+    try {
+      if (currentEditedId) {
+        await dispatch(editProduct({ id: currentEditedId, formData }));
+      } else {
+        await dispatch(addProduct(formData));
+      }
+    } catch (err) {
+      console.error("Submit error:", err);
     }
-  });
-  try {
-    if (currentEditedId) {
-      await dispatch(editProduct({ id: currentEditedId, formData }));
-    } else {
-      await dispatch(addProduct(formData));
-    }
-  } catch (err) {
-    console.error("Submit error:", err);
-  }
-};
+  };
   return (
     <Fragment>
       <div className="mb-10 w-full flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-stone-100 pb-8">
@@ -411,6 +422,132 @@ export default function Adminproducts() {
                       rows={4}
                       className="w-full px-5 py-4 bg-stone-50 border border-stone-100 rounded-2xl text-stone-900 text-sm font-medium placeholder:text-stone-300 outline-none focus:bg-white focus:border-[#B23A2E]/30 focus:ring-4 focus:ring-[#B23A2E]/5 transition-all duration-300 resize-none leading-relaxed"
                     />
+                  </div>
+                  <div className="space-y-8 max-w-2xl">
+                    {/* BENEFITS SECTION */}
+                    <div className="group">
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-2 mb-4">
+                        <label className="text-[10px] font-bold uppercase tracking-[0.25em] text-stone-400">
+                          Product Benefits
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setProduct({
+                              ...product,
+                              benefits: [...product.benefits, ""],
+                            })
+                          }
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#942820] hover:text-[#731e18] tracking-wider uppercase transition-colors"
+                        >
+                          <Plus className="w-3 h-3" /> Add Benefit
+                        </button>
+                      </div>
+
+                      {product.benefits.length === 0 ? (
+                        <p className="text-xs italic text-stone-400 py-2 px-1">
+                          No benefits added yet.
+                        </p>
+                      ) : (
+                        <div className="space-y-3">
+                          {product.benefits.map((item, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-3 group/item"
+                            >
+                              <input
+                                type="text"
+                                placeholder={`Benefit ${index + 1}`}
+                                value={item}
+                                onChange={(e) => {
+                                  const updated = [...product.benefits];
+                                  updated[index] = e.target.value;
+                                  setProduct({ ...product, benefits: updated });
+                                }}
+                                className="w-full px-4 py-2.5 text-sm bg-stone-50/60 border border-stone-200/60 rounded-lg text-stone-800 placeholder-stone-400 focus:outline-none focus:border-stone-400 focus:bg-white transition-all duration-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const updated = product.benefits.filter(
+                                    (_, i) => i !== index,
+                                  );
+                                  setProduct({ ...product, benefits: updated });
+                                }}
+                                className="p-2 text-stone-400 hover:text-[#942820] opacity-0 group-hover/item:opacity-100 focus:opacity-100 transition-all rounded-md hover:bg-stone-50"
+                                title="Remove item"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* HOW TO USE SECTION */}
+                    <div className="group">
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-2 mb-4">
+                        <label className="text-[10px] font-bold uppercase tracking-[0.25em] text-stone-400">
+                          Application & Usage Steps
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setProduct({
+                              ...product,
+                              howToUse: [...product.howToUse, ""],
+                            })
+                          }
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#942820] hover:text-[#731e18] tracking-wider uppercase transition-colors"
+                        >
+                          <Plus className="w-3 h-3" /> Add Step
+                        </button>
+                      </div>
+
+                      {product.howToUse.length === 0 ? (
+                        <p className="text-xs italic text-stone-400 py-2 px-1">
+                          No application steps added yet.
+                        </p>
+                      ) : (
+                        <div className="space-y-3">
+                          {product.howToUse.map((item, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-3 group/item"
+                            >
+                              <div className="flex-none text-[11px] font-mono font-medium text-stone-400 w-5 text-right">
+                                {String(index + 1).padStart(2, "0")}
+                              </div>
+                              <input
+                                type="text"
+                                placeholder={`Describe stage ${index + 1}...`}
+                                value={item}
+                                onChange={(e) => {
+                                  const updated = [...product.howToUse];
+                                  updated[index] = e.target.value;
+                                  setProduct({ ...product, howToUse: updated });
+                                }}
+                                className="w-full px-4 py-2.5 text-sm bg-stone-50/60 border border-stone-200/60 rounded-lg text-stone-800 placeholder-stone-400 focus:outline-none focus:border-stone-400 focus:bg-white transition-all duration-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const updated = product.howToUse.filter(
+                                    (_, i) => i !== index,
+                                  );
+                                  setProduct({ ...product, howToUse: updated });
+                                }}
+                                className="p-2 text-stone-400 hover:text-[#942820] opacity-0 group-hover/item:opacity-100 focus:opacity-100 transition-all rounded-md hover:bg-stone-50"
+                                title="Remove step"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="mt-8 pt-8 border-t border-stone-100">
@@ -688,12 +825,12 @@ export default function Adminproducts() {
                       Product Variants
                     </h3>
                     <button
-                        type="button"
-                        onClick={addVariantField}
-                        className="text-[10px] font-bold uppercase tracking-widest text-[#B23A2E] hover:text-[#d9746a] transition-colors flex items-center gap-2"
-                      >
-                        <Plus size={14} /> Add Row
-                      </button>
+                      type="button"
+                      onClick={addVariantField}
+                      className="text-[10px] font-bold uppercase tracking-widest text-[#B23A2E] hover:text-[#d9746a] transition-colors flex items-center gap-2"
+                    >
+                      <Plus size={14} /> Add Row
+                    </button>
                   </div>
 
                   <div className="space-y-3">
@@ -768,16 +905,20 @@ export default function Adminproducts() {
                               500ml (Honey) 20g (Himalayan Shilajit)
                             </option>
                             <option value="10g (Himalayan Shilajit) 500ml (Sea Buckthorn Pulp)">
-                              10g (Himalayan Shilajit) 500ml (Sea Buckthorn Pulp)
+                              10g (Himalayan Shilajit) 500ml (Sea Buckthorn
+                              Pulp)
                             </option>
                             <option value="10g (Himalayan Shilajit) 200ml (Sea Buckthorn Pulp)">
-                              10g (Himalayan Shilajit) 200ml (Sea Buckthorn Pulp)
+                              10g (Himalayan Shilajit) 200ml (Sea Buckthorn
+                              Pulp)
                             </option>
                             <option value="20g (Himalayan Shilajit) 200ml (Sea Buckthorn Pulp)">
-                              20g (Himalayan Shilajit) 200ml (Sea Buckthorn Pulp)
+                              20g (Himalayan Shilajit) 200ml (Sea Buckthorn
+                              Pulp)
                             </option>
                             <option value="20g (Himalayan Shilajit) 500ml (Sea Buckthorn Pulp)">
-                              20g (Himalayan Shilajit) 500ml (Sea Buckthorn Pulp)
+                              20g (Himalayan Shilajit) 500ml (Sea Buckthorn
+                              Pulp)
                             </option>
                           </select>
                         </div>
