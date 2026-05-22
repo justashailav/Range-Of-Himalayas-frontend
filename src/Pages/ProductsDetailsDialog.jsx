@@ -1011,10 +1011,7 @@ export default function ProductsDetailsDialog() {
               </p>
 
               {/* NEW: Dispatch Info */}
-              <p className="text-[10px] font-semibold tracking-wide text-[#B23A2E] ml-1 mt-1">
-                🚚 Dispatch starts from{" "}
-                <span className="font-bold">18 April</span>
-              </p>
+              
             </div>
 
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
