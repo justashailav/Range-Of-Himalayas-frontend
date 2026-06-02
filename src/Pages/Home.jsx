@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png"
+import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaInstagram,
@@ -409,20 +409,20 @@ export default function Home() {
         </motion.div>
       </div>
       <section className="relative w-full overflow-hidden">
-  <img
-    src={BannerRangeOfHimalayas}
-    alt="Himalayan Products"
-    className="
+        <img
+          src={BannerRangeOfHimalayas}
+          alt="Himalayan Products"
+          className="
       w-[140%] max-w-none -ml-[20%]
       sm:w-full sm:max-w-full sm:ml-0
       h-auto block
     "
-    loading="eager"
-    fetchPriority="high"
-  />
-</section>
+          loading="eager"
+          fetchPriority="high"
+        />
+      </section>
       <div>
-        <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
+        <div className="px-6 sm:px-12 py-12 max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col items-center md:items-start space-y-4 md:space-y-3 text-center md:text-left">
               <div className="flex items-center gap-3">
@@ -559,13 +559,12 @@ export default function Home() {
           {/* Soft atmospheric glows - using clay and amber tones instead of dark red */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E8DCD3] rounded-full blur-[120px] opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#F0E6DF] rounded-full blur-[100px] opacity-70 translate-y-1/2 -translate-x-1/4 pointer-events-none" />
-
           <motion.div
             variants={stagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-120px" }}
-            className="grid gap-12 px-6 max-w-7xl mx-auto sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-12 px-6 max-w-6xl mx-auto sm:grid-cols-2 lg:grid-cols-3"
           >
             {productList?.slice(0, 3).map((item, index) => (
               <motion.div
@@ -677,7 +676,7 @@ export default function Home() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 max-w-6xl mx-auto"
         >
           {features.map((feature, index) => (
             <motion.div
