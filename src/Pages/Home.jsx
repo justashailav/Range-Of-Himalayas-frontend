@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png";
-import BannerRangeOfHimalayas1 from "../assets/Banner-RangeOfHimalayas.png";
+import BannerRangeOfHimalayas1 from "../assets/Banner-RangeOfHimalayas-1.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaInstagram,
