@@ -2,7 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessage } from "../store/slices/chatSlice";
 import { useNavigate } from "react-router-dom";
-import { MessageCircle, X, Send, MessageSquare, ChevronDown } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  MessageSquare,
+  ChevronDown,
+} from "lucide-react";
 
 const Chatbot = () => {
   const [open, setOpen] = useState(false);
@@ -31,7 +37,14 @@ const Chatbot = () => {
           onClick={() => setOpen(true)}
           className="fixed bottom-6 right-6 md:bottom-6 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-[#B23A2E] rounded-full shadow-2xl z-50 flex items-center justify-center transition-all hover:scale-110 active:scale-95 animate-in zoom-in duration-300"
         >
-          <MessageCircle className="text-white w-6 h-6 md:w-7 md:h-7"/>
+          <div className="relative">
+            <MessageCircle className="text-white w-6 h-6 md:w-7 md:h-7" />
+
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+          </div>
         </button>
       )}
 
@@ -39,9 +52,12 @@ const Chatbot = () => {
       {open && (
         <>
           {/* Mobile Backdrop Overlay - helps focus on chat */}
-          <div className="fixed inset-0 bg-black/10 backdrop-blur-[1px] z-[55] md:hidden" onClick={() => setOpen(false)} />
+          <div
+            className="fixed inset-0 bg-black/10 backdrop-blur-[1px] z-[55] md:hidden"
+            onClick={() => setOpen(false)}
+          />
 
-          <div 
+          <div
             className={`
               fixed z-[60] flex flex-col bg-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden transition-all duration-500 border border-stone-100
               /* Mobile: Adjust to 115px to sit below your specific Red Announcement Bar */
@@ -51,7 +67,6 @@ const Chatbot = () => {
               animate-in fade-in slide-in-from-bottom-10
             `}
           >
-            
             {/* Header: Cinematic & Responsive (Removed mt-8 to fix text cut-off) */}
             <div className="bg-stone-900 px-6 py-5 text-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-4">
@@ -68,9 +83,17 @@ const Chatbot = () => {
                   <h3 className="text-sm font-black tracking-tight uppercase">
                     Range of Himalayas
                   </h3>
+                  <a
+                    href="https://wa.me/916230867344"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[10px] text-green-400 font-bold"
+                  >
+                    WhatsApp Support
+                  </a>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setOpen(false)}
                 className="p-2 hover:bg-white/10 rounded-full transition-colors"
               >
@@ -82,11 +105,58 @@ const Chatbot = () => {
             {/* Messages Area */}
             <div className="flex-1 p-5 md:p-6 overflow-y-auto no-scrollbar space-y-6 bg-[#FCFAF7]">
               {messages.length === 0 && (
-                <div className="flex flex-col items-center justify-center h-full text-center opacity-40 px-6">
-                  <MessageSquare className="w-10 h-10 mb-4 text-stone-300 stroke-[1px]" />
-                  <p className="text-xs font-serif italic text-stone-600 leading-relaxed">
-                    Namaste. How may we assist your exploration of the Himalayas today?
-                  </p>
+                <div className="flex flex-col justify-center h-full px-5">
+                  <div className="text-center mb-8">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-stone-100 flex items-center justify-center text-3xl mb-4">
+                      🏔️
+                    </div>
+
+                    <h3 className="font-black text-lg text-stone-900">
+                      Welcome to Range Of Himalayas
+                    </h3>
+
+                    <p className="text-sm text-stone-500 mt-2">
+                      Ask me about products, orders, shipping and support.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() =>
+                        dispatch(sendChatMessage("Track my order"))
+                      }
+                      className="bg-white border border-stone-200 rounded-xl p-3 text-xs font-bold hover:border-[#B23A2E]"
+                    >
+                      📦 Track Order
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        dispatch(sendChatMessage("Delivery information"))
+                      }
+                      className="bg-white border border-stone-200 rounded-xl p-3 text-xs font-bold hover:border-[#B23A2E]"
+                    >
+                      🚚 Shipping
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        dispatch(sendChatMessage("Sea Buckthorn Pulp benefits"))
+                      }
+                      className="bg-white border border-stone-200 rounded-xl p-3 text-xs font-bold hover:border-[#B23A2E]"
+                    >
+                      🥤 Benefits
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        dispatch(sendChatMessage("Contact support"))
+                      }
+                      className="bg-white border border-stone-200 rounded-xl p-3 text-xs font-bold hover:border-[#B23A2E]"
+                    >
+                      📲 Support
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -106,14 +176,15 @@ const Chatbot = () => {
                   >
                     {msg.text}
 
-                    {msg.role === "assistant" && msg.text.toLowerCase().includes("whatsapp") && (
-                      <button
-                        onClick={() => navigate("/whatsapp-support")}
-                        className="mt-4 w-full bg-[#25D366] text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.1em] hover:brightness-105 transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-100"
-                      >
-                        📲 Connect on WhatsApp
-                      </button>
-                    )}
+                    {msg.role === "assistant" &&
+                      msg.text.toLowerCase().includes("whatsapp") && (
+                        <button
+                          onClick={() => navigate("/whatsapp-support")}
+                          className="mt-4 w-full bg-[#25D366] text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.1em] hover:brightness-105 transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-100"
+                        >
+                          📲 Connect on WhatsApp
+                        </button>
+                      )}
                   </div>
                 </div>
               ))}
@@ -132,6 +203,23 @@ const Chatbot = () => {
 
             {/* Input Area */}
             <div className="p-4 md:p-5 bg-white border-t border-stone-100 pb-[env(safe-area-inset-bottom,16px)]">
+              <div className="flex gap-2 overflow-x-auto no-scrollbar mb-3">
+                {[
+                  "Track Order",
+                  "Delivery Time",
+                  "COD Available",
+                  "Sea Buckthorn Benefits",
+                  "Contact Support",
+                ].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => setInput(item)}
+                    className="whitespace-nowrap px-3 py-1.5 text-[10px] rounded-full bg-stone-100 border border-stone-200 hover:bg-stone-200 transition-all"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
               <div className="relative flex items-center bg-stone-50 rounded-2xl px-4 py-1.5 border border-stone-200/60 focus-within:bg-white focus-within:border-stone-900/20 transition-all duration-300">
                 <input
                   value={input}
