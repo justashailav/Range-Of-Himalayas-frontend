@@ -387,7 +387,7 @@ export default function Home() {
                 </span>
                 <p className="text-xs md:text-sm tracking-[0.1em] font-light">
                   Coupons applicable on orders above{" "}
-                  <span className="font-semibold text-white">₹500</span>
+                  <span className="font-semibold text-white">₹1000</span>
                 </p>
               </div>
 
@@ -404,35 +404,19 @@ export default function Home() {
               </div>
 
               <div className="w-1 h-1 bg-white/30 rounded-full" />
-
-              {/* Dispatch */}
-              <div className="flex items-center gap-4">
-                <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
-                  Dispatch
-                </span>
-                <p className="text-xs md:text-sm tracking-[0.1em] font-light">
-                  Orders will be dispatched from{" "}
-                  <span className="font-semibold text-white">18 April</span>
-                </p>
-              </div>
-
-              <div className="w-1 h-1 bg-white/30 rounded-full" />
             </div>
           ))}
         </motion.div>
       </div>
-      <section className="relative w-full h-[100dvh] overflow-hidden">
-        {/* BACKGROUND IMAGE WITH VIGNETTE */}
-        <div className="absolute inset-0">
-          <img
-            src={BannerRangeOfHimalayas}
-            alt="Himalayan Products"
-            // className="w-full h-full object-cover object-center md:object-[right_35%] opacity-80"
-            loading="eager"
-            fetchPriority="high"
-          />
-        </div>
-      </section>
+      <section className="relative w-full overflow-hidden">
+  <img
+    src={BannerRangeOfHimalayas}
+    alt="Himalayan Products"
+    className="w-full h-auto block"
+    loading="eager"
+    fetchPriority="high"
+  />
+</section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
