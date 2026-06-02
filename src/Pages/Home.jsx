@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png";
+import BannerRangeOfHimalayas1 from "../assets/Banner-RangeOfHimalayas.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaInstagram,
@@ -55,6 +56,19 @@ const stagger = {
     },
   },
 };
+const images = [BannerRangeOfHimalayas, BannerRangeOfHimalayas1];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 5000); // change every 5 sec
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -350,13 +364,11 @@ export default function Home() {
         />
       </Helmet>
       <div className="relative w-full overflow-hidden bg-[#B23A2E]/90 backdrop-blur-md border-y border-white/5 py-3">
-        {/* Subtle Shine Effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
-
         <motion.div
           animate={{ x: ["0%", "-100%"] }}
           transition={{
-            duration: 30, // Slightly slower for better readability
+            duration: 30,
             repeat: Infinity,
             ease: "linear",
           }}
@@ -379,8 +391,6 @@ export default function Home() {
               </div>
 
               <div className="w-1 h-1 bg-white/30 rounded-full" />
-
-              {/* Reward - UPDATED */}
               <div className="flex items-center gap-4">
                 <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
                   Reward
@@ -392,8 +402,6 @@ export default function Home() {
               </div>
 
               <div className="w-1 h-1 bg-white/30 rounded-full" />
-
-              {/* Logistics */}
               <div className="flex items-center gap-4">
                 <span className="text-[10px] tracking-[0.3em] uppercase opacity-50 font-bold">
                   Logistics
@@ -408,7 +416,7 @@ export default function Home() {
           ))}
         </motion.div>
       </div>
-      <section className="relative w-full overflow-hidden">
+      {/* <section className="relative w-full overflow-hidden">
         <img
           src={BannerRangeOfHimalayas}
           alt="Himalayan Products"
@@ -420,7 +428,16 @@ export default function Home() {
           loading="eager"
           fetchPriority="high"
         />
-      </section>
+      </section> */}
+      <section className="relative w-full overflow-hidden">
+      <img
+        src={images[currentImage]}
+        alt="Himalayan Products"
+        className="w-full h-auto block transition-opacity duration-1000"
+        loading="eager"
+        fetchPriority="high"
+      />
+    </section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
