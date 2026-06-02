@@ -427,7 +427,7 @@ export default function Home() {
           <img
             src={BannerRangeOfHimalayas}
             alt="Himalayan Products"
-            className="w-full h-full object-cover object-center md:object-[right_35%] opacity-80"
+            // className="w-full h-full object-cover object-center md:object-[right_35%] opacity-80"
             loading="eager"
             fetchPriority="high"
           />
