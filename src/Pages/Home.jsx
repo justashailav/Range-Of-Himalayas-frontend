@@ -434,7 +434,7 @@ export default function Home() {
         </div>
       </section>
       <div>
-        <div className="px-6 sm:px-12  max-w-7xl mx-auto">
+        <div className="px-6  max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col items-center md:items-start space-y-4 md:space-y-3 text-center md:text-left">
               <div className="flex items-center gap-3">
