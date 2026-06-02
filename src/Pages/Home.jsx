@@ -422,23 +422,20 @@ export default function Home() {
         </motion.div>
       </div>
       <section className="relative w-full h-[100dvh] overflow-hidden">
-        {/* BACKGROUND IMAGE WITH VIGNETTE */}
-        <div className="absolute inset-0">
-          <img
-            src={BannerRangeOfHimalayas}
-            alt="Himalayan Products"
-            // className="w-full h-full object-cover object-center md:object-[right_35%] opacity-80"
-            loading="eager"
-            fetchPriority="high"
-          />
-        </div>
-      </section>
+  <div className="absolute inset-0">
+    <img
+      src={BannerRangeOfHimalayas}
+      alt="Himalayan Products"
+      className="w-full h-full object-cover object-[60%_center] md:object-center"
+      loading="eager"
+      fetchPriority="high"
+    />
+  </div>
+</section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            {/* Title Section */}
             <div className="flex flex-col items-center md:items-start space-y-4 md:space-y-3 text-center md:text-left">
-              {/* Label with responsive lines */}
               <div className="flex items-center gap-3">
                 {/* Left line (always visible) */}
                 <span className="h-[1px] w-6 md:w-8 bg-[#D84C3C]" />
