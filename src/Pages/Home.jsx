@@ -57,8 +57,6 @@ const stagger = {
   },
 };
 
-
-
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,7 +67,7 @@ export default function Home() {
   const { images: galleryItems, loading } = useSelector(
     (state) => state.gallery,
   );
-   
+
   useEffect(() => {
     dispatch(getGalleryItems());
   }, [dispatch]);
@@ -430,14 +428,20 @@ export default function Home() {
         />
       </section> */}
       <section className="relative w-full overflow-hidden">
-      <img
-        src={images[currentImage]}
-        alt="Himalayan Products"
-        className="w-full h-auto block transition-opacity duration-1000"
-        loading="eager"
-        fetchPriority="high"
-      />
-    </section>
+        {images.map((image, index) => (
+          <img
+            key={index}
+            src={image}
+            alt="Himalayan Products"
+            className={`absolute inset-0 w-full h-auto transition-opacity duration-[2000ms] ease-in-out ${
+              index === currentImage ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+
+        {/* Keeps section height */}
+        <img src={images[0]} alt="" className="w-full h-auto opacity-0" />
+      </section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
