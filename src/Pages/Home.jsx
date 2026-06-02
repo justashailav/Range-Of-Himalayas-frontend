@@ -56,16 +56,6 @@ const stagger = {
     },
   },
 };
-const images = [BannerRangeOfHimalayas, BannerRangeOfHimalayas1];
-  const [currentImage, setCurrentImage] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 5000); // change every 5 sec
-
-    return () => clearInterval(interval);
-  }, []);
 
 
 
@@ -79,10 +69,20 @@ export default function Home() {
   const { images: galleryItems, loading } = useSelector(
     (state) => state.gallery,
   );
-
+   
   useEffect(() => {
     dispatch(getGalleryItems());
   }, [dispatch]);
+  const images = [BannerRangeOfHimalayas, BannerRangeOfHimalayas1];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 5000); // change every 5 sec
+
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredItems =
     activeCategory === "All"
