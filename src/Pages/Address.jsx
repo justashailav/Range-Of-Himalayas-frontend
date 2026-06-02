@@ -67,57 +67,57 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
   }
 
   function handleManageAddress(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  if (!isFormValid()) {
-    toast.error("Please complete the required fields.");
-    return;
-  }
+    if (!isFormValid()) {
+      toast.error("Please complete the required fields.");
+      return;
+    }
 
-  // 🔥 GUEST FLOW
-  if (!user?._id) {
-    let guestAddresses = getGuestAddresses();
+    // 🔥 GUEST FLOW
+    if (!user?._id) {
+      let guestAddresses = getGuestAddresses();
 
-    if (currentEditedId) {
-      guestAddresses = guestAddresses.map((addr) =>
-        addr._id === currentEditedId ? { ...addr, ...formData } : addr
-      );
-    } else {
-      if (guestAddresses.length >= 3) {
-        toast.error("Address limit reached (3 max)");
-        return;
+      if (currentEditedId) {
+        guestAddresses = guestAddresses.map((addr) =>
+          addr._id === currentEditedId ? { ...addr, ...formData } : addr,
+        );
+      } else {
+        if (guestAddresses.length >= 3) {
+          toast.error("Address limit reached (3 max)");
+          return;
+        }
+
+        guestAddresses.push({
+          _id: Date.now().toString(), // fake id
+          ...formData,
+          location: {
+            coordinates: [formData.longitude, formData.latitude],
+          },
+        });
       }
 
-      guestAddresses.push({
-        _id: Date.now().toString(), // fake id
-        ...formData,
-        location: {
-          coordinates: [formData.longitude, formData.latitude],
-        },
-      });
-    }
+      saveGuestAddresses(guestAddresses);
+      setGuestAddressList(guestAddresses);
 
-    saveGuestAddresses(guestAddresses);
-    setGuestAddressList(guestAddresses);
-
-    resetForm();
-    toast.success("Address saved");
-    return;
-  }
-
-  // 🔥 LOGGED USER FLOW (UNCHANGED)
-  const action = currentEditedId
-    ? editAddress({ userId: user?._id, addressId: currentEditedId, formData })
-    : addAddress({ ...formData, userId: user?._id });
-
-  dispatch(action).then((data) => {
-    if (data?.success) {
-      dispatch(fetchAllAddress(user?._id));
       resetForm();
-      toast.success(currentEditedId ? "Updated" : "Saved");
+      toast.success("Address saved");
+      return;
     }
-  });
-}
+
+    // 🔥 LOGGED USER FLOW (UNCHANGED)
+    const action = currentEditedId
+      ? editAddress({ userId: user?._id, addressId: currentEditedId, formData })
+      : addAddress({ ...formData, userId: user?._id });
+
+    dispatch(action).then((data) => {
+      if (data?.success) {
+        dispatch(fetchAllAddress(user?._id));
+        resetForm();
+        toast.success(currentEditedId ? "Updated" : "Saved");
+      }
+    });
+  }
 
   const resetForm = () => {
     setCurrentEditedId(null);
@@ -155,13 +155,13 @@ export default function Address({ setCurrentSelectedAddress, selectedId }) {
   }
 
   useEffect(() => {
-  if (user?._id) {
-    dispatch(fetchAllAddress(user._id));
-  } else {
-    const guestData = getGuestAddresses();
-    setGuestAddressList(guestData);
-  }
-}, [dispatch, user]);
+    if (user?._id) {
+      dispatch(fetchAllAddress(user._id));
+    } else {
+      const guestData = getGuestAddresses();
+      setGuestAddressList(guestData);
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="space-y-16 animate-in fade-in duration-700">

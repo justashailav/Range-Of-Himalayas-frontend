@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png"
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaInstagram,
@@ -424,7 +425,7 @@ export default function Home() {
         {/* BACKGROUND IMAGE WITH VIGNETTE */}
         <div className="absolute inset-0">
           <img
-            src="/hero.webp"
+            src={BannerRangeOfHimalayas}
             alt="Himalayan Products"
             className="w-full h-full object-cover object-center md:object-[right_35%] opacity-80"
             loading="eager"
