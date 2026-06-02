@@ -427,21 +427,28 @@ export default function Home() {
           fetchPriority="high"
         />
       </section> */}
-      <section className="relative w-full overflow-hidden">
-        {images.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt="Himalayan Products"
-            className={`absolute inset-0 w-full h-auto transition-opacity duration-[2000ms] ease-in-out ${
-              index === currentImage ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
+     <section className="relative w-full overflow-hidden">
+  {images.map((image, index) => (
+    <img
+      key={index}
+      src={image}
+      alt="Himalayan Products"
+      className={`absolute inset-0
+        w-[130%] max-w-none -ml-[15%]
+        sm:w-full sm:max-w-full sm:ml-0
+        h-auto
+        transition-opacity duration-[2000ms] ease-in-out
+        ${index === currentImage ? "opacity-100" : "opacity-0"}
+      `}
+    />
+  ))}
 
-        {/* Keeps section height */}
-        <img src={images[0]} alt="" className="w-full h-auto opacity-0" />
-      </section>
+  <img
+    src={images[0]}
+    alt=""
+    className="w-[130%] max-w-none -ml-[15%] sm:w-full sm:max-w-full sm:ml-0 h-auto opacity-0"
+  />
+</section>
       <div>
         <div className="px-6 sm:px-12 py-12 max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
