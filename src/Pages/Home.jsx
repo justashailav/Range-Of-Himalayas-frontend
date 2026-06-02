@@ -421,7 +421,7 @@ export default function Home() {
           ))}
         </motion.div>
       </div>
-      <section className="relative w-full h-[100dvh] overflow-hidden bg-neutral-900">
+      <section className="relative w-full h-[100dvh] overflow-hidden">
         {/* BACKGROUND IMAGE WITH VIGNETTE */}
         <div className="absolute inset-0">
           <img
