@@ -412,7 +412,11 @@ export default function Home() {
   <img
     src={BannerRangeOfHimalayas}
     alt="Himalayan Products"
-    className="w-full h-auto block"
+    className="
+      w-[140%] max-w-none -ml-[20%]
+      sm:w-full sm:max-w-full sm:ml-0
+      h-auto block
+    "
     loading="eager"
     fetchPriority="high"
   />
