@@ -434,7 +434,7 @@ export default function Home() {
         </div>
       </section>
       <div>
-        <div className="px-6  max-w-7xl mx-auto">
+        <div className="px-6 sm:px-12 py-12 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col items-center md:items-start space-y-4 md:space-y-3 text-center md:text-left">
               <div className="flex items-center gap-3">
@@ -567,7 +567,7 @@ export default function Home() {
             )}
           </div>
         </div>
-        <section className="bg-[#F7F3F0] relative overflow-hidden">
+        <section className="bg-[#F7F3F0] py-24 relative overflow-hidden">
           {/* Soft atmospheric glows - using clay and amber tones instead of dark red */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E8DCD3] rounded-full blur-[120px] opacity-60 -translate-y-1/2 translate-x-1/4 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#F0E6DF] rounded-full blur-[100px] opacity-70 translate-y-1/2 -translate-x-1/4 pointer-events-none" />
