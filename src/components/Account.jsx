@@ -32,22 +32,10 @@ export default function ShoppingAccount() {
       <img
         src={BannerRangeOfHimalayas}
         alt="Range Of Himalayas"
-        className="w-full h-full object-cover"
+        className="w-full h-full"
       />
 
-      <div className="absolute inset-0 bg-black/30" />
-
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white">
-          <p className="text-xs uppercase tracking-[0.4em] font-bold mb-3">
-            Himalayan Heritage
-          </p>
-
-          <h1 className="text-4xl md:text-6xl font-black uppercase">
-            My Account
-          </h1>
-        </div>
-      </div>
+    
     </div>
 
       {/* ✅ NO USER + NO GUEST DATA */}
