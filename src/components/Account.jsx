@@ -25,7 +25,7 @@ export default function ShoppingAccount() {
           content="Manage your Himalayan heritage orders and delivery addresses."
         />
       </Helmet>
-      <div className="relative h-[250px] md:h-[350px] overflow-hidden">
+      <div className="relativeoverflow-hidden">
         <img src={BannerRangeOfHimalayas} alt="Range Of Himalayas" />
       </div>
 
