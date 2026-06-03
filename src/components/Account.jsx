@@ -4,7 +4,7 @@ import ShoppingOrders from "./Orders";
 import { Helmet } from "react-helmet";
 import { Package, MapPin } from "lucide-react";
 import { useSelector } from "react-redux";
-
+import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png"
 export default function ShoppingAccount() {
   const { user } = useSelector((state) => state.auth);
 
@@ -28,6 +28,27 @@ export default function ShoppingAccount() {
           content="Manage your Himalayan heritage orders and delivery addresses."
         />
       </Helmet>
+      <div className="relative h-[250px] md:h-[350px] overflow-hidden">
+      <img
+        src={BannerRangeOfHimalayas}
+        alt="Range Of Himalayas"
+        className="w-full h-full object-cover"
+      />
+
+      <div className="absolute inset-0 bg-black/30" />
+
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-center text-white">
+          <p className="text-xs uppercase tracking-[0.4em] font-bold mb-3">
+            Himalayan Heritage
+          </p>
+
+          <h1 className="text-4xl md:text-6xl font-black uppercase">
+            My Account
+          </h1>
+        </div>
+      </div>
+    </div>
 
       {/* ✅ NO USER + NO GUEST DATA */}
       {!user && !hasGuestData ? (
