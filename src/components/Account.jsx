@@ -4,19 +4,16 @@ import ShoppingOrders from "./Orders";
 import { Helmet } from "react-helmet";
 import { Package, MapPin } from "lucide-react";
 import { useSelector } from "react-redux";
-import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png"
+import BannerRangeOfHimalayas from "../assets/Banner-RangeOfHimalayas.png";
 export default function ShoppingAccount() {
   const { user } = useSelector((state) => state.auth);
 
   // ✅ Guest Local Data
-  const guestOrders =
-    JSON.parse(localStorage.getItem("guestOrders")) || [];
+  const guestOrders = JSON.parse(localStorage.getItem("guestOrders")) || [];
 
-  const guestAddresses =
-    JSON.parse(localStorage.getItem("guestAddress")) || [];
+  const guestAddresses = JSON.parse(localStorage.getItem("guestAddress")) || [];
 
-  const hasGuestData =
-    guestOrders.length > 0 || guestAddresses.length > 0;
+  const hasGuestData = guestOrders.length > 0 || guestAddresses.length > 0;
 
   return (
     <div className="min-h-screen bg-[#FCFAF7]">
@@ -29,14 +26,8 @@ export default function ShoppingAccount() {
         />
       </Helmet>
       <div className="relative h-[250px] md:h-[350px] overflow-hidden">
-      <img
-        src={BannerRangeOfHimalayas}
-        alt="Range Of Himalayas"
-        className="w-full h-full"
-      />
-
-    
-    </div>
+        <img src={BannerRangeOfHimalayas} alt="Range Of Himalayas" />
+      </div>
 
       {/* ✅ NO USER + NO GUEST DATA */}
       {!user && !hasGuestData ? (
@@ -129,7 +120,6 @@ export default function ShoppingAccount() {
                     "
                   >
                     <Package className="w-3.5 h-3.5 mr-2 inline-block mb-0.5" />
-
                     Order History
                   </TabsTrigger>
 
@@ -150,7 +140,6 @@ export default function ShoppingAccount() {
                     "
                   >
                     <MapPin className="w-3.5 h-3.5 mr-2 inline-block mb-0.5" />
-
                     Shipping Addresses
                   </TabsTrigger>
                 </TabsList>
